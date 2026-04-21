@@ -1,15 +1,34 @@
 import os
 import json
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
 import anthropic
 from dotenv import load_dotenv
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 load_dotenv()
 
+# ── Rate limiter ────────────────────────────────────────────────────────────
+# key_func reads X-Forwarded-For (set by Nginx) so the limit is per real
+# client IP, not per Nginx proxy address.
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(title="Lexio")
+app.state.limiter = limiter
+
+
+@app.exception_handler(RateLimitExceeded)
+async def rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONResponse:
+    return JSONResponse(
+        status_code=429,
+        content={"detail": "Too many requests — wait a moment before looking up another word."},
+    )
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,12 +41,13 @@ client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 
 class DefineRequest(BaseModel):
-    word: str
-    context: str
+    word: str = Field(..., min_length=1, max_length=60)
+    context: str = Field(..., min_length=1, max_length=8_000)
 
 
 @app.post("/define")
-async def define_word(req: DefineRequest):
+@limiter.limit("20/minute")
+async def define_word(request: Request, req: DefineRequest):
     prompt = (
         f'The word "{req.word}" appears in this text: "{req.context}"\n'
         "Respond ONLY in JSON with no markdown:\n"
