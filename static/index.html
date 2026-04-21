@@ -4,26 +4,67 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lexio — Contextual Definitions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* ── Reset & Variables ─────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:          #f4f4f6;
-      --surface:     #ffffff;
-      --border:      #e2e2e8;
-      --accent:      #4f46e5;
-      --accent-dk:   #3730a3;
-      --accent-lt:   #ede9fe;
-      --text:        #18181b;
-      --muted:       #71717a;
-      --token-hover: #ede9fe;
-      --token-active:#c7d2fe;
-      --radius:      12px;
-      --header-h:    56px;
-      --panel-pad:   24px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                   "Helvetica Neue", Arial, sans-serif;
+      --bg:           oklch(96.5% 0.012 75);
+      --surface:      oklch(99.2% 0.006 75);
+      --border:       oklch(89% 0.014 75);
+      --border-light: oklch(93% 0.01 75);
+      --accent:       oklch(58% 0.17 54);
+      --accent-dk:    oklch(50% 0.17 54);
+      --accent-lt:    oklch(96% 0.06 75);
+      --accent-mid:   oklch(90% 0.08 70);
+      --text:         oklch(18% 0.015 65);
+      --text-mid:     oklch(35% 0.012 65);
+      --muted:        oklch(58% 0.01 65);
+      --token-hover:  oklch(93% 0.06 72);
+      --token-active: oklch(86% 0.1 68);
+      --token-active-text: oklch(40% 0.16 54);
+      --radius:       14px;
+      --radius-sm:    8px;
+      --header-h:     60px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+
+    /* Dark theme */
+    [data-theme="dark"] {
+      --bg:           oklch(14% 0.01 65);
+      --surface:      oklch(19% 0.012 65);
+      --border:       oklch(28% 0.015 65);
+      --border-light: oklch(24% 0.01 65);
+      --accent:       oklch(68% 0.17 54);
+      --accent-dk:    oklch(75% 0.15 54);
+      --accent-lt:    oklch(22% 0.04 65);
+      --accent-mid:   oklch(28% 0.06 65);
+      --text:         oklch(92% 0.008 75);
+      --text-mid:     oklch(75% 0.008 75);
+      --muted:        oklch(55% 0.008 70);
+      --token-hover:  oklch(26% 0.04 65);
+      --token-active: oklch(32% 0.08 65);
+      --token-active-text: oklch(75% 0.15 54);
+    }
+
+    /* Cool theme */
+    [data-theme="cool"] {
+      --bg:           oklch(96% 0.01 240);
+      --surface:      oklch(99% 0.005 240);
+      --border:       oklch(89% 0.012 240);
+      --border-light: oklch(93% 0.008 240);
+      --accent:       oklch(55% 0.18 240);
+      --accent-dk:    oklch(46% 0.18 240);
+      --accent-lt:    oklch(94% 0.05 240);
+      --accent-mid:   oklch(88% 0.08 240);
+      --text:         oklch(16% 0.015 240);
+      --text-mid:     oklch(35% 0.012 240);
+      --muted:        oklch(55% 0.01 240);
+      --token-hover:  oklch(92% 0.055 240);
+      --token-active: oklch(84% 0.1 240);
+      --token-active-text: oklch(38% 0.18 240);
     }
 
     html, body { height: 100%; }
@@ -34,48 +75,83 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
     }
 
-    /* ── Header ────────────────────────────────────────────── */
+    /* ── Header ── */
     header {
       height: var(--header-h);
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
-      padding: 0 28px;
-      gap: 12px;
+      padding: 0 32px;
+      gap: 16px;
       flex-shrink: 0;
-      box-shadow: 0 1px 4px rgba(0,0,0,.06);
     }
 
     .brand {
-      font-size: 1.35rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      font-family: 'Lora', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text);
+    }
+
+    .brand em {
+      font-style: italic;
       color: var(--accent);
     }
 
-    .brand-dot { color: var(--text); }
-
     .tagline {
-      font-size: .8rem;
+      font-size: 0.75rem;
+      font-weight: 400;
       color: var(--muted);
       border-left: 1px solid var(--border);
-      padding-left: 12px;
-      line-height: 1;
+      padding-left: 16px;
+      letter-spacing: 0.02em;
     }
 
-    /* ── Main layout ───────────────────────────────────────── */
+    .header-spacer { flex: 1; }
+
+    .theme-switcher {
+      display: flex;
+      gap: 4px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .theme-btn {
+      border: none;
+      background: transparent;
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .theme-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* ── Main layout ── */
     main {
       flex: 1;
       display: flex;
       gap: 0;
-      padding: 20px;
+      padding: 20px 24px;
       height: calc(100vh - var(--header-h));
     }
 
-    /* ── Panels ────────────────────────────────────────────── */
+    /* ── Panels ── */
     .panel {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -83,52 +159,60 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
     }
 
-    .panel-left  { flex: 1; margin-right: 10px; }
-    .panel-right { width: 380px; flex-shrink: 0; }
+    .panel-left  { flex: 1; margin-right: 12px; }
+    .panel-right { width: 360px; flex-shrink: 0; }
 
-    .panel-header {
-      padding: 14px var(--panel-pad) 0;
-      font-size: .7rem;
+    .panel-label {
+      padding: 16px 24px 0;
+      font-size: 0.68rem;
       font-weight: 600;
-      letter-spacing: .08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
     }
 
-    /* ── Textarea ──────────────────────────────────────────── */
+    /* ── Textarea ── */
     #input-area {
       flex: 1;
-      position: relative;
       display: flex;
       flex-direction: column;
+      min-height: 0;
     }
 
     #input-text {
       flex: 1;
       width: 100%;
-      padding: 16px var(--panel-pad);
+      padding: 16px 24px 20px;
       border: none;
       outline: none;
       resize: none;
       font-size: 1rem;
-      line-height: 1.7;
+      line-height: 1.8;
       color: var(--text);
       background: transparent;
-      font-family: inherit;
+      font-family: 'DM Sans', inherit;
+      font-weight: 300;
+      transition: color 0.3s;
     }
 
-    #input-text::placeholder { color: #b0b0ba; }
+    #input-text::placeholder {
+      color: var(--border);
+      font-style: italic;
+      font-family: 'Lora', serif;
+    }
 
-    /* ── Token view ────────────────────────────────────────── */
+    /* ── Token view ── */
     #token-view {
       flex: 1;
-      padding: 16px var(--panel-pad);
+      padding: 16px 24px 20px;
       font-size: 1rem;
       line-height: 1.9;
       overflow-y: auto;
       word-break: break-word;
+      font-weight: 300;
     }
 
     #token-view.hidden,
@@ -137,42 +221,64 @@
     .word-token {
       display: inline;
       border-radius: 3px;
-      padding: 1px 1px;
+      padding: 1px 2px;
       cursor: pointer;
-      transition: background .12s, color .12s;
+      transition: background 0.1s, color 0.1s;
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-decoration-color: transparent;
+      text-underline-offset: 3px;
     }
 
-    .word-token:hover  { background: var(--token-hover); }
-    .word-token.active { background: var(--token-active); color: var(--accent-dk); }
+    .word-token:hover {
+      background: var(--token-hover);
+      text-decoration-color: var(--accent);
+    }
 
-    /* ── Panel footer (buttons) ────────────────────────────── */
+    .word-token.active {
+      background: var(--token-active);
+      color: var(--token-active-text);
+      text-decoration-color: transparent;
+    }
+
+    /* ── Panel footer ── */
     .panel-footer {
-      padding: 12px var(--panel-pad);
-      border-top: 1px solid var(--border);
+      padding: 12px 24px;
+      border-top: 1px solid var(--border-light);
       display: flex;
       align-items: center;
       gap: 8px;
       justify-content: flex-end;
+      transition: border-color 0.3s;
+    }
+
+    .char-count {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-right: auto;
+      font-variant-numeric: tabular-nums;
     }
 
     button {
       cursor: pointer;
       border: none;
-      border-radius: 8px;
-      font-family: inherit;
-      font-size: .9rem;
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', inherit;
+      font-size: 0.875rem;
       font-weight: 500;
-      padding: 9px 22px;
-      transition: background .15s, opacity .15s;
+      padding: 9px 20px;
+      transition: background 0.15s, color 0.15s, transform 0.1s;
     }
+
+    button:active { transform: scale(0.97); }
 
     .btn-primary {
       background: var(--accent);
       color: #fff;
+      letter-spacing: 0.01em;
     }
 
     .btn-primary:hover  { background: var(--accent-dk); }
-    .btn-primary:active { opacity: .85; }
 
     .btn-secondary {
       background: transparent;
@@ -180,178 +286,362 @@
       border: 1px solid var(--border);
     }
 
-    .btn-secondary:hover { background: var(--bg); color: var(--text); }
+    .btn-secondary:hover {
+      background: var(--bg);
+      color: var(--text);
+      border-color: var(--border);
+    }
 
     button.hidden { display: none !important; }
 
-    /* ── Right panel — placeholder ─────────────────────────── */
+    /* ── Right panel — placeholder ── */
     #def-placeholder {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: var(--panel-pad);
+      padding: 32px 28px;
       text-align: center;
-      gap: 12px;
+      gap: 16px;
+    }
+
+    .placeholder-glyph {
+      font-family: 'Lora', serif;
+      font-size: 3.5rem;
+      font-style: italic;
+      color: var(--accent-mid);
+      line-height: 1;
+      user-select: none;
+    }
+
+    .placeholder-title {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-mid);
+    }
+
+    #def-placeholder p {
+      font-size: 0.82rem;
+      max-width: 200px;
+      line-height: 1.65;
       color: var(--muted);
     }
 
-    .placeholder-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--accent-lt);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .placeholder-icon svg { color: var(--accent); }
-
-    #def-placeholder p {
-      font-size: .9rem;
-      max-width: 220px;
-      line-height: 1.55;
-    }
-
-    /* ── Right panel — loading ─────────────────────────────── */
+    /* ── Right panel — loading ── */
     #def-loading {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 18px;
+    }
+
+    .loading-word {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 1.2rem;
       color: var(--muted);
-      font-size: .9rem;
     }
 
     .spinner {
-      width: 32px;
-      height: 32px;
-      border: 3px solid var(--border);
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--border);
       border-top-color: var(--accent);
       border-radius: 50%;
-      animation: spin .7s linear infinite;
+      animation: spin 0.7s linear infinite;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── Right panel — result ──────────────────────────────── */
+    /* ── Right panel — result ── */
     #def-result {
       flex: 1;
-      padding: var(--panel-pad);
+      padding: 28px 24px 24px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
     }
 
     .def-word-row {
       display: flex;
-      align-items: baseline;
+      align-items: flex-start;
       gap: 10px;
       flex-wrap: wrap;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 20px;
+    }
+
+    .def-word-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .def-word {
-      font-size: 1.6rem;
-      font-weight: 700;
-      letter-spacing: -.5px;
+      font-family: 'Lora', serif;
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: -0.5px;
       color: var(--text);
+      line-height: 1.1;
     }
 
     .pos-badge {
-      font-size: .72rem;
+      display: inline-block;
+      font-size: 0.68rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: .07em;
-      background: var(--accent-lt);
+      letter-spacing: 0.1em;
       color: var(--accent);
+      background: var(--accent-lt);
       padding: 3px 9px;
       border-radius: 20px;
+      align-self: flex-start;
     }
 
-    .def-section { display: flex; flex-direction: column; gap: 6px; }
+    .def-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
     .def-label {
-      font-size: .7rem;
+      font-size: 0.68rem;
       font-weight: 600;
-      letter-spacing: .08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
     }
 
     .def-text {
-      font-size: .95rem;
-      line-height: 1.65;
+      font-size: 0.95rem;
+      line-height: 1.75;
       color: var(--text);
+      font-weight: 300;
     }
 
-    .def-why {
-      background: var(--bg);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 6px 6px 0;
-      padding: 10px 14px;
-      font-size: .9rem;
-      line-height: 1.6;
-      color: #3f3f46;
+    .def-why-box {
+      background: var(--accent-lt);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+      font-style: italic;
+      font-family: 'Lora', serif;
+      position: relative;
     }
 
-    /* ── Error banner ──────────────────────────────────────── */
+    .def-why-box::before {
+      content: '"';
+      position: absolute;
+      top: 6px;
+      left: 14px;
+      font-size: 2rem;
+      color: var(--accent);
+      opacity: 0.3;
+      line-height: 1;
+      font-family: 'Lora', serif;
+    }
+
+    /* ── Error banner ── */
     #error-banner {
-      margin: 12px var(--panel-pad) 0;
-      background: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #dc2626;
+      margin: 12px 24px 0;
+      background: oklch(97% 0.03 25);
+      border: 1px solid oklch(88% 0.06 25);
+      color: oklch(45% 0.18 25);
       padding: 10px 14px;
-      border-radius: 8px;
-      font-size: .85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
       line-height: 1.5;
     }
 
     #error-banner.hidden { display: none; }
 
-    /* ── Utility ───────────────────────────────────────────── */
+    /* ── Fade transitions ── */
+    #def-placeholder, #def-loading, #def-result {
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .hidden { display: none !important; }
 
-    /* ── Responsive ────────────────────────────────────────── */
+    /* ── Tweaks panel ── */
+    #tweaks-panel {
+      display: none;
+      border-top: 1px solid var(--border-light);
+      padding: 10px 24px 12px;
+      background: var(--bg);
+      font-size: 0.82rem;
+      transition: background 0.3s;
+    }
+
+    #tweaks-panel.visible { display: block; }
+
+    .tweaks-title {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .tweak-row {
+      margin-bottom: 8px;
+    }
+
+    .tweak-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      margin-bottom: 4px;
+    }
+
+    .tweak-options {
+      display: flex;
+      gap: 4px;
+    }
+
+    .tweak-opt {
+      flex: 1;
+      padding: 3px 0;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--bg);
+      color: var(--muted);
+      font-family: 'DM Sans', inherit;
+      font-size: 0.68rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .tweak-opt.active {
+      border-color: var(--accent);
+      background: var(--accent-lt);
+      color: var(--accent);
+    }
+
+    .tweak-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tweak-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .tweak-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+    }
+
+    .tweak-val {
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      width: 24px;
+      text-align: right;
+    }
+
+    .tweak-row:last-child { margin-bottom: 0; }
+
+    /* ── Responsive ── */
     @media (max-width: 720px) {
-      main { flex-direction: column; height: auto; }
-      .panel-left  { margin-right: 0; margin-bottom: 10px; min-height: 280px; }
+      main { flex-direction: column; height: auto; padding: 12px; }
+      .panel-left  { margin-right: 0; margin-bottom: 10px; min-height: 260px; }
       .panel-right { width: 100%; min-height: 260px; }
+
     }
   </style>
 </head>
-<body>
+<body data-theme="warm">
 
-<!-- ── Header ──────────────────────────────────────────────── -->
 <header>
-  <span class="brand">Lexio<span class="brand-dot">.</span></span>
+  <span class="brand">Le<em>x</em>io</span>
   <span class="tagline">Contextual word definitions</span>
+  <div class="header-spacer"></div>
+  <div class="theme-switcher" id="theme-switcher">
+    <button class="theme-btn active" data-theme="warm" onclick="setTheme('warm')">Warm</button>
+    <button class="theme-btn" data-theme="cool" onclick="setTheme('cool')">Cool</button>
+    <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
+  </div>
 </header>
 
-<!-- ── Main ────────────────────────────────────────────────── -->
 <main>
 
   <!-- Left panel -->
   <div class="panel panel-left">
-    <div class="panel-header">Text</div>
+    <div class="panel-label">Text</div>
     <div id="error-banner" class="hidden"></div>
 
     <div id="input-area">
       <textarea
         id="input-text"
-        placeholder="Paste any text here — an article, a quote, a paragraph — then click Analyze."
+        placeholder="Paste any text here — an article, a quote, a paragraph…"
         spellcheck="false"
       ></textarea>
-      <div id="token-view" class="hidden" aria-label="Tokenized text — click any word"></div>
+      <div id="token-view" class="hidden" aria-label="Click any word for its contextual definition"></div>
     </div>
 
     <div class="panel-footer">
-      <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()">Edit text</button>
-      <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze</button>
+      <span class="char-count" id="char-count"></span>
+      <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()">← Edit</button>
+      <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze text</button>
+    </div>
+
+    <!-- Tweaks panel lives here, below the footer -->
+    <div id="tweaks-panel">
+      <div class="tweaks-title">Tweaks</div>
+
+      <div class="tweak-row">
+        <div class="tweak-label">Color theme</div>
+        <div class="tweak-options">
+          <button class="tweak-opt active" onclick="setTheme('warm')">Warm</button>
+          <button class="tweak-opt" onclick="setTheme('cool')">Cool</button>
+          <button class="tweak-opt" onclick="setTheme('dark')">Dark</button>
+        </div>
+      </div>
+
+      <div class="tweak-row">
+        <div class="tweak-label">Text size</div>
+        <div class="tweak-slider-row">
+          <input type="range" class="tweak-slider" id="font-size-slider" min="13" max="20" step="1" value="16"
+            oninput="setFontSize(this.value)">
+          <span class="tweak-val" id="font-size-val">16</span>
+        </div>
+      </div>
+
+      <div class="tweak-row">
+        <div class="tweak-label">Line height</div>
+        <div class="tweak-slider-row">
+          <input type="range" class="tweak-slider" id="line-height-slider" min="1.4" max="2.2" step="0.1" value="1.8"
+            oninput="setLineHeight(this.value)">
+          <span class="tweak-val" id="line-height-val">1.8</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -359,25 +649,22 @@
   <div class="panel panel-right">
 
     <div id="def-placeholder">
-      <div class="placeholder-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round"
-             stroke-linejoin="round">
-          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
-        </svg>
-      </div>
-      <p>Analyze your text, then tap any word to see its contextual definition.</p>
+      <div class="placeholder-glyph">w</div>
+      <p class="placeholder-title">Click any word</p>
+      <p>After analyzing your text, tap any word to see its precise meaning in context.</p>
     </div>
 
     <div id="def-loading" class="hidden">
       <div class="spinner"></div>
-      <span>Thinking…</span>
+      <span class="loading-word" id="loading-word-label"></span>
     </div>
 
     <div id="def-result" class="hidden">
       <div class="def-word-row">
-        <span id="def-word" class="def-word"></span>
-        <span id="def-pos"  class="pos-badge"></span>
+        <div class="def-word-col">
+          <span id="def-word" class="def-word"></span>
+          <span id="def-pos"  class="pos-badge"></span>
+        </div>
       </div>
       <div class="def-section">
         <span class="def-label">In this context</span>
@@ -385,7 +672,9 @@
       </div>
       <div class="def-section">
         <span class="def-label">Why this word?</span>
-        <p id="def-why" class="def-why"></p>
+        <div class="def-why-box">
+          <p id="def-why"></p>
+        </div>
       </div>
     </div>
 
@@ -393,51 +682,116 @@
 </main>
 
 <script>
-  /* ── State ──────────────────────────────────────────────── */
+  /* ── State ── */
   let currentContext = "";
   let activeToken    = null;
 
-  /* ── Analyze ────────────────────────────────────────────── */
+  /* ── Theme ── */
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "theme": "warm",
+    "fontSize": 18,
+    "lineHeight": 2.1
+  }/*EDITMODE-END*/;
+  let currentTweaks = {...TWEAK_DEFAULTS};
+
+  function setTheme(t) {
+    document.body.dataset.theme = t;
+    // sync header switcher
+    document.querySelectorAll('.theme-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.theme === t);
+    });
+    // sync tweaks panel
+    const themes = ['warm','cool','dark'];
+    document.querySelectorAll('.tweak-opt').forEach((b, i) => {
+      b.classList.toggle('active', themes[i] === t);
+    });
+    currentTweaks.theme = t;
+    window.parent.postMessage({type: '__edit_mode_set_keys', edits: {theme: t}}, '*');
+  }
+
+  function setFontSize(v) {
+    document.getElementById('token-view').style.fontSize = v + 'px';
+    document.getElementById('input-text').style.fontSize = v + 'px';
+    document.getElementById('font-size-val').textContent = v;
+    currentTweaks.fontSize = parseInt(v);
+    window.parent.postMessage({type: '__edit_mode_set_keys', edits: {fontSize: parseInt(v)}}, '*');
+  }
+
+  function setLineHeight(v) {
+    document.getElementById('token-view').style.lineHeight = v;
+    document.getElementById('input-text').style.lineHeight = v;
+    document.getElementById('line-height-val').textContent = parseFloat(v).toFixed(1);
+    currentTweaks.lineHeight = parseFloat(v);
+    window.parent.postMessage({type: '__edit_mode_set_keys', edits: {lineHeight: parseFloat(v)}}, '*');
+  }
+
+  // Apply saved tweaks on load
+  (function applyTweaks() {
+    setTheme(currentTweaks.theme);
+    document.getElementById('font-size-slider').value = currentTweaks.fontSize;
+    setFontSize(currentTweaks.fontSize);
+    document.getElementById('line-height-slider').value = currentTweaks.lineHeight;
+    setLineHeight(currentTweaks.lineHeight);
+  })();
+
+  /* ── Tweaks panel toggle ── */
+  window.addEventListener('message', e => {
+    if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('visible');
+    if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
+  });
+  window.parent.postMessage({type: '__edit_mode_available'}, '*');
+
+  /* ── Char count ── */
+  const inputText = document.getElementById('input-text');
+  inputText.addEventListener('input', updateCharCount);
+
+  function updateCharCount() {
+    const n = inputText.value.length;
+    const el = document.getElementById('char-count');
+    el.textContent = n > 0 ? `${n.toLocaleString()} chars` : '';
+  }
+
+  /* ── Analyze ── */
   function analyze() {
-    const raw = document.getElementById("input-text").value.trim();
+    const raw = inputText.value.trim();
     if (!raw) return;
 
     currentContext = raw;
     hideError();
     renderTokens(raw);
 
-    document.getElementById("input-text").classList.add("hidden");
+    inputText.classList.add("hidden");
     document.getElementById("token-view").classList.remove("hidden");
     document.getElementById("edit-btn").classList.remove("hidden");
     document.getElementById("analyze-btn").classList.add("hidden");
+    document.getElementById("char-count").textContent = '';
     showPlaceholder();
   }
 
-  /* ── Reset to edit ──────────────────────────────────────── */
+  /* ── Reset to edit ── */
   function resetToEdit() {
     document.getElementById("token-view").classList.add("hidden");
-    document.getElementById("input-text").classList.remove("hidden");
+    inputText.classList.remove("hidden");
     document.getElementById("edit-btn").classList.add("hidden");
     document.getElementById("analyze-btn").classList.remove("hidden");
     activeToken = null;
     showPlaceholder();
     hideError();
+    updateCharCount();
   }
 
-  /* ── Tokenize & render ──────────────────────────────────── */
+  /* ── Tokenize & render ── */
   function renderTokens(text) {
     const container = document.getElementById("token-view");
     container.innerHTML = "";
 
-    // Split into alternating [non-word, word, non-word, word …]
     const parts = text.split(/([A-Za-z\u00C0-\u024F''\-]+)/);
 
     parts.forEach((part, i) => {
       if (i % 2 === 1) {
-        // Word token
         const span = document.createElement("span");
-        span.className    = "word-token";
-        span.textContent  = part;
+        span.className   = "word-token";
+        span.textContent = part;
         span.setAttribute("role", "button");
         span.setAttribute("tabindex", "0");
         span.addEventListener("click",  () => handleWordClick(span, part));
@@ -446,25 +800,22 @@
         });
         container.appendChild(span);
       } else {
-        // Non-word (spaces, punctuation, numbers)
         container.appendChild(document.createTextNode(part));
       }
     });
   }
 
-  /* ── Word click ─────────────────────────────────────────── */
+  /* ── Word click ── */
   function handleWordClick(span, word) {
-    // Update active token highlight
     if (activeToken) activeToken.classList.remove("active");
     activeToken = span;
     span.classList.add("active");
-
     fetchDefinition(word, currentContext);
   }
 
-  /* ── Fetch definition ───────────────────────────────────── */
+  /* ── Fetch definition ── */
   async function fetchDefinition(word, context) {
-    showLoading();
+    showLoading(word);
     hideError();
 
     try {
@@ -487,17 +838,18 @@
     }
   }
 
-  /* ── Panel state helpers ────────────────────────────────── */
+  /* ── Panel state helpers ── */
   function showPlaceholder() {
     document.getElementById("def-placeholder").classList.remove("hidden");
     document.getElementById("def-loading").classList.add("hidden");
     document.getElementById("def-result").classList.add("hidden");
   }
 
-  function showLoading() {
+  function showLoading(word) {
     document.getElementById("def-placeholder").classList.add("hidden");
     document.getElementById("def-loading").classList.remove("hidden");
     document.getElementById("def-result").classList.add("hidden");
+    document.getElementById("loading-word-label").textContent = word || '';
   }
 
   function showResult(word, data) {
@@ -506,9 +858,9 @@
     document.getElementById("def-result").classList.remove("hidden");
 
     document.getElementById("def-word").textContent       = word;
-    document.getElementById("def-pos").textContent        = data.pos  || "";
+    document.getElementById("def-pos").textContent        = data.pos || "";
     document.getElementById("def-contextual").textContent = data.contextual || "";
-    document.getElementById("def-why").textContent        = data.why  || "";
+    document.getElementById("def-why").textContent        = data.why || "";
   }
 
   function showError(msg) {
@@ -521,8 +873,8 @@
     document.getElementById("error-banner").classList.add("hidden");
   }
 
-  /* ── Keyboard shortcut: Ctrl/Cmd+Enter to analyze ──────── */
-  document.getElementById("input-text").addEventListener("keydown", e => {
+  /* ── Keyboard shortcut: Cmd/Ctrl+Enter to analyze ── */
+  inputText.addEventListener("keydown", e => {
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") analyze();
   });
 </script>
