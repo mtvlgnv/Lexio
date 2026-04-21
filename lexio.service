@@ -1,6 +1,6 @@
 [Unit]
 Description=Lexio — contextual word definition app
-Documentation=https://github.com/yourname/lexio
+Documentation=https://github.com/mtvlgnv/Lexio
 After=network.target
 
 [Service]
