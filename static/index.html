@@ -826,6 +826,9 @@
       });
 
       if (!resp.ok) {
+        if (resp.status === 429) {
+          throw new Error("⏱ Too many requests — wait a moment and try again.");
+        }
         const err = await resp.json().catch(() => ({ detail: resp.statusText }));
         throw new Error(err.detail || `HTTP ${resp.status}`);
       }
