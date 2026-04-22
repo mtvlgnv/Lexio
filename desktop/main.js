@@ -41,7 +41,7 @@ function createWindow() {
   });
 
   // Load Lexio with compact=1 so the page makes the header draggable
-  win.loadURL('https://lexio.site?compact=1');
+  win.loadURL('http://lexio.site?compact=1');
 
   win.once('ready-to-show', () => win.show());
 
