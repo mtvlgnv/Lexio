@@ -451,6 +451,19 @@
     @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
     @keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
+    /* ── Compact / floating-overlay mode (desktop app) ─────── */
+    body.compact header {
+      -webkit-app-region: drag;   /* drag the window by the header */
+    }
+    /* every interactive element inside must opt back out */
+    body.compact header button,
+    body.compact header label,
+    body.compact header select,
+    body.compact header .theme-switcher,
+    body.compact header .wb-header-btn { -webkit-app-region: no-drag; }
+    body.compact .tagline,
+    body.compact .shortcut-hint { display:none !important; }
+
     /* ── Utility ────────────────────────────────────────────── */
     .hidden { display:none !important; }
 
@@ -1355,6 +1368,11 @@ function toggleShortcuts() {
 /* ── Init ───────────────────────────────────────────────────── */
 loadWordBank(); loadTweaks(); applyTweaks(); updateWBBadge();
 startPlaceholderRotation(); setupDragAndDrop(); checkPermalink(); initTooltips();
+
+// Compact mode — Electron desktop overlay
+if (new URLSearchParams(window.location.search).get('compact') === '1') {
+  document.body.classList.add('compact');
+}
 
 // Restore language preference
 try {

@@ -1,0 +1,25 @@
+{
+  "name": "lexio-desktop",
+  "version": "1.0.0",
+  "description": "Lexio — floating contextual dictionary overlay",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "site.lexio.desktop",
+    "productName": "Lexio",
+    "mac": {
+      "category": "public.app-category.education",
+      "target": [{ "target": "dmg", "arch": ["arm64", "x64"] }]
+    },
+    "win": {
+      "target": "nsis"
+    }
+  }
+}
