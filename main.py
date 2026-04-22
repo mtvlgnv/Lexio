@@ -46,6 +46,7 @@ client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 class DefineRequest(BaseModel):
     word: str = Field(..., min_length=1, max_length=60)
     context: str = Field(..., min_length=1, max_length=8_000)
+    lang: str = Field(default="auto", max_length=40)
 
 
 class FetchRequest(BaseModel):
@@ -57,10 +58,16 @@ class FetchRequest(BaseModel):
 @app.post("/define")
 @limiter.limit("20/minute")
 async def define_word(request: Request, req: DefineRequest):
+    lang_note = (
+        f"Respond in {req.lang}."
+        if req.lang and req.lang.lower() not in ("auto", "detect", "")
+        else "Respond in the same language as the input text."
+    )
     prompt = (
         f'The word "{req.word}" appears in this text: "{req.context}"\n'
-        "Respond ONLY in JSON with no markdown:\n"
-        '{"pos": "noun/verb/etc", '
+        f"{lang_note} Respond ONLY in JSON with no markdown:\n"
+        '{"pos": "noun/verb/etc (in English)", '
+        '"ipa": "IPA transcription e.g. /ɪˈfɛm.ər.əl/ — or null if uncertain", '
         '"contextual": "definition as used in this passage, 1-2 sentences", '
         '"why": "why this word rather than a simpler synonym, 1 sentence", '
         '"simpler": "the simplest common one-word synonym, or null if none", '
@@ -71,7 +78,7 @@ async def define_word(request: Request, req: DefineRequest):
     try:
         message = client.messages.create(
             model="claude-haiku-4-5-20251001",
-            max_tokens=420,
+            max_tokens=500,
             messages=[{"role": "user", "content": prompt}],
         )
 

@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="darkreader-lock">
+  <meta name="color-scheme" content="light dark">
   <title>Lexio — Contextual Definitions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +35,8 @@
       --danger:            oklch(55%   0.2   25);
       --danger-bg:         oklch(97%   0.03  25);
       --danger-border:     oklch(88%   0.06  25);
+      /* Sentence highlight */
+      --sentence-bg:       oklch(95%   0.03  75);
       /* POS colours */
       --pos-noun-text:     oklch(48%   0.16  65);
       --pos-noun-bg:       oklch(95%   0.05  65);
@@ -77,6 +81,7 @@
       --pos-adj-bg:        oklch(22%  0.04  145);
       --pos-adv-text:      oklch(68%  0.12  195);
       --pos-adv-bg:        oklch(22%  0.04  195);
+      --sentence-bg:       oklch(23%  0.025 65);
     }
 
     [data-theme="cool"] {
@@ -96,6 +101,7 @@
       --token-active-text: oklch(38%  0.18  240);
       --token-same:        oklch(93%  0.04  240);
       --token-visited:     oklch(84%  0.08  240);
+      --sentence-bg:       oklch(94%  0.03  240);
     }
 
     html, body { height: 100%; }
@@ -224,6 +230,7 @@
     .word-token:hover   { background:var(--token-hover); text-decoration-color:var(--accent); }
     .word-token.active  { background:var(--token-active); color:var(--token-active-text); text-decoration-color:transparent; }
     .word-token.same-word { background:var(--token-same); }
+    .word-token.in-sentence:not(.active):not(:hover):not(.same-word) { background:var(--sentence-bg); }
 
     /* Visited (looked-up) tokens */
     .word-token.looked-up:not(.active):not(:hover) {
@@ -242,6 +249,8 @@
     .char-count { font-size:0.75rem; color:var(--muted); font-variant-numeric:tabular-nums; }
     .btn-sample { background:none; border:none; padding:4px 0; font-family:inherit; font-size:0.78rem; color:var(--accent); cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:2px; transition:color 0.15s; }
     .btn-sample:hover { color:var(--accent-dk); }
+    .lang-select { appearance:none; -webkit-appearance:none; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:4px 8px; font-family:inherit; font-size:0.72rem; color:var(--muted); cursor:pointer; transition:border-color 0.15s,color 0.15s; outline:none; }
+    .lang-select:hover { border-color:var(--accent-mid); color:var(--text); }
     .footer-spacer { flex:1; }
 
     button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,transform 0.1s; background:var(--accent); color:#fff; letter-spacing:0.01em; }
@@ -320,6 +329,11 @@
     .def-word-col { display:flex; flex-direction:column; gap:6px; min-width:0; }
 
     .def-word { font-family:'Lora',serif; font-size:2rem; font-weight:500; letter-spacing:-0.5px; color:var(--text); line-height:1.1; }
+    .ipa-row { display:flex; align-items:center; gap:7px; }
+    .ipa-row.hidden { display:none; }
+    .ipa-text { font-size:0.82rem; color:var(--muted); letter-spacing:0.02em; font-family:'Lora',serif; }
+    .say-btn { display:inline-flex; align-items:center; gap:4px; background:none; border:1px solid var(--border); border-radius:5px; padding:2px 8px; font-family:inherit; font-size:0.68rem; color:var(--muted); cursor:pointer; transition:background 0.12s,color 0.12s,border-color 0.12s; }
+    .say-btn:hover { background:var(--bg); color:var(--text); border-color:var(--accent-mid); }
 
     /* POS badge — colour set by data-pos attribute */
     .pos-badge {
@@ -461,6 +475,7 @@
     <button class="theme-btn active" data-theme="warm" onclick="setTheme('warm')">Warm</button>
     <button class="theme-btn" data-theme="cool" onclick="setTheme('cool')">Cool</button>
     <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
+    <button class="theme-btn" data-theme="auto" onclick="setTheme('auto')">Auto</button>
   </div>
 </header>
 
@@ -496,6 +511,20 @@
     <div class="panel-footer">
       <span class="char-count" id="char-count"></span>
       <button class="btn-sample" id="sample-btn" onclick="cycleSample()">Try a sample</button>
+      <select id="lang-select" class="lang-select" onchange="setLang(this.value)" title="Definition language">
+        <option value="auto">Auto</option>
+        <option value="English">EN</option>
+        <option value="Spanish">ES</option>
+        <option value="French">FR</option>
+        <option value="German">DE</option>
+        <option value="Italian">IT</option>
+        <option value="Portuguese">PT</option>
+        <option value="Dutch">NL</option>
+        <option value="Russian">RU</option>
+        <option value="Chinese">ZH</option>
+        <option value="Japanese">JA</option>
+        <option value="Korean">KO</option>
+      </select>
       <div class="footer-spacer"></div>
       <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()">← Edit</button>
       <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze text</button>
@@ -557,6 +586,13 @@
       <div class="def-word-row">
         <div class="def-word-col">
           <span id="def-word" class="def-word"></span>
+          <div class="ipa-row hidden" id="ipa-row">
+            <span id="def-ipa" class="ipa-text"></span>
+            <button class="say-btn" onclick="sayWord()" title="Pronounce this word">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              Say
+            </button>
+          </div>
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
             <span id="def-pos" class="pos-badge"></span>
             <span id="def-register" class="register-tag hidden"></span>
@@ -694,6 +730,8 @@ let placeholderIdx   = 0;
 let placeholderTimer = null;
 let tooltipStep      = -1;
 let shortcutsOpen    = false;
+let currentLang      = 'auto';
+let isAutoTheme      = false;
 
 /* ── Tweaks ─────────────────────────────────────────────────── */
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -733,11 +771,21 @@ function updateWBBadge() {
 
 /* ── Theme ──────────────────────────────────────────────────── */
 function setTheme(t) {
-  document.body.dataset.theme = t;
+  isAutoTheme = (t === 'auto');
+  const effective = isAutoTheme
+    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'warm')
+    : t;
+  document.body.dataset.theme = effective;
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
   document.querySelectorAll('.tweak-opt').forEach((b, i) => b.classList.toggle('active', ['warm','cool','dark'][i] === t));
   currentTweaks.theme = t; saveTweaks();
   window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { theme: t } }, '*');
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  defCache.clear(); // cached results are language-specific
+  try { localStorage.setItem('lexio_lang', lang); } catch {}
 }
 function setFontSize(v) {
   document.getElementById('token-view').style.fontSize = v + 'px';
@@ -879,12 +927,30 @@ function resetToEdit() {
   showPlaceholder(); hideError(); updateCharCount(); startPlaceholderRotation();
 }
 
+/* ── Sentence boundary detection ────────────────────────────── */
+function computeSentenceBoundaries(text) {
+  const starts = [0];
+  const re = /[.!?]+\s+/g;
+  let m;
+  while ((m = re.exec(text)) !== null) starts.push(m.index + m[0].length);
+  return starts;
+}
+function getSentenceIndex(charPos, starts) {
+  let idx = 0;
+  for (let i = 1; i < starts.length; i++) {
+    if (charPos >= starts[i]) idx = i; else break;
+  }
+  return idx;
+}
+
 /* ── Tokenize & render (with staggered wave-in) ─────────────── */
 function renderTokens(text) {
   const container = document.getElementById('token-view');
   container.innerHTML = '';
   const parts = text.split(/([A-Za-z\u00C0-\u024F''‑-]+)/);
+  const sentStarts = computeSentenceBoundaries(text);
   let wordIdx = 0;
+  let charPos = 0;
   const totalWords = parts.filter((_,i) => i%2===1).length;
   const doStagger  = totalWords < 200;
 
@@ -895,9 +961,9 @@ function renderTokens(text) {
       span.textContent = part;
       span.setAttribute('role', 'button');
       span.setAttribute('tabindex', '0');
+      span.dataset.sentence = getSentenceIndex(charPos, sentStarts);
       if (doStagger) span.style.animationDelay = Math.min(wordIdx * 5, 320) + 'ms';
       else           span.style.animationDelay = '0ms';
-      // Re-apply looked-up state
       if (lookedUpWords.has(part.toLowerCase())) span.classList.add('looked-up');
       span.addEventListener('click',   () => handleWordClick(span, part));
       span.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleWordClick(span, part); } });
@@ -906,6 +972,7 @@ function renderTokens(text) {
     } else {
       container.appendChild(document.createTextNode(part));
     }
+    charPos += part.length;
   });
   container.addEventListener('mouseup', handleTextSelection);
 }
@@ -967,8 +1034,11 @@ function handleTextSelection() {
 function handleWordClick(span, word) {
   clearHighlights();
   const lc = word.toLowerCase();
+  const sentIdx = span.dataset.sentence;
   document.querySelectorAll('.word-token').forEach(t => {
-    if (t !== span && t.textContent.toLowerCase() === lc) t.classList.add('same-word');
+    if (t === span) return;
+    if (t.dataset.sentence === sentIdx) t.classList.add('in-sentence');
+    if (t.textContent.toLowerCase() === lc) t.classList.add('same-word');
   });
   activeToken = span;
   span.classList.add('active', 'pulsing');
@@ -977,8 +1047,8 @@ function handleWordClick(span, word) {
 }
 
 function clearHighlights() {
-  document.querySelectorAll('.word-token.active,.word-token.same-word,.word-token.pulsing')
-    .forEach(t => t.classList.remove('active','same-word','pulsing'));
+  document.querySelectorAll('.word-token.active,.word-token.same-word,.word-token.pulsing,.word-token.in-sentence')
+    .forEach(t => t.classList.remove('active','same-word','pulsing','in-sentence'));
 }
 
 /* ── POS → badge colour ─────────────────────────────────────── */
@@ -1004,7 +1074,7 @@ async function fetchDefinition(word, context) {
   }
   showLoading(word);
   try {
-    const resp = await fetch('/define', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({word,context}) });
+    const resp = await fetch('/define', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({word,context,lang:currentLang}) });
     if (!resp.ok) {
       if (resp.status===429) throw new Error('⏱ Too many requests — wait a moment and try again.');
       const err = await resp.json().catch(()=>({detail:resp.statusText}));
@@ -1083,7 +1153,15 @@ function showResult(word, data, fromHistory=false) {
   currentResult = {word,data};
 
   // Populate
-  document.getElementById('def-word').textContent       = word;
+  document.getElementById('def-word').textContent = word;
+
+  // IPA
+  const ipaRow = document.getElementById('ipa-row');
+  const ipaEl  = document.getElementById('def-ipa');
+  if (data.ipa && data.ipa !== 'null') {
+    ipaEl.textContent = data.ipa; ipaRow.classList.remove('hidden');
+  } else { ipaRow.classList.add('hidden'); }
+
   const posBadge = document.getElementById('def-pos');
   posBadge.textContent    = data.pos || '';
   posBadge.dataset.pos    = posType(data.pos);
@@ -1213,6 +1291,16 @@ function exportCSV() {
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='lexio-wordbank.tsv'; a.click();
 }
 
+/* ── Pronounce ──────────────────────────────────────────────── */
+const LANG_BCP47 = { English:'en-US', Spanish:'es-ES', French:'fr-FR', German:'de-DE', Italian:'it-IT', Portuguese:'pt-PT', Dutch:'nl-NL', Russian:'ru-RU', Chinese:'zh-CN', Japanese:'ja-JP', Korean:'ko-KR' };
+function sayWord() {
+  if (!currentResult || !window.speechSynthesis) return;
+  const utt = new SpeechSynthesisUtterance(currentResult.word);
+  utt.lang = LANG_BCP47[currentLang] || 'en-US';
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utt);
+}
+
 /* ── Error ──────────────────────────────────────────────────── */
 function showError(msg) { const b=document.getElementById('error-banner'); b.textContent=msg; b.classList.remove('hidden'); }
 function hideError()    { document.getElementById('error-banner').classList.add('hidden'); }
@@ -1258,6 +1346,17 @@ function toggleShortcuts() {
 /* ── Init ───────────────────────────────────────────────────── */
 loadWordBank(); loadTweaks(); applyTweaks(); updateWBBadge();
 startPlaceholderRotation(); setupDragAndDrop(); checkPermalink(); initTooltips();
+
+// Restore language preference
+try {
+  const savedLang = localStorage.getItem('lexio_lang');
+  if (savedLang) { currentLang = savedLang; document.getElementById('lang-select').value = savedLang; }
+} catch {}
+
+// Follow system dark-mode changes when Auto theme is active
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+  if (isAutoTheme) setTheme('auto');
+});
 
 inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key==='Enter') analyze(); });
 
