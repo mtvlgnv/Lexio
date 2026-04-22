@@ -9,9 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <style>
-    /* ── Reset & Variables ─────────────────────────────────── */
+    /* ── Reset ─────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ── Design tokens ──────────────────────────────────────── */
     :root {
       --bg:                oklch(96.5% 0.012 75);
       --surface:           oklch(99.2% 0.006 75);
@@ -28,9 +29,21 @@
       --token-active:      oklch(86%   0.1   68);
       --token-active-text: oklch(40%   0.16  54);
       --token-same:        oklch(92%   0.05  72);
+      --token-visited:     oklch(82%   0.09  68);
       --danger:            oklch(55%   0.2   25);
       --danger-bg:         oklch(97%   0.03  25);
       --danger-border:     oklch(88%   0.06  25);
+      /* POS colours */
+      --pos-noun-text:     oklch(48%   0.16  65);
+      --pos-noun-bg:       oklch(95%   0.05  65);
+      --pos-verb-text:     oklch(44%   0.17  240);
+      --pos-verb-bg:       oklch(95%   0.04  240);
+      --pos-adj-text:      oklch(42%   0.15  145);
+      --pos-adj-bg:        oklch(95%   0.04  145);
+      --pos-adv-text:      oklch(44%   0.14  195);
+      --pos-adv-bg:        oklch(95%   0.04  195);
+      --pos-other-text:    var(--accent);
+      --pos-other-bg:      var(--accent-lt);
       --radius:            14px;
       --radius-sm:         8px;
       --header-h:          60px;
@@ -53,8 +66,17 @@
       --token-active:      oklch(32%  0.08  65);
       --token-active-text: oklch(75%  0.15  54);
       --token-same:        oklch(24%  0.03  65);
+      --token-visited:     oklch(28%  0.06  65);
       --danger-bg:         oklch(20%  0.03  25);
       --danger-border:     oklch(32%  0.06  25);
+      --pos-noun-text:     oklch(72%  0.14  65);
+      --pos-noun-bg:       oklch(22%  0.04  65);
+      --pos-verb-text:     oklch(68%  0.15  240);
+      --pos-verb-bg:       oklch(22%  0.04  240);
+      --pos-adj-text:      oklch(66%  0.13  145);
+      --pos-adj-bg:        oklch(22%  0.04  145);
+      --pos-adv-text:      oklch(68%  0.12  195);
+      --pos-adv-bg:        oklch(22%  0.04  195);
     }
 
     [data-theme="cool"] {
@@ -73,580 +95,351 @@
       --token-active:      oklch(84%  0.1   240);
       --token-active-text: oklch(38%  0.18  240);
       --token-same:        oklch(93%  0.04  240);
+      --token-visited:     oklch(84%  0.08  240);
     }
 
     html, body { height: 100%; }
-
     body {
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; min-height: 100vh;
       transition: background 0.3s, color 0.3s;
     }
 
     /* ── Header ────────────────────────────────────────────── */
     header {
-      height: var(--header-h);
-      background: var(--surface);
+      height: var(--header-h); background: var(--surface);
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      padding: 0 28px;
-      gap: 14px;
-      flex-shrink: 0;
-      transition: background 0.3s, border-color 0.3s;
+      display: flex; align-items: center; padding: 0 28px; gap: 14px;
+      flex-shrink: 0; transition: background 0.3s, border-color 0.3s;
     }
+    .brand { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
+    .brand em { font-style:italic; color:var(--accent); }
+    .tagline { font-size:0.75rem; color:var(--muted); border-left:1px solid var(--border); padding-left:14px; white-space:nowrap; }
+    .header-spacer { flex:1; }
 
-    .brand {
-      font-family: 'Lora', serif;
-      font-size: 1.4rem;
-      font-weight: 600;
-      letter-spacing: -0.3px;
-      color: var(--text);
-      white-space: nowrap;
-    }
-    .brand em { font-style: italic; color: var(--accent); }
-
-    .tagline {
-      font-size: 0.75rem;
-      color: var(--muted);
-      border-left: 1px solid var(--border);
-      padding-left: 14px;
-      white-space: nowrap;
-    }
-
-    .header-spacer { flex: 1; }
-
-    /* Word-bank button in header */
     .wb-header-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 5px 12px;
-      font-family: 'DM Sans', inherit;
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--text-mid);
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
-      white-space: nowrap;
+      display:flex; align-items:center; gap:6px;
+      background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
+      padding:5px 12px; font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
+      color:var(--text-mid); cursor:pointer; transition:background 0.15s, color 0.15s; white-space:nowrap;
     }
-    .wb-header-btn:hover { background: var(--bg); color: var(--text); }
-
+    .wb-header-btn:hover { background:var(--bg); color:var(--text); }
     .wb-badge {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.65rem;
-      font-weight: 700;
-      min-width: 18px;
-      height: 18px;
-      padding: 0 4px;
-      border-radius: 9px;
-      line-height: 1;
+      display:none; align-items:center; justify-content:center;
+      background:var(--accent); color:#fff; font-size:0.65rem; font-weight:700;
+      min-width:18px; height:18px; padding:0 4px; border-radius:9px; line-height:1;
+      transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
     }
+    .wb-badge.pop { transform: scale(1.4); }
 
-    .theme-switcher {
-      display: flex;
-      gap: 3px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 3px;
-    }
+    .theme-switcher { display:flex; gap:3px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); padding:3px; }
+    .theme-btn { border:none; background:transparent; border-radius:5px; padding:4px 10px; font-family:inherit; font-size:0.72rem; font-weight:500; color:var(--muted); cursor:pointer; transition:background 0.15s, color 0.15s; }
+    .theme-btn.active { background:var(--surface); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,.08); }
 
-    .theme-btn {
-      border: none;
-      background: transparent;
-      border-radius: 5px;
-      padding: 4px 10px;
-      font-family: inherit;
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      transition: background 0.15s, color 0.15s;
+    /* Keyboard shortcut hint in header */
+    .shortcut-hint {
+      font-size:0.68rem; color:var(--muted); display:flex; align-items:center; gap:4px;
     }
-    .theme-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+    kbd {
+      display:inline-flex; align-items:center; justify-content:center;
+      background:var(--bg); border:1px solid var(--border); border-radius:4px;
+      padding:1px 5px; font-family:inherit; font-size:0.65rem; color:var(--muted);
+      line-height:1.4;
+    }
 
     /* ── Main layout ────────────────────────────────────────── */
-    main {
-      flex: 1;
-      display: flex;
-      padding: 20px 24px;
-      height: calc(100vh - var(--header-h));
-      gap: 0;
-      min-height: 0;
-    }
+    main { flex:1; display:flex; padding:20px 24px; height:calc(100vh - var(--header-h)); gap:0; min-height:0; }
 
     /* ── Panels ─────────────────────────────────────────────── */
     .panel {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transition: background 0.3s, border-color 0.3s;
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+      display:flex; flex-direction:column; overflow:hidden;
+      transition:background 0.3s, border-color 0.3s;
     }
-    .panel-left  { flex: 1; margin-right: 12px; position: relative; }
-    .panel-right { width: 360px; flex-shrink: 0; }
+    .panel-left  { flex:1; margin-right:12px; position:relative; }
+    .panel-right { width:360px; flex-shrink:0; }
 
-    /* Drag-over highlight */
-    .panel-left.drag-over { border: 2px dashed var(--accent); background: var(--accent-lt); }
-    .panel-left.drag-over * { pointer-events: none; }
+    .panel-left.drag-over { border:2px dashed var(--accent); background:var(--accent-lt); }
+    .panel-left.drag-over * { pointer-events:none; }
 
-    .panel-label {
-      padding: 16px 24px 0;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      flex-shrink: 0;
+    .panel-label { padding:16px 24px 0; font-size:0.68rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); flex-shrink:0; }
+
+    /* Reading stats */
+    .reading-stats {
+      padding:5px 24px 0; font-size:0.72rem; color:var(--muted);
+      font-variant-numeric:tabular-nums; flex-shrink:0;
     }
+    .reading-stats.hidden { display:none; }
 
-    /* ── Tooltip boxes ──────────────────────────────────────── */
+    /* ── Tooltips (first-visit) ─────────────────────────────── */
     .tooltip-box {
-      display: none;
-      align-items: center;
-      gap: 10px;
-      margin: 8px 24px 0;
-      padding: 9px 12px;
-      background: var(--accent-lt);
-      border: 1px solid var(--accent-mid);
-      border-radius: var(--radius-sm);
-      font-size: 0.8rem;
-      color: var(--accent-dk);
-      animation: fadeIn 0.25s ease;
-      flex-shrink: 0;
+      display:none; align-items:center; gap:10px;
+      margin:8px 24px 0; padding:9px 12px;
+      background:var(--accent-lt); border:1px solid var(--accent-mid); border-radius:var(--radius-sm);
+      font-size:0.8rem; color:var(--accent-dk); animation:fadeIn 0.25s ease; flex-shrink:0;
     }
-    .tooltip-box.visible { display: flex; }
-    .tooltip-box strong { font-weight: 600; }
-    .tooltip-dismiss {
-      margin-left: auto;
-      background: none;
-      border: none;
-      font-size: 0.75rem;
-      color: var(--accent);
-      cursor: pointer;
-      padding: 0;
-      font-family: inherit;
-      white-space: nowrap;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
+    .tooltip-box.visible { display:flex; }
+    .tooltip-box strong { font-weight:600; }
+    .tooltip-dismiss { margin-left:auto; background:none; border:none; font-size:0.75rem; color:var(--accent); cursor:pointer; padding:0; font-family:inherit; white-space:nowrap; text-decoration:underline; text-underline-offset:2px; }
 
     /* ── Error banner ───────────────────────────────────────── */
-    #error-banner {
-      margin: 8px 24px 0;
-      background: var(--danger-bg);
-      border: 1px solid var(--danger-border);
-      color: var(--danger);
-      padding: 9px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.82rem;
-      line-height: 1.5;
-      flex-shrink: 0;
-    }
-    #error-banner.hidden { display: none; }
+    #error-banner { margin:8px 24px 0; background:var(--danger-bg); border:1px solid var(--danger-border); color:var(--danger); padding:9px 14px; border-radius:var(--radius-sm); font-size:0.82rem; line-height:1.5; flex-shrink:0; }
+    #error-banner.hidden { display:none; }
 
     /* ── URL bar ────────────────────────────────────────────── */
-    #url-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin: 8px 24px 0;
-      padding: 8px 12px;
-      background: var(--accent-lt);
-      border: 1px solid var(--accent-mid);
-      border-radius: var(--radius-sm);
-      flex-shrink: 0;
-    }
-    #url-bar.hidden { display: none; }
-
-    .url-icon { color: var(--accent); flex-shrink: 0; }
-    #url-preview {
-      flex: 1;
-      font-size: 0.78rem;
-      color: var(--text-mid);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    #url-fetch-btn {
-      padding: 5px 14px;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.78rem;
-      font-weight: 500;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.15s;
-      flex-shrink: 0;
-    }
-    #url-fetch-btn:hover { background: var(--accent-dk); }
-    #url-fetch-btn:disabled { opacity: 0.6; cursor: default; }
+    #url-bar { display:flex; align-items:center; gap:8px; margin:8px 24px 0; padding:8px 12px; background:var(--accent-lt); border:1px solid var(--accent-mid); border-radius:var(--radius-sm); flex-shrink:0; }
+    #url-bar.hidden { display:none; }
+    .url-icon { color:var(--accent); flex-shrink:0; }
+    #url-preview { flex:1; font-size:0.78rem; color:var(--text-mid); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    #url-fetch-btn { padding:5px 14px; background:var(--accent); color:#fff; border:none; border-radius:6px; font-family:inherit; font-size:0.78rem; font-weight:500; cursor:pointer; white-space:nowrap; transition:background 0.15s; flex-shrink:0; }
+    #url-fetch-btn:hover { background:var(--accent-dk); }
+    #url-fetch-btn:disabled { opacity:0.6; cursor:default; }
 
     /* ── Textarea ───────────────────────────────────────────── */
-    #input-area {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-
+    #input-area { flex:1; display:flex; flex-direction:column; min-height:0; }
     #input-text {
-      flex: 1;
-      width: 100%;
-      padding: 14px 24px 16px;
-      border: none;
-      outline: none;
-      resize: none;
-      font-size: 1rem;
-      line-height: 1.8;
-      color: var(--text);
-      background: transparent;
-      font-family: 'DM Sans', inherit;
-      font-weight: 300;
-      transition: color 0.3s;
+      flex:1; width:100%; padding:14px 24px 16px; border:none; outline:none; resize:none;
+      font-size:1rem; line-height:1.8; color:var(--text); background:transparent;
+      font-family:'DM Sans',inherit; font-weight:300; transition:color 0.3s;
     }
-    #input-text::placeholder { color: var(--border); font-style: italic; font-family: 'Lora', serif; }
+    #input-text::placeholder { color:var(--border); font-style:italic; font-family:'Lora',serif; }
 
     /* ── Token view ─────────────────────────────────────────── */
-    #token-view {
-      flex: 1;
-      padding: 14px 24px 16px;
-      font-size: 1rem;
-      line-height: 1.9;
-      overflow-y: auto;
-      word-break: break-word;
-      font-weight: 300;
-    }
-    #token-view.hidden, #input-text.hidden { display: none; }
+    #token-view { flex:1; padding:14px 24px 16px; font-size:1rem; line-height:1.9; overflow-y:auto; word-break:break-word; font-weight:300; }
+    #token-view.hidden, #input-text.hidden { display:none; }
 
+    /* Staggered wave-in animation */
+    @keyframes token-appear {
+      from { opacity:0; transform:translateY(3px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
     .word-token {
-      display: inline;
-      border-radius: 3px;
-      padding: 1px 2px;
-      cursor: pointer;
-      transition: background 0.1s, color 0.1s;
-      text-decoration-line: underline;
-      text-decoration-style: dotted;
-      text-decoration-color: transparent;
-      text-underline-offset: 3px;
+      display:inline; border-radius:3px; padding:1px 2px; cursor:pointer;
+      opacity:0; animation:token-appear 0.22s ease forwards;
+      text-decoration-line:underline; text-decoration-style:dotted;
+      text-decoration-color:transparent; text-underline-offset:3px;
+      transition:background 0.1s, color 0.1s, text-decoration-color 0.15s;
     }
-    .word-token:hover { background: var(--token-hover); text-decoration-color: var(--accent); }
-    .word-token.active { background: var(--token-active); color: var(--token-active-text); text-decoration-color: transparent; }
-    .word-token.same-word { background: var(--token-same); }
+    .word-token:hover   { background:var(--token-hover); text-decoration-color:var(--accent); }
+    .word-token.active  { background:var(--token-active); color:var(--token-active-text); text-decoration-color:transparent; }
+    .word-token.same-word { background:var(--token-same); }
 
-    /* Pulsing during API load */
-    @keyframes token-pulse {
-      0%, 100% { opacity: 1; }
-      50%       { opacity: 0.35; }
+    /* Visited (looked-up) tokens */
+    .word-token.looked-up:not(.active):not(:hover) {
+      text-decoration-color:oklch(from var(--accent) l c h / 0.35);
     }
-    .word-token.pulsing { animation: token-pulse 0.85s ease-in-out infinite; }
+
+    /* Pulse while awaiting API response */
+    @keyframes token-pulse {
+      0%,100% { opacity:1; }
+      50%     { opacity:0.3; }
+    }
+    .word-token.pulsing { animation:token-pulse 0.9s ease-in-out infinite; }
 
     /* ── Panel footer ───────────────────────────────────────── */
-    .panel-footer {
-      padding: 10px 24px;
-      border-top: 1px solid var(--border-light);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-      transition: border-color 0.3s;
-    }
+    .panel-footer { padding:10px 24px; border-top:1px solid var(--border-light); display:flex; align-items:center; gap:8px; flex-shrink:0; transition:border-color 0.3s; }
+    .char-count { font-size:0.75rem; color:var(--muted); font-variant-numeric:tabular-nums; }
+    .btn-sample { background:none; border:none; padding:4px 0; font-family:inherit; font-size:0.78rem; color:var(--accent); cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:2px; transition:color 0.15s; }
+    .btn-sample:hover { color:var(--accent-dk); }
+    .footer-spacer { flex:1; }
 
-    .char-count {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .btn-sample {
-      background: none;
-      border: none;
-      padding: 4px 0;
-      font-family: inherit;
-      font-size: 0.78rem;
-      color: var(--accent);
-      cursor: pointer;
-      text-decoration: underline;
-      text-decoration-style: dotted;
-      text-underline-offset: 2px;
-      transition: color 0.15s;
-    }
-    .btn-sample:hover { color: var(--accent-dk); }
-
-    .footer-spacer { flex: 1; }
-
-    button.btn-primary {
-      cursor: pointer; border: none; border-radius: var(--radius-sm);
-      font-family: 'DM Sans', inherit; font-size: 0.875rem; font-weight: 500;
-      padding: 9px 20px; transition: background 0.15s, transform 0.1s;
-      background: var(--accent); color: #fff; letter-spacing: 0.01em;
-    }
-    button.btn-primary:hover  { background: var(--accent-dk); }
-    button.btn-primary:active { transform: scale(0.97); }
-
-    button.btn-secondary {
-      cursor: pointer; border: 1px solid var(--border); border-radius: var(--radius-sm);
-      font-family: 'DM Sans', inherit; font-size: 0.875rem; font-weight: 500;
-      padding: 9px 20px; transition: background 0.15s, color 0.15s;
-      background: transparent; color: var(--muted);
-    }
-    button.btn-secondary:hover { background: var(--bg); color: var(--text); }
-
-    button.hidden { display: none !important; }
+    button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,transform 0.1s; background:var(--accent); color:#fff; letter-spacing:0.01em; }
+    button.btn-primary:hover  { background:var(--accent-dk); }
+    button.btn-primary:active { transform:scale(0.97); }
+    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
+    button.btn-secondary:hover { background:var(--bg); color:var(--text); }
+    button.hidden { display:none !important; }
 
     /* ── Tweaks panel ───────────────────────────────────────── */
-    #tweaks-panel {
-      display: none;
-      border-top: 1px solid var(--border-light);
-      padding: 10px 24px 12px;
-      background: var(--bg);
-      transition: background 0.3s;
-      flex-shrink: 0;
-    }
-    #tweaks-panel.visible { display: block; }
-
-    .tweaks-title { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-    .tweak-row { margin-bottom: 8px; }
-    .tweak-label { font-size: 0.7rem; font-weight: 500; color: var(--text-mid); margin-bottom: 4px; }
-    .tweak-options { display: flex; gap: 4px; }
-    .tweak-opt {
-      flex: 1; padding: 3px 0; border: 1px solid var(--border); border-radius: 5px;
-      background: var(--bg); color: var(--muted); font-family: 'DM Sans', inherit;
-      font-size: 0.68rem; font-weight: 500; cursor: pointer; text-align: center;
-      transition: all 0.15s;
-    }
-    .tweak-opt.active { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); }
-    .tweak-slider-row { display: flex; align-items: center; gap: 8px; }
-    .tweak-slider {
-      flex: 1; -webkit-appearance: none; height: 2px; border-radius: 2px;
-      background: var(--border); outline: none; cursor: pointer;
-    }
-    .tweak-slider::-webkit-slider-thumb {
-      -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%;
-      background: var(--accent); cursor: pointer;
-    }
-    .tweak-val { font-size: 0.68rem; color: var(--muted); font-variant-numeric: tabular-nums; width: 26px; text-align: right; }
-    .tweak-row:last-child { margin-bottom: 0; }
+    #tweaks-panel { display:none; border-top:1px solid var(--border-light); padding:10px 24px 12px; background:var(--bg); transition:background 0.3s; flex-shrink:0; }
+    #tweaks-panel.visible { display:block; }
+    .tweaks-title { font-size:0.65rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+    .tweak-row { margin-bottom:8px; }
+    .tweak-label { font-size:0.7rem; font-weight:500; color:var(--text-mid); margin-bottom:4px; }
+    .tweak-options { display:flex; gap:4px; }
+    .tweak-opt { flex:1; padding:3px 0; border:1px solid var(--border); border-radius:5px; background:var(--bg); color:var(--muted); font-family:'DM Sans',inherit; font-size:0.68rem; font-weight:500; cursor:pointer; text-align:center; transition:all 0.15s; }
+    .tweak-opt.active { border-color:var(--accent); background:var(--accent-lt); color:var(--accent); }
+    .tweak-slider-row { display:flex; align-items:center; gap:8px; }
+    .tweak-slider { flex:1; -webkit-appearance:none; height:2px; border-radius:2px; background:var(--border); outline:none; cursor:pointer; }
+    .tweak-slider::-webkit-slider-thumb { -webkit-appearance:none; width:12px; height:12px; border-radius:50%; background:var(--accent); cursor:pointer; }
+    .tweak-val { font-size:0.68rem; color:var(--muted); font-variant-numeric:tabular-nums; width:26px; text-align:right; }
+    .tweak-row:last-child { margin-bottom:0; }
 
     /* ── Right panel — placeholder ──────────────────────────── */
-    #def-placeholder {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 28px;
-      text-align: center;
-      gap: 14px;
-    }
-    .placeholder-glyph {
-      font-family: 'Lora', serif; font-size: 3.5rem; font-style: italic;
-      color: var(--accent-mid); line-height: 1; user-select: none;
-    }
-    .placeholder-title { font-family: 'Lora', serif; font-size: 1rem; font-weight: 500; color: var(--text-mid); }
-    #def-placeholder p { font-size: 0.82rem; max-width: 210px; line-height: 1.65; color: var(--muted); }
+    #def-placeholder { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 28px; text-align:center; gap:14px; }
 
-    /* ── Right panel — loading ──────────────────────────────── */
-    #def-loading {
-      flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 18px;
+    @keyframes glyph-breathe {
+      0%,100% { opacity:0.35; transform:scale(1); }
+      50%     { opacity:0.55; transform:scale(1.05); }
     }
-    .loading-word { font-family: 'Lora', serif; font-style: italic; font-size: 1.2rem; color: var(--muted); }
-    .spinner {
-      width: 28px; height: 28px; border: 2px solid var(--border);
-      border-top-color: var(--accent); border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+    .placeholder-glyph { font-family:'Lora',serif; font-size:3.5rem; font-style:italic; color:var(--accent-mid); line-height:1; user-select:none; animation:glyph-breathe 5s ease-in-out infinite; }
+    .placeholder-title { font-family:'Lora',serif; font-size:1rem; font-weight:500; color:var(--text-mid); }
+    #def-placeholder p { font-size:0.82rem; max-width:220px; line-height:1.65; color:var(--muted); }
+
+    /* Suggested word chips */
+    .suggest-chips { display:flex; flex-wrap:wrap; justify-content:center; gap:5px; margin-top:2px; }
+    .suggest-chip {
+      padding:3px 10px; background:var(--bg); border:1px solid var(--border);
+      border-radius:20px; font-size:0.75rem; color:var(--text-mid); cursor:pointer;
+      font-family:'Lora',serif; font-style:italic;
+      transition:background 0.12s, border-color 0.12s, color 0.12s;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .suggest-chip:hover { background:var(--token-hover); border-color:var(--accent-mid); color:var(--accent-dk); }
+
+    /* ── Right panel — skeleton loading ─────────────────────── */
+    #def-loading { flex:1; display:flex; flex-direction:column; gap:0; padding:24px; }
+    .loading-word-label-top { font-family:'Lora',serif; font-style:italic; font-size:0.85rem; color:var(--muted); margin-bottom:16px; min-height:1.2em; }
+
+    @keyframes skel-shimmer {
+      0%   { background-position:200% center; }
+      100% { background-position:-200% center; }
+    }
+    .skel {
+      border-radius:6px;
+      background:linear-gradient(90deg, var(--border-light) 25%, var(--border) 50%, var(--border-light) 75%);
+      background-size:400% 100%;
+      animation:skel-shimmer 1.6s ease-in-out infinite;
+    }
+    .skel-word   { height:28px; width:55%; margin-bottom:10px; }
+    .skel-badges { display:flex; gap:6px; margin-bottom:18px; }
+    .skel-badge  { height:18px; width:60px; border-radius:20px; }
+    .skel-badge2 { height:18px; width:44px; border-radius:20px; }
+    .skel-divider { height:1px; background:var(--border-light); margin-bottom:18px; }
+    .skel-label  { height:10px; width:30%; margin-bottom:8px; }
+    .skel-line   { height:13px; margin-bottom:7px; }
+    .skel-line.w-full { width:100%; }
+    .skel-line.w-3q   { width:78%; }
+    .skel-line.w-half { width:55%; }
+    .skel-box    { height:64px; width:100%; border-radius:8px; margin-top:16px; }
 
     /* ── Right panel — result ───────────────────────────────── */
-    #def-result {
-      flex: 1; padding: 24px 24px 20px; overflow-y: auto;
-      display: flex; flex-direction: column; gap: 20px;
-    }
+    #def-result { flex:1; padding:24px 24px 20px; overflow-y:auto; display:flex; flex-direction:column; gap:18px; }
 
-    .def-word-row {
-      display: flex; align-items: flex-start; justify-content: space-between;
-      gap: 12px; border-bottom: 1px solid var(--border-light); padding-bottom: 18px;
-    }
-    .def-word-col { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .def-word-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; border-bottom:1px solid var(--border-light); padding-bottom:16px; }
+    .def-word-col { display:flex; flex-direction:column; gap:6px; min-width:0; }
 
-    .def-word {
-      font-family: 'Lora', serif; font-size: 2rem; font-weight: 500;
-      letter-spacing: -0.5px; color: var(--text); line-height: 1.1;
-    }
+    .def-word { font-family:'Lora',serif; font-size:2rem; font-weight:500; letter-spacing:-0.5px; color:var(--text); line-height:1.1; }
 
+    /* POS badge — colour set by data-pos attribute */
     .pos-badge {
-      display: inline-block; font-size: 0.68rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--accent); background: var(--accent-lt);
-      padding: 3px 9px; border-radius: 20px; align-self: flex-start;
+      display:inline-flex; align-items:center; gap:5px;
+      font-size:0.68rem; font-weight:600; text-transform:uppercase; letter-spacing:0.1em;
+      padding:3px 9px; border-radius:20px; align-self:flex-start;
+      color:var(--pos-other-text); background:var(--pos-other-bg);
+      transition:color 0.2s, background 0.2s;
+    }
+    .pos-badge[data-pos="noun"] { color:var(--pos-noun-text); background:var(--pos-noun-bg); }
+    .pos-badge[data-pos="verb"] { color:var(--pos-verb-text); background:var(--pos-verb-bg); }
+    .pos-badge[data-pos="adj"]  { color:var(--pos-adj-text);  background:var(--pos-adj-bg);  }
+    .pos-badge[data-pos="adv"]  { color:var(--pos-adv-text);  background:var(--pos-adv-bg);  }
+
+    /* Register tag */
+    .register-tag {
+      display:inline-block; font-size:0.62rem; font-weight:500; letter-spacing:0.06em;
+      padding:2px 7px; border-radius:10px; align-self:flex-start;
+      background:var(--bg); border:1px solid var(--border); color:var(--muted);
+      font-style:italic; font-family:'Lora',serif;
     }
 
     /* Simpler synonym */
-    #def-simpler {
-      display: flex; align-items: center; gap: 5px; margin-top: 2px;
-    }
-    #def-simpler.hidden { display: none; }
-    .simpler-label { font-size: 0.68rem; color: var(--muted); }
-    .simpler-word {
-      font-size: 0.75rem; font-style: italic; font-family: 'Lora', serif;
-      color: var(--text-mid); background: var(--bg); padding: 1px 7px;
-      border-radius: 10px; border: 1px solid var(--border);
-    }
+    #def-simpler { display:flex; align-items:center; gap:5px; }
+    #def-simpler.hidden { display:none; }
+    .simpler-label { font-size:0.68rem; color:var(--muted); }
+    .simpler-word { font-size:0.75rem; font-style:italic; font-family:'Lora',serif; color:var(--text-mid); background:var(--bg); padding:1px 7px; border-radius:10px; border:1px solid var(--border); }
 
-    /* Action buttons row */
-    .action-btns { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+    /* Action buttons */
+    .action-btns { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
+    .action-btn { display:flex; align-items:center; gap:5px; padding:5px 10px; background:transparent; border:1px solid var(--border); border-radius:6px; font-family:inherit; font-size:0.72rem; font-weight:500; color:var(--muted); cursor:pointer; transition:background 0.12s,color 0.12s,border-color 0.12s; white-space:nowrap; }
+    .action-btn:hover { background:var(--bg); color:var(--text); }
+    .action-btn.saved { color:var(--accent); border-color:var(--accent-mid); background:var(--accent-lt); }
 
-    .action-btn {
-      display: flex; align-items: center; gap: 5px; padding: 5px 10px;
-      background: transparent; border: 1px solid var(--border); border-radius: 6px;
-      font-family: inherit; font-size: 0.72rem; font-weight: 500; color: var(--muted);
-      cursor: pointer; transition: background 0.12s, color 0.12s, border-color 0.12s;
-      white-space: nowrap;
-    }
-    .action-btn:hover { background: var(--bg); color: var(--text); border-color: var(--border); }
-    .action-btn.saved { color: var(--accent); border-color: var(--accent-mid); background: var(--accent-lt); }
+    .def-section { display:flex; flex-direction:column; gap:7px; }
+    .def-label { font-size:0.68rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+    .def-text { font-size:0.95rem; line-height:1.75; color:var(--text); font-weight:300; }
 
-    .def-section { display: flex; flex-direction: column; gap: 7px; }
-    .def-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-    .def-text { font-size: 0.95rem; line-height: 1.75; color: var(--text); font-weight: 300; }
+    .def-why-box { background:var(--accent-lt); border-radius:var(--radius-sm); padding:14px 16px 14px 20px; font-size:0.88rem; line-height:1.7; color:var(--text-mid); font-style:italic; font-family:'Lora',serif; position:relative; }
+    .def-why-box::before { content:'"'; position:absolute; top:4px; left:12px; font-size:2rem; color:var(--accent); opacity:0.22; line-height:1; }
 
-    .def-why-box {
-      background: var(--accent-lt); border-radius: var(--radius-sm);
-      padding: 14px 16px 14px 20px; font-size: 0.88rem; line-height: 1.7;
-      color: var(--text-mid); font-style: italic; font-family: 'Lora', serif;
-      position: relative;
-    }
-    .def-why-box::before {
-      content: '"'; position: absolute; top: 4px; left: 12px;
-      font-size: 2rem; color: var(--accent); opacity: 0.25; line-height: 1;
-    }
+    /* Etymology row */
+    .etymology-row { display:flex; align-items:baseline; gap:7px; }
+    .etymology-label { font-size:0.62rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+    .etymology-text { font-size:0.8rem; font-style:italic; font-family:'Lora',serif; color:var(--muted); line-height:1.5; }
 
     /* ── History strip ──────────────────────────────────────── */
-    #history-strip {
-      display: flex; align-items: center; gap: 6px;
-      padding-top: 4px; overflow-x: auto; flex-shrink: 0;
-      scrollbar-width: none;
-    }
-    #history-strip::-webkit-scrollbar { display: none; }
-    #history-strip.hidden { display: none; }
+    #history-strip { display:flex; align-items:center; gap:6px; padding-top:4px; overflow-x:auto; flex-shrink:0; scrollbar-width:none; }
+    #history-strip::-webkit-scrollbar { display:none; }
+    #history-strip.hidden { display:none; }
+    .history-label { font-size:0.65rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); white-space:nowrap; flex-shrink:0; }
+    .history-chip { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; background:var(--bg); border:1px solid var(--border); border-radius:20px; font-size:0.75rem; color:var(--text-mid); cursor:pointer; transition:background 0.12s,color 0.12s; white-space:nowrap; flex-shrink:0; font-family:inherit; }
+    .history-chip:hover { background:var(--token-hover); color:var(--text); border-color:var(--accent-mid); }
+    .history-chip-pos { font-size:0.62rem; color:var(--muted); font-style:italic; }
 
-    .history-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
-
-    .history-chip {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 3px 10px; background: var(--bg); border: 1px solid var(--border);
-      border-radius: 20px; font-size: 0.75rem; color: var(--text-mid); cursor: pointer;
-      transition: background 0.12s, color 0.12s; white-space: nowrap; flex-shrink: 0;
-      font-family: inherit;
-    }
-    .history-chip:hover { background: var(--token-hover); color: var(--text); border-color: var(--accent-mid); }
-    .history-chip-pos { font-size: 0.62rem; color: var(--muted); font-style: italic; }
+    /* Explored counter */
+    .explored-line { font-size:0.7rem; color:var(--muted); text-align:right; padding-top:2px; }
 
     /* Screenshot watermark */
-    .screenshot-footer {
-      display: none; text-align: right; font-size: 0.7rem;
-      color: var(--muted); padding-top: 8px; font-family: 'Lora', serif; font-style: italic;
+    .screenshot-footer { display:none; text-align:right; font-size:0.7rem; color:var(--muted); padding-top:8px; font-family:'Lora',serif; font-style:italic; }
+    .screenshot-mode .screenshot-footer { display:block; }
+    .screenshot-mode { background:var(--surface) !important; overflow:visible !important; max-height:none !important; }
+
+    /* ── Floating chip tooltip ──────────────────────────────── */
+    #chip-tooltip {
+      display:none; position:fixed; z-index:60; pointer-events:none;
+      background:var(--text); color:var(--surface); font-size:0.72rem;
+      padding:6px 10px; border-radius:7px; max-width:200px; line-height:1.45;
+      font-weight:300;
     }
-    .screenshot-mode .screenshot-footer { display: block; }
-    .screenshot-mode { background: var(--surface) !important; overflow: visible !important; max-height: none !important; }
+    #chip-tooltip::after { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); border:5px solid transparent; border-top-color:var(--text); }
 
     /* ── Word bank overlay ──────────────────────────────────── */
-    #wb-overlay {
-      position: fixed; inset: 0; z-index: 100;
-      background: rgba(0,0,0,0.45); display: flex;
-      align-items: center; justify-content: center;
-      padding: 24px; animation: fadeIn 0.18s ease;
-    }
-    #wb-overlay.hidden { display: none; }
+    #wb-overlay { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.18s ease; }
+    #wb-overlay.hidden { display:none; }
+    .wb-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:620px; max-height:80vh; display:flex; flex-direction:column; border:1px solid var(--border); overflow:hidden; }
+    .wb-header { display:flex; align-items:center; gap:10px; padding:18px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .wb-title { font-family:'Lora',serif; font-size:1.1rem; font-weight:500; color:var(--text); }
+    .wb-count { font-size:0.8rem; color:var(--muted); }
+    .wb-header-spacer { flex:1; }
+    .wb-action-btn { padding:6px 14px; background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:0.78rem; font-weight:500; color:var(--text-mid); cursor:pointer; transition:background 0.12s, color 0.12s; }
+    .wb-action-btn:hover { background:var(--bg); color:var(--text); }
+    .wb-close-btn { padding:6px 10px; background:transparent; border:none; font-size:1.2rem; color:var(--muted); cursor:pointer; line-height:1; border-radius:6px; transition:background 0.12s; }
+    .wb-close-btn:hover { background:var(--bg); }
+    #wb-list { flex:1; overflow-y:auto; padding:16px 24px; display:flex; flex-direction:column; gap:12px; }
+    .wb-empty { font-size:0.88rem; color:var(--muted); text-align:center; padding:32px 0; line-height:1.6; }
+    .wb-entry { padding:14px 16px; border:1px solid var(--border-light); border-radius:var(--radius-sm); background:var(--bg); display:flex; flex-direction:column; gap:6px; transition:border-color 0.12s; }
+    .wb-entry:hover { border-color:var(--border); }
+    .wb-entry-header { display:flex; align-items:center; gap:8px; }
+    .wb-word { font-family:'Lora',serif; font-size:1rem; font-weight:500; color:var(--text); }
+    .wb-pos { font-size:0.68rem; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); background:var(--accent-lt); padding:2px 7px; border-radius:10px; }
+    .wb-delete { margin-left:auto; background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem; line-height:1; padding:2px 6px; border-radius:4px; transition:background 0.12s,color 0.12s; }
+    .wb-delete:hover { background:var(--danger-bg); color:var(--danger); }
+    .wb-def { font-size:0.84rem; color:var(--text-mid); line-height:1.6; font-weight:300; }
 
-    .wb-inner {
-      background: var(--surface); border-radius: var(--radius);
-      width: 100%; max-width: 620px; max-height: 80vh;
-      display: flex; flex-direction: column;
-      border: 1px solid var(--border); overflow: hidden;
-    }
-
-    .wb-header {
-      display: flex; align-items: center; gap: 10px;
-      padding: 18px 24px; border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-    .wb-title { font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 500; color: var(--text); }
-    .wb-count { font-size: 0.8rem; color: var(--muted); }
-    .wb-header-spacer { flex: 1; }
-
-    .wb-action-btn {
-      padding: 6px 14px; background: transparent; border: 1px solid var(--border);
-      border-radius: var(--radius-sm); font-family: inherit; font-size: 0.78rem;
-      font-weight: 500; color: var(--text-mid); cursor: pointer;
-      transition: background 0.12s, color 0.12s;
-    }
-    .wb-action-btn:hover { background: var(--bg); color: var(--text); }
-
-    .wb-close-btn {
-      padding: 6px 10px; background: transparent; border: none;
-      font-size: 1.2rem; color: var(--muted); cursor: pointer; line-height: 1;
-      border-radius: 6px; transition: background 0.12s;
-    }
-    .wb-close-btn:hover { background: var(--bg); }
-
-    #wb-list { flex: 1; overflow-y: auto; padding: 16px 24px; display: flex; flex-direction: column; gap: 12px; }
-
-    .wb-empty { font-size: 0.88rem; color: var(--muted); text-align: center; padding: 32px 0; line-height: 1.6; }
-
-    .wb-entry {
-      padding: 14px 16px; border: 1px solid var(--border-light); border-radius: var(--radius-sm);
-      background: var(--bg); display: flex; flex-direction: column; gap: 6px;
-      transition: border-color 0.12s;
-    }
-    .wb-entry:hover { border-color: var(--border); }
-
-    .wb-entry-header { display: flex; align-items: center; gap: 8px; }
-    .wb-word { font-family: 'Lora', serif; font-size: 1rem; font-weight: 500; color: var(--text); }
-    .wb-pos { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); background: var(--accent-lt); padding: 2px 7px; border-radius: 10px; }
-    .wb-delete {
-      margin-left: auto; background: none; border: none; color: var(--muted);
-      cursor: pointer; font-size: 1.1rem; line-height: 1; padding: 2px 6px;
-      border-radius: 4px; transition: background 0.12s, color 0.12s;
-    }
-    .wb-delete:hover { background: var(--danger-bg); color: var(--danger); }
-    .wb-def { font-size: 0.84rem; color: var(--text-mid); line-height: 1.6; font-weight: 300; }
+    /* ── Keyboard shortcuts overlay ─────────────────────────── */
+    #shortcuts-overlay { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.18s ease; }
+    #shortcuts-overlay.hidden { display:none; }
+    .shortcuts-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:380px; border:1px solid var(--border); overflow:hidden; }
+    .shortcuts-header { display:flex; align-items:center; justify-content:space-between; padding:18px 24px; border-bottom:1px solid var(--border); }
+    .shortcuts-title { font-family:'Lora',serif; font-size:1rem; font-weight:500; color:var(--text); }
+    .shortcuts-close { background:none; border:none; font-size:1.2rem; color:var(--muted); cursor:pointer; padding:4px 8px; border-radius:6px; transition:background 0.12s; }
+    .shortcuts-close:hover { background:var(--bg); }
+    .shortcut-list { padding:16px 24px 20px; display:flex; flex-direction:column; gap:10px; }
+    .shortcut-row { display:flex; align-items:center; justify-content:space-between; font-size:0.84rem; color:var(--text-mid); }
+    .shortcut-row kbd { margin-left:8px; }
 
     /* ── Animations ─────────────────────────────────────────── */
-    #def-placeholder, #def-loading, #def-result { animation: fadeIn 0.2s ease; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
     /* ── Utility ────────────────────────────────────────────── */
-    .hidden { display: none !important; }
+    .hidden { display:none !important; }
 
     /* ── Responsive ─────────────────────────────────────────── */
-    @media (max-width: 760px) {
-      header { padding: 0 16px; gap: 8px; }
-      .tagline { display: none; }
-      main { flex-direction: column; height: auto; padding: 12px; }
-      .panel-left  { margin-right: 0; margin-bottom: 10px; min-height: 260px; }
-      .panel-right { width: 100%; min-height: 280px; }
+    @media (max-width:760px) {
+      header { padding:0 16px; gap:8px; }
+      .tagline, .shortcut-hint { display:none; }
+      main { flex-direction:column; height:auto; padding:12px; }
+      .panel-left  { margin-right:0; margin-bottom:10px; min-height:260px; }
+      .panel-right { width:100%; min-height:300px; }
     }
   </style>
 </head>
@@ -657,28 +450,26 @@
   <span class="brand">Le<em>x</em>io</span>
   <span class="tagline">Contextual word definitions</span>
   <div class="header-spacer"></div>
-
+  <span class="shortcut-hint"><kbd>?</kbd> shortcuts</span>
   <button class="wb-header-btn" onclick="openWordBank()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
     Saved
     <span class="wb-badge" id="wb-badge"></span>
   </button>
-
-  <div class="theme-switcher" id="theme-switcher">
+  <div class="theme-switcher">
     <button class="theme-btn active" data-theme="warm" onclick="setTheme('warm')">Warm</button>
     <button class="theme-btn" data-theme="cool" onclick="setTheme('cool')">Cool</button>
     <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
   </div>
 </header>
 
-<!-- ── Main ────────────────────────────────────────────────── -->
 <main>
 
   <!-- ── Left panel ─────────────────────────────────────────── -->
   <div class="panel panel-left" id="left-panel">
     <div class="panel-label">Text</div>
+    <div class="reading-stats hidden" id="reading-stats"></div>
 
-    <!-- First-visit tooltips -->
     <div class="tooltip-box" id="tooltip-0">
       ✦ Paste your text here, then click <strong>Analyze text</strong>
       <button class="tooltip-dismiss" onclick="dismissTooltips()">Got it</button>
@@ -690,7 +481,6 @@
 
     <div id="error-banner" class="hidden"></div>
 
-    <!-- URL import bar -->
     <div id="url-bar" class="hidden">
       <svg class="url-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       <span id="url-preview"></span>
@@ -698,11 +488,7 @@
     </div>
 
     <div id="input-area">
-      <textarea
-        id="input-text"
-        placeholder="Paste any text here — an article, a quote, a paragraph…"
-        spellcheck="false"
-      ></textarea>
+      <textarea id="input-text" placeholder="Paste any text here — an article, a quote, a paragraph…" spellcheck="false"></textarea>
       <div id="token-view" class="hidden" aria-label="Click any word for its contextual definition"></div>
     </div>
 
@@ -714,7 +500,6 @@
       <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze text</button>
     </div>
 
-    <!-- Tweaks panel -->
     <div id="tweaks-panel">
       <div class="tweaks-title">Tweaks</div>
       <div class="tweak-row">
@@ -749,18 +534,32 @@
       <div class="placeholder-glyph">w</div>
       <p class="placeholder-title">Click any word</p>
       <p id="placeholder-sub">After analyzing your text, tap any word to see its precise meaning in context.</p>
+      <div class="suggest-chips hidden" id="suggest-chips"></div>
     </div>
 
     <div id="def-loading" class="hidden">
-      <div class="spinner"></div>
-      <span class="loading-word" id="loading-word-label"></span>
+      <span class="loading-word-label-top" id="loading-word-label"></span>
+      <div class="skel skel-word"></div>
+      <div class="skel-badges">
+        <div class="skel skel-badge"></div>
+        <div class="skel skel-badge2"></div>
+      </div>
+      <div class="skel-divider"></div>
+      <div class="skel skel-label"></div>
+      <div class="skel skel-line w-full"></div>
+      <div class="skel skel-line w-3q"></div>
+      <div class="skel skel-line w-half"></div>
+      <div class="skel skel-box"></div>
     </div>
 
     <div id="def-result" class="hidden">
       <div class="def-word-row">
         <div class="def-word-col">
           <span id="def-word" class="def-word"></span>
-          <span id="def-pos" class="pos-badge"></span>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span id="def-pos" class="pos-badge"></span>
+            <span id="def-register" class="register-tag hidden"></span>
+          </div>
           <div id="def-simpler" class="hidden">
             <span class="simpler-label">simpler:</span>
             <span id="def-simpler-word" class="simpler-word"></span>
@@ -768,12 +567,12 @@
         </div>
         <div class="action-btns">
           <button id="copy-btn" class="action-btn" onclick="copyDefinition()" title="Copy definition">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             Copy
           </button>
           <button id="save-btn" class="action-btn" onclick="toggleSave()" title="Save to word bank">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            Save
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="save-icon"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span id="save-label">Save</span>
           </button>
           <button id="link-btn" class="action-btn" onclick="copyPermalink()" title="Copy shareable link">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
@@ -790,18 +589,27 @@
         <span class="def-label">In this context</span>
         <p id="def-contextual" class="def-text"></p>
       </div>
+
+      <div class="etymology-row hidden" id="etymology-row">
+        <span class="etymology-label">Origin</span>
+        <span id="def-etymology" class="etymology-text"></span>
+      </div>
+
       <div class="def-section">
         <span class="def-label">Why this word?</span>
         <div class="def-why-box"><p id="def-why"></p></div>
       </div>
 
       <div id="history-strip" class="hidden"></div>
-
+      <div class="explored-line hidden" id="explored-line"></div>
       <div class="screenshot-footer">via lexio.site</div>
     </div>
 
   </div>
 </main>
+
+<!-- ── Floating chip tooltip ─────────────────────────────────── -->
+<div id="chip-tooltip"></div>
 
 <!-- ── Word bank overlay ────────────────────────────────────── -->
 <div id="wb-overlay" class="hidden">
@@ -811,9 +619,27 @@
       <span class="wb-count" id="wb-count"></span>
       <div class="wb-header-spacer"></div>
       <button class="wb-action-btn" onclick="exportCSV()">Export TSV</button>
-      <button class="wb-close-btn" onclick="closeWordBank()" title="Close">×</button>
+      <button class="wb-close-btn" onclick="closeWordBank()">×</button>
     </div>
     <div id="wb-list"></div>
+  </div>
+</div>
+
+<!-- ── Keyboard shortcuts overlay ──────────────────────────── -->
+<div id="shortcuts-overlay" class="hidden">
+  <div class="shortcuts-inner">
+    <div class="shortcuts-header">
+      <span class="shortcuts-title">Keyboard shortcuts</span>
+      <button class="shortcuts-close" onclick="toggleShortcuts()">×</button>
+    </div>
+    <div class="shortcut-list">
+      <div class="shortcut-row">Analyze text <kbd>⌘ ↵</kbd></div>
+      <div class="shortcut-row">Navigate words <kbd>Tab</kbd></div>
+      <div class="shortcut-row">Look up focused word <kbd>↵</kbd></div>
+      <div class="shortcut-row">Open word bank <kbd>B</kbd></div>
+      <div class="shortcut-row">Close overlays <kbd>Esc</kbd></div>
+      <div class="shortcut-row">These shortcuts <kbd>?</kbd></div>
+    </div>
   </div>
 </div>
 
@@ -837,70 +663,68 @@ const STOPWORDS = new Set([
   'how','all','any','each','every','its','their','our','my','your','his',
   'her','just','also','into','up','out','about','over','after','before',
   'between','through','such','more','very','still','been','same','where',
+  'there','here','now','only','even','back','way','well','down','get',
 ]);
 
 const SAMPLES = [
   { label: 'Philosophy', text: `The phenomenon of apophenia — finding meaningful patterns in meaningless noise — haunts modern epistemology. Our pattern-seeking brains, honed by millennia of evolutionary pressure, impose narrative coherence on the chaotic flux of experience, often confabulating causes where none exist. This tendency, adaptive in the ancestral environment, becomes pathological when directed at stock charts, conspiracy theories, or the arrangement of tea leaves.` },
-  { label: 'Legal', text: `The indemnifying party shall hold harmless, defend, and indemnify the indemnitee from any and all claims, damages, losses, liabilities, costs, and expenses, including reasonable attorneys' fees, arising out of or related to any breach of the representations and warranties set forth herein, whether or not such claims are groundless, fraudulent, or false, provided that the indemnitee notifies the indemnifying party in writing within thirty (30) days of becoming aware of any such claim.` },
+  { label: 'Legal',      text: `The indemnifying party shall hold harmless, defend, and indemnify the indemnitee from any and all claims, damages, losses, liabilities, costs, and expenses, including reasonable attorneys' fees, arising out of or related to any breach of the representations and warranties set forth herein, whether or not such claims are groundless, fraudulent, or false, provided that the indemnitee notifies the indemnifying party in writing within thirty (30) days of becoming aware of any such claim.` },
   { label: 'Neuroscience', text: `Synaptic plasticity in the hippocampal CA1 region is mediated by NMDA receptor-dependent long-term potentiation, suggesting that the consolidation of episodic memory involves a cascade of post-translational modifications that alter dendritic spine morphology and AMPA receptor trafficking. Crucially, this process requires the coordinated activity of astrocytic glutamate uptake mechanisms to prevent excitotoxic spillover.` },
-  { label: 'Literature', text: `He had a faculty for quiescence, a studied art of making himself unobtrusive, and this equanimity — so easily mistaken for indifference — concealed an almost pathological acuity of observation. He noticed everything and remarked on nothing. People confided in him precisely because he seemed not to be listening, which was, of course, when he was most attentive.` },
+  { label: 'Literature',  text: `He had a faculty for quiescence, a studied art of making himself unobtrusive, and this equanimity — so easily mistaken for indifference — concealed an almost pathological acuity of observation. He noticed everything and remarked on nothing. People confided in him precisely because he seemed not to be listening, which was, of course, when he was most attentive.` },
 ];
 
 const PLACEHOLDERS = [
   'Paste any text here — an article, a quote, a paragraph…',
   'Try a dense editorial, a legal clause, or a scientific abstract…',
   'Drop in literary prose or any passage with interesting word choices…',
-  'Paste anything written with precision — then explore it word by word.',
+  'Paste anything written with care — then explore it word by word.',
 ];
 
 /* ── State ──────────────────────────────────────────────────── */
-let currentContext  = '';
-let activeToken     = null;
-let currentResult   = null;
-let defCache        = new Map();
-let history         = [];
-let wordBank        = [];
-let currentSample   = -1;
-let placeholderIdx  = 0;
+let currentContext   = '';
+let activeToken      = null;
+let currentResult    = null;
+let defCache         = new Map();
+let history          = [];
+let wordBank         = [];
+let lookedUpWords    = new Set();
+let currentSample    = -1;
+let placeholderIdx   = 0;
 let placeholderTimer = null;
-let tooltipStep     = -1;
+let tooltipStep      = -1;
+let shortcutsOpen    = false;
 
-/* ── Tweaks (persisted to localStorage) ────────────────────── */
+/* ── Tweaks ─────────────────────────────────────────────────── */
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "theme":      "warm",
-  "fontSize":   18,
-  "lineHeight": 2.1
+  "theme": "warm", "fontSize": 18, "lineHeight": 2.1
 }/*EDITMODE-END*/;
-
 let currentTweaks = { ...TWEAK_DEFAULTS };
 
 function loadTweaks() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(TWEAKS_KEY) || '{}');
-    currentTweaks = { ...TWEAK_DEFAULTS, ...saved };
-  } catch {}
+  try { currentTweaks = { ...TWEAK_DEFAULTS, ...JSON.parse(localStorage.getItem(TWEAKS_KEY) || '{}') }; } catch {}
 }
-
 function saveTweaks() {
   try { localStorage.setItem(TWEAKS_KEY, JSON.stringify(currentTweaks)); } catch {}
 }
 
-/* ── Word bank (persisted) ──────────────────────────────────── */
+/* ── Word bank ──────────────────────────────────────────────── */
 function loadWordBank() {
-  try { wordBank = JSON.parse(localStorage.getItem(WB_KEY) || '[]'); }
-  catch { wordBank = []; }
+  try { wordBank = JSON.parse(localStorage.getItem(WB_KEY) || '[]'); } catch { wordBank = []; }
 }
-
 function saveWordBank() {
   try { localStorage.setItem(WB_KEY, JSON.stringify(wordBank)); } catch {}
   updateWBBadge();
 }
-
 function updateWBBadge() {
   const badge = document.getElementById('wb-badge');
   if (wordBank.length > 0) {
+    const prev = badge.textContent;
     badge.textContent = wordBank.length;
     badge.style.display = 'inline-flex';
+    if (prev !== String(wordBank.length)) {
+      badge.classList.add('pop');
+      setTimeout(() => badge.classList.remove('pop'), 300);
+    }
   } else {
     badge.style.display = 'none';
   }
@@ -909,53 +733,40 @@ function updateWBBadge() {
 /* ── Theme ──────────────────────────────────────────────────── */
 function setTheme(t) {
   document.body.dataset.theme = t;
-  document.querySelectorAll('.theme-btn').forEach(b =>
-    b.classList.toggle('active', b.dataset.theme === t));
-  document.querySelectorAll('.tweak-opt').forEach((b, i) =>
-    b.classList.toggle('active', ['warm','cool','dark'][i] === t));
-  currentTweaks.theme = t;
-  saveTweaks();
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
+  document.querySelectorAll('.tweak-opt').forEach((b, i) => b.classList.toggle('active', ['warm','cool','dark'][i] === t));
+  currentTweaks.theme = t; saveTweaks();
   window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { theme: t } }, '*');
 }
-
 function setFontSize(v) {
   document.getElementById('token-view').style.fontSize = v + 'px';
   document.getElementById('input-text').style.fontSize = v + 'px';
   document.getElementById('font-size-val').textContent = v;
-  currentTweaks.fontSize = +v;
-  saveTweaks();
+  currentTweaks.fontSize = +v; saveTweaks();
   window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { fontSize: +v } }, '*');
 }
-
 function setLineHeight(v) {
   document.getElementById('token-view').style.lineHeight = v;
   document.getElementById('input-text').style.lineHeight = v;
   document.getElementById('line-height-val').textContent = parseFloat(v).toFixed(1);
-  currentTweaks.lineHeight = +v;
-  saveTweaks();
+  currentTweaks.lineHeight = +v; saveTweaks();
   window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { lineHeight: +v } }, '*');
 }
-
 function applyTweaks() {
   setTheme(currentTweaks.theme);
-  const fs = document.getElementById('font-size-slider');
-  fs.value = currentTweaks.fontSize;
+  document.getElementById('font-size-slider').value = currentTweaks.fontSize;
   setFontSize(currentTweaks.fontSize);
-  const lh = document.getElementById('line-height-slider');
-  lh.value = currentTweaks.lineHeight;
+  document.getElementById('line-height-slider').value = currentTweaks.lineHeight;
   setLineHeight(currentTweaks.lineHeight);
 }
 
-/* Edit-mode postMessage bridge */
 window.addEventListener('message', e => {
-  if (e.data?.type === '__activate_edit_mode')
-    document.getElementById('tweaks-panel').classList.add('visible');
-  if (e.data?.type === '__deactivate_edit_mode')
-    document.getElementById('tweaks-panel').classList.remove('visible');
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('visible');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('visible');
 });
 window.parent.postMessage({ type: '__edit_mode_available' }, '*');
 
-/* ── Animated placeholder rotation ─────────────────────────── */
+/* ── Placeholder rotation ───────────────────────────────────── */
 function startPlaceholderRotation() {
   if (placeholderTimer) return;
   placeholderTimer = setInterval(() => {
@@ -965,121 +776,70 @@ function startPlaceholderRotation() {
     ta.placeholder = PLACEHOLDERS[placeholderIdx];
   }, 3600);
 }
-
-function stopPlaceholderRotation() {
-  clearInterval(placeholderTimer);
-  placeholderTimer = null;
-}
+function stopPlaceholderRotation() { clearInterval(placeholderTimer); placeholderTimer = null; }
 
 /* ── Sample texts ───────────────────────────────────────────── */
 function cycleSample() {
   currentSample = (currentSample + 1) % SAMPLES.length;
-  const s = SAMPLES[currentSample];
   const ta = document.getElementById('input-text');
-  ta.value = s.text;
+  ta.value = SAMPLES[currentSample].text;
   updateCharCount();
   ta.focus();
   document.getElementById('sample-btn').textContent =
-    `↻ Next sample (${SAMPLES[(currentSample + 1) % SAMPLES.length].label})`;
+    `↻ Next (${SAMPLES[(currentSample + 1) % SAMPLES.length].label})`;
 }
 
 /* ── Char count & URL detection ─────────────────────────────── */
 const inputText = document.getElementById('input-text');
-
 inputText.addEventListener('input', updateCharCount);
-
 function updateCharCount() {
   const n = inputText.value.length;
   document.getElementById('char-count').textContent = n > 0 ? `${n.toLocaleString()} chars` : '';
   checkForURL(inputText.value.trim());
 }
 
-/* ── URL detection & article fetch ─────────────────────────── */
 const URL_RE = /^https?:\/\/[^\s]{4,}/i;
-
 function checkForURL(text) {
   const isURL = URL_RE.test(text);
   document.getElementById('url-bar').classList.toggle('hidden', !isURL);
-  if (isURL) {
-    const preview = document.getElementById('url-preview');
-    preview.textContent = text.length > 65 ? text.slice(0, 62) + '…' : text;
-  }
+  if (isURL) document.getElementById('url-preview').textContent = text.length > 65 ? text.slice(0,62)+'…' : text;
 }
-
 async function fetchArticle() {
   const url = inputText.value.trim();
   const btn = document.getElementById('url-fetch-btn');
-  btn.textContent = 'Fetching…';
-  btn.disabled = true;
-  hideError();
-
+  btn.textContent = 'Fetching…'; btn.disabled = true; hideError();
   try {
-    const resp = await fetch('/fetch-text', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url }),
-    });
-    if (!resp.ok) {
-      const err = await resp.json().catch(() => ({ detail: resp.statusText }));
-      throw new Error(err.detail || `HTTP ${resp.status}`);
-    }
+    const resp = await fetch('/fetch-text', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({url}) });
+    if (!resp.ok) { const e = await resp.json().catch(()=>({detail:resp.statusText})); throw new Error(e.detail||`HTTP ${resp.status}`); }
     const { text } = await resp.json();
-    inputText.value = text;
-    updateCharCount();
+    inputText.value = text; updateCharCount();
     document.getElementById('url-bar').classList.add('hidden');
-  } catch (err) {
-    showError(err.message);
-  } finally {
-    btn.textContent = 'Fetch article';
-    btn.disabled = false;
-  }
+  } catch(err) { showError(err.message); }
+  finally { btn.textContent = 'Fetch article'; btn.disabled = false; }
 }
 
 /* ── Drag & drop ────────────────────────────────────────────── */
 function setupDragAndDrop() {
   const panel = document.getElementById('left-panel');
-
-  panel.addEventListener('dragenter', e => {
-    if ([...e.dataTransfer.types].includes('Files')) {
-      e.preventDefault();
-      panel.classList.add('drag-over');
-    }
-  });
-  panel.addEventListener('dragover', e => {
-    e.preventDefault();
-    panel.classList.add('drag-over');
-  });
-  panel.addEventListener('dragleave', e => {
-    if (!panel.contains(e.relatedTarget)) panel.classList.remove('drag-over');
-  });
+  panel.addEventListener('dragenter', e => { if([...e.dataTransfer.types].includes('Files')){ e.preventDefault(); panel.classList.add('drag-over'); } });
+  panel.addEventListener('dragover',  e => { e.preventDefault(); panel.classList.add('drag-over'); });
+  panel.addEventListener('dragleave', e => { if(!panel.contains(e.relatedTarget)) panel.classList.remove('drag-over'); });
   panel.addEventListener('drop', e => {
-    e.preventDefault();
-    panel.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (!file) return;
-    if (!file.name.endsWith('.txt') && !file.type.startsWith('text/')) {
-      showError('Only plain-text (.txt) files are supported.');
-      return;
-    }
+    e.preventDefault(); panel.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0]; if(!file) return;
+    if(!file.name.endsWith('.txt') && !file.type.startsWith('text/')) { showError('Only plain-text (.txt) files are supported.'); return; }
     const reader = new FileReader();
-    reader.onload = ev => {
-      inputText.value = ev.target.result.slice(0, 8000);
-      updateCharCount();
-    };
+    reader.onload = ev => { inputText.value = ev.target.result.slice(0,8000); updateCharCount(); };
     reader.readAsText(file);
   });
 }
 
 /* ── Analyze ────────────────────────────────────────────────── */
 function analyze() {
-  const raw = inputText.value.trim();
-  if (!raw) return;
-
-  currentContext = raw;
-  hideError();
-  renderTokens(raw);
-  stopPlaceholderRotation();
-
+  const raw = inputText.value.trim(); if(!raw) return;
+  if(URL_RE.test(raw)) { fetchArticle(); return; }
+  currentContext = raw; hideError();
+  renderTokens(raw); stopPlaceholderRotation();
   inputText.classList.add('hidden');
   document.getElementById('token-view').classList.remove('hidden');
   document.getElementById('edit-btn').classList.remove('hidden');
@@ -1087,9 +847,18 @@ function analyze() {
   document.getElementById('sample-btn').classList.add('hidden');
   document.getElementById('char-count').textContent = '';
   document.getElementById('url-bar').classList.add('hidden');
-
+  // Reading stats
+  const stats = computeReadingStats(raw);
+  const statsEl = document.getElementById('reading-stats');
+  statsEl.textContent = stats; statsEl.classList.remove('hidden');
   showSmartPlaceholder(raw);
   advanceTooltip(1);
+}
+
+function computeReadingStats(text) {
+  const words = (text.match(/\b[a-zA-Z]+\b/g) || []).length;
+  const mins  = Math.max(1, Math.round(words / 200));
+  return `${words.toLocaleString()} words · ~${mins} min read`;
 }
 
 /* ── Reset to edit ──────────────────────────────────────────── */
@@ -1099,62 +868,79 @@ function resetToEdit() {
   document.getElementById('edit-btn').classList.add('hidden');
   document.getElementById('analyze-btn').classList.remove('hidden');
   document.getElementById('sample-btn').classList.remove('hidden');
+  document.getElementById('reading-stats').classList.add('hidden');
   inputText.value = currentContext;
-  activeToken = null;
-  currentResult = null;
-  showPlaceholder();
-  hideError();
-  updateCharCount();
-  startPlaceholderRotation();
+  activeToken = null; currentResult = null;
+  showPlaceholder(); hideError(); updateCharCount(); startPlaceholderRotation();
 }
 
-/* ── Tokenize & render ──────────────────────────────────────── */
+/* ── Tokenize & render (with staggered wave-in) ─────────────── */
 function renderTokens(text) {
   const container = document.getElementById('token-view');
   container.innerHTML = '';
+  const parts = text.split(/([A-Za-z\u00C0-\u024F''‑-]+)/);
+  let wordIdx = 0;
+  const totalWords = parts.filter((_,i) => i%2===1).length;
+  const doStagger  = totalWords < 200;
 
-  text.split(/([A-Za-z\u00C0-\u024F''‑-]+)/).forEach((part, i) => {
+  parts.forEach((part, i) => {
     if (i % 2 === 1) {
       const span = document.createElement('span');
       span.className   = 'word-token';
       span.textContent = part;
       span.setAttribute('role', 'button');
       span.setAttribute('tabindex', '0');
+      if (doStagger) span.style.animationDelay = Math.min(wordIdx * 5, 320) + 'ms';
+      else           span.style.animationDelay = '0ms';
+      // Re-apply looked-up state
+      if (lookedUpWords.has(part.toLowerCase())) span.classList.add('looked-up');
       span.addEventListener('click',   () => handleWordClick(span, part));
-      span.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleWordClick(span, part); }
-      });
+      span.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); handleWordClick(span, part); } });
       container.appendChild(span);
+      wordIdx++;
     } else {
       container.appendChild(document.createTextNode(part));
     }
   });
-
-  // Multi-word selection handler
   container.addEventListener('mouseup', handleTextSelection);
 }
 
-/* ── Smart contextual suggestion ───────────────────────────── */
+/* ── Smart placeholder with suggested word chips ─────────────── */
 function showSmartPlaceholder(text) {
   const words = [...text.matchAll(/[A-Za-z\u00C0-\u024F]+/g)]
     .map(m => m[0])
     .filter(w => w.length >= 6 && !STOPWORDS.has(w.toLowerCase()));
 
-  const sub = document.getElementById('placeholder-sub');
+  const sub    = document.getElementById('placeholder-sub');
+  const chips  = document.getElementById('suggest-chips');
+
   if (words.length === 0) {
-    sub.innerHTML = 'After analyzing your text, tap any word to see its precise meaning in context.';
-  } else {
-    const pick = words[Math.floor(Math.random() * Math.min(words.length, 10))];
-    sub.innerHTML = `Try <em style="cursor:pointer;color:var(--accent);text-decoration:underline;text-decoration-style:dotted" onclick="clickSuggested('${pick}')">${pick}</em> — or any word that catches your eye.`;
+    sub.textContent = 'Click any word to see its precise meaning in context.';
+    chips.classList.add('hidden'); chips.innerHTML = '';
+    return;
   }
+
+  // Pick up to 3 diverse interesting words
+  const seen = new Set();
+  const picks = [];
+  const shuffled = [...words].sort(() => Math.random() - 0.5);
+  for (const w of shuffled) {
+    const lc = w.toLowerCase();
+    if (!seen.has(lc)) { seen.add(lc); picks.push(w); }
+    if (picks.length >= 3) break;
+  }
+
+  sub.textContent = 'Try one of these — or click any word that catches your eye.';
+  chips.innerHTML = picks.map(w =>
+    `<button class="suggest-chip" onclick="clickSuggested('${w}')">${w}</button>`
+  ).join('');
+  chips.classList.remove('hidden');
 }
 
 function clickSuggested(word) {
   for (const t of document.querySelectorAll('.word-token')) {
     if (t.textContent.toLowerCase() === word.toLowerCase()) {
-      t.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      t.click();
-      return;
+      t.scrollIntoView({ behavior:'smooth', block:'center' }); t.click(); return;
     }
   }
 }
@@ -1163,16 +949,11 @@ function clickSuggested(word) {
 function handleTextSelection() {
   const sel = window.getSelection();
   const selText = sel?.toString().trim();
-  // Only intercept genuine multi-word selections (contains a space)
   if (!selText || !selText.includes(' ')) return;
-
   const container = document.getElementById('token-view');
   if (!sel.anchorNode || !container.contains(sel.anchorNode)) return;
-
-  // Clear previous highlights
   clearHighlights();
-
-  const phrase = selText.replace(/\s+/g, ' ').slice(0, 60);
+  const phrase = selText.replace(/\s+/g,' ').slice(0,60);
   sel.removeAllRanges();
   fetchDefinition(phrase, currentContext);
 }
@@ -1180,97 +961,101 @@ function handleTextSelection() {
 /* ── Word click ─────────────────────────────────────────────── */
 function handleWordClick(span, word) {
   clearHighlights();
-
-  // Highlight all other occurrences
   const lc = word.toLowerCase();
   document.querySelectorAll('.word-token').forEach(t => {
     if (t !== span && t.textContent.toLowerCase() === lc) t.classList.add('same-word');
   });
-
   activeToken = span;
   span.classList.add('active', 'pulsing');
-
   fetchDefinition(word, currentContext);
   advanceTooltip(2);
 }
 
 function clearHighlights() {
-  document.querySelectorAll('.word-token.active, .word-token.same-word, .word-token.pulsing')
-    .forEach(t => t.classList.remove('active', 'same-word', 'pulsing'));
+  document.querySelectorAll('.word-token.active,.word-token.same-word,.word-token.pulsing')
+    .forEach(t => t.classList.remove('active','same-word','pulsing'));
+}
+
+/* ── POS → badge colour ─────────────────────────────────────── */
+function posType(pos) {
+  const p = (pos||'').toLowerCase();
+  if (p.includes('noun'))  return 'noun';
+  if (p.includes('verb'))  return 'verb';
+  if (p.includes('adj'))   return 'adj';
+  if (p.includes('adv'))   return 'adv';
+  return 'other';
 }
 
 /* ── Cache key ──────────────────────────────────────────────── */
-function cacheKey(word, context) {
-  return word.toLowerCase() + '::' + context.slice(0, 120);
-}
+function cacheKey(word, context) { return word.toLowerCase()+'::'+context.slice(0,120); }
 
 /* ── Fetch definition ───────────────────────────────────────── */
 async function fetchDefinition(word, context) {
   hideError();
-
   const key = cacheKey(word, context);
   if (defCache.has(key)) {
     if (activeToken) activeToken.classList.remove('pulsing');
-    showResult(word, defCache.get(key));
-    return;
+    showResult(word, defCache.get(key)); return;
   }
-
   showLoading(word);
-
   try {
-    const resp = await fetch('/define', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ word, context }),
-    });
-
+    const resp = await fetch('/define', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({word,context}) });
     if (!resp.ok) {
-      if (resp.status === 429) throw new Error('⏱ Too many requests — wait a moment and try again.');
-      const err = await resp.json().catch(() => ({ detail: resp.statusText }));
-      throw new Error(err.detail || `HTTP ${resp.status}`);
+      if (resp.status===429) throw new Error('⏱ Too many requests — wait a moment and try again.');
+      const err = await resp.json().catch(()=>({detail:resp.statusText}));
+      throw new Error(err.detail||`HTTP ${resp.status}`);
     }
-
     const data = await resp.json();
     defCache.set(key, data);
     addToHistory(word, data);
     if (activeToken) activeToken.classList.remove('pulsing');
+    // Mark all tokens of this word as looked-up
+    lookedUpWords.add(word.toLowerCase());
+    document.querySelectorAll('.word-token').forEach(t => {
+      if (t.textContent.toLowerCase() === word.toLowerCase()) t.classList.add('looked-up');
+    });
     showResult(word, data);
-
-  } catch (err) {
-    clearHighlights();
-    activeToken = null;
-    showPlaceholder();
-    showError(err.message);
+  } catch(err) {
+    clearHighlights(); activeToken = null;
+    showPlaceholder(); showError(err.message);
   }
 }
 
 /* ── History ────────────────────────────────────────────────── */
 function addToHistory(word, data) {
-  if (history.length > 0 && history[0].word.toLowerCase() === word.toLowerCase()) return;
-  history.unshift({ word, data });
-  if (history.length > MAX_HISTORY) history.pop();
+  if (history.length>0 && history[0].word.toLowerCase()===word.toLowerCase()) return;
+  history.unshift({word,data}); if(history.length>MAX_HISTORY) history.pop();
 }
-
 function renderHistory() {
   const strip = document.getElementById('history-strip');
-  if (history.length <= 1) { strip.innerHTML = ''; strip.classList.add('hidden'); return; }
-
+  if (history.length<=1) { strip.innerHTML=''; strip.classList.add('hidden'); return; }
   strip.classList.remove('hidden');
   strip.innerHTML = '<span class="history-label">Recent</span>' +
-    history.slice(1).map((h, i) =>
-      `<button class="history-chip" onclick="showCached(${i + 1})">${h.word}<span class="history-chip-pos"> ${h.data.pos || ''}</span></button>`
+    history.slice(1).map((h,i) =>
+      `<button class="history-chip"
+        onmouseenter="showChipTooltip(event,'${h.data.contextual?.slice(0,80).replace(/'/g,'&#39;')+'…'||''}')"
+        onmouseleave="hideChipTooltip()"
+        onclick="showCached(${i+1})">${h.word}<span class="history-chip-pos"> ${h.data.pos||''}</span></button>`
     ).join('');
 }
-
 function showCached(idx) {
-  const { word, data } = history[idx];
-  clearHighlights();
-  activeToken = null;
-  document.querySelectorAll('.word-token').forEach(t => {
-    if (t.textContent.toLowerCase() === word.toLowerCase()) t.classList.add('same-word');
-  });
+  const {word,data} = history[idx];
+  clearHighlights(); activeToken = null;
+  document.querySelectorAll('.word-token').forEach(t => { if(t.textContent.toLowerCase()===word.toLowerCase()) t.classList.add('same-word'); });
   showResult(word, data, true);
 }
+
+/* ── Chip tooltip ───────────────────────────────────────────── */
+const chipTooltip = document.getElementById('chip-tooltip');
+function showChipTooltip(e, text) {
+  chipTooltip.textContent = text;
+  chipTooltip.style.display = 'block';
+  const rect = e.currentTarget.getBoundingClientRect();
+  chipTooltip.style.left = (rect.left + rect.width/2) + 'px';
+  chipTooltip.style.top  = (rect.top - 10) + 'px';
+  chipTooltip.style.transform = 'translate(-50%,-100%)';
+}
+function hideChipTooltip() { chipTooltip.style.display = 'none'; }
 
 /* ── Panel states ───────────────────────────────────────────── */
 function showPlaceholder() {
@@ -1279,7 +1064,6 @@ function showPlaceholder() {
   document.getElementById('def-result').classList.add('hidden');
   document.getElementById('history-strip').classList.add('hidden');
 }
-
 function showLoading(word) {
   document.getElementById('def-placeholder').classList.add('hidden');
   document.getElementById('def-loading').classList.remove('hidden');
@@ -1287,51 +1071,86 @@ function showLoading(word) {
   document.getElementById('loading-word-label').textContent = word || '';
 }
 
-function showResult(word, data, fromHistory = false) {
+/* ── Show result with sequential cascade animation ──────────── */
+function showResult(word, data, fromHistory=false) {
   document.getElementById('def-placeholder').classList.add('hidden');
   document.getElementById('def-loading').classList.add('hidden');
+  currentResult = {word,data};
 
-  currentResult = { word, data };
-
+  // Populate
   document.getElementById('def-word').textContent       = word;
-  document.getElementById('def-pos').textContent        = data.pos || '';
-  document.getElementById('def-contextual').textContent = data.contextual || '';
-  document.getElementById('def-why').textContent        = data.why || '';
+  const posBadge = document.getElementById('def-pos');
+  posBadge.textContent    = data.pos || '';
+  posBadge.dataset.pos    = posType(data.pos);
 
-  // Simpler synonym
+  // Register tag
+  const regEl = document.getElementById('def-register');
+  if (data.register && data.register !== 'neutral') {
+    regEl.textContent = data.register; regEl.classList.remove('hidden');
+  } else { regEl.classList.add('hidden'); }
+
+  // Simpler
   const simplerRow  = document.getElementById('def-simpler');
   const simplerWord = document.getElementById('def-simpler-word');
   const s = data.simpler;
   if (s && s !== 'null' && s.toLowerCase() !== word.toLowerCase()) {
-    simplerWord.textContent = s;
-    simplerRow.classList.remove('hidden');
-  } else {
-    simplerRow.classList.add('hidden');
-  }
+    simplerWord.textContent = s; simplerRow.classList.remove('hidden');
+  } else { simplerRow.classList.add('hidden'); }
 
-  // Save-button state
+  document.getElementById('def-contextual').textContent = data.contextual || '';
+  document.getElementById('def-why').textContent        = data.why || '';
+
+  // Etymology
+  const etymRow = document.getElementById('etymology-row');
+  const etymEl  = document.getElementById('def-etymology');
+  if (data.etymology && data.etymology !== 'null') {
+    etymEl.textContent = data.etymology; etymRow.classList.remove('hidden');
+  } else { etymRow.classList.add('hidden'); }
+
   updateSaveBtn(word);
 
-  // Force animation replay by toggling hidden
+  // Force DOM reset then cascade sections in
   const resultEl = document.getElementById('def-result');
   resultEl.classList.add('hidden');
   void resultEl.offsetWidth;
   resultEl.classList.remove('hidden');
 
+  const sections = [...resultEl.querySelectorAll(
+    '.def-word-row, .def-section, .etymology-row, #history-strip, .explored-line'
+  )].filter(el => !el.classList.contains('hidden'));
+
+  sections.forEach((el, i) => {
+    el.style.opacity   = '0';
+    el.style.transform = 'translateY(5px)';
+    el.style.transition = 'none';
+    setTimeout(() => {
+      el.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+      el.style.opacity   = '1';
+      el.style.transform = 'translateY(0)';
+    }, i * 65);
+  });
+
   if (!fromHistory) renderHistory();
+
+  // Explored counter
+  const exploredEl = document.getElementById('explored-line');
+  if (lookedUpWords.size > 1) {
+    exploredEl.textContent = `${lookedUpWords.size} words explored`;
+    exploredEl.classList.remove('hidden');
+  } else { exploredEl.classList.add('hidden'); }
 }
 
-/* ── Copy definition ────────────────────────────────────────── */
+/* ── Copy ───────────────────────────────────────────────────── */
 function copyDefinition() {
   if (!currentResult) return;
-  const { word, data } = currentResult;
-  const text = `${word} (${data.pos})\n\n${data.contextual}\n\n↳ ${data.why}`;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copy-btn');
-    const orig = btn.innerHTML;
-    btn.textContent = 'Copied!';
-    setTimeout(() => { btn.innerHTML = orig; }, 2000);
-  }).catch(() => showError('Could not access clipboard.'));
+  const {word,data} = currentResult;
+  const lines = [`${word} (${data.pos})`,'',data.contextual];
+  if (data.etymology && data.etymology!=='null') lines.push('','Origin: '+data.etymology);
+  lines.push('','↳ '+data.why);
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn=document.getElementById('copy-btn'); const orig=btn.innerHTML;
+    btn.textContent='✓ Copied'; setTimeout(()=>{btn.innerHTML=orig;},2000);
+  }).catch(()=>showError('Could not access clipboard.'));
 }
 
 /* ── Permalink ──────────────────────────────────────────────── */
@@ -1339,247 +1158,133 @@ function copyPermalink() {
   if (!currentResult) return;
   const url = new URL(window.location.href.split('?')[0]);
   url.searchParams.set('word', currentResult.word);
-  url.searchParams.set('context', currentContext.slice(0, 600));
+  url.searchParams.set('context', currentContext.slice(0,600));
   navigator.clipboard.writeText(url.toString()).then(() => {
-    const btn = document.getElementById('link-btn');
-    const orig = btn.innerHTML;
-    btn.textContent = 'Copied!';
-    setTimeout(() => { btn.innerHTML = orig; }, 2000);
-  }).catch(() => showError('Could not access clipboard.'));
+    const btn=document.getElementById('link-btn'); const orig=btn.innerHTML;
+    btn.textContent='✓ Copied'; setTimeout(()=>{btn.innerHTML=orig;},2000);
+  }).catch(()=>showError('Could not copy link.'));
 }
 
 /* ── Share as image ─────────────────────────────────────────── */
 async function shareAsImage() {
-  if (!currentResult || !window.html2canvas) {
-    showError('Share is not available yet — try again in a moment.');
-    return;
-  }
+  if (!currentResult || !window.html2canvas) { showError('Share not ready — try again in a moment.'); return; }
   const resultEl = document.getElementById('def-result');
   if (resultEl.classList.contains('hidden')) return;
-
-  const btn = document.getElementById('share-btn');
-  const origInner = btn.innerHTML;
-  btn.textContent = '…';
-
+  const btn=document.getElementById('share-btn'); const orig=btn.innerHTML; btn.textContent='…';
   try {
-    // Expand for full-height capture
     resultEl.classList.add('screenshot-mode');
-    const canvas = await html2canvas(resultEl, {
-      backgroundColor: getComputedStyle(document.documentElement)
-        .getPropertyValue('--surface').trim() || '#fff',
-      scale: 2,
-      useCORS: true,
-      logging: false,
-    });
+    const canvas = await html2canvas(resultEl, { scale:2, useCORS:true, logging:false,
+      backgroundColor: getComputedStyle(document.body).getPropertyValue('--surface').trim()||'#fff' });
     resultEl.classList.remove('screenshot-mode');
-
     const filename = `lexio-${currentResult.word.toLowerCase()}.png`;
-
-    // Use Web Share API on mobile if available
     if (navigator.canShare) {
       canvas.toBlob(async blob => {
-        try {
-          const file = new File([blob], filename, { type: 'image/png' });
-          if (navigator.canShare({ files: [file] })) {
-            await navigator.share({ files: [file], title: currentResult.word });
-            return;
-          }
-        } catch {}
-        downloadCanvas(canvas, filename);
-      }, 'image/png');
-    } else {
-      downloadCanvas(canvas, filename);
-    }
-  } catch {
-    resultEl.classList.remove('screenshot-mode');
-    showError('Could not generate image.');
-  } finally {
-    btn.innerHTML = origInner;
-  }
+        try { const f=new File([blob],filename,{type:'image/png'}); if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:currentResult.word});return;} } catch {}
+        downloadCanvas(canvas,filename);
+      },'image/png');
+    } else { downloadCanvas(canvas,filename); }
+  } catch { resultEl.classList.remove('screenshot-mode'); showError('Could not generate image.'); }
+  finally { btn.innerHTML=orig; }
 }
-
-function downloadCanvas(canvas, filename) {
-  const a = document.createElement('a');
-  a.href = canvas.toDataURL('image/png');
-  a.download = filename;
-  a.click();
-}
+function downloadCanvas(canvas,filename) { const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download=filename; a.click(); }
 
 /* ── Save / word bank ───────────────────────────────────────── */
-function isSaved(word) {
-  return wordBank.some(e => e.word.toLowerCase() === word.toLowerCase());
-}
-
+function isSaved(word) { return wordBank.some(e=>e.word.toLowerCase()===word.toLowerCase()); }
 function updateSaveBtn(word) {
-  const btn = document.getElementById('save-btn');
+  const btn   = document.getElementById('save-btn');
+  const icon  = document.getElementById('save-icon');
+  const label = document.getElementById('save-label');
   if (isSaved(word)) {
-    btn.classList.add('saved');
-    btn.title = 'Remove from word bank';
-    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Saved`;
+    btn.classList.add('saved'); btn.title='Remove from word bank';
+    icon.setAttribute('fill','currentColor'); label.textContent='Saved';
   } else {
-    btn.classList.remove('saved');
-    btn.title = 'Save to word bank';
-    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> Save`;
+    btn.classList.remove('saved'); btn.title='Save to word bank';
+    icon.setAttribute('fill','none'); label.textContent='Save';
   }
 }
-
 function toggleSave() {
   if (!currentResult) return;
-  const { word, data } = currentResult;
-  if (isSaved(word)) {
-    wordBank = wordBank.filter(e => e.word.toLowerCase() !== word.toLowerCase());
-  } else {
-    wordBank.unshift({
-      word,
-      pos:        data.pos || '',
-      contextual: data.contextual || '',
-      why:        data.why || '',
-      simpler:    data.simpler || null,
-      context:    currentContext.slice(0, 200),
-      savedAt:    new Date().toISOString(),
-    });
-  }
-  saveWordBank();
-  updateSaveBtn(word);
+  const {word,data} = currentResult;
+  if (isSaved(word)) { wordBank=wordBank.filter(e=>e.word.toLowerCase()!==word.toLowerCase()); }
+  else { wordBank.unshift({word,pos:data.pos||'',contextual:data.contextual||'',why:data.why||'',simpler:data.simpler||null,etymology:data.etymology||null,register:data.register||null,context:currentContext.slice(0,200),savedAt:new Date().toISOString()}); }
+  saveWordBank(); updateSaveBtn(word);
 }
 
-/* ── Word bank overlay ──────────────────────────────────────── */
-function openWordBank() {
-  renderWordBankList();
-  document.getElementById('wb-overlay').classList.remove('hidden');
-}
-
-function closeWordBank() {
-  document.getElementById('wb-overlay').classList.add('hidden');
-}
-
+function openWordBank()   { renderWordBankList(); document.getElementById('wb-overlay').classList.remove('hidden'); }
+function closeWordBank()  { document.getElementById('wb-overlay').classList.add('hidden'); }
 function renderWordBankList() {
-  const list  = document.getElementById('wb-list');
-  const count = document.getElementById('wb-count');
-  count.textContent = wordBank.length === 0 ? '' :
-    `${wordBank.length} word${wordBank.length !== 1 ? 's' : ''}`;
-
-  if (wordBank.length === 0) {
-    list.innerHTML = '<p class="wb-empty">No saved words yet.<br>Click the bookmark icon on any definition to save it here.</p>';
-    return;
-  }
-
-  list.innerHTML = wordBank.map((e, i) => `
-    <div class="wb-entry">
-      <div class="wb-entry-header">
-        <span class="wb-word">${e.word}</span>
-        ${e.pos ? `<span class="wb-pos">${e.pos}</span>` : ''}
-        <button class="wb-delete" onclick="deleteFromBank(${i})" title="Remove">×</button>
-      </div>
-      <p class="wb-def">${e.contextual}</p>
-    </div>
-  `).join('');
+  const list=document.getElementById('wb-list'), count=document.getElementById('wb-count');
+  count.textContent = wordBank.length===0?'':`${wordBank.length} word${wordBank.length!==1?'s':''}`;
+  if (!wordBank.length) { list.innerHTML='<p class="wb-empty">No saved words yet.<br>Click the bookmark icon on any definition to save it here.</p>'; return; }
+  list.innerHTML=wordBank.map((e,i)=>`<div class="wb-entry"><div class="wb-entry-header"><span class="wb-word">${e.word}</span>${e.pos?`<span class="wb-pos">${e.pos}</span>`:''}<button class="wb-delete" onclick="deleteFromBank(${i})" title="Remove">×</button></div><p class="wb-def">${e.contextual}</p></div>`).join('');
 }
-
-function deleteFromBank(i) {
-  wordBank.splice(i, 1);
-  saveWordBank();
-  renderWordBankList();
-}
-
-/* ── Export TSV (Anki-importable) ───────────────────────────── */
+function deleteFromBank(i) { wordBank.splice(i,1); saveWordBank(); renderWordBankList(); }
 function exportCSV() {
-  if (wordBank.length === 0) return;
-  const header = ['Word','Part of Speech','Contextual Definition','Why This Word','Simpler Synonym','Context (excerpt)','Saved'].join('\t');
-  const rows = wordBank.map(e => [
-    e.word, e.pos, e.contextual, e.why, e.simpler || '',
-    e.context.replace(/[\t\n\r]/g, ' '),
-    new Date(e.savedAt).toLocaleDateString(),
-  ].map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join('\t'));
-
-  const blob = new Blob([[header, ...rows].join('\n')], { type: 'text/tab-separated-values' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'lexio-wordbank.tsv';
-  a.click();
+  if (!wordBank.length) return;
+  const header=['Word','Part of Speech','Contextual Definition','Why This Word','Etymology','Register','Simpler Synonym','Context (excerpt)','Saved'].join('\t');
+  const rows=wordBank.map(e=>[e.word,e.pos,e.contextual,e.why,e.etymology||'',e.register||'',e.simpler||'',e.context.replace(/[\t\n\r]/g,' '),new Date(e.savedAt).toLocaleDateString()].map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join('\t'));
+  const blob=new Blob([[header,...rows].join('\n')],{type:'text/tab-separated-values'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='lexio-wordbank.tsv'; a.click();
 }
 
-/* ── Error helpers ──────────────────────────────────────────── */
-function showError(msg) {
-  const b = document.getElementById('error-banner');
-  b.textContent = msg;
-  b.classList.remove('hidden');
-}
-
-function hideError() {
-  document.getElementById('error-banner').classList.add('hidden');
-}
+/* ── Error ──────────────────────────────────────────────────── */
+function showError(msg) { const b=document.getElementById('error-banner'); b.textContent=msg; b.classList.remove('hidden'); }
+function hideError()    { document.getElementById('error-banner').classList.add('hidden'); }
 
 /* ── Permalink on load ──────────────────────────────────────── */
 function checkPermalink() {
-  const params  = new URLSearchParams(window.location.search);
-  const word    = params.get('word');
-  const context = params.get('context');
-  if (!word || !context) return;
-
-  inputText.value = context;
-  updateCharCount();
-  analyze();
-
-  // After tokens render, auto-click the target word
-  requestAnimationFrame(() => {
+  const params=new URLSearchParams(window.location.search);
+  const word=params.get('word'), context=params.get('context');
+  if (!word||!context) return;
+  inputText.value=context; updateCharCount(); analyze();
+  requestAnimationFrame(()=>{
     for (const t of document.querySelectorAll('.word-token')) {
-      if (t.textContent.toLowerCase() === word.toLowerCase()) {
-        t.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        t.click();
-        break;
-      }
+      if (t.textContent.toLowerCase()===word.toLowerCase()) { t.scrollIntoView({behavior:'smooth',block:'center'}); t.click(); break; }
     }
   });
 }
 
-/* ── First-visit tooltips ───────────────────────────────────── */
+/* ── Tooltips ───────────────────────────────────────────────── */
 function initTooltips() {
   if (localStorage.getItem(VISITED_KEY)) return;
-  tooltipStep = 0;
-  document.getElementById('tooltip-0').classList.add('visible');
+  tooltipStep=0; document.getElementById('tooltip-0').classList.add('visible');
 }
-
 function advanceTooltip(step) {
   if (localStorage.getItem(VISITED_KEY)) return;
-  if (step === 1 && tooltipStep === 0) {
-    tooltipStep = 1;
+  if (step===1 && tooltipStep===0) {
+    tooltipStep=1;
     document.getElementById('tooltip-0').classList.remove('visible');
     document.getElementById('tooltip-1').classList.remove('hidden');
-    document.getElementById('tooltip-1').classList.add('visible');
-  } else if (step === 2) {
-    dismissTooltips();
-  }
+    requestAnimationFrame(()=>document.getElementById('tooltip-1').classList.add('visible'));
+  } else if (step===2) { dismissTooltips(); }
+}
+function dismissTooltips() {
+  document.querySelectorAll('.tooltip-box').forEach(t=>t.classList.remove('visible'));
+  try { localStorage.setItem(VISITED_KEY,'1'); } catch {}
 }
 
-function dismissTooltips() {
-  document.querySelectorAll('.tooltip-box').forEach(t => t.classList.remove('visible'));
-  try { localStorage.setItem(VISITED_KEY, '1'); } catch {}
+/* ── Keyboard shortcuts ─────────────────────────────────────── */
+function toggleShortcuts() {
+  shortcutsOpen=!shortcutsOpen;
+  document.getElementById('shortcuts-overlay').classList.toggle('hidden',!shortcutsOpen);
 }
 
 /* ── Init ───────────────────────────────────────────────────── */
-loadWordBank();
-loadTweaks();
-applyTweaks();
-updateWBBadge();
-startPlaceholderRotation();
-setupDragAndDrop();
-checkPermalink();
-initTooltips();
+loadWordBank(); loadTweaks(); applyTweaks(); updateWBBadge();
+startPlaceholderRotation(); setupDragAndDrop(); checkPermalink(); initTooltips();
 
-/* Keyboard shortcuts */
-inputText.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') analyze();
-});
+inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key==='Enter') analyze(); });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeWordBank();
+  const tag = document.activeElement?.tagName;
+  if (tag==='TEXTAREA'||tag==='INPUT') return;
+  if (e.key==='Escape') { closeWordBank(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='?')  toggleShortcuts();
+  if (e.key==='b'||e.key==='B') openWordBank();
 });
 
-// Close word bank when clicking the overlay backdrop
-document.getElementById('wb-overlay').addEventListener('click', e => {
-  if (e.target === document.getElementById('wb-overlay')) closeWordBank();
-});
+document.getElementById('wb-overlay').addEventListener('click', e => { if(e.target===document.getElementById('wb-overlay')) closeWordBank(); });
+document.getElementById('shortcuts-overlay').addEventListener('click', e => { if(e.target===document.getElementById('shortcuts-overlay')) toggleShortcuts(); });
 </script>
 </body>
 </html>

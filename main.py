@@ -63,13 +63,15 @@ async def define_word(request: Request, req: DefineRequest):
         '{"pos": "noun/verb/etc", '
         '"contextual": "definition as used in this passage, 1-2 sentences", '
         '"why": "why this word rather than a simpler synonym, 1 sentence", '
-        '"simpler": "the simplest common one-word synonym, or null if none"}'
+        '"simpler": "the simplest common one-word synonym, or null if none", '
+        '"etymology": "brief word origin, e.g. \'from Latin ephemeron\' — or null if uncertain", '
+        '"register": "exactly one of: formal, literary, technical, colloquial, neutral, archaic"}'
     )
 
     try:
         message = client.messages.create(
             model="claude-haiku-4-5-20251001",
-            max_tokens=350,
+            max_tokens=420,
             messages=[{"role": "user", "content": prompt}],
         )
 
