@@ -5,6 +5,7 @@ python-dotenv
 slowapi
 trafilatura
 passlib[bcrypt]
+bcrypt<4
 python-jose[cryptography]
 sqlalchemy
 python-multipart
