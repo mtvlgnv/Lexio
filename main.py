@@ -5,7 +5,8 @@ import secrets
 import datetime
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Request, Depends, Header
+from fastapi import FastAPI, HTTPException, Request, Depends, Header, BackgroundTasks
+from sqlalchemy import func
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
@@ -46,7 +47,18 @@ class WordBankEntry(Base):
     data     = Column(Text, nullable=False)   # full JSON blob
     saved_at = Column(DateTime, default=datetime.datetime.utcnow)
 
+class SearchLog(Base):
+    """Anonymous search events — no user ID, no context, no IP stored."""
+    __tablename__ = "search_log"
+    id          = Column(Integer, primary_key=True)
+    word        = Column(String, nullable=False, index=True)
+    searched_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
+
 Base.metadata.create_all(engine)
+
+# ── In-memory cache for top-words (refreshed every hour) ─────────────────────
+_top_words_cache: dict = {"data": None, "fetched_at": None}
+_CACHE_TTL = datetime.timedelta(hours=1)
 
 
 def get_db():
@@ -160,11 +172,28 @@ class WBSyncRequest(BaseModel):
     entries: list[dict]   # list of word bank objects from the client
 
 
+# ── Search logging (fire-and-forget, completely anonymous) ────────────────────
+
+def _log_search(word: str) -> None:
+    """Write one anonymous row. Normalise to lowercase, skip very short words."""
+    w = word.strip().lower()
+    if len(w) < 2:
+        return
+    db = SessionLocal()
+    try:
+        db.add(SearchLog(word=w))
+        db.commit()
+    except Exception:
+        db.rollback()
+    finally:
+        db.close()
+
+
 # ── /define ──────────────────────────────────────────────────────────────────
 
 @app.post("/define")
 @limiter.limit("20/minute")
-async def define_word(request: Request, req: DefineRequest):
+async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks):
     lang_note = (
         f"Respond in {req.lang}."
         if req.lang and req.lang.lower() not in ("auto", "detect", "")
@@ -198,6 +227,9 @@ async def define_word(request: Request, req: DefineRequest):
         for key in ("pos", "contextual", "why"):
             if key not in result:
                 raise ValueError(f"Missing key: {key}")
+
+        # Log the search anonymously after we know the response was good
+        bg.add_task(_log_search, req.word)
         return result
 
     except json.JSONDecodeError as exc:
@@ -240,6 +272,47 @@ async def fetch_article(request: Request, payload: FetchRequest):
         raise
     except Exception as exc:
         raise HTTPException(status_code=422, detail=str(exc))
+
+
+# ── /stats/top-words ─────────────────────────────────────────────────────────
+
+@app.get("/stats/top-words")
+async def top_words(db: DBSession = Depends(get_db)):
+    """
+    Return the top 5 most-looked-up words in the current calendar month.
+    Result is cached in memory for 1 hour so the DB isn't queried on every
+    page load.
+    """
+    now = datetime.datetime.utcnow()
+
+    # Serve from cache if still fresh
+    if (
+        _top_words_cache["data"] is not None
+        and _top_words_cache["fetched_at"] is not None
+        and now - _top_words_cache["fetched_at"] < _CACHE_TTL
+    ):
+        return _top_words_cache["data"]
+
+    # Start of current month
+    month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    rows = (
+        db.query(SearchLog.word, func.count(SearchLog.id).label("n"))
+        .filter(SearchLog.searched_at >= month_start)
+        .group_by(SearchLog.word)
+        .order_by(func.count(SearchLog.id).desc())
+        .limit(5)
+        .all()
+    )
+
+    result = {
+        "month": now.strftime("%B %Y"),
+        "words": [{"word": r.word, "count": r.n} for r in rows],
+    }
+
+    _top_words_cache["data"]       = result
+    _top_words_cache["fetched_at"] = now
+    return result
 
 
 # ── /auth/register ────────────────────────────────────────────────────────────

@@ -689,6 +689,74 @@
     }
     .lp-btn-ghost:hover { background: var(--accent-lt); }
 
+    /* Trending words */
+    .lp-trending {
+      padding: 72px 48px;
+      background: var(--surface); border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+    .lp-trending-header {
+      display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
+    }
+    .lp-trending-month {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .lp-trending-list {
+      display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 560px;
+    }
+    .lp-trending-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 20px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+    .lp-trending-item:hover {
+      border-color: var(--accent-mid); transform: translateX(4px);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .lp-trending-rank {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      background: var(--accent-lt); color: var(--accent);
+      font-size: 0.75rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lp-trending-item:nth-child(1) .lp-trending-rank { background: oklch(88% 0.12 75); color: oklch(45% 0.15 54); }
+    .lp-trending-word {
+      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 500;
+      color: var(--text); flex: 1; text-transform: capitalize;
+    }
+    .lp-trending-bar-wrap {
+      width: 80px; height: 4px; background: var(--border); border-radius: 2px; flex-shrink: 0;
+    }
+    .lp-trending-bar {
+      height: 4px; background: var(--accent-mid); border-radius: 2px;
+      transition: width 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+    .lp-trending-count {
+      font-size: 0.74rem; color: var(--muted); white-space: nowrap; min-width: 48px; text-align: right;
+    }
+    /* Skeleton loading */
+    .lp-trending-skeleton {
+      display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 560px;
+    }
+    .skeleton-row {
+      height: 56px; background: var(--border); border-radius: var(--radius);
+      animation: skeleton-pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes skeleton-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.5; }
+    }
+    .lp-trending-empty {
+      font-size: 0.88rem; color: var(--muted); font-style: italic; text-align: center;
+    }
+    @media (max-width: 760px) {
+      .lp-trending { padding: 56px 24px; }
+      .lp-trending-bar-wrap { display: none; }
+    }
+
     /* How it works */
     .lp-steps {
       padding: 80px 48px;
@@ -1023,6 +1091,25 @@
       </button>
       <button class="lp-btn-ghost" onclick="openDesktopModal()">Get the Mac app</button>
     </div>
+  </div>
+
+  <!-- Trending words -->
+  <div class="lp-trending">
+    <div class="lp-trending-header">
+      <span class="lp-trending-month" id="trending-month">This month</span>
+      <h2 class="lp-section-title">What people are <em>looking up</em></h2>
+    </div>
+    <!-- Skeleton shown while loading -->
+    <div class="lp-trending-skeleton" id="trending-skeleton">
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row" style="opacity:.8"></div>
+      <div class="skeleton-row" style="opacity:.6"></div>
+      <div class="skeleton-row" style="opacity:.45"></div>
+      <div class="skeleton-row" style="opacity:.3"></div>
+    </div>
+    <!-- Filled by JS -->
+    <div class="lp-trending-list hidden" id="trending-list"></div>
+    <p class="lp-trending-empty hidden" id="trending-empty">No searches recorded yet this month — be the first!</p>
   </div>
 
   <!-- How it works -->
@@ -2093,6 +2180,80 @@ async function syncWordBank() {
     const statusEl = document.getElementById('auth-sync-status');
     if (statusEl) statusEl.textContent = `Synced ${wordBank.length} word${wordBank.length !== 1 ? 's' : ''} ✓`;
   } catch {}
+}
+
+/* ── Trending words ─────────────────────────────────────────── */
+(function loadTrending() {
+  const CACHE_KEY = 'lexio_trending';
+  const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in ms
+
+  async function fetchAndRender() {
+    // Check localStorage cache first
+    try {
+      const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
+      if (cached && Date.now() - cached.ts < CACHE_TTL) {
+        render(cached.data);
+        return;
+      }
+    } catch {}
+
+    try {
+      const res  = await fetch('/stats/top-words');
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch {}
+      render(data);
+    } catch {
+      // Server unreachable — hide skeleton, show nothing
+      document.getElementById('trending-skeleton').classList.add('hidden');
+    }
+  }
+
+  function render(data) {
+    const skeleton = document.getElementById('trending-skeleton');
+    const list     = document.getElementById('trending-list');
+    const empty    = document.getElementById('trending-empty');
+    const monthEl  = document.getElementById('trending-month');
+
+    skeleton.classList.add('hidden');
+
+    if (monthEl && data.month) monthEl.textContent = data.month;
+
+    if (!data.words || data.words.length === 0) {
+      empty.classList.remove('hidden');
+      return;
+    }
+
+    const maxCount = data.words[0].count || 1;
+    list.innerHTML = data.words.map((w, i) => `
+      <div class="lp-trending-item" onclick="prefillWord(${JSON.stringify(w.word)})">
+        <div class="lp-trending-rank">${i + 1}</div>
+        <div class="lp-trending-word">${escHtml(w.word)}</div>
+        <div class="lp-trending-bar-wrap">
+          <div class="lp-trending-bar" style="width:${Math.round(w.count / maxCount * 100)}%"></div>
+        </div>
+        <div class="lp-trending-count">${w.count.toLocaleString()} ${w.count === 1 ? 'lookup' : 'lookups'}</div>
+      </div>
+    `).join('');
+
+    list.classList.remove('hidden');
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  fetchAndRender();
+})();
+
+function prefillWord(word) {
+  // Scroll to app, fill a sample sentence so the user can immediately click the word
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const ta = document.getElementById('input-text');
+  if (!ta.value) {
+    ta.value = `The word "${word}" is used in many interesting contexts.`;
+    updateCharCount && updateCharCount();
+  }
 }
 
 // Restore session on load
