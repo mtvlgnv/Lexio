@@ -1,6 +1,6 @@
 const { app, BrowserWindow, globalShortcut, Menu, shell, Tray, nativeImage } = require('electron');
 
-app.setName('Lexio');
+app.setName('Lexio Mini');
 
 // Live in the menu bar, not the dock
 if (process.platform === 'darwin') app.dock.hide();

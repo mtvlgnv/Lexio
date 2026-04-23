@@ -16,8 +16,8 @@
     "electron-builder": "^25.0.0"
   },
   "build": {
-    "appId":       "site.lexio.desktop",
-    "productName": "Lexio",
+    "appId":       "site.lexio.mini",
+    "productName": "Lexio Mini",
     "afterSign":   "scripts/after-sign.js",
     "files": ["main.js"],
     "protocols": [
@@ -30,8 +30,9 @@
       "identity": null
     },
     "dmg": {
-      "title":      "Lexio",
-      "icon":       "build/icon.icns",
+      "title":        "Lexio Mini",
+      "artifactName": "Lexio-Mini-${version}-arm64.dmg",
+      "icon":         "build/icon.icns",
       "contents": [
         { "x": 130, "y": 220, "type": "file"    },
         { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
