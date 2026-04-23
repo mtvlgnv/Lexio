@@ -84,7 +84,7 @@ function createWindow() {
     roundedCorners: true,
   });
 
-  win.loadURL('http://lexio.site/compact.html');
+  win.loadURL('https://lexio.site/compact.html');
 
   // Close button hides, doesn't quit
   win.on('close', e => { e.preventDefault(); win.hide(); });

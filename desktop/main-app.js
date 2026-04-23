@@ -45,7 +45,7 @@ const menuTemplate = [
     submenu: [
       {
         label: 'Open lexio.site',
-        click: () => shell.openExternal('http://lexio.site'),
+        click: () => shell.openExternal('https://lexio.site'),
       },
     ],
   },
@@ -75,7 +75,7 @@ function createWindow() {
     roundedCorners:      true,
   });
 
-  win.loadURL('http://lexio.site?app=1');
+  win.loadURL('https://lexio.site?app=1');
 
   // Open all target="_blank" / window.open() links in the real browser
   win.webContents.setWindowOpenHandler(({ url }) => {
