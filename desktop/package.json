@@ -5,9 +5,11 @@
   "main": "main.js",
   "scripts": {
     "start":       "electron .",
+    "start-app":   "electron main-app.js",
     "create-icon": "node_modules/.bin/electron create-icon.js",
     "build-icons": "bash scripts/build-icons.sh",
-    "dist":        "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64"
+    "dist":        "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64",
+    "dist-app":    "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64 --config electron-builder-app.json"
   },
   "devDependencies": {
     "electron":         "^34.0.0",
