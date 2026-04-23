@@ -1,28 +1,73 @@
-const { app, BrowserWindow, globalShortcut, Menu, shell } = require('electron');
+const { app, BrowserWindow, globalShortcut, Menu, shell, Tray, nativeImage } = require('electron');
 
 app.setName('Lexio');
 
-// On macOS, keep the process alive even when the window is hidden
-// so the global hotkey still works.
-if (process.platform === 'darwin') {
-  app.dock.hide();
+// Live in the menu bar, not the dock
+if (process.platform === 'darwin') app.dock.hide();
+
+let win  = null;
+let tray = null;
+
+// Minimal 1×1 transparent PNG — the visible label comes from tray.setTitle()
+const BLANK_ICON = nativeImage.createFromDataURL(
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
+);
+
+/* ── Tray ───────────────────────────────────────────────── */
+function createTray() {
+  tray = new Tray(BLANK_ICON);
+  tray.setTitle(' Lx ');
+  tray.setToolTip('Lexio — contextual definitions');
+
+  // Left-click: toggle window
+  tray.on('click', (_, bounds) => toggleWindow(bounds));
+
+  // Right-click: small context menu
+  tray.on('right-click', () =>
+    tray.popUpContextMenu(
+      Menu.buildFromTemplate([
+        { label: 'Show Lexio',  click: () => showWindow()  },
+        { type: 'separator'                                  },
+        { label: 'Quit Lexio', click: () => app.quit()     },
+      ])
+    )
+  );
 }
 
-let win = null;
+/* ── Window positioning ─────────────────────────────────── */
+function getPosition(trayBounds) {
+  const b = trayBounds || tray.getBounds();
+  const { width, height } = win.getBounds();
+  return {
+    x: Math.round(b.x + b.width  / 2 - width  / 2),
+    y: Math.round(b.y + b.height + 4),
+  };
+}
 
+function showWindow(trayBounds) {
+  const { x, y } = getPosition(trayBounds);
+  win.setPosition(x, y);
+  win.show();
+  win.focus();
+}
+
+function toggleWindow(trayBounds) {
+  if (win.isVisible() && win.isFocused()) win.hide();
+  else showWindow(trayBounds);
+}
+
+/* ── BrowserWindow ──────────────────────────────────────── */
 function createWindow() {
   win = new BrowserWindow({
-    width: 400,
-    height: 620,
+    width:    400,
+    height:   620,
     minWidth: 340,
-    minHeight: 440,
+    minHeight:440,
     maxWidth: 560,
 
-    // Always float above other apps
     alwaysOnTop: true,
-    level: 'floating',
+    level: 'pop-up-menu',   // sits above normal windows, below system UI
 
-    // Frameless — the page header acts as drag handle
     frame: false,
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 14, y: 13 },
@@ -34,8 +79,6 @@ function createWindow() {
 
     show: false,
     backgroundColor: '#f5efe8',
-
-    // macOS frosted-glass effect
     vibrancy: 'under-window',
     visualEffectState: 'active',
     roundedCorners: true,
@@ -43,56 +86,43 @@ function createWindow() {
 
   win.loadURL('http://lexio.site/compact.html');
 
-  win.once('ready-to-show', () => win.show());
+  // Close button hides, doesn't quit
+  win.on('close', e => { e.preventDefault(); win.hide(); });
 
-  // Closing the window hides it — the app lives in the global hotkey
-  win.on('close', e => {
-    e.preventDefault();
-    win.hide();
-  });
-
-  // Open external links in the real browser, not inside the overlay
+  // External links open in the real browser
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: 'deny' };
   });
 }
 
-function toggle() {
-  if (!win) return;
-  if (win.isVisible() && win.isFocused()) {
-    win.hide();
-  } else {
-    win.show();
-    win.focus();
-  }
-}
+/* ── lexio:// URL scheme  ───────────────────────────────── */
+// Lets the website's "Open in Desktop App" button surface this window.
+// Works once the app is installed as a proper .app bundle.
+app.setAsDefaultProtocolClient('lexio');
 
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+  showWindow();
+});
+
+/* ── Boot ───────────────────────────────────────────────── */
 app.whenReady().then(() => {
   createWindow();
+  createTray();
 
-  // Global hotkey — works even when another app has focus
-  const ok = globalShortcut.register('CommandOrControl+Shift+L', toggle);
-  if (!ok) console.warn('Could not register global shortcut');
+  // Keyboard shortcut still works from anywhere
+  globalShortcut.register('CommandOrControl+Shift+L', () => toggleWindow());
 
-  // Re-show when the user clicks the dock icon (macOS)
-  app.on('activate', () => {
-    if (win && !win.isVisible()) win.show();
-  });
+  app.on('activate', () => { if (!win.isVisible()) showWindow(); });
 });
 
 app.on('will-quit', () => globalShortcut.unregisterAll());
+app.on('before-quit', () => win?.removeAllListeners('close'));
 
-// Quit properly on Cmd+Q despite the close-to-hide behaviour
-app.on('before-quit', () => {
-  win?.removeAllListeners('close');
-});
-
-// Single instance — if launched again, just surface the existing window
+// Single-instance lock
 if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {
-  app.on('second-instance', () => {
-    if (win) { win.show(); win.focus(); }
-  });
+  app.on('second-instance', () => { if (win) showWindow(); });
 }
