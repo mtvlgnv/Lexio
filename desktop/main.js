@@ -12,16 +12,17 @@ let win = null;
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 920,
-    height: 700,
-    minWidth: 680,
-    minHeight: 460,
+    width: 400,
+    height: 620,
+    minWidth: 340,
+    minHeight: 440,
+    maxWidth: 560,
 
     // Always float above other apps
     alwaysOnTop: true,
-    level: 'floating',          // macOS window level
+    level: 'floating',
 
-    // Frameless — we use the header as a drag handle inside the page
+    // Frameless — the page header acts as drag handle
     frame: false,
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 14, y: 13 },
@@ -32,7 +33,7 @@ function createWindow() {
     },
 
     show: false,
-    backgroundColor: '#f5efe8',  // matches warm --bg so no flash on load
+    backgroundColor: '#f5efe8',
 
     // macOS frosted-glass effect
     vibrancy: 'under-window',
@@ -40,8 +41,7 @@ function createWindow() {
     roundedCorners: true,
   });
 
-  // Load Lexio with compact=1 so the page makes the header draggable
-  win.loadURL('http://lexio.site?compact=1');
+  win.loadURL('http://lexio.site/compact.html');
 
   win.once('ready-to-show', () => win.show());
 

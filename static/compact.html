@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lexio</title>
+  <meta name="darkreader-lock">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       oklch(96.5% 0.012 75);
+      --surface:  oklch(99.2% 0.006 75);
+      --border:   oklch(89%   0.014 75);
+      --accent:   oklch(58%   0.17  54);
+      --accent-dk:oklch(50%   0.17  54);
+      --accent-lt:oklch(96%   0.06  75);
+      --text:     oklch(18%   0.015 65);
+      --text-mid: oklch(35%   0.012 65);
+      --muted:    oklch(58%   0.01  65);
+      --danger:   oklch(55%   0.2   25);
+      --danger-bg:oklch(97%   0.03  25);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:       oklch(14%  0.01  65);
+        --surface:  oklch(19%  0.012 65);
+        --border:   oklch(28%  0.015 65);
+        --accent:   oklch(68%  0.17  54);
+        --accent-dk:oklch(75%  0.15  54);
+        --accent-lt:oklch(22%  0.04  65);
+        --text:     oklch(92%  0.008 75);
+        --text-mid: oklch(75%  0.008 75);
+        --muted:    oklch(55%  0.008 70);
+        --danger-bg:oklch(20%  0.03  25);
+      }
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Title bar (drag handle) ────────────────────────────── */
+    #titlebar {
+      -webkit-app-region: drag;
+      height: 40px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 12px 0 76px; /* 76px leaves room for macOS traffic lights */
+      border-bottom: 1px solid var(--border);
+      gap: 8px;
+    }
+
+    .brand {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+    .brand em { font-style: italic; color: var(--accent); }
+
+    #titlebar .spacer { flex: 1; }
+
+    #titlebar button {
+      -webkit-app-region: no-drag;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 3px 7px;
+      border-radius: 5px;
+      font-size: 0.68rem;
+      font-family: inherit;
+      transition: background 0.12s, color 0.12s;
+      line-height: 1;
+    }
+    #titlebar button:hover { background: var(--bg); color: var(--text); }
+
+    /* ── Input zone ─────────────────────────────────────────── */
+    #input-zone {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #paste-area {
+      width: 100%;
+      min-height: 72px;
+      max-height: 130px;
+      resize: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.15s, min-height 0.2s, max-height 0.2s;
+    }
+    #paste-area:focus { border-color: var(--accent); }
+    #paste-area::placeholder { color: var(--muted); font-style: italic; font-family: 'Lora', serif; }
+
+    /* Collapsed state after analyze */
+    #paste-area.collapsed { min-height: 0; max-height: 38px; overflow: hidden; }
+
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #char-count { font-size: 0.7rem; color: var(--muted); flex: 1; font-variant-numeric: tabular-nums; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      padding: 6px 18px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--accent-dk); }
+
+    .btn-ghost {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 6px 12px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    .btn-ghost:hover { background: var(--bg); color: var(--text); }
+
+    .hidden { display: none !important; }
+
+    /* ── Token view ─────────────────────────────────────────── */
+    #token-view {
+      flex: 1;
+      padding: 12px 14px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      word-break: break-word;
+      font-weight: 300;
+      min-height: 0;
+    }
+
+    .word-token {
+      display: inline;
+      border-radius: 3px;
+      padding: 1px 2px;
+      cursor: pointer;
+      transition: background 0.1s, color 0.1s;
+    }
+    .word-token:hover { background: oklch(93% 0.06 72); }
+
+    @media (prefers-color-scheme: dark) {
+      .word-token:hover { background: oklch(26% 0.04 65); }
+      .word-token.active { background: oklch(32% 0.08 65); color: oklch(75% 0.15 54); }
+    }
+
+    .word-token.active { background: oklch(86% 0.1 68); color: oklch(40% 0.16 54); }
+
+    @keyframes token-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .word-token.pulsing { animation: token-pulse 0.9s ease-in-out infinite; }
+
+    /* ── Empty state ────────────────────────────────────────── */
+    #empty-state {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      text-align: center;
+    }
+    #empty-state p {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+    #empty-state .glyph {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 2.2rem;
+      color: oklch(88% 0.06 70);
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #empty-state .glyph { color: oklch(28% 0.04 65); }
+    }
+
+    /* ── Loading ────────────────────────────────────────────── */
+    #loading {
+      border-top: 1px solid var(--border);
+      padding: 14px 16px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+      font-family: 'Lora', serif;
+      flex-shrink: 0;
+    }
+
+    /* ── Error ──────────────────────────────────────────────── */
+    #error-msg {
+      border-top: 1px solid var(--border);
+      padding: 10px 14px;
+      background: var(--danger-bg);
+      color: var(--danger);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Definition panel ───────────────────────────────────── */
+    #def-panel {
+      border-top: 1px solid var(--border);
+      padding: 14px 16px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      max-height: 54vh;
+      overflow-y: auto;
+    }
+
+    .def-head {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    #def-word {
+      font-family: 'Lora', serif;
+      font-size: 1.45rem;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    #def-pos {
+      font-size: 0.64rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: oklch(95% 0.05 65);
+      color: oklch(48% 0.16 65);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #def-pos { background: oklch(22% 0.04 65); color: oklch(72% 0.14 65); }
+    }
+
+    #def-ipa {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: 'Lora', serif;
+    }
+
+    #def-contextual {
+      font-size: 0.87rem;
+      line-height: 1.68;
+      color: var(--text);
+      font-weight: 300;
+    }
+
+    #def-why {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--text-mid);
+      font-style: italic;
+      font-family: 'Lora', serif;
+      padding-left: 10px;
+      border-left: 2px solid var(--border);
+    }
+
+    #def-etymology {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-style: italic;
+      font-family: 'Lora', serif;
+    }
+
+    /* Copy button */
+    #copy-btn {
+      align-self: flex-start;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-family: inherit;
+      font-size: 0.7rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    #copy-btn:hover { background: var(--bg); color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- Title bar — drag handle -->
+<div id="titlebar">
+  <span class="brand">Le<em>x</em>io</span>
+  <div class="spacer"></div>
+</div>
+
+<!-- Input -->
+<div id="input-zone">
+  <textarea id="paste-area" placeholder="Paste any text…" spellcheck="false"></textarea>
+  <div class="input-row">
+    <span id="char-count"></span>
+    <button id="edit-btn" class="btn-ghost hidden" onclick="resetToEdit()">← Edit</button>
+    <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze</button>
+  </div>
+</div>
+
+<!-- Token view -->
+<div id="token-view" class="hidden"></div>
+
+<!-- Empty state -->
+<div id="empty-state">
+  <div>
+    <span class="glyph">w</span>
+    <p>Paste any text above, click Analyze,<br>then tap any word.</p>
+  </div>
+</div>
+
+<!-- Loading / error / result -->
+<div id="loading" class="hidden"></div>
+<div id="error-msg" class="hidden"></div>
+
+<div id="def-panel" class="hidden">
+  <div class="def-head">
+    <span id="def-word"></span>
+    <span id="def-pos"></span>
+    <span id="def-ipa" class="hidden"></span>
+  </div>
+  <p id="def-contextual"></p>
+  <p id="def-why" class="hidden"></p>
+  <p id="def-etymology" class="hidden"></p>
+  <button id="copy-btn" onclick="copyDef()">Copy</button>
+</div>
+
+<script>
+let context = '';
+let activeToken = null;
+let cache = new Map();
+let currentResult = null;
+
+const textarea  = document.getElementById('paste-area');
+const charCount = document.getElementById('char-count');
+
+/* ── Input ─────────────────────────────────────────────── */
+textarea.addEventListener('input', () => {
+  const n = textarea.value.length;
+  charCount.textContent = n > 0 ? n.toLocaleString() + ' chars' : '';
+});
+
+textarea.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') analyze();
+});
+
+/* ── Analyze ───────────────────────────────────────────── */
+function analyze() {
+  const raw = textarea.value.trim();
+  if (!raw) return;
+  context = raw;
+
+  // Collapse textarea so tokens get more vertical room
+  textarea.classList.add('collapsed');
+  document.getElementById('analyze-btn').classList.add('hidden');
+  document.getElementById('edit-btn').classList.remove('hidden');
+  document.getElementById('empty-state').classList.add('hidden');
+  document.getElementById('def-panel').classList.add('hidden');
+  document.getElementById('error-msg').classList.add('hidden');
+
+  renderTokens(raw);
+  document.getElementById('token-view').classList.remove('hidden');
+}
+
+function resetToEdit() {
+  textarea.classList.remove('collapsed');
+  textarea.value = context;
+  charCount.textContent = context.length > 0 ? context.length.toLocaleString() + ' chars' : '';
+  document.getElementById('analyze-btn').classList.remove('hidden');
+  document.getElementById('edit-btn').classList.add('hidden');
+  document.getElementById('token-view').classList.add('hidden');
+  document.getElementById('def-panel').classList.add('hidden');
+  document.getElementById('empty-state').classList.remove('hidden');
+  document.getElementById('error-msg').classList.add('hidden');
+  clearHighlights();
+  activeToken = null;
+  currentResult = null;
+}
+
+/* ── Tokenize ──────────────────────────────────────────── */
+function renderTokens(text) {
+  const container = document.getElementById('token-view');
+  container.innerHTML = '';
+  text.split(/([A-Za-z\u00C0-\u024F'']+)/).forEach((part, i) => {
+    if (i % 2 === 1) {
+      const span = document.createElement('span');
+      span.className = 'word-token';
+      span.textContent = part;
+      span.addEventListener('click', () => handleClick(span, part));
+      container.appendChild(span);
+    } else {
+      container.appendChild(document.createTextNode(part));
+    }
+  });
+}
+
+function clearHighlights() {
+  document.querySelectorAll('.word-token.active, .word-token.pulsing')
+    .forEach(t => t.classList.remove('active', 'pulsing'));
+}
+
+/* ── Word click ────────────────────────────────────────── */
+function handleClick(span, word) {
+  clearHighlights();
+  activeToken = span;
+  span.classList.add('active', 'pulsing');
+  fetchDef(word);
+}
+
+/* ── Fetch ─────────────────────────────────────────────── */
+async function fetchDef(word) {
+  hideError();
+  const key = word.toLowerCase() + '::' + context.slice(0, 120);
+  if (cache.has(key)) {
+    if (activeToken) activeToken.classList.remove('pulsing');
+    showResult(word, cache.get(key));
+    return;
+  }
+
+  showLoading(word);
+  try {
+    const resp = await fetch('/define', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ word, context, lang: 'auto' }),
+    });
+    if (!resp.ok) {
+      const e = await resp.json().catch(() => ({ detail: resp.statusText }));
+      throw new Error(e.detail || `HTTP ${resp.status}`);
+    }
+    const data = await resp.json();
+    cache.set(key, data);
+    if (activeToken) activeToken.classList.remove('pulsing');
+    showResult(word, data);
+  } catch (err) {
+    clearHighlights(); activeToken = null;
+    showError(err.message);
+  }
+}
+
+/* ── States ────────────────────────────────────────────── */
+function showLoading(word) {
+  document.getElementById('loading').textContent = `Looking up "${word}"…`;
+  document.getElementById('loading').classList.remove('hidden');
+  document.getElementById('def-panel').classList.add('hidden');
+}
+
+function showResult(word, data) {
+  document.getElementById('loading').classList.add('hidden');
+  currentResult = { word, data };
+
+  document.getElementById('def-word').textContent = word;
+  document.getElementById('def-pos').textContent  = data.pos || '';
+
+  const ipaEl = document.getElementById('def-ipa');
+  if (data.ipa && data.ipa !== 'null') {
+    ipaEl.textContent = data.ipa; ipaEl.classList.remove('hidden');
+  } else { ipaEl.classList.add('hidden'); }
+
+  document.getElementById('def-contextual').textContent = data.contextual || '';
+
+  const whyEl = document.getElementById('def-why');
+  if (data.why) { whyEl.textContent = data.why; whyEl.classList.remove('hidden'); }
+  else { whyEl.classList.add('hidden'); }
+
+  const etymEl = document.getElementById('def-etymology');
+  if (data.etymology && data.etymology !== 'null') {
+    etymEl.textContent = '↳ ' + data.etymology; etymEl.classList.remove('hidden');
+  } else { etymEl.classList.add('hidden'); }
+
+  document.getElementById('def-panel').classList.remove('hidden');
+}
+
+function showError(msg) {
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('error-msg').textContent = msg;
+  document.getElementById('error-msg').classList.remove('hidden');
+}
+function hideError() { document.getElementById('error-msg').classList.add('hidden'); }
+
+/* ── Copy ──────────────────────────────────────────────── */
+function copyDef() {
+  if (!currentResult) return;
+  const { word, data } = currentResult;
+  const lines = [`${word} (${data.pos})`, '', data.contextual];
+  if (data.why)                          lines.push('', data.why);
+  if (data.etymology && data.etymology !== 'null') lines.push('', '↳ ' + data.etymology);
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>
