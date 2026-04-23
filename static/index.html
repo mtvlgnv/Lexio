@@ -142,16 +142,103 @@
     .theme-btn { border:none; background:transparent; border-radius:5px; padding:4px 10px; font-family:inherit; font-size:0.72rem; font-weight:500; color:var(--muted); cursor:pointer; transition:background 0.15s, color 0.15s; }
     .theme-btn.active { background:var(--surface); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,.08); }
 
-    /* Keyboard shortcut hint in header */
-    .shortcut-hint {
-      font-size:0.68rem; color:var(--muted); display:flex; align-items:center; gap:4px;
-    }
+    /* Keyboard shortcut hint in header — now a proper icon button */
+    .shortcut-hint { display:none; } /* legacy, kept for compact compat */
     kbd {
       display:inline-flex; align-items:center; justify-content:center;
       background:var(--bg); border:1px solid var(--border); border-radius:4px;
       padding:1px 5px; font-family:inherit; font-size:0.65rem; color:var(--muted);
       line-height:1.4;
     }
+
+    /* ── Icon-only header buttons ───────────────────────────── */
+    .hdr-icon-btn {
+      display:flex; align-items:center; justify-content:center;
+      width:32px; height:32px; border-radius:var(--radius-sm);
+      background:transparent; border:1px solid var(--border);
+      color:var(--text-mid); cursor:pointer;
+      transition:background 0.15s, color 0.15s; flex-shrink:0;
+    }
+    .hdr-icon-btn:hover { background:var(--bg); color:var(--text); }
+    .hdr-icon-btn.active { background:var(--accent-lt); border-color:var(--accent-mid); color:var(--accent); }
+
+    /* ── Menu dropdown ──────────────────────────────────────── */
+    .menu-wrap { position:relative; }
+    .menu-dropdown {
+      position:absolute; top:calc(100% + 8px); right:0;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius); box-shadow:0 8px 32px rgba(0,0,0,0.12);
+      min-width:220px; z-index:200; overflow:hidden;
+      animation:fadeIn 0.14s ease;
+    }
+    .menu-dropdown.hidden { display:none; }
+    .menu-section { padding:6px; display:flex; flex-direction:column; gap:2px; }
+    .menu-section + .menu-section { border-top:1px solid var(--border); }
+    .menu-item {
+      display:flex; align-items:center; gap:10px;
+      padding:8px 10px; border-radius:7px; cursor:pointer;
+      font-size:0.84rem; color:var(--text-mid); background:none; border:none;
+      font-family:inherit; width:100%; text-align:left;
+      transition:background 0.12s, color 0.12s;
+    }
+    .menu-item:hover { background:var(--bg); color:var(--text); }
+    .menu-item svg { flex-shrink:0; color:var(--muted); }
+    .menu-item:hover svg { color:var(--accent); }
+    .menu-label {
+      padding:4px 10px 2px; font-size:0.65rem; font-weight:700;
+      letter-spacing:0.1em; text-transform:uppercase; color:var(--muted);
+    }
+    .menu-theme-row {
+      display:flex; gap:3px; padding:6px 10px 8px;
+    }
+    .menu-theme-btn {
+      flex:1; border:none; background:var(--bg); border-radius:6px;
+      padding:5px 0; font-family:inherit; font-size:0.72rem; font-weight:500;
+      color:var(--muted); cursor:pointer; transition:background 0.12s, color 0.12s;
+      border:1px solid var(--border);
+    }
+    .menu-theme-btn.active { background:var(--accent-lt); color:var(--accent); border-color:var(--accent-mid); }
+
+    /* ── Account button ─────────────────────────────────────── */
+    .acct-btn {
+      display:flex; align-items:center; justify-content:center;
+      width:30px; height:30px; border-radius:50%;
+      background:var(--bg); border:1px solid var(--border);
+      color:var(--text-mid); cursor:pointer;
+      transition:background 0.15s, color 0.15s; flex-shrink:0;
+      font-size:0.75rem; font-weight:700; font-family:inherit;
+    }
+    .acct-btn:hover { border-color:var(--accent-mid); color:var(--accent); background:var(--accent-lt); }
+    .acct-btn.signed-in { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .acct-btn.signed-in:hover { background:var(--accent-dk); border-color:var(--accent-dk); }
+
+    /* ── Auth modal ─────────────────────────────────────────── */
+    #auth-modal { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.18s ease; }
+    #auth-modal.hidden { display:none; }
+    .auth-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:380px; border:1px solid var(--border); overflow:hidden; }
+    .auth-tabs { display:flex; border-bottom:1px solid var(--border); }
+    .auth-tab { flex:1; padding:14px; text-align:center; font-size:0.84rem; font-weight:500; color:var(--muted); cursor:pointer; background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-1px; font-family:inherit; transition:color 0.15s; }
+    .auth-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+    .auth-body { padding:24px; display:flex; flex-direction:column; gap:14px; }
+    .auth-field { display:flex; flex-direction:column; gap:5px; }
+    .auth-field label { font-size:0.78rem; font-weight:500; color:var(--text-mid); }
+    .auth-field input { padding:9px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); font-family:inherit; font-size:0.88rem; outline:none; transition:border-color 0.15s; }
+    .auth-field input:focus { border-color:var(--accent-mid); }
+    .auth-submit { padding:10px; background:var(--accent); color:#fff; border:none; border-radius:var(--radius-sm); font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; transition:background 0.15s; }
+    .auth-submit:hover { background:var(--accent-dk); }
+    .auth-submit:disabled { opacity:0.6; cursor:default; }
+    .auth-error { font-size:0.8rem; color:var(--danger); background:var(--danger-bg); border:1px solid var(--danger-border); border-radius:var(--radius-sm); padding:8px 12px; }
+    .auth-error.hidden { display:none; }
+    .auth-info { font-size:0.78rem; color:var(--muted); line-height:1.5; }
+    .auth-info a { color:var(--accent); cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+    /* Signed-in state */
+    .auth-profile { padding:24px; display:flex; flex-direction:column; gap:16px; }
+    .auth-avatar { width:56px; height:56px; border-radius:50%; background:var(--accent); color:#fff; font-size:1.3rem; font-weight:700; display:flex; align-items:center; justify-content:center; font-family:inherit; }
+    .auth-profile-name { font-size:1rem; font-weight:600; color:var(--text); }
+    .auth-profile-email { font-size:0.8rem; color:var(--muted); }
+    .auth-sync-status { font-size:0.8rem; color:var(--text-mid); background:var(--accent-lt); border:1px solid var(--accent-mid); border-radius:var(--radius-sm); padding:8px 12px; }
+    .auth-logout { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:0.82rem; color:var(--text-mid); cursor:pointer; transition:background 0.15s; width:fit-content; }
+    .auth-logout:hover { background:var(--bg); color:var(--text); }
 
     /* ── Main layout ────────────────────────────────────────── */
     main { flex:0 0 auto; display:flex; padding:20px 24px; height:calc(100vh - var(--header-h)); gap:0; min-height:0; }
@@ -508,6 +595,7 @@
     /* hide elements that are redundant or web-only in the native app */
     body.in-app .shortcut-hint { display:none !important; }
     body.in-app [onclick="openDesktopModal()"] { display:none !important; }
+    body.in-app .menu-item[data-action="desktop"] { display:none !important; }
     /* tighter, more native-feeling main padding */
     body.in-app main { padding:16px 20px; gap:0; }
     body.in-app .panel { border-radius:10px; }
@@ -531,17 +619,20 @@
 
     /* ── Scroll nudge ───────────────────────────────────────── */
     #scroll-nudge {
-      position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      position: fixed; bottom: 24px; right: 28px;
+      display: flex; flex-direction: row; align-items: center; gap: 6px;
       color: var(--muted); font-size: 0.7rem; letter-spacing: 0.06em;
       text-transform: uppercase; cursor: pointer; z-index: 10;
       opacity: 1; transition: opacity 0.4s ease;
-      animation: nudge-bob 2.4s ease-in-out infinite;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 6px 12px 6px 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      animation: nudge-bob 2.6s ease-in-out infinite;
     }
     #scroll-nudge.hidden { opacity: 0; pointer-events: none; }
     @keyframes nudge-bob {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(5px); }
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(4px); }
     }
     body.in-app #scroll-nudge { display: none; }
 
@@ -695,7 +786,8 @@
   <span class="brand">Le<em>x</em>io</span>
   <span class="tagline">Your buddy for understanding any text</span>
   <div class="header-spacer"></div>
-  <span class="shortcut-hint"><kbd>?</kbd> shortcuts</span>
+
+  <!-- Language selector -->
   <label class="lang-btn" title="Definition language">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
     <select id="lang-select" onchange="setLang(this.value)">
@@ -713,20 +805,48 @@
       <option value="Korean">한국어</option>
     </select>
   </label>
+
+  <!-- Saved word bank -->
   <button class="wb-header-btn" onclick="openWordBank()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
     Saved
     <span class="wb-badge" id="wb-badge"></span>
   </button>
-  <button class="wb-header-btn" onclick="openDesktopModal()" title="Get the menu bar app">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-    Desktop
+
+  <!-- Shortcuts button -->
+  <button class="hdr-icon-btn" onclick="toggleShortcuts()" title="Keyboard shortcuts (?)">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M18 12h.01M10 12h4M6 16h12"/></svg>
   </button>
-  <div class="theme-switcher">
-    <button class="theme-btn active" data-theme="warm" onclick="setTheme('warm')">Warm</button>
-    <button class="theme-btn" data-theme="cool" onclick="setTheme('cool')">Cool</button>
-    <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
-    <button class="theme-btn" data-theme="auto" onclick="setTheme('auto')">Auto</button>
+
+  <!-- Account -->
+  <button class="acct-btn" id="acct-btn" onclick="openAuthModal()" title="Account"></button>
+
+  <!-- Menu -->
+  <div class="menu-wrap">
+    <button class="hdr-icon-btn" id="menu-btn" onclick="toggleMenu()" title="More options">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>
+    </button>
+    <div class="menu-dropdown hidden" id="menu-dropdown">
+      <div class="menu-section">
+        <span class="menu-label">Theme</span>
+        <div class="menu-theme-row">
+          <button class="menu-theme-btn active" data-theme="warm" onclick="setTheme('warm');updateMenuTheme()">Warm</button>
+          <button class="menu-theme-btn" data-theme="cool" onclick="setTheme('cool');updateMenuTheme()">Cool</button>
+          <button class="menu-theme-btn" data-theme="dark" onclick="setTheme('dark');updateMenuTheme()">Dark</button>
+          <button class="menu-theme-btn" data-theme="auto" onclick="setTheme('auto');updateMenuTheme()">Auto</button>
+        </div>
+      </div>
+      <div class="menu-section">
+        <button class="menu-item" data-action="desktop" onclick="openDesktopModal();closeMenu()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Get the Mac app
+        </button>
+        <button class="menu-item" onclick="toggleShortcuts();closeMenu()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M18 12h.01M10 12h4M6 16h12"/></svg>
+          Keyboard shortcuts
+        </button>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -1077,6 +1197,56 @@
   </div>
 </div>
 
+<!-- ── Auth modal ─────────────────────────────────────────────── -->
+<div id="auth-modal" class="hidden">
+  <div class="auth-inner">
+
+    <!-- Signed-out: tabs -->
+    <div id="auth-signed-out">
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Sign in</button>
+        <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Create account</button>
+      </div>
+      <div class="auth-body">
+        <div class="auth-field" id="auth-name-field" style="display:none">
+          <label>Name (optional)</label>
+          <input id="auth-name" type="text" placeholder="Your name" autocomplete="name">
+        </div>
+        <div class="auth-field">
+          <label>Email</label>
+          <input id="auth-email" type="email" placeholder="you@example.com" autocomplete="email">
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input id="auth-password" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div class="auth-error hidden" id="auth-error"></div>
+        <button class="auth-submit" id="auth-submit" onclick="submitAuth()">Sign in</button>
+        <p class="auth-info">Your word bank syncs to the cloud when signed in. <a onclick="switchAuthTab('register')">No account yet?</a></p>
+      </div>
+    </div>
+
+    <!-- Signed-in: profile -->
+    <div id="auth-signed-in" style="display:none">
+      <div class="wb-header">
+        <span class="wb-title">Account</span>
+        <div class="wb-header-spacer"></div>
+        <button class="wb-close-btn" onclick="closeAuthModal()">×</button>
+      </div>
+      <div class="auth-profile">
+        <div class="auth-avatar" id="auth-avatar"></div>
+        <div>
+          <div class="auth-profile-name" id="auth-profile-name"></div>
+          <div class="auth-profile-email" id="auth-profile-email"></div>
+        </div>
+        <div class="auth-sync-status" id="auth-sync-status">Word bank syncs automatically.</div>
+        <button class="auth-logout" onclick="signOut()">Sign out</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ── Word bank overlay ────────────────────────────────────── -->
 <div id="wb-overlay" class="hidden">
   <div class="wb-inner">
@@ -1206,6 +1376,7 @@ function setTheme(t) {
     : t;
   document.body.dataset.theme = effective;
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
+  document.querySelectorAll('.menu-theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === t));
   document.querySelectorAll('.tweak-opt').forEach((b, i) => b.classList.toggle('active', ['warm','cool','dark'][i] === t));
   currentTweaks.theme = t; saveTweaks();
   window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { theme: t } }, '*');
@@ -1781,9 +1952,162 @@ function closeDesktopModal() {
 function tryOpenDesktop() {
   document.getElementById('desktop-not-found').classList.add('hidden');
   window.location.href = 'lexio://open';
-  // If the page is still visible after 1.5 s, the app isn't running
   setTimeout(() => document.getElementById('desktop-not-found').classList.remove('hidden'), 1500);
 }
+
+/* ── Menu dropdown ──────────────────────────────────────── */
+let menuOpen = false;
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('menu-dropdown').classList.toggle('hidden', !menuOpen);
+  document.getElementById('menu-btn').classList.toggle('active', menuOpen);
+}
+function closeMenu() {
+  menuOpen = false;
+  document.getElementById('menu-dropdown').classList.add('hidden');
+  document.getElementById('menu-btn').classList.remove('active');
+}
+function updateMenuTheme() {
+  const cur = document.body.dataset.theme;
+  document.querySelectorAll('.menu-theme-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.theme === cur || (cur === 'warm' && !b.dataset.theme))
+  );
+}
+document.addEventListener('click', e => {
+  if (menuOpen && !e.target.closest('.menu-wrap')) closeMenu();
+});
+
+/* ── Auth / User accounts ───────────────────────────────── */
+let authToken = null;
+let authUser  = null;
+
+function updateAcctBtn() {
+  const btn = document.getElementById('acct-btn');
+  if (authUser) {
+    btn.textContent = (authUser.name || authUser.email)[0].toUpperCase();
+    btn.classList.add('signed-in');
+    btn.title = authUser.email;
+  } else {
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+    btn.classList.remove('signed-in');
+    btn.title = 'Sign in';
+  }
+}
+
+function openAuthModal() {
+  const modal = document.getElementById('auth-modal');
+  modal.classList.remove('hidden');
+  if (authUser) {
+    document.getElementById('auth-signed-out').style.display = 'none';
+    document.getElementById('auth-signed-in').style.display  = '';
+    document.getElementById('auth-avatar').textContent = (authUser.name || authUser.email)[0].toUpperCase();
+    document.getElementById('auth-profile-name').textContent  = authUser.name || '';
+    document.getElementById('auth-profile-email').textContent = authUser.email;
+  } else {
+    document.getElementById('auth-signed-out').style.display = '';
+    document.getElementById('auth-signed-in').style.display  = 'none';
+    switchAuthTab('login');
+  }
+}
+function closeAuthModal() {
+  document.getElementById('auth-modal').classList.add('hidden');
+  document.getElementById('auth-error').classList.add('hidden');
+  document.getElementById('auth-email').value = '';
+  document.getElementById('auth-password').value = '';
+  document.getElementById('auth-name').value = '';
+}
+
+function switchAuthTab(tab) {
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  document.getElementById('auth-name-field').style.display = tab === 'register' ? '' : 'none';
+  document.getElementById('auth-submit').textContent = tab === 'register' ? 'Create account' : 'Sign in';
+  document.getElementById('auth-submit').dataset.tab = tab;
+  document.getElementById('auth-error').classList.add('hidden');
+  const pwdInput = document.getElementById('auth-password');
+  pwdInput.autocomplete = tab === 'register' ? 'new-password' : 'current-password';
+}
+
+async function submitAuth() {
+  const tab   = document.getElementById('auth-submit').dataset.tab || 'login';
+  const email = document.getElementById('auth-email').value.trim();
+  const pwd   = document.getElementById('auth-password').value;
+  const name  = document.getElementById('auth-name').value.trim();
+  const errEl = document.getElementById('auth-error');
+  const btn   = document.getElementById('auth-submit');
+
+  errEl.classList.add('hidden');
+  if (!email || !pwd) { errEl.textContent = 'Please fill in all fields.'; errEl.classList.remove('hidden'); return; }
+  if (tab === 'register' && pwd.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; errEl.classList.remove('hidden'); return; }
+
+  btn.disabled = true;
+  btn.textContent = '…';
+
+  const endpoint = tab === 'register' ? '/auth/register' : '/auth/login';
+  const body = tab === 'register' ? { email, password: pwd, name: name || undefined } : { email, password: pwd };
+
+  try {
+    const res  = await fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Something went wrong.');
+    authToken = data.token;
+    authUser  = data.user;
+    try { localStorage.setItem('lexio_token', authToken); localStorage.setItem('lexio_user', JSON.stringify(authUser)); } catch {}
+    updateAcctBtn();
+    closeAuthModal();
+    syncWordBank();
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = tab === 'register' ? 'Create account' : 'Sign in';
+  }
+}
+
+function signOut() {
+  authToken = null; authUser = null;
+  try { localStorage.removeItem('lexio_token'); localStorage.removeItem('lexio_user'); } catch {}
+  updateAcctBtn();
+  closeAuthModal();
+}
+
+async function syncWordBank() {
+  if (!authToken || !wordBank.length) return;
+  try {
+    const res  = await fetch('/wordbank/sync', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
+      body:    JSON.stringify({ entries: wordBank }),
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    // Merge: server is source of truth for saved words
+    if (data.entries && data.entries.length > 0) {
+      const localKeys = new Set(wordBank.map(e => e.word.toLowerCase()));
+      data.entries.forEach(e => {
+        if (!localKeys.has(e.word.toLowerCase())) wordBank.unshift(e);
+      });
+      saveWordBank(); updateWBBadge();
+    }
+    const statusEl = document.getElementById('auth-sync-status');
+    if (statusEl) statusEl.textContent = `Synced ${wordBank.length} word${wordBank.length !== 1 ? 's' : ''} ✓`;
+  } catch {}
+}
+
+// Restore session on load
+(function restoreAuth() {
+  try {
+    const tok  = localStorage.getItem('lexio_token');
+    const usr  = localStorage.getItem('lexio_user');
+    if (tok && usr) {
+      authToken = tok;
+      authUser  = JSON.parse(usr);
+    }
+  } catch {}
+  updateAcctBtn();
+  if (authToken) setTimeout(syncWordBank, 1000);
+})();
 
 /* ── Init ───────────────────────────────────────────────────── */
 loadWordBank(); loadTweaks(); applyTweaks(); updateWBBadge();
@@ -1825,7 +2149,7 @@ inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key===
 document.addEventListener('keydown', e => {
   const tag = document.activeElement?.tagName;
   if (tag==='TEXTAREA'||tag==='INPUT') return;
-  if (e.key==='Escape') { closeWordBank(); closeDesktopModal(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='Escape') { closeWordBank(); closeDesktopModal(); closeAuthModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
   if (e.key==='?')  toggleShortcuts();
   if (e.key==='b'||e.key==='B') openWordBank();
 });
@@ -1833,6 +2157,11 @@ document.addEventListener('keydown', e => {
 document.getElementById('wb-overlay').addEventListener('click', e => { if(e.target===document.getElementById('wb-overlay')) closeWordBank(); });
 document.getElementById('shortcuts-overlay').addEventListener('click', e => { if(e.target===document.getElementById('shortcuts-overlay')) toggleShortcuts(); });
 document.getElementById('desktop-modal').addEventListener('click', e => { if(e.target===document.getElementById('desktop-modal')) closeDesktopModal(); });
+document.getElementById('auth-modal').addEventListener('click', e => { if(e.target===document.getElementById('auth-modal')) closeAuthModal(); });
+// Enter key in auth inputs
+['auth-email','auth-password','auth-name'].forEach(id => {
+  document.getElementById(id)?.addEventListener('keydown', e => { if(e.key==='Enter') submitAuth(); });
+});
 </script>
 </body>
 </html>

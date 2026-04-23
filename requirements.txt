@@ -4,3 +4,7 @@ uvicorn[standard]
 python-dotenv
 slowapi
 trafilatura
+passlib[bcrypt]
+python-jose[cryptography]
+sqlalchemy
+python-multipart
