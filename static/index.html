@@ -446,8 +446,11 @@
     .desktop-step-num { width:22px; height:22px; border-radius:50%; background:var(--accent-lt); color:var(--accent); font-size:0.68rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px; }
     .desktop-step-text { font-size:0.84rem; color:var(--text); line-height:1.6; }
     .desktop-step-text code { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:1px 6px; font-size:0.76rem; font-family:ui-monospace,'Cascadia Code',monospace; color:var(--text); }
-    .desktop-open-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 20px; background:var(--accent); color:#fff; border:none; border-radius:var(--radius-sm); font-family:inherit; font-size:0.84rem; font-weight:500; cursor:pointer; transition:background 0.15s; }
-    .desktop-open-btn:hover { background:var(--accent-dk); }
+    .desktop-dl-btn { display:inline-flex; align-items:center; gap:8px; padding:11px 24px; background:var(--accent); color:#fff; border:none; border-radius:var(--radius-sm); font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; transition:background 0.15s; text-decoration:none; }
+    .desktop-dl-btn:hover { background:var(--accent-dk); }
+    .desktop-dl-sub { font-size:0.72rem; opacity:0.8; font-weight:400; }
+    .desktop-open-btn { display:inline-flex; align-items:center; gap:7px; padding:7px 16px; background:transparent; color:var(--accent); border:1px solid var(--accent-mid); border-radius:var(--radius-sm); font-family:inherit; font-size:0.82rem; font-weight:500; cursor:pointer; transition:background 0.15s; }
+    .desktop-open-btn:hover { background:var(--accent-lt); }
     .desktop-note { font-size:0.74rem; color:var(--muted); font-style:italic; margin-top:-6px; }
 
     /* ── Keyboard shortcuts overlay ─────────────────────────── */
@@ -698,27 +701,32 @@
       <button class="wb-close-btn" onclick="closeDesktopModal()">×</button>
     </div>
     <div class="desktop-body">
-      <p>A floating menu bar app — always on top, available from any app with <kbd>⌘⇧L</kbd>. Paste text, click any word, get its definition instantly.</p>
+      <p>A floating menu bar app — always on top, accessible from any application with <kbd>⌘⇧L</kbd>.</p>
+      <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/download/v1.0.0-desktop/Lexio-1.0.0-arm64.dmg" download>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download for Mac
+        <span class="desktop-dl-sub">Apple Silicon · macOS 12+</span>
+      </a>
       <div class="desktop-steps">
         <div class="desktop-step">
           <div class="desktop-step-num">1</div>
-          <div class="desktop-step-text">In your terminal, go to the desktop folder:<br><code>cd ~/lexio/desktop</code></div>
+          <div class="desktop-step-text">Open the downloaded <strong>.dmg</strong> file</div>
         </div>
         <div class="desktop-step">
           <div class="desktop-step-num">2</div>
-          <div class="desktop-step-text">Install and launch:<br><code>npm install &amp;&amp; npm start</code></div>
+          <div class="desktop-step-text">Drag <strong>Lexio</strong> into your Applications folder</div>
         </div>
         <div class="desktop-step">
           <div class="desktop-step-num">3</div>
-          <div class="desktop-step-text">The <strong>Lx</strong> label appears in your menu bar. Click it to open Lexio.</div>
+          <div class="desktop-step-text">Launch it — <strong>Lx</strong> appears in your menu bar instantly</div>
         </div>
       </div>
-      <div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
         <button class="desktop-open-btn" onclick="tryOpenDesktop()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          Open in Desktop App
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Open Lexio Desktop
         </button>
-        <p id="desktop-not-found" class="desktop-note hidden">App not detected — make sure Lexio Desktop is running.</p>
+        <p id="desktop-not-found" class="desktop-note hidden">App not running — launch it from Applications first.</p>
       </div>
     </div>
   </div>

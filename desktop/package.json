@@ -1,25 +1,39 @@
 {
   "name": "lexio-desktop",
   "version": "1.0.0",
-  "description": "Lexio — floating contextual dictionary overlay",
+  "description": "Lexio — floating contextual dictionary",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder --mac"
+    "start":       "electron .",
+    "create-icon": "node_modules/.bin/electron create-icon.js",
+    "build-icons": "bash scripts/build-icons.sh",
+    "dist":        "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64"
   },
   "devDependencies": {
-    "electron": "^34.0.0",
+    "electron":         "^34.0.0",
     "electron-builder": "^25.0.0"
   },
   "build": {
-    "appId": "site.lexio.desktop",
+    "appId":       "site.lexio.desktop",
     "productName": "Lexio",
+    "files": ["main.js"],
+    "protocols": [
+      { "name": "Lexio", "schemes": ["lexio"] }
+    ],
     "mac": {
       "category": "public.app-category.education",
-      "target": [{ "target": "dmg", "arch": ["arm64", "x64"] }]
+      "icon":     "build/icon.icns",
+      "target":   [{ "target": "dmg", "arch": ["arm64"] }],
+      "identity": null
     },
-    "win": {
-      "target": "nsis"
+    "dmg": {
+      "title":      "Lexio",
+      "icon":       "build/icon.icns",
+      "contents": [
+        { "x": 130, "y": 220, "type": "file"    },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ],
+      "window": { "width": 540, "height": 380 }
     }
   }
 }
