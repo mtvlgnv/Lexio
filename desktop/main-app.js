@@ -75,7 +75,7 @@ function createWindow() {
     roundedCorners:      true,
   });
 
-  win.loadURL('http://lexio.site');
+  win.loadURL('http://lexio.site?app=1');
 
   // Open all target="_blank" / window.open() links in the real browser
   win.webContents.setWindowOpenHandler(({ url }) => {
@@ -85,9 +85,16 @@ function createWindow() {
 
   // Intercept navigating away from lexio.site (e.g. clicked an external link)
   win.webContents.on('will-navigate', (e, url) => {
-    if (!url.startsWith('http://lexio.site') && !url.startsWith('https://lexio.site')) {
+    const u = new URL(url);
+    const isLexio = u.hostname === 'lexio.site';
+    if (!isLexio) {
       e.preventDefault();
       shell.openExternal(url);
+    } else if (!u.searchParams.has('app')) {
+      // Preserve ?app=1 on internal navigation
+      e.preventDefault();
+      u.searchParams.set('app', '1');
+      win.loadURL(u.toString());
     }
   });
 }

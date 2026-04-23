@@ -490,6 +490,33 @@
     body.compact .tagline,
     body.compact .shortcut-hint { display:none !important; }
 
+    /* ── Full Mac app mode (?app=1) ─────────────────────────── */
+    body.in-app {
+      /* no outer border-radius — the OS window handles that */
+      background: transparent;
+    }
+    body.in-app header {
+      -webkit-app-region: drag;
+      padding-left: 80px;   /* clear macOS traffic lights */
+      border-bottom: 1px solid var(--border);
+    }
+    body.in-app header button,
+    body.in-app header label,
+    body.in-app header select,
+    body.in-app header .theme-switcher,
+    body.in-app header .wb-header-btn { -webkit-app-region: no-drag; }
+    /* hide elements that are redundant or web-only in the native app */
+    body.in-app .shortcut-hint { display:none !important; }
+    body.in-app [onclick="openDesktopModal()"] { display:none !important; }
+    /* tighter, more native-feeling main padding */
+    body.in-app main { padding:16px 20px; gap:0; }
+    body.in-app .panel { border-radius:10px; }
+    /* native-thin scrollbar */
+    body.in-app ::-webkit-scrollbar { width:6px; height:6px; }
+    body.in-app ::-webkit-scrollbar-track { background:transparent; }
+    body.in-app ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+    body.in-app ::-webkit-scrollbar-thumb:hover { background:var(--muted); }
+
     /* ── Utility ────────────────────────────────────────────── */
     .hidden { display:none !important; }
 
@@ -1484,6 +1511,11 @@ startPlaceholderRotation(); setupDragAndDrop(); checkPermalink(); initTooltips()
 // Compact mode — Electron desktop overlay
 if (new URLSearchParams(window.location.search).get('compact') === '1') {
   document.body.classList.add('compact');
+}
+
+// Full native app mode — Electron full app
+if (new URLSearchParams(window.location.search).get('app') === '1') {
+  document.body.classList.add('in-app');
 }
 
 // Restore language preference
