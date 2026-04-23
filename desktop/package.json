@@ -16,6 +16,7 @@
   "build": {
     "appId":       "site.lexio.desktop",
     "productName": "Lexio",
+    "afterSign":   "scripts/after-sign.js",
     "files": ["main.js"],
     "protocols": [
       { "name": "Lexio", "schemes": ["lexio"] }
