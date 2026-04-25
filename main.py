@@ -36,7 +36,8 @@ class User(Base):
     id         = Column(Integer, primary_key=True, index=True)
     email      = Column(String, unique=True, nullable=False, index=True)
     name       = Column(String, nullable=True)
-    pwd_hash   = Column(String, nullable=False)
+    pwd_hash   = Column(String, nullable=True)   # nullable for OAuth-only users
+    google_id  = Column(String, nullable=True, index=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):
@@ -55,6 +56,17 @@ class SearchLog(Base):
     searched_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
 
 Base.metadata.create_all(engine)
+
+# ── SQLite migrations (add columns that may not exist yet) ────────────────────
+def _run_migrations():
+    with engine.connect() as conn:
+        # Add google_id column if missing
+        cols = [row[1] for row in conn.execute(__import__('sqlalchemy').text("PRAGMA table_info(users)"))]
+        if "google_id" not in cols:
+            conn.execute(__import__('sqlalchemy').text("ALTER TABLE users ADD COLUMN google_id TEXT"))
+            conn.commit()
+
+_run_migrations()
 
 # ── In-memory cache for top-words (refreshed every hour) ─────────────────────
 _top_words_cache: dict = {"data": None, "fetched_at": None}
@@ -191,30 +203,57 @@ def _log_search(word: str) -> None:
 
 # ── /define ──────────────────────────────────────────────────────────────────
 
+LANG_NAMES = {
+    'en':'English','es':'Spanish','fr':'French','de':'German','it':'Italian',
+    'pt':'Portuguese','ru':'Russian','zh':'Chinese','ja':'Japanese','ko':'Korean',
+    'ar':'Arabic','hi':'Hindi','nl':'Dutch','pl':'Polish','tr':'Turkish','sv':'Swedish',
+}
+
 @app.post("/define")
 @limiter.limit("20/minute")
 async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks):
+    lang_code    = (req.lang or 'auto').strip().lower()
+    lang_name    = LANG_NAMES.get(lang_code)   # None if auto/unknown
     lang_note = (
-        f"Respond in {req.lang}."
-        if req.lang and req.lang.lower() not in ("auto", "detect", "")
+        f"You MUST respond entirely in {lang_name}. Every field in the JSON must be written in {lang_name}, not English."
+        if lang_name
         else "Respond in the same language as the input text."
     )
-    prompt = (
-        f'The word "{req.word}" appears in this text: "{req.context}"\n'
-        f"{lang_note} Respond ONLY in JSON with no markdown:\n"
-        '{"pos": "noun/verb/etc (in English)", '
-        '"ipa": "IPA transcription e.g. /ɪˈfɛm.ər.əl/ — or null if uncertain", '
-        '"contextual": "definition as used in this passage, 1-2 sentences", '
-        '"why": "why this word rather than a simpler synonym, 1 sentence", '
-        '"simpler": "the simplest common one-word synonym, or null if none", '
-        '"etymology": "brief word origin, e.g. \'from Latin ephemeron\' — or null if uncertain", '
-        '"register": "exactly one of: formal, literary, technical, colloquial, neutral, archaic"}'
-    )
+
+    word_count = len(req.word.strip().split())
+    is_phrase   = word_count > 1
+
+    if is_phrase:
+        # Phrase / sentence: skip pos & ipa, focus on meaning and usage
+        prompt = (
+            f'The phrase or sentence "{req.word}" appears in this text: "{req.context}"\n'
+            f"{lang_note} Respond ONLY in JSON with no markdown:\n"
+            '{\"definition\": \"plain-English meaning of this phrase/sentence, 1-2 sentences\", '
+            '\"contextual\": \"what it specifically means in this passage, 1-2 sentences\", '
+            '\"why\": \"why the author chose this phrasing, 1 sentence\", '
+            '\"register\": \"exactly one of: formal, literary, technical, colloquial, neutral, archaic\"}'
+        )
+        required_keys = ("definition", "contextual")
+    else:
+        # Single word: full analysis
+        prompt = (
+            f'The word "{req.word}" appears in this text: "{req.context}"\n'
+            f"{lang_note} Respond ONLY in JSON with no markdown:\n"
+            '{\"pos\": \"noun/verb/etc (in English)\", '
+            '\"ipa\": \"IPA transcription e.g. /ɪˈfɛm.ər.əl/ — or null if uncertain\", '
+            '\"definition\": \"general dictionary definition, 1 sentence\", '
+            '\"contextual\": \"definition as used in this passage, 1-2 sentences\", '
+            '\"why\": \"why this word rather than a simpler synonym, 1 sentence\", '
+            '\"simpler\": \"the simplest common one-word synonym, or null if none\", '
+            '\"etymology\": \"brief word origin, e.g. from Latin ephemeron — or null if uncertain\", '
+            '\"register\": \"exactly one of: formal, literary, technical, colloquial, neutral, archaic\"}'
+        )
+        required_keys = ("pos", "contextual")
 
     try:
         message = client.messages.create(
             model="claude-haiku-4-5-20251001",
-            max_tokens=500,
+            max_tokens=600,
             messages=[{"role": "user", "content": prompt}],
         )
 
@@ -224,7 +263,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks)
             text  = "\n".join(l for l in lines if not l.startswith("```")).strip()
 
         result = json.loads(text)
-        for key in ("pos", "contextual", "why"):
+        for key in required_keys:
             if key not in result:
                 raise ValueError(f"Missing key: {key}")
 
@@ -339,7 +378,7 @@ async def register(request: Request, body: RegisterRequest, db: DBSession = Depe
 @limiter.limit("10/minute")
 async def login(request: Request, body: LoginRequest, db: DBSession = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email).first()
-    if not user or not verify_password(body.password, user.pwd_hash):
+    if not user or not user.pwd_hash or not verify_password(body.password, user.pwd_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password.")
     return {"token": create_token(user.id), "user": {"id": user.id, "email": user.email, "name": user.name}}
 
@@ -349,6 +388,152 @@ async def login(request: Request, body: LoginRequest, db: DBSession = Depends(ge
 @app.get("/auth/me")
 async def me(user: User = Depends(current_user)):
     return {"id": user.id, "email": user.email, "name": user.name}
+
+
+# ── /api/config ───────────────────────────────────────────────────────────────
+
+@app.get("/api/config")
+async def api_config():
+    """Return public client-side configuration (no secrets)."""
+    return {
+        "google_client_id": os.getenv("GOOGLE_CLIENT_ID", ""),
+        "apple_services_id": os.getenv("APPLE_SERVICES_ID", ""),
+    }
+
+
+# ── /auth/google ──────────────────────────────────────────────────────────────
+
+class GoogleAuthRequest(BaseModel):
+    credential: str
+
+@app.post("/auth/google")
+@limiter.limit("10/minute")
+async def google_auth(request: Request, body: GoogleAuthRequest, db: DBSession = Depends(get_db)):
+    """Verify Google ID token and sign in / register the user."""
+    import asyncio, urllib.request as _ur, json as _json
+
+    token = body.credential.strip()
+    google_client_id = os.getenv("GOOGLE_CLIENT_ID", "")
+
+    # Verify token via Google's tokeninfo endpoint (no extra libraries needed)
+    def _fetch_tokeninfo():
+        url = f"https://oauth2.googleapis.com/tokeninfo?id_token={token}"
+        try:
+            with _ur.urlopen(url, timeout=6) as r:
+                return _json.loads(r.read()), r.status
+        except Exception as exc:
+            raise HTTPException(status_code=401, detail=f"Google token verification failed: {exc}")
+
+    info, status = await asyncio.to_thread(_fetch_tokeninfo)
+
+    if status != 200 or info.get("error"):
+        raise HTTPException(status_code=401, detail="Invalid Google token.")
+
+    # Validate audience (aud must match our client id)
+    if google_client_id and info.get("aud") != google_client_id:
+        raise HTTPException(status_code=401, detail="Token audience mismatch.")
+
+    email = info.get("email")
+    if not email or info.get("email_verified") != "true":
+        raise HTTPException(status_code=401, detail="Google account email is not verified.")
+
+    google_sub = info.get("sub")  # stable unique Google user ID
+    name       = info.get("name") or email.split("@")[0]
+
+    # Find existing user by email or google_id
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        user = User(email=email, name=name, google_id=google_sub, pwd_hash=None)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    else:
+        if not user.google_id:
+            user.google_id = google_sub
+            db.commit()
+
+    return {"token": create_token(user.id), "user": {"id": user.id, "email": user.email, "name": user.name}}
+
+
+# ── /auth/apple ───────────────────────────────────────────────────────────────
+
+class AppleAuthRequest(BaseModel):
+    id_token:  str
+    name: Optional[str] = None   # only sent on very first sign-in
+
+@app.post("/auth/apple")
+@limiter.limit("10/minute")
+async def apple_auth(request: Request, body: AppleAuthRequest, db: DBSession = Depends(get_db)):
+    """Verify Apple id_token (JWT) using Apple's public JWKS and sign in / register the user."""
+    import asyncio, urllib.request as _ur, json as _json
+    from jose import jwt as _jose_jwt, JWTError as _JWTError
+
+    apple_services_id = os.getenv("APPLE_SERVICES_ID", "")
+    if not apple_services_id:
+        raise HTTPException(status_code=503, detail="Apple Sign-In is not configured on this server.")
+
+    id_token = body.id_token.strip()
+
+    # Fetch Apple's public JWKS (cached per process is fine — keys rotate rarely)
+    def _fetch_jwks():
+        with _ur.urlopen("https://appleid.apple.com/auth/keys", timeout=6) as r:
+            return _json.loads(r.read())
+
+    try:
+        jwks = await asyncio.to_thread(_fetch_jwks)
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Could not fetch Apple public keys: {exc}")
+
+    # Decode header to find the right key
+    try:
+        header = _jose_jwt.get_unverified_header(id_token)
+    except Exception:
+        raise HTTPException(status_code=401, detail="Malformed Apple token.")
+
+    kid = header.get("kid")
+    alg = header.get("alg", "RS256")
+    matching_key = next((k for k in jwks.get("keys", []) if k.get("kid") == kid), None)
+    if not matching_key:
+        raise HTTPException(status_code=401, detail="Apple signing key not found.")
+
+    # Verify and decode
+    try:
+        payload = _jose_jwt.decode(
+            id_token,
+            matching_key,
+            algorithms=[alg],
+            audience=apple_services_id,
+            issuer="https://appleid.apple.com",
+        )
+    except _JWTError as exc:
+        raise HTTPException(status_code=401, detail=f"Apple token invalid: {exc}")
+
+    email    = payload.get("email")
+    apple_sub = payload.get("sub")  # stable unique Apple user ID
+
+    if not email and not apple_sub:
+        raise HTTPException(status_code=401, detail="Apple token missing user identity.")
+
+    # Apple may hide email — derive a placeholder if missing
+    display_email = email or f"{apple_sub}@privaterelay.appleid.com"
+    name = body.name or (email.split("@")[0] if email else "Apple User")
+
+    # Find existing user by apple_sub (most reliable) or email
+    user = (
+        db.query(User).filter(User.google_id == f"apple:{apple_sub}").first()
+        or (db.query(User).filter(User.email == display_email).first() if display_email else None)
+    )
+    if not user:
+        user = User(email=display_email, name=name, google_id=f"apple:{apple_sub}", pwd_hash=None)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    else:
+        if not user.google_id:
+            user.google_id = f"apple:{apple_sub}"
+            db.commit()
+
+    return {"token": create_token(user.id), "user": {"id": user.id, "email": user.email, "name": user.name}}
 
 
 # ── /wordbank/sync ────────────────────────────────────────────────────────────
