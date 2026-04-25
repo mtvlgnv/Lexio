@@ -765,5 +765,262 @@ async def admin_stats(db: DBSession = Depends(get_db), _=Depends(_check_admin)):
     }
 
 
+# ── /admin  (server-side rendered, no JS required) ───────────────────────────
+from fastapi.responses import HTMLResponse
+
+@app.get("/admin", response_class=HTMLResponse)
+@app.get("/admin/", response_class=HTMLResponse)
+async def admin_page(key: str = "", db: DBSession = Depends(get_db)):
+    admin_key = os.getenv("ADMIN_KEY", "")
+
+    login_form = """<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lexio Admin</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#f5f4f0;display:flex;align-items:center;justify-content:center;min-height:100vh}
+.box{background:#fff;border:1px solid #ddd;border-radius:12px;padding:36px;width:340px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+h1{font-size:1.2rem;margin-bottom:6px}p{font-size:.82rem;color:#777;margin-bottom:18px}
+input{width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:8px;font-size:.9rem;margin-bottom:10px}
+button{width:100%;padding:10px;background:#c47028;color:#fff;border:none;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer}
+.err{color:#c00;font-size:.8rem;margin-top:8px}
+</style></head><body>
+<div class="box">
+  <h1>Lexio Admin</h1><p>Enter your admin key to view the dashboard.</p>
+  <form method="get" action="/admin">
+    <input name="key" type="password" placeholder="Admin key" autofocus>
+    <button type="submit">Access dashboard</button>
+  </form>
+  {error}
+</div></body></html>"""
+
+    if not key or not admin_key or key != admin_key:
+        error = '<p class="err">Wrong key.</p>' if key else ''
+        return HTMLResponse(login_form.replace("{error}", error))
+
+    # ── Gather all stats ──────────────────────────────────────────────────────
+    now   = datetime.datetime.utcnow()
+    today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    week  = today - datetime.timedelta(days=7)
+    month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    total_users  = db.query(func.count(User.id)).scalar() or 0
+    users_today  = db.query(func.count(User.id)).filter(User.created_at >= today).scalar() or 0
+    users_week   = db.query(func.count(User.id)).filter(User.created_at >= week).scalar() or 0
+    users_month  = db.query(func.count(User.id)).filter(User.created_at >= month).scalar() or 0
+    oauth_users  = db.query(func.count(User.id)).filter(User.google_id != None).scalar() or 0
+    pwd_users    = db.query(func.count(User.id)).filter(User.pwd_hash != None, User.pwd_hash != "").scalar() or 0
+
+    total_wb     = db.query(func.count(WordBankEntry.id)).scalar() or 0
+    wb_today     = db.query(func.count(WordBankEntry.id)).filter(WordBankEntry.saved_at >= today).scalar() or 0
+
+    total_searches  = db.query(func.count(SearchLog.id)).scalar() or 0
+    searches_today  = db.query(func.count(SearchLog.id)).filter(SearchLog.searched_at >= today).scalar() or 0
+    searches_week   = db.query(func.count(SearchLog.id)).filter(SearchLog.searched_at >= week).scalar() or 0
+    searches_month  = db.query(func.count(SearchLog.id)).filter(SearchLog.searched_at >= month).scalar() or 0
+
+    top_month_rows = (db.query(SearchLog.word, func.count(SearchLog.id).label("n"))
+        .filter(SearchLog.searched_at >= month).group_by(SearchLog.word)
+        .order_by(func.count(SearchLog.id).desc()).limit(10).all())
+    top_all_rows = (db.query(SearchLog.word, func.count(SearchLog.id).label("n"))
+        .group_by(SearchLog.word).order_by(func.count(SearchLog.id).desc()).limit(10).all())
+
+    thirty_ago = today - datetime.timedelta(days=29)
+    daily_search_rows = (db.query(func.date(SearchLog.searched_at).label("day"), func.count(SearchLog.id).label("n"))
+        .filter(SearchLog.searched_at >= thirty_ago).group_by(func.date(SearchLog.searched_at)).all())
+    daily_user_rows = (db.query(func.date(User.created_at).label("day"), func.count(User.id).label("n"))
+        .filter(User.created_at >= thirty_ago).group_by(func.date(User.created_at)).all())
+
+    search_map = {r.day: r.n for r in daily_search_rows}
+    user_map   = {r.day: r.n for r in daily_user_rows}
+
+    def sparkline(data_map, color):
+        days  = [(thirty_ago + datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(30)]
+        vals  = [data_map.get(d, 0) for d in days]
+        maxv  = max(vals) if vals else 1
+        maxv  = maxv or 1
+        W, H, pl, pr, pt, pb = 500, 100, 8, 8, 6, 18
+        cW, cH = W - pl - pr, H - pt - pb
+        def px(i): return pl + (i / (len(vals) - 1)) * cW if len(vals) > 1 else pl
+        def py(v): return pt + cH - (v / maxv) * cH
+        pts = " ".join(f"{px(i):.1f},{py(v):.1f}" for i, v in enumerate(vals))
+        area = f"M{px(0):.1f},{py(vals[0]):.1f} " + " ".join(f"L{px(i):.1f},{py(v):.1f}" for i, v in enumerate(vals))
+        area += f" L{px(len(vals)-1):.1f},{pt+cH} L{px(0):.1f},{pt+cH} Z"
+        # x-axis tick labels every 10 days
+        ticks = ""
+        for i in [0, 9, 19, 29]:
+            if i < len(days):
+                import calendar
+                d = datetime.datetime.strptime(days[i], "%Y-%m-%d")
+                lbl = d.strftime("%b %-d")
+                ticks += f'<text x="{px(i):.1f}" y="{H-2}" fill="#bbb" font-size="9" text-anchor="middle" font-family="system-ui">{lbl}</text>'
+        return (f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:80px;display:block;overflow:visible">'
+                f'<path d="{area}" fill="{color}" fill-opacity=".15"/>'
+                f'<polyline points="{pts}" fill="none" stroke="{color}" stroke-width="2" stroke-linejoin="round"/>'
+                f'{ticks}</svg>')
+
+    def word_bars(rows):
+        if not rows: return '<span style="color:#aaa;font-size:.8rem">No data yet.</span>'
+        maxn = rows[0].n or 1
+        out = []
+        for i, r in enumerate(rows):
+            pct = round(r.n / maxn * 100)
+            out.append(
+                f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">'
+                f'<span style="color:#bbb;font-size:.65rem;width:14px;text-align:right">{i+1}</span>'
+                f'<span style="flex:1;font-family:Georgia,serif;font-size:.84rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{r.word}</span>'
+                f'<div style="width:52px;height:4px;background:#eee;border-radius:2px"><div style="width:{pct}%;height:4px;background:#c47028;border-radius:2px"></div></div>'
+                f'<span style="color:#aaa;font-size:.7rem;min-width:18px;text-align:right">{r.n}</span>'
+                f'</div>'
+            )
+        return "".join(out)
+
+    recent = (db.query(User).order_by(User.created_at.desc()).limit(20).all())
+
+    def fmt_date(dt):
+        if not dt: return "—"
+        return dt.strftime("%b %-d, %Y %H:%M")
+
+    def auth_bar(label, val, total, color):
+        pct = round(val / total * 100) if total else 0
+        return (f'<div style="margin-bottom:12px">'
+                f'<div style="display:flex;justify-content:space-between;font-size:.78rem;color:#555;margin-bottom:4px">'
+                f'<span>{label}</span><strong>{val}</strong></div>'
+                f'<div style="height:7px;background:#eee;border-radius:4px">'
+                f'<div style="width:{pct}%;height:7px;background:{color};border-radius:4px"></div></div></div>')
+
+    # ── Build HTML ────────────────────────────────────────────────────────────
+    def card(label, val, sub=""):
+        return (f'<div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:18px">'
+                f'<div style="font-size:.68rem;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">{label}</div>'
+                f'<div style="font-size:1.8rem;font-weight:700;color:#111;line-height:1">{val:,}</div>'
+                f'{"<div style=font-size:.72rem;color:#999;margin-top:5px>" + sub + "</div>" if sub else ""}'
+                f'</div>')
+
+    def sec(title):
+        return f'<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#999;margin:28px 0 12px">{title}</div>'
+
+    health_chips = [
+        ("API", True, False),
+        ("Database", True, False),
+        ("Anthropic key", bool(os.getenv("ANTHROPIC_API_KEY")), False),
+        ("Google OAuth", bool(os.getenv("GOOGLE_CLIENT_ID")), not bool(os.getenv("GOOGLE_CLIENT_ID"))),
+    ]
+
+    # Disk
+    stat = os.statvfs("/")
+    disk_used_gb = round((stat.f_blocks - stat.f_bfree) * stat.f_frsize / 1e9, 1)
+    disk_total_gb = round(stat.f_blocks * stat.f_frsize / 1e9, 1)
+    disk_pct = round((stat.f_blocks - stat.f_bfree) / stat.f_blocks * 100, 1) if stat.f_blocks else 0
+    health_chips.append((f"Disk {disk_used_gb}/{disk_total_gb} GB ({disk_pct}%)", disk_pct < 85, disk_pct > 70))
+
+    uptime_s = int((now - _START_TIME).total_seconds())
+    d, rem = divmod(uptime_s, 86400); h, rem = divmod(rem, 3600); m = rem // 60
+    uptime_str = (f"{d}d {h}h" if d else f"{h}h {m}m" if h else f"{m}m")
+    health_chips.append((f"Uptime {uptime_str}", True, False))
+
+    def chip(label, ok, warn=False):
+        dot = "#f59e0b" if warn else ("#22c55e" if ok else "#ef4444")
+        return (f'<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;'
+                f'background:#fff;border:1px solid #e5e5e5;border-radius:20px;font-size:.78rem;font-weight:500;margin:4px">'
+                f'<span style="width:8px;height:8px;border-radius:50%;background:{dot};flex-shrink:0;display:inline-block"></span>'
+                f'{label}</span>')
+
+    tr_rows = "".join(
+        f'<tr style="border-bottom:1px solid #f0f0f0">'
+        f'<td style="padding:9px 14px;color:#aaa">{u.id}</td>'
+        f'<td style="padding:9px 14px">{u.name or "—"}</td>'
+        f'<td style="padding:9px 14px">{u.email}</td>'
+        f'<td style="padding:9px 14px"><span style="padding:2px 8px;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;'
+        f'background:{"#dbeafe;color:#1d4ed8" if u.google_id else "#dcfce7;color:#15803d"}">'
+        f'{"oauth" if u.google_id else "password"}</span></td>'
+        f'<td style="padding:9px 14px;color:#aaa">{fmt_date(u.created_at)}</td>'
+        f'</tr>'
+        for u in recent
+    )
+
+    html = f"""<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lexio Admin</title>
+<style>
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:system-ui,sans-serif;background:#f5f4f0;color:#1a1a1a;font-size:14px}}
+a{{color:#c47028;text-decoration:none}}
+</style>
+</head><body>
+
+<div style="display:flex;align-items:center;gap:10px;padding:14px 24px;background:#fff;border-bottom:1px solid #e5e5e5;position:sticky;top:0;z-index:10">
+  <svg width="22" height="22" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#c47028"/><text x="18" y="25" font-family="Georgia,serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">w</text></svg>
+  <strong>Lexio</strong>
+  <span style="font-size:.65rem;font-weight:700;padding:2px 7px;background:#fef3e2;color:#c47028;border-radius:20px;text-transform:uppercase;letter-spacing:.04em">Admin</span>
+  <span style="margin-left:auto;font-size:.75rem;color:#aaa">Generated {now.strftime("%b %-d, %Y %H:%M")} UTC</span>
+  <a href="/admin?key={key}" style="margin-left:12px;padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555">↻ Refresh</a>
+  <a href="/admin" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555">Sign out</a>
+</div>
+
+<div style="padding:24px;max-width:1280px;margin:0 auto">
+
+  {sec("System health")}
+  <div>{"".join(chip(label, ok, warn) for label, ok, warn in health_chips)}</div>
+
+  {sec("Overview")}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px">
+    {card("Total users", total_users, f"+{users_week} this week · +{users_month} this month")}
+    {card("Total searches", total_searches, f"+{searches_week} this week · +{searches_month} this month")}
+    {card("Word bank entries", total_wb, f"+{wb_today} today")}
+    {card("New users today", users_today, f"{users_week} this week")}
+    {card("Searches today", searches_today, f"{searches_week} this week")}
+    {card("WB entries today", wb_today, "")}
+  </div>
+
+  {sec("Trends — last 30 days")}
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:18px">
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#999;margin-bottom:12px">Searches per day</div>
+      {sparkline(search_map, "#c47028")}
+    </div>
+    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:18px">
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#999;margin-bottom:12px">New users per day</div>
+      {sparkline(user_map, "#3b82f6")}
+    </div>
+  </div>
+
+  {sec("Top words &amp; auth")}
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:18px">
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#999;margin-bottom:12px">Top words — this month</div>
+      {word_bars(top_month_rows)}
+    </div>
+    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:18px">
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#999;margin-bottom:12px">Top words — all time</div>
+      {word_bars(top_all_rows)}
+    </div>
+    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:18px">
+      <div style="font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#999;margin-bottom:12px">Auth breakdown</div>
+      {auth_bar("Google / Apple", oauth_users, total_users, "#3b82f6")}
+      {auth_bar("Email / password", pwd_users, total_users, "#22c55e")}
+    </div>
+  </div>
+
+  {sec("Recent sign-ups")}
+  <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;overflow:hidden;overflow-x:auto">
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="border-bottom:1px solid #eee">
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">#</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Name</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Email</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Auth</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Joined</th>
+      </tr></thead>
+      <tbody>{tr_rows}</tbody>
+    </table>
+  </div>
+
+</div>
+</body></html>"""
+
+    return HTMLResponse(html)
+
+
 # ── Static frontend ───────────────────────────────────────────────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
