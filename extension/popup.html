@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lexio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">
+      <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+        <rect width="36" height="36" rx="9" fill="oklch(58% 0.17 54)"/>
+        <text x="18" y="25" font-family="Georgia,serif" font-size="20" font-weight="700"
+              fill="white" text-anchor="middle">w</text>
+      </svg>
+      <span class="logo-name">Lexio</span>
+    </div>
+    <label class="toggle" title="Enable / disable">
+      <input type="checkbox" id="enabled-toggle" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Language</div>
+    <select id="lang-select" class="select">
+      <option value="auto">Auto-detect</option>
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+      <option value="de">German</option>
+      <option value="it">Italian</option>
+      <option value="pt">Portuguese</option>
+      <option value="ru">Russian</option>
+      <option value="zh">Chinese</option>
+      <option value="ja">Japanese</option>
+      <option value="ko">Korean</option>
+      <option value="ar">Arabic</option>
+      <option value="hi">Hindi</option>
+      <option value="nl">Dutch</option>
+      <option value="pl">Polish</option>
+      <option value="tr">Turkish</option>
+      <option value="sv">Swedish</option>
+    </select>
+  </div>
+
+  <!-- Signed-out -->
+  <div id="signed-out" class="section auth-section">
+    <div class="section-label">Account</div>
+    <p class="auth-hint">Sign in to sync your word bank across devices.</p>
+    <div class="auth-fields" id="auth-fields">
+      <input id="auth-email"    type="email"    placeholder="you@example.com" class="input" autocomplete="email">
+      <input id="auth-password" type="password" placeholder="••••••••" class="input" autocomplete="current-password">
+      <div class="auth-error hidden" id="auth-error"></div>
+      <button class="btn-primary" id="auth-submit">Sign in</button>
+      <a class="auth-link" href="https://lexio.site" target="_blank">Create account on lexio.site ↗</a>
+    </div>
+  </div>
+
+  <!-- Signed-in -->
+  <div id="signed-in" class="section" style="display:none">
+    <div class="section-label">Account</div>
+    <div class="user-row">
+      <div class="user-avatar" id="user-avatar"></div>
+      <div>
+        <div class="user-name"  id="user-name"></div>
+        <div class="user-email" id="user-email"></div>
+      </div>
+      <button class="btn-ghost" id="signout-btn">Sign out</button>
+    </div>
+  </div>
+
+  <div class="section wordbank-row">
+    <div>
+      <div class="section-label">Word Bank</div>
+      <span class="wb-count" id="wb-count">0 words collected</span>
+    </div>
+    <a class="btn-ghost" href="https://lexio.site" target="_blank">Open ↗</a>
+  </div>
+
+  <div class="footer">
+    <a href="https://lexio.site" target="_blank" rel="noopener">lexio.site</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

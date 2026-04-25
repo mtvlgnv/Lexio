@@ -6,10 +6,16 @@
   <meta name="darkreader-lock">
   <meta name="color-scheme" content="light dark">
   <title>Lexio — Contextual Definitions</title>
+  <link rel="icon" type="image/png" sizes="16x16"  href="/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32"  href="/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48"  href="/favicon-48.png">
+  <link rel="apple-touch-icon"      sizes="180x180" href="/favicon-180.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
   <style>
     /* ── Reset ─────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -239,6 +245,18 @@
     .auth-sync-status { font-size:0.8rem; color:var(--text-mid); background:var(--accent-lt); border:1px solid var(--accent-mid); border-radius:var(--radius-sm); padding:8px 12px; }
     .auth-logout { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:0.82rem; color:var(--text-mid); cursor:pointer; transition:background 0.15s; width:fit-content; }
     .auth-logout:hover { background:var(--bg); color:var(--text); }
+    /* OAuth divider */
+    .auth-divider { display:flex; align-items:center; gap:10px; font-size:0.74rem; color:var(--muted); }
+    .auth-divider::before,.auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+    /* OAuth provider buttons */
+    .btn-oauth { display:flex; align-items:center; justify-content:center; gap:10px; padding:10px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:0.88rem; font-weight:500; color:var(--text); cursor:pointer; transition:background 0.15s,border-color 0.15s; width:100%; }
+    .btn-oauth:hover { background:var(--bg); border-color:var(--accent-mid); }
+    .btn-oauth svg { flex-shrink:0; }
+    /* Apple button — dark treatment matches Apple HIG */
+    .btn-apple { background:var(--text); color:var(--surface); border-color:var(--text); }
+    .btn-apple:hover { background:var(--text-mid); border-color:var(--text-mid); }
+    [data-theme="dark"] .btn-apple { background:var(--surface); color:var(--text); border-color:var(--border); }
+    [data-theme="dark"] .btn-apple:hover { background:var(--bg); }
 
     /* ── Main layout ────────────────────────────────────────── */
     main { flex:0 0 auto; display:flex; padding:20px 24px; height:calc(100vh - var(--header-h)); gap:0; min-height:0; }
@@ -457,6 +475,8 @@
 
     /* Action buttons */
     .action-btns { display:flex; flex-direction:column; gap:4px; flex-shrink:0; }
+    .def-lang-row { display:flex; align-items:center; gap:8px; }
+    .def-lang-label { font-size:0.68rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
     .action-btn { display:flex; align-items:center; gap:5px; padding:5px 10px; background:transparent; border:1px solid var(--border); border-radius:6px; font-family:inherit; font-size:0.72rem; font-weight:500; color:var(--muted); cursor:pointer; transition:background 0.12s,color 0.12s,border-color 0.12s; white-space:nowrap; }
     .action-btn:hover { background:var(--bg); color:var(--text); }
     .action-btn.saved { color:var(--accent); border-color:var(--accent-mid); background:var(--accent-lt); }
@@ -472,6 +492,17 @@
     .etymology-row { display:flex; align-items:baseline; gap:7px; }
     .etymology-label { font-size:0.62rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); white-space:nowrap; flex-shrink:0; }
     .etymology-text { font-size:0.8rem; font-style:italic; font-family:'Lora',serif; color:var(--muted); line-height:1.5; }
+
+    /* ── More-detail progressive disclosure ─────────────────── */
+    .more-toggle { display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; font-weight:500; color:var(--muted); background:none; border:none; cursor:pointer; padding:4px 0; font-family:inherit; transition:color 0.15s; }
+    .more-toggle:hover { color:var(--accent); }
+    .more-section { display:none; flex-direction:column; gap:7px; }
+    .more-section.open { display:flex; }
+
+    /* ── History pinned bar ─────────────────────────────────── */
+    .history-header-bar { display:flex; align-items:center; gap:6px; padding:8px 24px 6px; overflow-x:auto; flex-shrink:0; scrollbar-width:none; border-bottom:1px solid var(--border-light); }
+    .history-header-bar::-webkit-scrollbar { display:none; }
+    .history-header-bar.hidden { display:none; }
 
     /* ── History strip ──────────────────────────────────────── */
     #history-strip { display:flex; align-items:center; gap:6px; padding-top:4px; overflow-x:auto; flex-shrink:0; scrollbar-width:none; }
@@ -611,7 +642,8 @@
     /* ── Responsive ─────────────────────────────────────────── */
     @media (max-width:760px) {
       header { padding:0 16px; gap:8px; }
-      .tagline, .shortcut-hint, .lang-btn { display:none; }
+      .tagline, .shortcut-hint { display:none; }
+      .lang-btn { display:flex; }
       main { flex-direction:column; height:auto; padding:12px; }
       .panel-left  { margin-right:0; margin-bottom:10px; min-height:260px; }
       .panel-right { width:100%; min-height:300px; }
@@ -640,37 +672,36 @@
     #landing { display: flex; flex-direction: column; }
     body.in-app #landing { display: none; }
 
-    /* Hero */
+    /* Hero + How it works combined row */
     .lp-hero {
-      padding: 100px 48px 80px;
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-      gap: 24px; background: var(--surface); border-top: 1px solid var(--border);
+      padding: 64px 72px;
+      display: flex; flex-direction: row; align-items: center;
+      gap: 80px; background: var(--surface); border-top: 1px solid var(--border);
       position: relative; overflow: hidden;
     }
-    .lp-hero::before {
-      content: 'w';
-      position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-      font-family: 'Lora', serif; font-size: 340px; font-weight: 600;
-      color: var(--border); opacity: 0.25; pointer-events: none; user-select: none;
-      line-height: 1;
+    .lp-hero-left {
+      flex: 1; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 1;
+    }
+    .lp-hero-right {
+      flex: 1; display: flex; flex-direction: column; gap: 28px; position: relative; z-index: 1;
     }
     .lp-hero-eyebrow {
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--accent); position: relative;
+      text-transform: uppercase; color: var(--accent);
     }
     .lp-hero h1 {
-      font-family: 'Lora', serif; font-size: clamp(2rem, 4vw, 3.2rem);
+      font-family: 'Lora', serif; font-size: clamp(1.8rem, 3vw, 2.8rem);
       font-weight: 600; line-height: 1.2; color: var(--text);
-      max-width: 680px; position: relative;
+      max-width: 480px; position: relative;
     }
     .lp-hero h1 em { font-style: italic; color: var(--accent); }
     .lp-hero-sub {
-      font-size: 1.05rem; color: var(--text-mid); max-width: 520px;
-      line-height: 1.7; position: relative;
+      font-size: 1rem; color: var(--text-mid); max-width: 440px;
+      line-height: 1.7;
     }
     .lp-hero-cta {
-      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-      margin-top: 8px; position: relative;
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 4px;
     }
     .lp-btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
@@ -691,9 +722,9 @@
 
     /* Trending words */
     .lp-trending {
-      padding: 72px 48px;
+      padding: 52px 48px;
       background: var(--surface); border-top: 1px solid var(--border);
-      display: flex; flex-direction: column; align-items: center; gap: 40px;
+      display: flex; flex-direction: column; align-items: center; gap: 28px;
     }
     .lp-trending-header {
       display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
@@ -727,15 +758,12 @@
       font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 500;
       color: var(--text); flex: 1; text-transform: capitalize;
     }
-    .lp-trending-bar-wrap {
-      width: 80px; height: 4px; background: var(--border); border-radius: 2px; flex-shrink: 0;
-    }
-    .lp-trending-bar {
-      height: 4px; background: var(--accent-mid); border-radius: 2px;
-      transition: width 0.8s cubic-bezier(0.16,1,0.3,1);
-    }
+    .lp-trending-bar-wrap { display: none; }
+    .lp-trending-bar { display: none; }
     .lp-trending-count {
-      font-size: 0.74rem; color: var(--muted); white-space: nowrap; min-width: 48px; text-align: right;
+      font-size: 0.72rem; font-weight: 700; color: var(--accent);
+      background: var(--accent-lt); border: 1px solid var(--accent-mid);
+      padding: 2px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
     }
     /* Skeleton loading */
     .lp-trending-skeleton {
@@ -753,14 +781,15 @@
       font-size: 0.88rem; color: var(--muted); font-style: italic; text-align: center;
     }
     @media (max-width: 760px) {
-      .lp-trending { padding: 56px 24px; }
+      .lp-trending { padding: 40px 24px; }
       .lp-trending-bar-wrap { display: none; }
     }
 
-    /* How it works */
-    .lp-steps {
-      padding: 80px 48px;
-      display: flex; flex-direction: column; align-items: center; gap: 56px;
+    /* How it works — now inside hero right column, section hidden */
+    .lp-steps { display: none; }
+    .lp-hero-steps-title {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
     }
     .lp-section-title {
       font-family: 'Lora', serif; font-size: 1.8rem; font-weight: 600;
@@ -772,8 +801,9 @@
       gap: 32px; width: 100%; max-width: 860px;
     }
     .lp-step {
-      display: flex; flex-direction: column; gap: 14px; align-items: flex-start;
+      display: flex; flex-direction: row; gap: 16px; align-items: flex-start;
     }
+    .lp-step > div { display: flex; flex-direction: column; gap: 4px; }
     .lp-step-num {
       width: 36px; height: 36px; border-radius: 50%;
       background: var(--accent-lt); color: var(--accent);
@@ -788,9 +818,9 @@
 
     /* Features */
     .lp-features {
-      padding: 80px 48px;
+      padding: 56px 48px;
       background: var(--surface); border-top: 1px solid var(--border);
-      display: flex; flex-direction: column; align-items: center; gap: 56px;
+      display: flex; flex-direction: column; align-items: center; gap: 36px;
     }
     .lp-features-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
@@ -810,19 +840,78 @@
     .lp-feature h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); }
     .lp-feature p  { font-size: 0.82rem; color: var(--text-mid); line-height: 1.6; }
 
-    /* Desktop CTA */
-    .lp-desktop {
-      padding: 80px 48px 100px;
+    /* Chrome extension CTA */
+    .lp-ext {
+      padding: 56px 48px;
       display: flex; flex-direction: column; align-items: center;
-      text-align: center; gap: 24px;
+      text-align: center; gap: 16px;
+      background: var(--accent-lt);
+      border-top: 1px solid var(--accent-mid);
+      border-bottom: 1px solid var(--accent-mid);
     }
-    .lp-desktop h2 {
+    .lp-ext-eyebrow {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .lp-ext h2 {
       font-family: 'Lora', serif; font-size: 1.9rem; font-weight: 600;
-      color: var(--text); max-width: 500px; line-height: 1.25;
+      color: var(--text); max-width: 520px; line-height: 1.25;
     }
-    .lp-desktop h2 em { font-style: italic; color: var(--accent); }
-    .lp-desktop p { font-size: 0.92rem; color: var(--text-mid); max-width: 420px; line-height: 1.7; }
-    .lp-desktop-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+    .lp-ext h2 em { font-style: italic; color: var(--accent); }
+    .lp-ext p { font-size: 0.92rem; color: var(--text-mid); max-width: 400px; line-height: 1.7; }
+    .lp-ext-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+    .lp-ext-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px;
+      background: var(--text); color: var(--surface);
+      border: none; border-radius: 10px;
+      font-family: inherit; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .lp-ext-badge:hover { opacity: 0.85; }
+    .lp-ext-note { font-size: 0.74rem; color: var(--muted); }
+
+    /* Extension install modal */
+    #ext-modal { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.18s ease; }
+    #ext-modal.hidden { display:none; }
+    .ext-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:460px; border:1px solid var(--border); overflow:hidden; }
+    .ext-header { display:flex; align-items:center; justify-content:space-between; padding:20px 24px 16px; border-bottom:1px solid var(--border); }
+    .ext-header h3 { font-family:'Lora',serif; font-size:1.1rem; font-weight:600; }
+    .ext-close { background:none; border:none; font-size:1.4rem; color:var(--muted); cursor:pointer; line-height:1; padding:0; }
+    .ext-body { padding:24px; display:flex; flex-direction:column; gap:20px; }
+    .ext-steps { display:flex; flex-direction:column; gap:12px; }
+    .ext-step { display:flex; align-items:flex-start; gap:14px; }
+    .ext-step-num { width:24px; height:24px; border-radius:50%; background:var(--accent); color:#fff; font-size:0.72rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .ext-step-text { font-size:0.875rem; color:var(--text-mid); line-height:1.55; }
+    .ext-step-text strong { color:var(--text); font-weight:600; }
+    .ext-step-text code { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-size:0.8rem; font-family:monospace; }
+    .ext-dl-btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:11px; background:var(--accent); color:#fff; border:none; border-radius:var(--radius-sm); font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; text-decoration:none; transition:background 0.15s; }
+    .ext-dl-btn:hover { background:var(--accent-dk); }
+    .ext-footer-note { font-size:0.76rem; color:var(--muted); text-align:center; line-height:1.5; }
+
+    /* Merged apps CTA */
+    .lp-apps {
+      display: grid; grid-template-columns: 1fr 1fr;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .lp-app-card {
+      padding: 56px 48px 64px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 14px;
+    }
+    .lp-app-card:first-child {
+      background: var(--accent-lt);
+      border-right: 1px solid var(--accent-mid);
+    }
+    .lp-app-card h3 {
+      font-family: 'Lora', serif; font-size: 1.55rem; font-weight: 600;
+      color: var(--text); line-height: 1.3; max-width: 280px;
+    }
+    .lp-app-card h3 em { font-style: italic; color: var(--accent); }
+    .lp-app-card p { font-size: 0.88rem; color: var(--text-mid); max-width: 300px; line-height: 1.65; }
+    .lp-app-card-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
 
     /* Footer */
     .lp-footer {
@@ -837,10 +926,14 @@
 
     /* Landing responsive */
     @media (max-width: 760px) {
-      .lp-hero { padding: 72px 24px 56px; }
-      .lp-steps, .lp-features, .lp-desktop { padding: 56px 24px; }
+      .lp-hero { padding: 48px 24px 40px; flex-direction: column; gap: 40px; }
+      .lp-hero-right { border-top: 1px solid var(--border); padding-top: 32px; }
+      .lp-steps, .lp-features { padding: 40px 24px; }
       .lp-steps-grid, .lp-features-grid { grid-template-columns: 1fr; }
       .lp-footer { flex-direction: column; gap: 12px; text-align: center; }
+      .lp-apps { grid-template-columns: 1fr; }
+      .lp-app-card:first-child { border-right: none; border-bottom: 1px solid var(--accent-mid); }
+      .lp-app-card { padding: 40px 24px; }
     }
     @media (max-width: 1000px) {
       .lp-features-grid { grid-template-columns: repeat(2, 1fr); }
@@ -851,33 +944,15 @@
 
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header>
+  <img src="/favicon-32.png" width="22" height="22" alt="" style="border-radius:6px;flex-shrink:0;">
   <span class="brand">Le<em>x</em>io</span>
-  <span class="tagline">Your buddy for understanding any text</span>
+  <span class="tagline" data-i18n="tagline">Your buddy for understanding any text</span>
   <div class="header-spacer"></div>
-
-  <!-- Language selector -->
-  <label class="lang-btn" title="Definition language">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-    <select id="lang-select" onchange="setLang(this.value)">
-      <option value="auto">Auto-detect</option>
-      <option value="English">English</option>
-      <option value="Spanish">Español</option>
-      <option value="French">Français</option>
-      <option value="German">Deutsch</option>
-      <option value="Italian">Italiano</option>
-      <option value="Portuguese">Português</option>
-      <option value="Dutch">Nederlands</option>
-      <option value="Russian">Русский</option>
-      <option value="Chinese">中文</option>
-      <option value="Japanese">日本語</option>
-      <option value="Korean">한국어</option>
-    </select>
-  </label>
 
   <!-- Saved word bank -->
   <button class="wb-header-btn" onclick="openWordBank()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-    Saved
+    <span data-i18n="saved">Saved</span>
     <span class="wb-badge" id="wb-badge"></span>
   </button>
 
@@ -896,7 +971,25 @@
     </button>
     <div class="menu-dropdown hidden" id="menu-dropdown">
       <div class="menu-section">
-        <span class="menu-label">Theme</span>
+        <span class="menu-label" data-i18n="uiLang">Interface language</span>
+        <div style="padding:4px 6px 6px">
+          <select id="ui-lang-select" onchange="setUILang(this.value)" style="width:100%;padding:6px 8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:0.82rem;color:var(--text);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="nl">Nederlands</option>
+            <option value="ru">Русский</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+          </select>
+        </div>
+      </div>
+      <div class="menu-section">
+        <span class="menu-label" data-i18n="theme">Theme</span>
         <div class="menu-theme-row">
           <button class="menu-theme-btn active" data-theme="warm" onclick="setTheme('warm');updateMenuTheme()">Warm</button>
           <button class="menu-theme-btn" data-theme="cool" onclick="setTheme('cool');updateMenuTheme()">Cool</button>
@@ -907,11 +1000,11 @@
       <div class="menu-section">
         <button class="menu-item" data-action="desktop" onclick="openDesktopModal();closeMenu()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          Get the Mac app
+          <span data-i18n="macApp">Get the Mac app</span>
         </button>
         <button class="menu-item" onclick="toggleShortcuts();closeMenu()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M18 12h.01M10 12h4M6 16h12"/></svg>
-          Keyboard shortcuts
+          <span data-i18n="shortcuts">Keyboard shortcuts</span>
         </button>
       </div>
     </div>
@@ -922,7 +1015,7 @@
 
   <!-- ── Left panel ─────────────────────────────────────────── -->
   <div class="panel panel-left" id="left-panel">
-    <div class="panel-label">Text</div>
+    <div class="panel-label" data-i18n="panelLabel">Text</div>
     <div class="reading-stats hidden" id="reading-stats"></div>
 
     <div class="tooltip-box" id="tooltip-0">
@@ -939,7 +1032,7 @@
     <div id="url-bar" class="hidden">
       <svg class="url-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
       <span id="url-preview"></span>
-      <button id="url-fetch-btn" onclick="fetchArticle()">Fetch article</button>
+      <button id="url-fetch-btn" onclick="fetchArticle()" data-i18n="fetchArticle">Fetch article</button>
     </div>
 
     <div id="input-area">
@@ -949,16 +1042,16 @@
 
     <div class="panel-footer">
       <span class="char-count" id="char-count"></span>
-      <button class="btn-sample" id="sample-btn" onclick="cycleSample()">Try a sample</button>
+      <button class="btn-sample" id="sample-btn" onclick="cycleSample()" data-i18n="trySample">Try a sample</button>
       <div class="footer-spacer"></div>
-      <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()">← Edit</button>
-      <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze text</button>
+      <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()" data-i18n="edit">← Edit</button>
+      <button id="analyze-btn" class="btn-primary" onclick="analyze()" data-i18n="analyzeText">Analyze text</button>
     </div>
 
     <div id="tweaks-panel">
-      <div class="tweaks-title">Tweaks</div>
+      <div class="tweaks-title" data-i18n="tweaks">Tweaks</div>
       <div class="tweak-row">
-        <div class="tweak-label">Color theme</div>
+        <div class="tweak-label" data-i18n="colorTheme">Color theme</div>
         <div class="tweak-options">
           <button class="tweak-opt active" onclick="setTheme('warm')">Warm</button>
           <button class="tweak-opt" onclick="setTheme('cool')">Cool</button>
@@ -966,14 +1059,14 @@
         </div>
       </div>
       <div class="tweak-row">
-        <div class="tweak-label">Text size</div>
+        <div class="tweak-label" data-i18n="textSize">Text size</div>
         <div class="tweak-slider-row">
           <input type="range" class="tweak-slider" id="font-size-slider" min="13" max="20" step="1" value="16" oninput="setFontSize(this.value)">
           <span class="tweak-val" id="font-size-val">16</span>
         </div>
       </div>
       <div class="tweak-row">
-        <div class="tweak-label">Line height</div>
+        <div class="tweak-label" data-i18n="lineHeight">Line height</div>
         <div class="tweak-slider-row">
           <input type="range" class="tweak-slider" id="line-height-slider" min="1.4" max="2.2" step="0.1" value="1.8" oninput="setLineHeight(this.value)">
           <span class="tweak-val" id="line-height-val">1.8</span>
@@ -985,10 +1078,11 @@
   <!-- ── Right panel ────────────────────────────────────────── -->
   <div class="panel panel-right">
 
+    <div id="history-header" class="history-header-bar hidden"></div>
     <div id="def-placeholder">
       <div class="placeholder-glyph">w</div>
-      <p class="placeholder-title">Click any word</p>
-      <p id="placeholder-sub">After analyzing your text, tap any word to see its precise meaning in context.</p>
+      <p class="placeholder-title" data-i18n="clickWord">Click any word</p>
+      <p id="placeholder-sub" data-i18n="placeholderSub">After analyzing your text, tap any word to see its precise meaning in context.</p>
       <div class="suggest-chips hidden" id="suggest-chips"></div>
     </div>
 
@@ -1015,7 +1109,7 @@
             <span id="def-ipa" class="ipa-text"></span>
             <button class="say-btn" onclick="sayWord()" title="Pronounce this word">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-              Say
+              <span data-i18n="say">Say</span>
             </button>
           </div>
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
@@ -1023,42 +1117,75 @@
             <span id="def-register" class="register-tag hidden"></span>
           </div>
           <div id="def-simpler" class="hidden">
-            <span class="simpler-label">simpler:</span>
+            <span class="simpler-label" data-i18n="simpler">simpler:</span>
             <span id="def-simpler-word" class="simpler-word"></span>
           </div>
         </div>
         <div class="action-btns">
           <button id="copy-btn" class="action-btn" onclick="copyDefinition()" title="Copy definition">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            Copy
+            <span data-i18n="copy">Copy</span>
           </button>
           <button id="save-btn" class="action-btn" onclick="toggleSave()" title="Save to word bank">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="save-icon"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            <span id="save-label">Save</span>
+            <span id="save-label" data-i18n="save">Collect</span>
           </button>
           <button id="link-btn" class="action-btn" onclick="copyPermalink()" title="Copy shareable link">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-            Link
+            <span data-i18n="link">Link</span>
           </button>
           <button id="share-btn" class="action-btn" onclick="shareAsImage()" title="Share as image">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Share
+            <span data-i18n="share">Share</span>
           </button>
         </div>
       </div>
 
+      <div class="def-lang-row">
+        <span class="def-lang-label" data-i18n="respondIn">Respond in</span>
+        <label class="lang-btn" title="Definition language">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <select id="lang-select" onchange="setLang(this.value)">
+            <option value="auto">Auto-detect</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="nl">Nederlands</option>
+            <option value="ru">Русский</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="def-section hidden" id="def-definition-section">
+        <span class="def-label" data-i18n="meaning">Meaning</span>
+        <p id="def-definition" class="def-text"></p>
+      </div>
+
       <div class="def-section">
-        <span class="def-label">In this context</span>
+        <span class="def-label" data-i18n="inContext">In this context</span>
         <p id="def-contextual" class="def-text"></p>
       </div>
 
-      <div class="etymology-row hidden" id="etymology-row">
-        <span class="etymology-label">Origin</span>
-        <span id="def-etymology" class="etymology-text"></span>
+      <button class="more-toggle" id="more-toggle" style="display:none" onclick="toggleMoreSection()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <span data-i18n="moreDetail">More detail</span>
+      </button>
+
+      <div class="more-section" id="more-section">
+        <div class="etymology-row hidden" id="etymology-row">
+          <span class="etymology-label" data-i18n="origin">Origin</span>
+          <span id="def-etymology" class="etymology-text"></span>
+        </div>
       </div>
 
       <div class="def-section">
-        <span class="def-label">Why this word?</span>
+        <span class="def-label" data-i18n="whyWord">Why this word?</span>
         <div class="def-why-box"><p id="def-why"></p></div>
       </div>
 
@@ -1079,27 +1206,128 @@
 <!-- ── Landing page ───────────────────────────────────────────── -->
 <div id="landing">
 
-  <!-- Hero -->
+  <!-- Hero + How it works -->
   <div class="lp-hero">
-    <span class="lp-hero-eyebrow">Contextual understanding</span>
-    <h1>Read deeper.<br>Understand <em>everything.</em></h1>
-    <p class="lp-hero-sub">Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.</p>
-    <div class="lp-hero-cta">
-      <button class="lp-btn-primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-        Try it now
-      </button>
-      <button class="lp-btn-ghost" onclick="openDesktopModal()">Get the Mac app</button>
+    <div class="lp-hero-left">
+      <span class="lp-hero-eyebrow" data-i18n="heroEyebrow">Contextual understanding</span>
+      <h1 data-i18n-html="heroH1">Read deeper.<br>Understand <em>everything.</em></h1>
+      <p class="lp-hero-sub" data-i18n="heroSub">Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.</p>
+      <div class="lp-hero-cta">
+        <button class="lp-btn-primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          <span data-i18n="tryItNow">Try it now</span>
+        </button>
+        <a class="lp-btn-ghost" href="#landing" onclick="document.getElementById('landing').scrollIntoView({behavior:'smooth'});return false;" data-i18n="seeHow">See how it works</a>
+      </div>
+    </div>
+    <div class="lp-hero-right">
+      <span class="lp-hero-steps-title" data-i18n="howLabel">How it works</span>
+      <div class="lp-step">
+        <div class="lp-step-num">1</div>
+        <div><h3 data-i18n="step1Title">Paste any text</h3><p data-i18n="step1Desc">Drop in a paragraph from an article, book, email, or anything else — any language works.</p></div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">2</div>
+        <div><h3 data-i18n="step2Title">Analyze it</h3><p data-i18n="step2Desc">Lexio reads the full context and prepares every word for instant lookup. Takes about a second.</p></div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">3</div>
+        <div><h3 data-i18n="step3Title">Click any word</h3><p data-i18n="step3Desc">Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.</p></div>
+      </div>
     </div>
   </div>
 
   <!-- Trending words -->
+  <!-- Features -->
+  <div class="lp-features">
+    <h2 class="lp-section-title" data-i18n-html="featuresTitle">Everything you need to <em>understand</em></h2>
+    <div class="lp-features-grid">
+
+      <div class="lp-feature">
+        <div class="lp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3 data-i18n="feat1Title">Contextual definitions</h3>
+        <p data-i18n="feat1Desc">Not what the word means in general — what it means right here, in this sentence, the way this author used it.</p>
+      </div>
+
+      <div class="lp-feature">
+        <div class="lp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3 data-i18n="feat2Title">12 languages</h3>
+        <p data-i18n="feat2Desc">Paste text in Spanish, French, German, Russian, Japanese, and more. Get definitions in whatever language you prefer.</p>
+      </div>
+
+      <div class="lp-feature">
+        <div class="lp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <h3 data-i18n="feat3Title">IPA pronunciation</h3>
+        <p data-i18n="feat3Desc">See the phonetic transcription of every word and hear it spoken aloud with a single tap.</p>
+      </div>
+
+      <div class="lp-feature">
+        <div class="lp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h3 data-i18n="feat4Title">Etymology</h3>
+        <p data-i18n="feat4Desc">Understand where words come from. Knowing a word's roots makes it stick — and makes the next related word easier.</p>
+      </div>
+
+      <div class="lp-feature">
+        <div class="lp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3 data-i18n="feat5Title">Word bank</h3>
+        <p data-i18n="feat5Desc">Save words you want to remember. Your personal vocabulary list, always one click away.</p>
+      </div>
+
+      <div class="lp-feature">
+        <div class="lp-feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3 data-i18n="feat6Title">Mac app</h3>
+        <p data-i18n="feat6Desc">Use Lexio from any app on your Mac — a full-featured desktop app or a floating menu bar overlay.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Apps CTA (merged) -->
+  <div class="lp-apps">
+    <div class="lp-app-card">
+      <span class="lp-ext-eyebrow" data-i18n="extEyebrow">Chrome Extension — Beta</span>
+      <h3 data-i18n-html="extH2">Look up words <em>without</em><br>leaving the page.</h3>
+      <p data-i18n="extP">Select any word or sentence on any website. Lexio appears instantly with the meaning in context — no copy-paste, no tab switching.</p>
+      <div class="lp-app-card-btns">
+        <button class="lp-ext-badge" onclick="openExtModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          <span data-i18n="extBtn">Add to Chrome</span>
+        </button>
+      </div>
+      <span class="lp-ext-note" data-i18n="extNote">Free · Works on any page · No account required</span>
+    </div>
+    <div class="lp-app-card">
+      <span class="lp-ext-eyebrow">Mac App</span>
+      <h3 data-i18n-html="deskH2">Always <em>at hand</em>,<br>wherever you read.</h3>
+      <p data-i18n="deskP">The Lexio Mac app lives in your menu bar or dock, so you can look up words without switching to your browser.</p>
+      <div class="lp-app-card-btns">
+        <button class="lp-ext-badge" onclick="openDesktopModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span data-i18n="downloadMac">Download for Mac</span>
+        </button>
+        <button class="lp-btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})" data-i18n="openBrowser">Open in browser</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trending (last section) -->
   <div class="lp-trending">
     <div class="lp-trending-header">
       <span class="lp-trending-month" id="trending-month">This month</span>
-      <h2 class="lp-section-title">What people are <em>looking up</em></h2>
+      <h2 class="lp-section-title" data-i18n-html="trendingTitle">What people are <em>looking up</em></h2>
     </div>
-    <!-- Skeleton shown while loading -->
     <div class="lp-trending-skeleton" id="trending-skeleton">
       <div class="skeleton-row"></div>
       <div class="skeleton-row" style="opacity:.8"></div>
@@ -1107,113 +1335,63 @@
       <div class="skeleton-row" style="opacity:.45"></div>
       <div class="skeleton-row" style="opacity:.3"></div>
     </div>
-    <!-- Filled by JS -->
     <div class="lp-trending-list hidden" id="trending-list"></div>
-    <p class="lp-trending-empty hidden" id="trending-empty">No searches recorded yet this month — be the first!</p>
-  </div>
-
-  <!-- How it works -->
-  <div class="lp-steps">
-    <h2 class="lp-section-title">How it <em>works</em></h2>
-    <div class="lp-steps-grid">
-      <div class="lp-step">
-        <div class="lp-step-num">1</div>
-        <h3>Paste any text</h3>
-        <p>Drop in a paragraph from an article, book, email, or anything else — any language works.</p>
-      </div>
-      <div class="lp-step">
-        <div class="lp-step-num">2</div>
-        <h3>Analyze it</h3>
-        <p>Lexio reads the full context and prepares every word for instant lookup. Takes about a second.</p>
-      </div>
-      <div class="lp-step">
-        <div class="lp-step-num">3</div>
-        <h3>Click any word</h3>
-        <p>Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Features -->
-  <div class="lp-features">
-    <h2 class="lp-section-title">Everything you need to <em>understand</em></h2>
-    <div class="lp-features-grid">
-
-      <div class="lp-feature">
-        <div class="lp-feature-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        </div>
-        <h3>Contextual definitions</h3>
-        <p>Not what the word means in general — what it means <em>right here</em>, in this sentence, the way this author used it.</p>
-      </div>
-
-      <div class="lp-feature">
-        <div class="lp-feature-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        </div>
-        <h3>12 languages</h3>
-        <p>Paste text in Spanish, French, German, Russian, Japanese, and more. Get definitions in whatever language you prefer.</p>
-      </div>
-
-      <div class="lp-feature">
-        <div class="lp-feature-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-        </div>
-        <h3>IPA pronunciation</h3>
-        <p>See the phonetic transcription of every word and hear it spoken aloud with a single tap.</p>
-      </div>
-
-      <div class="lp-feature">
-        <div class="lp-feature-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        </div>
-        <h3>Etymology</h3>
-        <p>Understand where words come from. Knowing a word's roots makes it stick — and makes the next related word easier.</p>
-      </div>
-
-      <div class="lp-feature">
-        <div class="lp-feature-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <h3>Word bank</h3>
-        <p>Save words you want to remember. Your personal vocabulary list, always one click away.</p>
-      </div>
-
-      <div class="lp-feature">
-        <div class="lp-feature-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <h3>Mac app</h3>
-        <p>Use Lexio from any app on your Mac — a full-featured desktop app or a floating menu bar overlay.</p>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Desktop CTA -->
-  <div class="lp-desktop">
-    <h2>Always <em>at hand</em>,<br>wherever you read.</h2>
-    <p>The Lexio Mac app lives in your menu bar or dock, so you can look up words without switching to your browser.</p>
-    <div class="lp-desktop-btns">
-      <button class="lp-btn-primary" onclick="openDesktopModal()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download for Mac
-      </button>
-      <button class="lp-btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">Open in browser</button>
-    </div>
+    <p class="lp-trending-empty hidden" id="trending-empty" data-i18n="trendingEmpty">No searches recorded yet this month — be the first!</p>
   </div>
 
   <!-- Footer -->
   <footer class="lp-footer">
     <span class="lp-footer-brand">Le<em style="font-style:italic;color:var(--accent)">x</em>io</span>
-    <span>Built for curious readers.</span>
-    <span>© 2026</span>
+    <span data-i18n="footerTagline">Built for curious readers.</span>
+    <span style="display:flex;gap:16px;align-items:center;">
+      <a href="/privacy.html" data-i18n="privacyPolicy">Privacy Policy</a>
+      <span>© 2026</span>
+    </span>
   </footer>
 
 </div>
 
 <!-- ── Floating chip tooltip ─────────────────────────────────── -->
 <div id="chip-tooltip"></div>
+
+<!-- ── Chrome extension install modal ───────────────────────── -->
+<div id="ext-modal" class="hidden">
+  <div class="ext-inner">
+    <div class="ext-header">
+      <h3>Add Lexio to Chrome</h3>
+      <button class="ext-close" onclick="closeExtModal()">×</button>
+    </div>
+    <div class="ext-body">
+      <a class="ext-dl-btn" href="/lexio-extension.zip" download="lexio-extension.zip">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download extension (.zip)
+      </a>
+      <div class="ext-steps">
+        <div class="ext-step">
+          <div class="ext-step-num">1</div>
+          <div class="ext-step-text"><strong>Unzip</strong> the downloaded file — you'll get a folder called <code>extension</code></div>
+        </div>
+        <div class="ext-step">
+          <div class="ext-step-num">2</div>
+          <div class="ext-step-text">Open Chrome and go to <code>chrome://extensions</code></div>
+        </div>
+        <div class="ext-step">
+          <div class="ext-step-num">3</div>
+          <div class="ext-step-text">Enable <strong>Developer mode</strong> with the toggle in the top-right corner</div>
+        </div>
+        <div class="ext-step">
+          <div class="ext-step-num">4</div>
+          <div class="ext-step-text">Click <strong>Load unpacked</strong> and select the <code>extension</code> folder</div>
+        </div>
+        <div class="ext-step">
+          <div class="ext-step-num">5</div>
+          <div class="ext-step-text"><strong>Select any word</strong> on any webpage — Lexio appears instantly</div>
+        </div>
+      </div>
+      <p class="ext-footer-note">This is a beta build. One-click install via the Chrome Web Store is coming soon.</p>
+    </div>
+  </div>
+</div>
 
 <!-- ── Desktop app modal ────────────────────────────────────── -->
 <div id="desktop-modal" class="hidden">
@@ -1239,9 +1417,8 @@
             <span class="desktop-option-badge">Recommended</span>
           </div>
           <div class="desktop-steps">
-            <div class="desktop-step"><div class="desktop-step-num">1</div><div class="desktop-step-text">Download and open the <strong>.dmg</strong></div></div>
-            <div class="desktop-step"><div class="desktop-step-num">2</div><div class="desktop-step-text">Drag <strong>Lexio</strong> to Applications, then launch</div></div>
-            <div class="desktop-step"><div class="desktop-step-num">3</div><div class="desktop-step-text">First launch: right-click → <strong>Open</strong> to approve</div></div>
+            <div class="desktop-step"><div class="desktop-step-num">1</div><div class="desktop-step-text">Download the <strong>.dmg</strong> and drag Lexio to Applications</div></div>
+            <div class="desktop-step"><div class="desktop-step-num">2</div><div class="desktop-step-text">First launch: right-click → <strong>Open</strong> to approve Gatekeeper</div></div>
           </div>
           <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/download/v1.0.0-app/Lexio-App-1.0.0-arm64.dmg" download>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -1310,6 +1487,18 @@
         <div class="auth-error hidden" id="auth-error"></div>
         <button class="auth-submit" id="auth-submit" onclick="submitAuth()">Sign in</button>
         <p class="auth-info">Your word bank syncs to the cloud when signed in. <a onclick="switchAuthTab('register')">No account yet?</a></p>
+        <div id="oauth-btn-wrap" style="display:none; flex-direction:column; gap:10px;">
+          <div class="auth-divider">or</div>
+          <button class="btn-oauth" onclick="triggerGoogleSignIn()">
+            <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Continue with Google
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1469,10 +1658,52 @@ function setTheme(t) {
   window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { theme: t } }, '*');
 }
 
+/* ── UI language (interface i18n) ───────────────────────────── */
+let currentUILang = 'en';
+
+const UI_T = {
+  en: { tagline:'Your buddy for understanding any text', saved:'Collected', panelLabel:'Text', trySample:'Try a sample', analyzeText:'Analyze text', edit:'← Edit', fetchArticle:'Fetch article', tweaks:'Tweaks', colorTheme:'Color theme', textSize:'Text size', lineHeight:'Line height', theme:'Theme', macApp:'Get the Mac app', shortcuts:'Keyboard shortcuts', clickWord:'Click any word', placeholderSub:'After analyzing your text, tap any word to see its precise meaning in context.', meaning:'Meaning', inContext:'In this context', moreDetail:'More detail', origin:'Origin', whyWord:'Why this word?', respondIn:'Respond in', simpler:'simpler:', copy:'Copy', save:'Collect', link:'Link', share:'Share', say:'Say', uiLang:'Interface language', heroEyebrow:'Contextual understanding', heroH1:'Read deeper.<br>Understand <em>everything.</em>', heroSub:"Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.", tryItNow:'Try it now', seeHow:'See how it works', howLabel:'How it works', step1Title:'Paste any text', step1Desc:'Drop in a paragraph from an article, book, email, or anything else — any language works.', step2Title:'Analyze it', step2Desc:'Lexio reads the full context and prepares every word for instant lookup. Takes about a second.', step3Title:'Click any word', step3Desc:'Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.', trendingTitle:'What people are <em>looking up</em>', trendingEmpty:'No searches recorded yet this month — be the first!', featuresTitle:'Everything you need to <em>understand</em>', feat1Title:'Contextual definitions', feat1Desc:'Not what the word means in general — what it means right here, in this sentence, the way this author used it.', feat2Title:'12 languages', feat2Desc:'Paste text in Spanish, French, German, Russian, Japanese, and more. Get definitions in whatever language you prefer.', feat3Title:'IPA pronunciation', feat3Desc:'See the phonetic transcription of every word and hear it spoken aloud with a single tap.', feat4Title:'Etymology', feat4Desc:"Understand where words come from. Knowing a word's roots makes it stick — and makes the next related word easier.", feat5Title:'Word bank', feat5Desc:'Save words you want to remember. Your personal vocabulary list, always one click away.', feat6Title:'Mac app', feat6Desc:'Use Lexio from any app on your Mac — a full-featured desktop app or a floating menu bar overlay.', extEyebrow:'Chrome Extension — Beta', extH2:'Look up words <em>without</em><br>leaving the page.', extP:'Select any word or sentence on any website. Lexio appears instantly with the meaning in context — no copy-paste, no tab switching.', extBtn:'Add to Chrome', extNote:'Free · Works on any page · No account required', deskH2:'Always <em>at hand</em>,<br>wherever you read.', deskP:'The Lexio Mac app lives in your menu bar or dock, so you can look up words without switching to your browser.', downloadMac:'Download for Mac', openBrowser:'Open in browser', footerTagline:'Built for curious readers.', privacyPolicy:'Privacy Policy' },
+  es: { tagline:'Tu compañero para entender cualquier texto', saved:'Coleccionado',panelLabel:'Texto', trySample:'Probar ejemplo', analyzeText:'Analizar texto', edit:'← Editar', fetchArticle:'Obtener artículo', tweaks:'Ajustes', colorTheme:'Color del tema', textSize:'Tamaño del texto', lineHeight:'Interlineado', theme:'Tema', macApp:'Obtener la app para Mac', shortcuts:'Atajos de teclado', clickWord:'Haz clic en cualquier palabra', placeholderSub:'Tras analizar el texto, toca cualquier palabra para ver su significado preciso en contexto.', meaning:'Significado', inContext:'En este contexto', moreDetail:'Más detalle', origin:'Origen', whyWord:'¿Por qué esta palabra?', respondIn:'Responder en', simpler:'más simple:', copy:'Copiar', save:'Coleccionar', link:'Enlace', share:'Compartir', say:'Decir', uiLang:'Idioma de interfaz', heroEyebrow:'Comprensión contextual', heroH1:'Lee más profundo.<br>Entiende <em>todo.</em>', heroSub:'Lexio te da el significado preciso de cualquier palabra en contexto — no una definición de diccionario, sino lo que realmente significa en la oración que estás leyendo.', tryItNow:'Pruébalo ahora', seeHow:'Ver cómo funciona', howLabel:'Cómo funciona', step1Title:'Pega cualquier texto', step1Desc:'Introduce un párrafo de un artículo, libro, correo o cualquier cosa — funciona en cualquier idioma.', step2Title:'Analízalo', step2Desc:'Lexio lee el contexto completo y prepara cada palabra para una búsqueda instantánea. Tarda un segundo.', step3Title:'Haz clic en cualquier palabra', step3Desc:'Toca una palabra para ver su significado exacto en esa oración, de dónde viene y cómo pronunciarla.', trendingTitle:'Lo que la gente está <em>buscando</em>', trendingEmpty:'No hay búsquedas este mes todavía — ¡sé el primero!', featuresTitle:'Todo lo que necesitas para <em>entender</em>', feat1Title:'Definiciones contextuales', feat1Desc:'No lo que significa la palabra en general — lo que significa aquí, en esta oración, como lo usó este autor.', feat2Title:'12 idiomas', feat2Desc:'Pega texto en español, francés, alemán, ruso, japonés y más. Obtén definiciones en el idioma que prefieras.', feat3Title:'Pronunciación IPA', feat3Desc:'Ve la transcripción fonética de cada palabra y escúchala en voz alta con un solo toque.', feat4Title:'Etimología', feat4Desc:'Entiende de dónde vienen las palabras. Conocer las raíces hace que las recuerdes — y la próxima palabra relacionada será más fácil.', feat5Title:'Banco de palabras', feat5Desc:'Guarda las palabras que quieres recordar. Tu lista de vocabulario personal, siempre a un clic.', feat6Title:'App para Mac', feat6Desc:'Usa Lexio desde cualquier app en tu Mac — una app de escritorio completa o un panel flotante en la barra de menú.', extEyebrow:'Extensión de Chrome — Beta', extH2:'Busca palabras <em>sin</em><br>salir de la página.', extP:'Selecciona cualquier palabra o frase en cualquier sitio web. Lexio aparece al instante con el significado en contexto — sin copiar y pegar, sin cambiar de pestaña.', extBtn:'Añadir a Chrome', extNote:'Gratis · Funciona en cualquier página · Sin cuenta requerida', deskH2:'Siempre <em>a mano</em>,<br>donde quieras que leas.', deskP:'La app de Lexio para Mac vive en tu barra de menú o dock, para que puedas buscar palabras sin cambiar de navegador.', downloadMac:'Descargar para Mac', openBrowser:'Abrir en el navegador', footerTagline:'Hecho para lectores curiosos.', privacyPolicy:'Política de privacidad' },
+  fr: { tagline:"Votre aide pour comprendre n'importe quel texte", saved:'Collecté',panelLabel:'Texte', trySample:'Essayer un exemple', analyzeText:'Analyser le texte', edit:'← Modifier', fetchArticle:"Récupérer l'article", tweaks:'Réglages', colorTheme:'Thème de couleur', textSize:'Taille du texte', lineHeight:'Interligne', theme:'Thème', macApp:"Obtenir l'app Mac", shortcuts:'Raccourcis clavier', clickWord:"Cliquez sur n'importe quel mot", placeholderSub:"Après analyse, appuyez sur n'importe quel mot pour voir sa signification précise dans le contexte.", meaning:'Signification', inContext:'Dans ce contexte', moreDetail:'Plus de détails', origin:'Origine', whyWord:'Pourquoi ce mot ?', respondIn:'Répondre en', simpler:'plus simple :', copy:'Copier', save:'Collecter', link:'Lien', share:'Partager', say:'Lire', uiLang:"Langue de l'interface", heroEyebrow:'Compréhension contextuelle', heroH1:'Lisez plus profond.<br>Comprenez <em>tout.</em>', heroSub:"Lexio vous donne la signification précise de n'importe quel mot en contexte — pas une définition de dictionnaire, mais ce qu'il signifie vraiment dans la phrase que vous lisez.", tryItNow:'Essayer maintenant', seeHow:'Voir comment ça marche', howLabel:'Comment ça marche', step1Title:"Collez n'importe quel texte", step1Desc:"Entrez un paragraphe d'un article, d'un livre, d'un e-mail ou autre — n'importe quelle langue fonctionne.", step2Title:'Analysez-le', step2Desc:'Lexio lit le contexte complet et prépare chaque mot pour une recherche instantanée. Prend environ une seconde.', step3Title:"Cliquez sur n'importe quel mot", step3Desc:"Touchez un mot pour voir sa signification exacte dans cette phrase, d'où il vient et comment le prononcer.", trendingTitle:'Ce que les gens <em>recherchent</em>', trendingEmpty:'Aucune recherche ce mois-ci encore — soyez le premier !', featuresTitle:'Tout ce dont vous avez besoin pour <em>comprendre</em>', feat1Title:'Définitions contextuelles', feat1Desc:"Pas ce que le mot signifie en général — ce qu'il signifie ici, dans cette phrase, tel que cet auteur l'a utilisé.", feat2Title:'12 langues', feat2Desc:'Collez du texte en espagnol, français, allemand, russe, japonais et plus. Obtenez des définitions dans la langue de votre choix.', feat3Title:'Prononciation IPA', feat3Desc:"Voyez la transcription phonétique de chaque mot et écoutez-le à voix haute d'une simple touche.", feat4Title:'Étymologie', feat4Desc:"Comprenez d'où viennent les mots. Connaître les racines d'un mot le rend mémorable — et le prochain mot associé plus facile.", feat5Title:'Banque de mots', feat5Desc:'Sauvegardez les mots que vous voulez retenir. Votre liste de vocabulaire personnelle, toujours à portée de clic.', feat6Title:'App Mac', feat6Desc:"Utilisez Lexio depuis n'importe quelle app sur votre Mac — une app de bureau complète ou un panneau flottant dans la barre de menu.", extEyebrow:'Extension Chrome — Bêta', extH2:'Cherchez des mots <em>sans</em><br>quitter la page.', extP:"Sélectionnez n'importe quel mot ou phrase sur n'importe quel site web. Lexio apparaît instantanément avec le sens en contexte — sans copier-coller, sans changer d'onglet.", extBtn:'Ajouter à Chrome', extNote:'Gratuit · Fonctionne sur toutes les pages · Sans compte requis', deskH2:'Toujours <em>à portée de main</em>,<br>où que vous lisiez.', deskP:"L'app Lexio pour Mac vit dans votre barre de menu ou dock, pour chercher des mots sans passer à votre navigateur.", downloadMac:'Télécharger pour Mac', openBrowser:'Ouvrir dans le navigateur', footerTagline:'Conçu pour les lecteurs curieux.', privacyPolicy:'Politique de confidentialité' },
+  de: { tagline:'Ihr Helfer zum Verstehen jedes Textes', saved:'Gesammelt',panelLabel:'Text', trySample:'Beispiel versuchen', analyzeText:'Text analysieren', edit:'← Bearbeiten', fetchArticle:'Artikel abrufen', tweaks:'Einstellungen', colorTheme:'Farbthema', textSize:'Schriftgröße', lineHeight:'Zeilenhöhe', theme:'Thema', macApp:'Mac-App herunterladen', shortcuts:'Tastenkürzel', clickWord:'Klicke auf ein beliebiges Wort', placeholderSub:'Klicke nach der Analyse auf ein Wort, um seine genaue Bedeutung im Kontext zu sehen.', meaning:'Bedeutung', inContext:'In diesem Kontext', moreDetail:'Mehr Details', origin:'Herkunft', whyWord:'Warum dieses Wort?', respondIn:'Antworten auf', simpler:'einfacher:', copy:'Kopieren', save:'Sammeln', link:'Link', share:'Teilen', say:'Vorlesen', uiLang:'Oberflächensprache', heroEyebrow:'Kontextuelles Verstehen', heroH1:'Lesen Sie tiefer.<br>Verstehen Sie <em>alles.</em>', heroSub:'Lexio gibt Ihnen die genaue Bedeutung jedes Wortes im Kontext — keine Wörterbuchdefinition, sondern was es wirklich in dem Satz bedeutet, den Sie gerade lesen.', tryItNow:'Jetzt ausprobieren', seeHow:'Wie es funktioniert', howLabel:'So funktioniert es', step1Title:'Beliebigen Text einfügen', step1Desc:'Fügen Sie einen Absatz aus einem Artikel, Buch, einer E-Mail oder anderem ein — jede Sprache funktioniert.', step2Title:'Analysieren', step2Desc:'Lexio liest den gesamten Kontext und bereitet jedes Wort für die sofortige Suche vor. Dauert etwa eine Sekunde.', step3Title:'Auf ein Wort klicken', step3Desc:'Tippen Sie auf ein Wort, um seine genaue Bedeutung in diesem Satz zu sehen, woher es kommt und wie man es ausspricht.', trendingTitle:'Was die Leute gerade <em>nachschlagen</em>', trendingEmpty:'Noch keine Suchen diesen Monat — seien Sie der Erste!', featuresTitle:'Alles, was Sie zum <em>Verstehen</em> brauchen', feat1Title:'Kontextuelle Definitionen', feat1Desc:'Nicht was das Wort im Allgemeinen bedeutet — was es genau hier, in diesem Satz bedeutet, so wie es dieser Autor verwendete.', feat2Title:'12 Sprachen', feat2Desc:'Fügen Sie Text auf Spanisch, Französisch, Deutsch, Russisch, Japanisch und mehr ein. Erhalten Sie Definitionen in der Sprache Ihrer Wahl.', feat3Title:'IPA-Aussprache', feat3Desc:'Sehen Sie die phonetische Umschrift jedes Wortes und hören Sie es mit einem einzigen Tipp laut aussprechen.', feat4Title:'Etymologie', feat4Desc:'Verstehen Sie, wo Wörter herkommen. Die Wurzeln eines Wortes zu kennen, lässt es haften — und das nächste verwandte Wort wird leichter.', feat5Title:'Wortbank', feat5Desc:'Speichern Sie Wörter, die Sie sich merken möchten. Ihre persönliche Vokabelliste, immer einen Klick entfernt.', feat6Title:'Mac-App', feat6Desc:'Verwenden Sie Lexio von jeder App auf Ihrem Mac — eine voll ausgestattete Desktop-App oder ein schwebendes Menüleisten-Panel.', extEyebrow:'Chrome-Erweiterung — Beta', extH2:'Wörter nachschlagen <em>ohne</em><br>die Seite zu verlassen.', extP:'Wählen Sie ein beliebiges Wort oder einen Satz auf einer beliebigen Website aus. Lexio erscheint sofort mit der Bedeutung im Kontext — kein Kopieren und Einfügen, kein Tabwechsel.', extBtn:'Zu Chrome hinzufügen', extNote:'Kostenlos · Funktioniert auf jeder Seite · Kein Konto erforderlich', deskH2:'Immer <em>zur Hand</em>,<br>wo immer Sie lesen.', deskP:'Die Lexio Mac-App lebt in Ihrer Menüleiste oder im Dock, damit Sie Wörter nachschlagen können, ohne zu Ihrem Browser zu wechseln.', downloadMac:'Für Mac herunterladen', openBrowser:'Im Browser öffnen', footerTagline:'Gebaut für neugierige Leser.', privacyPolicy:'Datenschutzrichtlinie' },
+  it: { tagline:'Il tuo assistente per capire qualsiasi testo', saved:'Raccolto',panelLabel:'Testo', trySample:'Prova un esempio', analyzeText:'Analizza testo', edit:'← Modifica', fetchArticle:'Recupera articolo', tweaks:'Impostazioni', colorTheme:'Tema colore', textSize:'Dimensione testo', lineHeight:'Interlinea', theme:'Tema', macApp:"Ottieni l'app per Mac", shortcuts:'Scorciatoie da tastiera', clickWord:'Clicca su qualsiasi parola', placeholderSub:'Dopo aver analizzato il testo, tocca qualsiasi parola per vederne il significato preciso nel contesto.', meaning:'Significato', inContext:'In questo contesto', moreDetail:'Più dettagli', origin:'Origine', whyWord:'Perché questa parola?', respondIn:'Rispondi in', simpler:'più semplice:', copy:'Copia', save:'Raccogli', link:'Link', share:'Condividi', say:'Pronuncia', uiLang:'Lingua interfaccia', heroEyebrow:'Comprensione contestuale', heroH1:'Leggi più in profondità.<br>Capisci <em>tutto.</em>', heroSub:"Lexio ti dà il significato preciso di qualsiasi parola nel contesto — non una definizione da dizionario, ma quello che significa davvero nella frase che stai leggendo.", tryItNow:'Provalo ora', seeHow:'Scopri come funziona', howLabel:'Come funziona', step1Title:'Incolla qualsiasi testo', step1Desc:"Inserisci un paragrafo da un articolo, un libro, un'email o qualsiasi altra cosa — funziona in qualsiasi lingua.", step2Title:'Analizzalo', step2Desc:'Lexio legge il contesto completo e prepara ogni parola per la ricerca istantanea. Impiega circa un secondo.', step3Title:'Clicca su qualsiasi parola', step3Desc:'Tocca una parola per vedere il suo significato esatto in quella frase, da dove viene e come si pronuncia.', trendingTitle:'Cosa stanno <em>cercando</em> le persone', trendingEmpty:'Nessuna ricerca questo mese ancora — sii il primo!', featuresTitle:'Tutto quello che ti serve per <em>capire</em>', feat1Title:'Definizioni contestuali', feat1Desc:"Non cosa significa la parola in generale — cosa significa qui, in questa frase, nel modo in cui l'ha usata questo autore.", feat2Title:'12 lingue', feat2Desc:'Incolla testo in spagnolo, francese, tedesco, russo, giapponese e altro. Ottieni definizioni nella lingua che preferisci.', feat3Title:'Pronuncia IPA', feat3Desc:'Vedi la trascrizione fonetica di ogni parola e ascoltala a voce alta con un solo tocco.', feat4Title:'Etimologia', feat4Desc:'Capisci da dove vengono le parole. Conoscere le radici di una parola la rende memorabile — e la prossima parola correlata sarà più facile.', feat5Title:'Banca delle parole', feat5Desc:'Salva le parole che vuoi ricordare. La tua lista di vocabolario personale, sempre a un clic di distanza.', feat6Title:'App per Mac', feat6Desc:"Usa Lexio da qualsiasi app sul tuo Mac — un'app desktop completa o un pannello flottante nella barra dei menu.", extEyebrow:'Estensione Chrome — Beta', extH2:'Cerca parole <em>senza</em><br>lasciare la pagina.', extP:'Seleziona qualsiasi parola o frase su qualsiasi sito web. Lexio appare istantaneamente con il significato nel contesto — senza copia-incolla, senza cambiare scheda.', extBtn:'Aggiungi a Chrome', extNote:'Gratuito · Funziona su qualsiasi pagina · Nessun account richiesto', deskH2:'Sempre <em>a portata di mano</em>,<br>ovunque tu legga.', deskP:"L'app Lexio per Mac vive nella tua barra dei menu o nel dock, così puoi cercare parole senza passare al browser.", downloadMac:'Scarica per Mac', openBrowser:'Apri nel browser', footerTagline:'Fatto per lettori curiosi.', privacyPolicy:'Informativa sulla privacy' },
+  pt: { tagline:'Seu assistente para entender qualquer texto', saved:'Coletado',panelLabel:'Texto', trySample:'Tentar exemplo', analyzeText:'Analisar texto', edit:'← Editar', fetchArticle:'Buscar artigo', tweaks:'Ajustes', colorTheme:'Tema de cor', textSize:'Tamanho do texto', lineHeight:'Altura da linha', theme:'Tema', macApp:'Obter app para Mac', shortcuts:'Atalhos de teclado', clickWord:'Clique em qualquer palavra', placeholderSub:'Após analisar o texto, toque em qualquer palavra para ver seu significado preciso no contexto.', meaning:'Significado', inContext:'Neste contexto', moreDetail:'Mais detalhes', origin:'Origem', whyWord:'Por que esta palavra?', respondIn:'Responder em', simpler:'mais simples:', copy:'Copiar', save:'Coletar', link:'Link', share:'Compartilhar', say:'Falar', uiLang:'Idioma da interface', heroEyebrow:'Compreensão contextual', heroH1:'Leia mais fundo.<br>Entenda <em>tudo.</em>', heroSub:'O Lexio dá a você o significado preciso de qualquer palavra em contexto — não uma definição de dicionário, mas o que ela realmente significa na frase que você está lendo.', tryItNow:'Experimente agora', seeHow:'Veja como funciona', howLabel:'Como funciona', step1Title:'Cole qualquer texto', step1Desc:'Insira um parágrafo de um artigo, livro, e-mail ou qualquer outra coisa — funciona em qualquer idioma.', step2Title:'Analise', step2Desc:'O Lexio lê o contexto completo e prepara cada palavra para pesquisa instantânea. Leva cerca de um segundo.', step3Title:'Clique em qualquer palavra', step3Desc:'Toque uma palavra para ver seu significado exato naquela frase, de onde vem e como pronunciá-la.', trendingTitle:'O que as pessoas estão <em>pesquisando</em>', trendingEmpty:'Nenhuma pesquisa registrada este mês ainda — seja o primeiro!', featuresTitle:'Tudo o que você precisa para <em>entender</em>', feat1Title:'Definições contextuais', feat1Desc:'Não o que a palavra significa em geral — o que significa aqui, nesta frase, da forma como este autor a usou.', feat2Title:'12 idiomas', feat2Desc:'Cole texto em espanhol, francês, alemão, russo, japonês e mais. Obtenha definições no idioma que preferir.', feat3Title:'Pronúncia IPA', feat3Desc:'Veja a transcrição fonética de cada palavra e ouça-a em voz alta com um único toque.', feat4Title:'Etimologia', feat4Desc:'Entenda de onde vêm as palavras. Conhecer as raízes de uma palavra faz ela fixar — e a próxima palavra relacionada fica mais fácil.', feat5Title:'Banco de palavras', feat5Desc:'Salve palavras que quer lembrar. Sua lista de vocabulário pessoal, sempre a um clique de distância.', feat6Title:'App para Mac', feat6Desc:'Use o Lexio de qualquer app no seu Mac — um app de desktop completo ou um painel flutuante na barra de menus.', extEyebrow:'Extensão do Chrome — Beta', extH2:'Pesquise palavras <em>sem</em><br>sair da página.', extP:'Selecione qualquer palavra ou frase em qualquer site. O Lexio aparece instantaneamente com o significado em contexto — sem copiar e colar, sem trocar de aba.', extBtn:'Adicionar ao Chrome', extNote:'Gratuito · Funciona em qualquer página · Sem conta necessária', deskH2:'Sempre <em>à mão</em>,<br>onde quer que você leia.', deskP:'O app Lexio para Mac fica na sua barra de menus ou dock, para que você possa pesquisar palavras sem mudar de navegador.', downloadMac:'Baixar para Mac', openBrowser:'Abrir no navegador', footerTagline:'Feito para leitores curiosos.', privacyPolicy:'Política de privacidade' },
+  nl: { tagline:'Uw hulp bij het begrijpen van elke tekst', saved:'Verzameld',panelLabel:'Tekst', trySample:'Probeer een voorbeeld', analyzeText:'Tekst analyseren', edit:'← Bewerken', fetchArticle:'Artikel ophalen', tweaks:'Instellingen', colorTheme:'Kleurthema', textSize:'Tekstgrootte', lineHeight:'Regelafstand', theme:'Thema', macApp:'Mac-app downloaden', shortcuts:'Sneltoetsen', clickWord:'Klik op een woord', placeholderSub:'Klik na het analyseren op een woord om de precieze betekenis in context te zien.', meaning:'Betekenis', inContext:'In deze context', moreDetail:'Meer details', origin:'Herkomst', whyWord:'Waarom dit woord?', respondIn:'Antwoord in', simpler:'eenvoudiger:', copy:'Kopiëren', save:'Verzamelen', link:'Link', share:'Delen', say:'Uitspreken', uiLang:'Interfacetaal', heroEyebrow:'Contextueel begrip', heroH1:'Lees dieper.<br>Begrijp <em>alles.</em>', heroSub:'Lexio geeft u de precieze betekenis van elk woord in context — niet een woordenboekdefinitie, maar wat het werkelijk betekent in de zin die u leest.', tryItNow:'Probeer het nu', seeHow:'Bekijk hoe het werkt', howLabel:'Hoe het werkt', step1Title:'Plak een tekst', step1Desc:'Voeg een alinea in van een artikel, boek, e-mail of iets anders — elke taal werkt.', step2Title:'Analyseer het', step2Desc:'Lexio leest de volledige context en bereidt elk woord voor op direct opzoeken. Duurt ongeveer een seconde.', step3Title:'Klik op een woord', step3Desc:'Tik op een woord om de exacte betekenis in die zin te zien, waar het vandaan komt en hoe u het uitspreekt.', trendingTitle:'Wat mensen <em>opzoeken</em>', trendingEmpty:'Nog geen zoekopdrachten deze maand — wees de eerste!', featuresTitle:'Alles wat u nodig heeft om te <em>begrijpen</em>', feat1Title:'Contextuele definities', feat1Desc:'Niet wat het woord in het algemeen betekent — wat het hier, in deze zin, betekent zoals deze auteur het gebruikte.', feat2Title:'12 talen', feat2Desc:'Plak tekst in het Spaans, Frans, Duits, Russisch, Japans en meer. Ontvang definities in de taal van uw voorkeur.', feat3Title:'IPA-uitspraak', feat3Desc:'Zie de fonetische transcriptie van elk woord en hoor het hardop uitgesproken met één tik.', feat4Title:'Etymologie', feat4Desc:'Begrijp waar woorden vandaan komen. De wortels van een woord kennen maakt het memorabel — en het volgende verwante woord gemakkelijker.', feat5Title:'Woordenbank', feat5Desc:'Sla woorden op die u wilt onthouden. Uw persoonlijke woordenschatlijst, altijd één klik verwijderd.', feat6Title:'Mac-app', feat6Desc:'Gebruik Lexio vanuit elke app op uw Mac — een volledig uitgeruste desktop-app of een zwevend menubalkpaneel.', extEyebrow:'Chrome-extensie — Beta', extH2:'Zoek woorden op <em>zonder</em><br>de pagina te verlaten.', extP:'Selecteer een woord of zin op een website. Lexio verschijnt onmiddellijk met de betekenis in context — geen kopiëren en plakken, geen tabblad wisselen.', extBtn:'Toevoegen aan Chrome', extNote:'Gratis · Werkt op elke pagina · Geen account vereist', deskH2:'Altijd <em>bij de hand</em>,<br>waar u ook leest.', deskP:'De Lexio Mac-app zit in uw menubalk of dock, zodat u woorden kunt opzoeken zonder naar uw browser te wisselen.', downloadMac:'Download voor Mac', openBrowser:'Openen in browser', footerTagline:'Gemaakt voor nieuwsgierige lezers.', privacyPolicy:'Privacybeleid' },
+  ru: { tagline:'Ваш помощник для понимания любого текста', saved:'Собрано',panelLabel:'Текст', trySample:'Попробовать пример', analyzeText:'Анализировать', edit:'← Изменить', fetchArticle:'Загрузить статью', tweaks:'Настройки', colorTheme:'Цветовая тема', textSize:'Размер текста', lineHeight:'Межстрочный интервал', theme:'Тема', macApp:'Скачать для Mac', shortcuts:'Горячие клавиши', clickWord:'Нажмите на любое слово', placeholderSub:'После анализа нажмите на любое слово, чтобы увидеть его точное значение в контексте.', meaning:'Значение', inContext:'В этом контексте', moreDetail:'Подробнее', origin:'Происхождение', whyWord:'Почему это слово?', respondIn:'Ответить на', simpler:'проще:', copy:'Копировать', save:'Собрать', link:'Ссылка', share:'Поделиться', say:'Произнести', uiLang:'Язык интерфейса', heroEyebrow:'Контекстуальное понимание', heroH1:'Читайте глубже.<br>Понимайте <em>всё.</em>', heroSub:'Lexio даёт вам точное значение любого слова в контексте — не словарное определение, а то, что оно на самом деле означает в предложении, которое вы читаете.', tryItNow:'Попробовать сейчас', seeHow:'Посмотреть, как это работает', howLabel:'Как это работает', step1Title:'Вставьте любой текст', step1Desc:'Вставьте абзац из статьи, книги, письма или чего угодно — подходит любой язык.', step2Title:'Анализируйте', step2Desc:'Lexio читает полный контекст и подготавливает каждое слово к мгновенному поиску. Занимает около секунды.', step3Title:'Нажмите на любое слово', step3Desc:'Нажмите на слово, чтобы увидеть его точное значение в этом предложении, откуда оно происходит и как произносится.', trendingTitle:'Что люди <em>ищут</em>', trendingEmpty:'В этом месяце поисков ещё нет — будьте первым!', featuresTitle:'Всё, что нужно для <em>понимания</em>', feat1Title:'Контекстные определения', feat1Desc:'Не то, что слово означает в целом — а то, что оно означает здесь, в этом предложении, так как его использовал этот автор.', feat2Title:'12 языков', feat2Desc:'Вставляйте текст на испанском, французском, немецком, русском, японском и других языках. Получайте определения на любом языке.', feat3Title:'Произношение МФА', feat3Desc:'Видите фонетическую транскрипцию каждого слова и слышите его вслух одним нажатием.', feat4Title:'Этимология', feat4Desc:'Понимайте, откуда берутся слова. Знание корней слова помогает запомнить — и следующее родственное слово запоминается легче.', feat5Title:'Словарный банк', feat5Desc:'Сохраняйте слова, которые хотите запомнить. Ваш личный список словарного запаса, всегда в одном клике.', feat6Title:'Приложение для Mac', feat6Desc:'Используйте Lexio из любого приложения на Mac — полноценное настольное приложение или плавающая панель в строке меню.', extEyebrow:'Расширение Chrome — Бета', extH2:'Ищите слова <em>не</em><br>покидая страницы.', extP:'Выделите любое слово или предложение на любом сайте. Lexio мгновенно появляется со значением в контексте — без копирования и вставки, без переключения вкладок.', extBtn:'Добавить в Chrome', extNote:'Бесплатно · Работает на любой странице · Без регистрации', deskH2:'Всегда <em>под рукой</em>,<br>где бы вы ни читали.', deskP:'Приложение Lexio для Mac живёт в строке меню или доке, чтобы вы могли искать слова, не переключаясь в браузер.', downloadMac:'Скачать для Mac', openBrowser:'Открыть в браузере', footerTagline:'Создано для любознательных читателей.', privacyPolicy:'Политика конфиденциальности' },
+  zh: { tagline:'您理解任何文本的得力助手', saved:'已收藏',panelLabel:'文本', trySample:'试用示例', analyzeText:'分析文本', edit:'← 编辑', fetchArticle:'获取文章', tweaks:'设置', colorTheme:'颜色主题', textSize:'文字大小', lineHeight:'行高', theme:'主题', macApp:'获取Mac应用', shortcuts:'键盘快捷键', clickWord:'点击任意单词', placeholderSub:'分析文本后，点击任意单词即可查看其在上下文中的精确含义。', meaning:'含义', inContext:'在此上下文中', moreDetail:'更多详情', origin:'词源', whyWord:'为什么选择这个词？', respondIn:'回应语言', simpler:'更简单：', copy:'复制', save:'收藏', link:'链接', share:'分享', say:'朗读', uiLang:'界面语言', heroEyebrow:'语境理解', heroH1:'深度阅读。<br>理解<em>一切。</em>', heroSub:'Lexio 为您提供任何词语在语境中的精确含义——不是字典定义，而是它在您正在阅读的句子中的真正含义。', tryItNow:'立即试用', seeHow:'查看使用方法', howLabel:'使用方法', step1Title:'粘贴任意文本', step1Desc:'输入来自文章、书籍、电子邮件或其他任何内容的段落——支持任何语言。', step2Title:'分析文本', step2Desc:'Lexio 读取完整上下文并准备每个词以供即时查询。大约需要一秒钟。', step3Title:'点击任意词语', step3Desc:'点击一个词，查看它在该句子中的确切含义、词源以及发音方式。', trendingTitle:'人们正在<em>查询</em>的词', trendingEmpty:'本月尚无搜索记录——成为第一个！', featuresTitle:'理解所需的<em>一切</em>', feat1Title:'语境定义', feat1Desc:'不是这个词的一般含义——而是它在这个句子中，以这位作者使用的方式所表达的含义。', feat2Title:'12种语言', feat2Desc:'粘贴西班牙语、法语、德语、俄语、日语等文本。以您喜欢的语言获取定义。', feat3Title:'IPA发音', feat3Desc:'查看每个词的音标并轻触一下听其朗读。', feat4Title:'词源', feat4Desc:'了解词语的起源。知道词根有助于记忆——下一个相关词也会更容易学习。', feat5Title:'词汇库', feat5Desc:'保存您想记住的词。您的个人词汇表，始终触手可及。', feat6Title:'Mac应用', feat6Desc:'从Mac上的任何应用程序使用Lexio——功能完整的桌面应用或浮动菜单栏面板。', extEyebrow:'Chrome扩展——测试版', extH2:'查词<em>无需</em><br>离开页面。', extP:'在任何网站上选择任意词语或句子。Lexio即时出现，显示语境中的含义——无需复制粘贴，无需切换标签页。', extBtn:'添加到Chrome', extNote:'免费 · 适用于任何页面 · 无需账户', deskH2:'随时<em>触手可及</em>，<br>无论您在哪里阅读。', deskP:'Lexio Mac应用程序位于您的菜单栏或程序坞中，让您无需切换到浏览器即可查词。', downloadMac:'下载Mac版', openBrowser:'在浏览器中打开', footerTagline:'为好奇的读者而生。', privacyPolicy:'隐私政策' },
+  ja: { tagline:'あらゆるテキストを理解するためのパートナー', saved:'収集済み',panelLabel:'テキスト', trySample:'サンプルを試す', analyzeText:'テキストを分析', edit:'← 編集', fetchArticle:'記事を取得', tweaks:'設定', colorTheme:'カラーテーマ', textSize:'文字サイズ', lineHeight:'行の高さ', theme:'テーマ', macApp:'Macアプリを入手', shortcuts:'キーボードショートカット', clickWord:'任意の単語をクリック', placeholderSub:'テキストを分析した後、任意の単語をクリックするとその正確な意味が表示されます。', meaning:'意味', inContext:'この文脈では', moreDetail:'詳細を表示', origin:'語源', whyWord:'なぜこの言葉？', respondIn:'回答言語', simpler:'より簡単：', copy:'コピー', save:'収集', link:'リンク', share:'シェア', say:'発音', uiLang:'インターフェース言語', heroEyebrow:'文脈的理解', heroH1:'より深く読む。<br><em>すべて</em>を理解する。', heroSub:'Lexioは、文脈の中で任意の単語の正確な意味を提供します — 辞書の定義ではなく、読んでいる文章でその単語が実際に意味することを伝えます。', tryItNow:'今すぐ試す', seeHow:'使い方を見る', howLabel:'使い方', step1Title:'テキストを貼り付ける', step1Desc:'記事、本、メールなどからの段落を入力してください — どの言語でも使用できます。', step2Title:'分析する', step2Desc:'Lexioはすべての文脈を読み込み、各単語を即時検索のために準備します。約1秒かかります。', step3Title:'単語をクリック', step3Desc:'単語をタップすると、その文章での正確な意味、語源、発音が表示されます。', trendingTitle:'人々が<em>調べている</em>こと', trendingEmpty:'今月の検索記録はまだありません — 最初の一人になりましょう！', featuresTitle:'<em>理解する</em>ために必要なすべて', feat1Title:'文脈的定義', feat1Desc:'一般的な単語の意味ではなく — この著者がこの文章で使ったように、まさにここでの意味を表示します。', feat2Title:'12の言語', feat2Desc:'スペイン語、フランス語、ドイツ語、ロシア語、日本語などのテキストを貼り付けてください。好みの言語で定義を取得できます。', feat3Title:'IPA発音', feat3Desc:'各単語の音声転写を確認し、ワンタップで音声を聞くことができます。', feat4Title:'語源', feat4Desc:'単語の起源を理解することで、記憶が定着します — 次の関連単語も覚えやすくなります。', feat5Title:'単語帳', feat5Desc:'覚えたい単語を保存。あなただけの語彙リスト、いつでも一クリックでアクセスできます。', feat6Title:'Macアプリ', feat6Desc:'MacのどのアプリからでもLexioを使用できます — フル機能のデスクトップアプリまたは浮遊するメニューバーパネル。', extEyebrow:'Chrome拡張機能 — ベータ', extH2:'ページを離れ<em>ずに</em><br>単語を調べる。', extP:'どのウェブサイトでも任意の単語や文を選択するだけ。Lexioが即座に文脈の意味を表示します — コピー&ペーストもタブ切り替えも不要です。', extBtn:'Chromeに追加', extNote:'無料 · どのページでも使用可能 · アカウント不要', deskH2:'どこで読んでいても、<br>常に<em>手の届くところに</em>。', deskP:'Lexio MacアプリはメニューバーまたはDockに常駐し、ブラウザに切り替えることなく単語を調べられます。', downloadMac:'Mac版をダウンロード', openBrowser:'ブラウザで開く', footerTagline:'好奇心旺盛な読者のために。', privacyPolicy:'プライバシーポリシー' },
+  ko: { tagline:'모든 텍스트를 이해하는 데 도움을 주는 파트너', saved:'수집됨',panelLabel:'텍스트', trySample:'샘플 시도', analyzeText:'텍스트 분석', edit:'← 편집', fetchArticle:'기사 가져오기', tweaks:'설정', colorTheme:'색상 테마', textSize:'글자 크기', lineHeight:'줄 높이', theme:'테마', macApp:'Mac 앱 다운로드', shortcuts:'키보드 단축키', clickWord:'아무 단어나 클릭하세요', placeholderSub:'텍스트를 분석한 후 아무 단어나 클릭하면 문맥에서의 정확한 의미를 볼 수 있습니다.', meaning:'의미', inContext:'이 맥락에서', moreDetail:'더 보기', origin:'어원', whyWord:'왜 이 단어인가?', respondIn:'응답 언어', simpler:'더 간단한:', copy:'복사', save:'수집', link:'링크', share:'공유', say:'발음', uiLang:'인터페이스 언어', heroEyebrow:'문맥적 이해', heroH1:'더 깊이 읽으세요.<br><em>모든 것</em>을 이해하세요.', heroSub:'Lexio는 문맥 속에서 어떤 단어의 정확한 의미를 제공합니다 — 사전적 정의가 아니라, 읽고 있는 문장에서 실제로 무엇을 의미하는지를 알려줍니다.', tryItNow:'지금 시도하기', seeHow:'사용 방법 보기', howLabel:'사용 방법', step1Title:'텍스트 붙여넣기', step1Desc:'기사, 책, 이메일 또는 무엇이든 단락을 입력하세요 — 어떤 언어든 작동합니다.', step2Title:'분석하기', step2Desc:'Lexio가 전체 문맥을 읽고 즉각적인 검색을 위해 모든 단어를 준비합니다. 약 1초 걸립니다.', step3Title:'단어 클릭하기', step3Desc:'단어를 탭하면 그 문장에서의 정확한 의미, 어원, 발음 방법을 볼 수 있습니다.', trendingTitle:'사람들이 <em>찾아보는</em> 것들', trendingEmpty:'이번 달 아직 검색 기록이 없습니다 — 첫 번째가 되어보세요!', featuresTitle:'<em>이해하는</em> 데 필요한 모든 것', feat1Title:'문맥적 정의', feat1Desc:'일반적인 단어 의미가 아닌 — 이 저자가 사용한 방식으로, 이 문장에서 바로 여기에서의 의미를 보여줍니다.', feat2Title:'12개 언어', feat2Desc:'스페인어, 프랑스어, 독일어, 러시아어, 일본어 등으로 텍스트를 붙여넣으세요. 원하는 언어로 정의를 받아보세요.', feat3Title:'IPA 발음', feat3Desc:'각 단어의 음성 표기를 보고 한 번의 탭으로 소리를 들을 수 있습니다.', feat4Title:'어원', feat4Desc:'단어가 어디서 왔는지 이해하세요. 단어의 어근을 알면 기억하기 쉽고 — 다음 관련 단어도 더 쉽게 배울 수 있습니다.', feat5Title:'단어 은행', feat5Desc:'기억하고 싶은 단어를 저장하세요. 항상 클릭 한 번으로 접근 가능한 개인 어휘 목록.', feat6Title:'Mac 앱', feat6Desc:'Mac의 어떤 앱에서도 Lexio를 사용할 수 있습니다 — 완전한 기능의 데스크톱 앱 또는 플로팅 메뉴바 패널.', extEyebrow:'Chrome 확장 프로그램 — 베타', extH2:'페이지를 <em>떠나지 않고</em><br>단어를 검색하세요.', extP:'어떤 웹사이트에서든 단어나 문장을 선택하세요. Lexio가 즉시 문맥 속 의미와 함께 나타납니다 — 복사 붙여넣기 없이, 탭 전환 없이.', extBtn:'Chrome에 추가', extNote:'무료 · 모든 페이지에서 작동 · 계정 불필요', deskH2:'어디서 읽든<br>항상 <em>손 닿는 곳에</em>.', deskP:'Lexio Mac 앱은 메뉴 막대나 독에 있어, 브라우저로 전환하지 않고도 단어를 검색할 수 있습니다.', downloadMac:'Mac용 다운로드', openBrowser:'브라우저에서 열기', footerTagline:'호기심 많은 독자를 위해 만들었습니다.', privacyPolicy:'개인정보 처리방침' },
+};
+
+function setUILang(code) {
+  currentUILang = code;
+  try { localStorage.setItem('lexio_ui_lang', code); } catch {}
+  const t = UI_T[code] || UI_T.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.dataset.i18nHtml;
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  // textarea placeholder
+  const ta = document.getElementById('input-text');
+  if (ta) ta.placeholder = code === 'en' ? 'Paste any text here — an article, a quote, a paragraph…' :
+    ({es:'Pega cualquier texto aquí — un artículo, una cita, un párrafo…', fr:'Collez votre texte ici — un article, une citation, un paragraphe…', de:'Fügen Sie Ihren Text hier ein — einen Artikel, ein Zitat, einen Absatz…', it:"Incolla il tuo testo qui — un articolo, una citazione, un paragrafo…", pt:'Cole seu texto aqui — um artigo, uma citação, um parágrafo…', nl:'Plak uw tekst hier — een artikel, een citaat, een alinea…', ru:'Вставьте текст сюда — статью, цитату, абзац…', zh:'在此粘贴任何文本——文章、引文、段落…', ja:'テキストをここに貼り付けてください — 記事、引用、段落など…', ko:'여기에 텍스트를 붙여넣으세요 — 기사, 인용문, 단락…'}[code] || ta.placeholder);
+  document.documentElement.lang = code;
+  const sel = document.getElementById('ui-lang-select');
+  if (sel) sel.value = code;
+}
+
 function setLang(lang) {
   currentLang = lang;
   defCache.clear(); // cached results are language-specific
   try { localStorage.setItem('lexio_lang', lang); } catch {}
+  // Re-fetch current word in new language if one is active
+  if (currentResult) {
+    fetchDefinition(currentResult.word, currentResult.context || currentContext);
+  }
 }
 function setFontSize(v) {
   document.getElementById('token-view').style.fontSize = v + 'px';
@@ -1749,7 +1980,7 @@ function posType(pos) {
 }
 
 /* ── Cache key ──────────────────────────────────────────────── */
-function cacheKey(word, context) { return word.toLowerCase()+'::'+context.slice(0,120); }
+function cacheKey(word, context) { return word.toLowerCase()+'::'+context.slice(0,120)+'::'+currentLang; }
 
 /* ── Fetch definition ───────────────────────────────────────── */
 async function fetchDefinition(word, context) {
@@ -1790,15 +2021,22 @@ function addToHistory(word, data) {
 }
 function renderHistory() {
   const strip = document.getElementById('history-strip');
-  if (history.length<=1) { strip.innerHTML=''; strip.classList.add('hidden'); return; }
-  strip.classList.remove('hidden');
-  strip.innerHTML = '<span class="history-label">Recent</span>' +
+  const bar   = document.getElementById('history-header');
+  if (history.length <= 1) {
+    strip.innerHTML = ''; strip.classList.add('hidden');
+    if (bar) { bar.innerHTML = ''; bar.classList.add('hidden'); }
+    return;
+  }
+  const chipsHtml = '<span class="history-label">Recent</span>' +
     history.slice(1).map((h,i) =>
       `<button class="history-chip"
         onmouseenter="showChipTooltip(event,'${h.data.contextual?.slice(0,80).replace(/'/g,'&#39;')+'…'||''}')"
         onmouseleave="hideChipTooltip()"
         onclick="showCached(${i+1})">${h.word}<span class="history-chip-pos"> ${h.data.pos||''}</span></button>`
     ).join('');
+  // Populate pinned bar (above def); hide old in-scroll strip
+  if (bar) { bar.innerHTML = chipsHtml; bar.classList.remove('hidden'); }
+  strip.classList.add('hidden');
 }
 function showCached(idx) {
   const {word,data} = history[idx];
@@ -1825,19 +2063,23 @@ function showPlaceholder() {
   document.getElementById('def-loading').classList.add('hidden');
   document.getElementById('def-result').classList.add('hidden');
   document.getElementById('history-strip').classList.add('hidden');
+  const bar = document.getElementById('history-header');
+  if (bar) bar.classList.add('hidden');
 }
 function showLoading(word) {
   document.getElementById('def-placeholder').classList.add('hidden');
   document.getElementById('def-loading').classList.remove('hidden');
   document.getElementById('def-result').classList.add('hidden');
   document.getElementById('loading-word-label').textContent = word || '';
+  // Keep history bar visible while loading so user can see recent words
+  renderHistory();
 }
 
 /* ── Show result with sequential cascade animation ──────────── */
 function showResult(word, data, fromHistory=false) {
   document.getElementById('def-placeholder').classList.add('hidden');
   document.getElementById('def-loading').classList.add('hidden');
-  currentResult = {word,data};
+  currentResult = {word, data, context: currentContext};
 
   // Populate
   document.getElementById('def-word').textContent = word;
@@ -1849,9 +2091,11 @@ function showResult(word, data, fromHistory=false) {
     ipaEl.textContent = data.ipa; ipaRow.classList.remove('hidden');
   } else { ipaRow.classList.add('hidden'); }
 
-  const posBadge = document.getElementById('def-pos');
-  posBadge.textContent    = data.pos || '';
-  posBadge.dataset.pos    = posType(data.pos);
+  const posBadge  = document.getElementById('def-pos');
+  const wordCount = word.trim().split(/\s+/).length;
+  const isPhrase  = wordCount > 1;
+  posBadge.textContent = isPhrase ? (data.pos || 'phrase') : (data.pos || '');
+  posBadge.dataset.pos = isPhrase && !data.pos ? 'other' : posType(data.pos);
 
   // Register tag
   const regEl = document.getElementById('def-register');
@@ -1867,15 +2111,33 @@ function showResult(word, data, fromHistory=false) {
     simplerWord.textContent = s; simplerRow.classList.remove('hidden');
   } else { simplerRow.classList.add('hidden'); }
 
+  // Definition (general meaning — returned for all lookups now)
+  const defSection = document.getElementById('def-definition-section');
+  const defEl      = document.getElementById('def-definition');
+  if (data.definition && data.definition !== 'null') {
+    defEl.textContent = data.definition;
+    defSection.classList.remove('hidden');
+  } else {
+    defSection.classList.add('hidden');
+  }
+
   document.getElementById('def-contextual').textContent = data.contextual || '';
   document.getElementById('def-why').textContent        = data.why || '';
 
-  // Etymology
+  // Etymology — in progressive disclosure section
   const etymRow = document.getElementById('etymology-row');
   const etymEl  = document.getElementById('def-etymology');
   if (data.etymology && data.etymology !== 'null') {
     etymEl.textContent = data.etymology; etymRow.classList.remove('hidden');
   } else { etymRow.classList.add('hidden'); }
+  // Show more-toggle when there's extra detail to reveal
+  const moreToggle = document.getElementById('more-toggle');
+  const moreSection = document.getElementById('more-section');
+  const hasExtra = (data.etymology && data.etymology !== 'null');
+  if (moreToggle) moreToggle.style.display = hasExtra ? 'inline-flex' : 'none';
+  // Collapse more-section on every new word
+  if (moreSection) moreSection.classList.remove('open');
+  if (moreToggle) moreToggle.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> More detail';
 
   updateSaveBtn(word);
 
@@ -1889,6 +2151,16 @@ function showResult(word, data, fromHistory=false) {
     exploredEl.textContent = `${lookedUpWords.size} words explored`;
     exploredEl.classList.remove('hidden');
   } else { exploredEl.classList.add('hidden'); }
+}
+
+/* ── More toggle ────────────────────────────────────────────── */
+function toggleMoreSection() {
+  const sec  = document.getElementById('more-section');
+  const btn  = document.getElementById('more-toggle');
+  const open = sec.classList.toggle('open');
+  btn.innerHTML = open
+    ? '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg> Less detail'
+    : '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> More detail';
 }
 
 /* ── Copy ───────────────────────────────────────────────────── */
@@ -1946,11 +2218,11 @@ function updateSaveBtn(word) {
   const icon  = document.getElementById('save-icon');
   const label = document.getElementById('save-label');
   if (isSaved(word)) {
-    btn.classList.add('saved'); btn.title='Remove from word bank';
-    icon.setAttribute('fill','currentColor'); label.textContent='Saved';
+    btn.classList.add('saved'); btn.title='Remove from collection';
+    icon.setAttribute('fill','currentColor'); label.textContent='Collected';
   } else {
-    btn.classList.remove('saved'); btn.title='Save to word bank';
-    icon.setAttribute('fill','none'); label.textContent='Save';
+    btn.classList.remove('saved'); btn.title='Add to collection';
+    icon.setAttribute('fill','none'); label.textContent='Collect';
   }
 }
 function toggleSave() {
@@ -1966,7 +2238,13 @@ function closeWordBank()  { document.getElementById('wb-overlay').classList.add(
 function renderWordBankList() {
   const list=document.getElementById('wb-list'), count=document.getElementById('wb-count');
   count.textContent = wordBank.length===0?'':`${wordBank.length} word${wordBank.length!==1?'s':''}`;
-  if (!wordBank.length) { list.innerHTML='<p class="wb-empty">No saved words yet.<br>Click the bookmark icon on any definition to save it here.</p>'; return; }
+  if (!wordBank.length) {
+    const signedOut = !authUser;
+    list.innerHTML = signedOut
+      ? '<div class="wb-empty"><p style="margin-bottom:12px">Sign in to save words and sync across devices.</p><button class="auth-submit" style="width:auto;padding:8px 20px;font-size:0.85rem" onclick="closeWordBank();openAuthModal()">Sign in</button></div>'
+      : '<p class="wb-empty">No saved words yet.<br>Click the bookmark icon on any definition to save it here.</p>';
+    return;
+  }
   list.innerHTML=wordBank.map((e,i)=>`<div class="wb-entry"><div class="wb-entry-header"><span class="wb-word">${e.word}</span>${e.pos?`<span class="wb-pos">${e.pos}</span>`:''}<button class="wb-delete" onclick="deleteFromBank(${i})" title="Remove">×</button></div><p class="wb-def">${e.contextual}</p></div>`).join('');
 }
 function deleteFromBank(i) { wordBank.splice(i,1); saveWordBank(); renderWordBankList(); }
@@ -2029,6 +2307,10 @@ function toggleShortcuts() {
   shortcutsOpen=!shortcutsOpen;
   document.getElementById('shortcuts-overlay').classList.toggle('hidden',!shortcutsOpen);
 }
+
+/* ── Extension install modal ────────────────────────────── */
+function openExtModal()  { document.getElementById('ext-modal').classList.remove('hidden'); }
+function closeExtModal() { document.getElementById('ext-modal').classList.add('hidden'); }
 
 /* ── Desktop app modal ──────────────────────────────────── */
 function openDesktopModal()  { document.getElementById('desktop-modal').classList.remove('hidden'); }
@@ -2105,6 +2387,9 @@ function closeAuthModal() {
 }
 
 function switchAuthTab(tab) {
+  // Preserve email value across tab switches
+  const emailEl = document.getElementById('auth-email');
+  const savedEmail = emailEl ? emailEl.value : '';
   document.getElementById('tab-login').classList.toggle('active', tab === 'login');
   document.getElementById('tab-register').classList.toggle('active', tab === 'register');
   document.getElementById('auth-name-field').style.display = tab === 'register' ? '' : 'none';
@@ -2113,6 +2398,8 @@ function switchAuthTab(tab) {
   document.getElementById('auth-error').classList.add('hidden');
   const pwdInput = document.getElementById('auth-password');
   pwdInput.autocomplete = tab === 'register' ? 'new-password' : 'current-password';
+  // Restore email after tab switch
+  if (emailEl && savedEmail) emailEl.value = savedEmail;
 }
 
 async function submitAuth() {
@@ -2157,6 +2444,77 @@ function signOut() {
   try { localStorage.removeItem('lexio_token'); localStorage.removeItem('lexio_user'); } catch {}
   updateAcctBtn();
   closeAuthModal();
+}
+
+/* ── OAuth Sign-in (Google) ──────────────────────────────────── */
+let _googleClientId = null;
+
+async function initOAuthProviders() {
+  try {
+    const res = await fetch('/api/config');
+    if (!res.ok) return;
+    const cfg = await res.json();
+    _googleClientId = cfg.google_client_id || null;
+    if (!_googleClientId) return;
+    // Show the button as soon as we have the client ID — no GSI dependency
+    const wrap = document.getElementById('oauth-btn-wrap');
+    if (wrap) wrap.style.display = 'flex';
+  } catch {}
+}
+
+function triggerGoogleSignIn() {
+  if (!_googleClientId) return;
+  const nonce = typeof crypto.randomUUID === 'function'
+    ? crypto.randomUUID()
+    : Math.random().toString(36).slice(2) + Date.now();
+  const params = new URLSearchParams({
+    client_id:     _googleClientId,
+    redirect_uri:  location.origin + '/google-callback.html',
+    response_type: 'id_token',
+    scope:         'openid email profile',
+    nonce:         nonce,
+    prompt:        'select_account',
+  });
+  const url = 'https://accounts.google.com/o/oauth2/v2/auth?' + params;
+  const w = 520, h = 620;
+  const left = Math.max(0, Math.round((screen.width  - w) / 2));
+  const top  = Math.max(0, Math.round((screen.height - h) / 2));
+  const popup = window.open(url, 'google-oauth',
+    `width=${w},height=${h},left=${left},top=${top},scrollbars=yes,resizable=yes`);
+  if (!popup) { window.location.href = url; return; } // popup blocked → redirect
+  const handler = async (e) => {
+    if (e.origin !== location.origin || e.data?.type !== 'google-credential') return;
+    window.removeEventListener('message', handler);
+    try { popup.close(); } catch {}
+    await _oauthSignIn('/auth/google', { credential: e.data.credential });
+  };
+  window.addEventListener('message', handler);
+}
+
+
+/* ── Shared OAuth completion ─────────────────────────────────── */
+async function _oauthSignIn(endpoint, body) {
+  const errEl = document.getElementById('auth-error');
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || 'Sign-in failed');
+    authToken = data.token;
+    authUser  = data.user;
+    try {
+      localStorage.setItem('lexio_token', authToken);
+      localStorage.setItem('lexio_user', JSON.stringify(authUser));
+    } catch {}
+    updateAcctBtn();
+    closeAuthModal();
+    syncWordBank();
+  } catch(e) {
+    if (errEl) { errEl.textContent = e.message; errEl.classList.remove('hidden'); }
+  }
 }
 
 async function syncWordBank() {
@@ -2300,6 +2658,13 @@ try {
   if (savedLang) { currentLang = savedLang; document.getElementById('lang-select').value = savedLang; }
 } catch {}
 
+// Restore UI language
+try {
+  const savedUILang = localStorage.getItem('lexio_ui_lang');
+  if (savedUILang && savedUILang !== 'en') setUILang(savedUILang);
+  else document.getElementById('ui-lang-select').value = 'en';
+} catch {}
+
 // Follow system dark-mode changes when Auto theme is active
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
   if (isAutoTheme) setTheme('auto');
@@ -2310,7 +2675,7 @@ inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key===
 document.addEventListener('keydown', e => {
   const tag = document.activeElement?.tagName;
   if (tag==='TEXTAREA'||tag==='INPUT') return;
-  if (e.key==='Escape') { closeWordBank(); closeDesktopModal(); closeAuthModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='Escape') { closeWordBank(); closeDesktopModal(); closeExtModal(); closeAuthModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
   if (e.key==='?')  toggleShortcuts();
   if (e.key==='b'||e.key==='B') openWordBank();
 });
@@ -2318,11 +2683,15 @@ document.addEventListener('keydown', e => {
 document.getElementById('wb-overlay').addEventListener('click', e => { if(e.target===document.getElementById('wb-overlay')) closeWordBank(); });
 document.getElementById('shortcuts-overlay').addEventListener('click', e => { if(e.target===document.getElementById('shortcuts-overlay')) toggleShortcuts(); });
 document.getElementById('desktop-modal').addEventListener('click', e => { if(e.target===document.getElementById('desktop-modal')) closeDesktopModal(); });
+document.getElementById('ext-modal').addEventListener('click', e => { if(e.target===document.getElementById('ext-modal')) closeExtModal(); });
 document.getElementById('auth-modal').addEventListener('click', e => { if(e.target===document.getElementById('auth-modal')) closeAuthModal(); });
 // Enter key in auth inputs
 ['auth-email','auth-password','auth-name'].forEach(id => {
   document.getElementById(id)?.addEventListener('keydown', e => { if(e.key==='Enter') submitAuth(); });
 });
+
+// Init OAuth providers (Google + Apple)
+initOAuthProviders();
 </script>
 </body>
 </html>

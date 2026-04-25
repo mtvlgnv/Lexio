@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signing in…</title>
+  <style>
+    body { font-family: system-ui, sans-serif; display: flex; align-items: center;
+           justify-content: center; min-height: 100vh; margin: 0;
+           background: #faf8f5; color: #7a7269; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <p>Signing in… you can close this window.</p>
+  <script>
+    try {
+      const params = new URLSearchParams(location.hash.slice(1));
+      const idToken = params.get('id_token');
+      if (idToken && window.opener && !window.opener.closed) {
+        window.opener.postMessage(
+          { type: 'google-credential', credential: idToken },
+          location.origin
+        );
+      }
+    } catch (e) {}
+    setTimeout(() => window.close(), 800);
+  </script>
+</body>
+</html>
