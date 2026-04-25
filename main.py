@@ -595,5 +595,175 @@ async def delete_word(word: str, user: User = Depends(current_user), db: DBSessi
     return {"ok": True}
 
 
+# ── /api/admin/* ──────────────────────────────────────────────────────────────
+
+_START_TIME = datetime.datetime.utcnow()
+
+def _check_admin(x_admin_key: Optional[str] = Header(default=None)):
+    admin_key = os.getenv("ADMIN_KEY", "")
+    if not admin_key or x_admin_key != admin_key:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+@app.get("/api/admin/health")
+async def admin_health(db: DBSession = Depends(get_db), _=Depends(_check_admin)):
+    """Server health snapshot."""
+    # DB ping
+    db_ok = False
+    try:
+        db.execute(__import__('sqlalchemy').text("SELECT 1"))
+        db_ok = True
+    except Exception:
+        pass
+
+    # Disk usage
+    stat = os.statvfs("/")
+    disk_total = stat.f_blocks * stat.f_frsize
+    disk_free  = stat.f_bfree  * stat.f_frsize
+    disk_used  = disk_total - disk_free
+
+    uptime_secs = int((datetime.datetime.utcnow() - _START_TIME).total_seconds())
+
+    return {
+        "status":      "ok" if db_ok else "degraded",
+        "db":          db_ok,
+        "anthropic_key_set": bool(os.getenv("ANTHROPIC_API_KEY")),
+        "google_oauth_set":  bool(os.getenv("GOOGLE_CLIENT_ID")),
+        "uptime_seconds":    uptime_secs,
+        "disk": {
+            "total_gb": round(disk_total / 1e9, 2),
+            "used_gb":  round(disk_used  / 1e9, 2),
+            "free_gb":  round(disk_free  / 1e9, 2),
+            "pct_used": round(disk_used  / disk_total * 100, 1),
+        },
+        "server_time": datetime.datetime.utcnow().isoformat() + "Z",
+    }
+
+
+@app.get("/api/admin/stats")
+async def admin_stats(db: DBSession = Depends(get_db), _=Depends(_check_admin)):
+    """Full statistics snapshot for the admin dashboard."""
+    now   = datetime.datetime.utcnow()
+    today = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    week  = today - datetime.timedelta(days=7)
+    month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    # ── Users ────────────────────────────────────────────────────────
+    total_users   = db.query(func.count(User.id)).scalar()
+    users_today   = db.query(func.count(User.id)).filter(User.created_at >= today).scalar()
+    users_week    = db.query(func.count(User.id)).filter(User.created_at >= week).scalar()
+    users_month   = db.query(func.count(User.id)).filter(User.created_at >= month).scalar()
+    oauth_users   = db.query(func.count(User.id)).filter(User.google_id != None).scalar()
+    pwd_users     = db.query(func.count(User.id)).filter(User.pwd_hash != None, User.pwd_hash != "").scalar()
+
+    # ── Word bank ────────────────────────────────────────────────────
+    total_wb      = db.query(func.count(WordBankEntry.id)).scalar()
+    wb_today      = db.query(func.count(WordBankEntry.id)).filter(WordBankEntry.saved_at >= today).scalar()
+
+    # ── Searches ─────────────────────────────────────────────────────
+    total_searches  = db.query(func.count(SearchLog.id)).scalar()
+    searches_today  = db.query(func.count(SearchLog.id)).filter(SearchLog.searched_at >= today).scalar()
+    searches_week   = db.query(func.count(SearchLog.id)).filter(SearchLog.searched_at >= week).scalar()
+    searches_month  = db.query(func.count(SearchLog.id)).filter(SearchLog.searched_at >= month).scalar()
+
+    # ── Top words all-time ────────────────────────────────────────────
+    top_all = (
+        db.query(SearchLog.word, func.count(SearchLog.id).label("n"))
+        .group_by(SearchLog.word)
+        .order_by(func.count(SearchLog.id).desc())
+        .limit(10)
+        .all()
+    )
+
+    # ── Top words this month ──────────────────────────────────────────
+    top_month = (
+        db.query(SearchLog.word, func.count(SearchLog.id).label("n"))
+        .filter(SearchLog.searched_at >= month)
+        .group_by(SearchLog.word)
+        .order_by(func.count(SearchLog.id).desc())
+        .limit(10)
+        .all()
+    )
+
+    # ── Searches per day (last 30 days) ───────────────────────────────
+    thirty_ago = today - datetime.timedelta(days=29)
+    daily_rows = (
+        db.query(
+            func.date(SearchLog.searched_at).label("day"),
+            func.count(SearchLog.id).label("n"),
+        )
+        .filter(SearchLog.searched_at >= thirty_ago)
+        .group_by(func.date(SearchLog.searched_at))
+        .order_by(func.date(SearchLog.searched_at))
+        .all()
+    )
+    # Fill in missing days with 0
+    daily_map = {r.day: r.n for r in daily_rows}
+    daily_searches = []
+    for i in range(30):
+        d = (thirty_ago + datetime.timedelta(days=i)).strftime("%Y-%m-%d")
+        daily_searches.append({"date": d, "count": daily_map.get(d, 0)})
+
+    # ── New users per day (last 30 days) ──────────────────────────────
+    user_rows = (
+        db.query(
+            func.date(User.created_at).label("day"),
+            func.count(User.id).label("n"),
+        )
+        .filter(User.created_at >= thirty_ago)
+        .group_by(func.date(User.created_at))
+        .order_by(func.date(User.created_at))
+        .all()
+    )
+    user_map = {r.day: r.n for r in user_rows}
+    daily_users = []
+    for i in range(30):
+        d = (thirty_ago + datetime.timedelta(days=i)).strftime("%Y-%m-%d")
+        daily_users.append({"date": d, "count": user_map.get(d, 0)})
+
+    # ── Recent sign-ups ───────────────────────────────────────────────
+    recent_users = (
+        db.query(User)
+        .order_by(User.created_at.desc())
+        .limit(20)
+        .all()
+    )
+
+    return {
+        "users": {
+            "total":  total_users,
+            "today":  users_today,
+            "week":   users_week,
+            "month":  users_month,
+            "oauth":  oauth_users,
+            "password": pwd_users,
+        },
+        "wordbank": {
+            "total": total_wb,
+            "today": wb_today,
+        },
+        "searches": {
+            "total": total_searches,
+            "today": searches_today,
+            "week":  searches_week,
+            "month": searches_month,
+        },
+        "top_words_alltime": [{"word": r.word, "count": r.n} for r in top_all],
+        "top_words_month":   [{"word": r.word, "count": r.n} for r in top_month],
+        "daily_searches":    daily_searches,
+        "daily_users":       daily_users,
+        "recent_users": [
+            {
+                "id":         u.id,
+                "email":      u.email,
+                "name":       u.name,
+                "auth":       "oauth" if u.google_id else "password",
+                "created_at": u.created_at.isoformat() + "Z" if u.created_at else None,
+            }
+            for u in recent_users
+        ],
+        "generated_at": now.isoformat() + "Z",
+    }
+
+
 # ── Static frontend ───────────────────────────────────────────────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

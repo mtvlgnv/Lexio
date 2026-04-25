@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lexio Admin</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0f1117;
+      --surface:  #181c27;
+      --border:   #262b3a;
+      --text:     #e8eaf0;
+      --muted:    #7a8099;
+      --accent:   oklch(58% 0.17 54);
+      --accent-lt:oklch(20% 0.06 54);
+      --green:    #22c55e;
+      --red:      #ef4444;
+      --yellow:   #f59e0b;
+      --blue:     #3b82f6;
+      --radius:   10px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* ── Login screen ─── */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 24px;
+    }
+    .login-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 40px 36px; width: 100%; max-width: 360px;
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .login-box h1 { font-size: 1.25rem; font-weight: 700; }
+    .login-box p  { font-size: 0.82rem; color: var(--muted); }
+    .login-box input {
+      padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius);
+      background: var(--bg); color: var(--text); font-size: 0.9rem; outline: none;
+      transition: border-color 0.15s; width: 100%;
+    }
+    .login-box input:focus { border-color: var(--accent); }
+    .login-box button {
+      padding: 10px; background: var(--accent); color: #fff; border: none;
+      border-radius: var(--radius); font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    .login-box button:hover { opacity: 0.88; }
+    #login-err { font-size: 0.8rem; color: var(--red); display: none; }
+
+    /* ── Dashboard ─── */
+    #dashboard { display: none; }
+
+    .topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 28px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: var(--bg); z-index: 10;
+    }
+    .topbar-logo {
+      display: flex; align-items: center; gap: 8px;
+      font-weight: 700; font-size: 1rem;
+    }
+    .topbar-logo svg { flex-shrink: 0; }
+    .topbar-badge {
+      font-size: 0.68rem; font-weight: 600; padding: 2px 8px;
+      background: var(--accent-lt); color: var(--accent);
+      border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+    #refresh-btn {
+      padding: 6px 14px; font-size: 0.8rem; font-weight: 500;
+      background: transparent; border: 1px solid var(--border); border-radius: 20px;
+      color: var(--muted); cursor: pointer; transition: border-color 0.15s, color 0.15s;
+    }
+    #refresh-btn:hover { border-color: var(--accent); color: var(--text); }
+    #last-updated { font-size: 0.75rem; color: var(--muted); }
+
+    .main { padding: 28px; max-width: 1300px; margin: 0 auto; }
+
+    /* ── Section title ─── */
+    .section-title {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 14px;
+    }
+
+    /* ── Health row ─── */
+    .health-row {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px;
+    }
+    .health-chip {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500;
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green  { background: var(--green);  box-shadow: 0 0 6px var(--green); }
+    .dot-red    { background: var(--red);    box-shadow: 0 0 6px var(--red); }
+    .dot-yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+
+    /* ── Stat cards ─── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px; margin-bottom: 32px;
+    }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 20px 16px;
+    }
+    .card-label { font-size: 0.72rem; color: var(--muted); font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .card-value { font-size: 1.85rem; font-weight: 700; line-height: 1; }
+    .card-sub   { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
+    .card-sub span { color: var(--green); font-weight: 600; }
+
+    /* ── Charts ─── */
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+    @media (max-width: 800px) { .charts { grid-template-columns: 1fr; } }
+    .chart-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px;
+    }
+    .chart-card h3 { font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .chart-wrap { position: relative; height: 200px; }
+
+    /* ── Bottom grid ─── */
+    .bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 32px; }
+    @media (max-width: 900px) { .bottom-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .bottom-grid { grid-template-columns: 1fr; } }
+
+    .list-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px;
+    }
+    .list-card h3 { font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .word-list { display: flex; flex-direction: column; gap: 8px; }
+    .word-row { display: flex; align-items: center; gap: 10px; }
+    .word-rank { font-size: 0.68rem; color: var(--muted); width: 16px; text-align: right; flex-shrink: 0; }
+    .word-name { flex: 1; font-weight: 500; font-size: 0.88rem; font-family: Georgia, serif; }
+    .word-bar-wrap { width: 60px; height: 5px; background: var(--border); border-radius: 3px; flex-shrink: 0; }
+    .word-bar { height: 5px; border-radius: 3px; background: var(--accent); }
+    .word-count { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; min-width: 24px; text-align: right; }
+
+    /* ── Users table ─── */
+    .users-section { margin-bottom: 32px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; padding: 10px 14px;
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--surface); }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .badge-oauth    { background: #1e3a5f; color: #60a5fa; }
+    .badge-password { background: #1e3a2a; color: #4ade80; }
+    .muted { color: var(--muted); }
+
+    .skeleton {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--border) 50%, var(--surface) 75%);
+      background-size: 200% 100%; animation: shimmer 1.4s infinite;
+      border-radius: 4px; height: 1em; width: 60%;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ──────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div>
+      <h1>Lexio Admin</h1>
+      <p style="margin-top:6px">Enter your admin key to continue.</p>
+    </div>
+    <input id="key-input" type="password" placeholder="Admin key" autocomplete="off">
+    <div id="login-err">Wrong key — try again.</div>
+    <button onclick="tryLogin()">Access dashboard</button>
+  </div>
+</div>
+
+<!-- ── Dashboard ────────────────────────────────── -->
+<div id="dashboard">
+
+  <div class="topbar">
+    <div class="topbar-logo">
+      <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+        <rect width="36" height="36" rx="9" fill="oklch(58% 0.17 54)"/>
+        <text x="18" y="25" font-family="Georgia,serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">w</text>
+      </svg>
+      Lexio
+    </div>
+    <span class="topbar-badge">Admin</span>
+    <div class="topbar-right">
+      <span id="last-updated">—</span>
+      <button id="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- Health -->
+    <div class="section-title">System health</div>
+    <div class="health-row" id="health-row">
+      <div class="health-chip"><div class="dot dot-yellow"></div> Loading…</div>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="section-title">Overview</div>
+    <div class="cards" id="cards">
+      <div class="card"><div class="card-label">Total users</div><div class="skeleton"></div></div>
+      <div class="card"><div class="card-label">Searches</div><div class="skeleton"></div></div>
+      <div class="card"><div class="card-label">Word bank entries</div><div class="skeleton"></div></div>
+      <div class="card"><div class="card-label">New users today</div><div class="skeleton"></div></div>
+      <div class="card"><div class="card-label">Searches today</div><div class="skeleton"></div></div>
+      <div class="card"><div class="card-label">Entries today</div><div class="skeleton"></div></div>
+    </div>
+
+    <!-- Charts -->
+    <div class="section-title">Trends (last 30 days)</div>
+    <div class="charts">
+      <div class="chart-card">
+        <h3>Searches per day</h3>
+        <div class="chart-wrap"><canvas id="chart-searches"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>New users per day</h3>
+        <div class="chart-wrap"><canvas id="chart-users"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Word lists + auth breakdown -->
+    <div class="section-title">Top words &amp; auth</div>
+    <div class="bottom-grid">
+      <div class="list-card">
+        <h3>Top words — this month</h3>
+        <div class="word-list" id="top-month">
+          <div class="skeleton"></div><div class="skeleton" style="width:45%"></div>
+        </div>
+      </div>
+      <div class="list-card">
+        <h3>Top words — all time</h3>
+        <div class="word-list" id="top-alltime">
+          <div class="skeleton"></div><div class="skeleton" style="width:45%"></div>
+        </div>
+      </div>
+      <div class="list-card">
+        <h3>Auth breakdown</h3>
+        <div class="chart-wrap" style="height:160px"><canvas id="chart-auth"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Recent users -->
+    <div class="section-title users-section">Recent sign-ups</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Auth</th>
+            <th>Joined</th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody">
+          <tr><td colspan="5"><div class="skeleton"></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /dashboard -->
+
+<script>
+'use strict';
+
+let _key = '';
+let _searchChart = null, _userChart = null, _authChart = null;
+
+// ── Login ─────────────────────────────────────────────────────────────────────
+document.getElementById('key-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') tryLogin();
+});
+
+async function tryLogin() {
+  const k = document.getElementById('key-input').value.trim();
+  if (!k) return;
+  // Quick probe
+  const res = await fetch('/api/admin/health', { headers: { 'X-Admin-Key': k } });
+  if (res.status === 403) {
+    document.getElementById('login-err').style.display = '';
+    return;
+  }
+  _key = k;
+  try { sessionStorage.setItem('lexio_admin_key', k); } catch {}
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = '';
+  loadAll();
+  // Auto-refresh every 60s
+  setInterval(loadAll, 60_000);
+}
+
+// Try restoring session
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    const saved = sessionStorage.getItem('lexio_admin_key');
+    if (saved) {
+      document.getElementById('key-input').value = saved;
+      tryLogin();
+    }
+  } catch {}
+});
+
+// ── Load all data ─────────────────────────────────────────────────────────────
+async function loadAll() {
+  const [health, stats] = await Promise.all([
+    fetch('/api/admin/health', { headers: { 'X-Admin-Key': _key } }).then(r => r.json()).catch(() => null),
+    fetch('/api/admin/stats',  { headers: { 'X-Admin-Key': _key } }).then(r => r.json()).catch(() => null),
+  ]);
+  if (health) renderHealth(health);
+  if (stats)  renderStats(stats);
+  document.getElementById('last-updated').textContent =
+    'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// ── Health ────────────────────────────────────────────────────────────────────
+function renderHealth(h) {
+  const chips = [
+    { label: 'API',         ok: h.status === 'ok' },
+    { label: 'Database',    ok: h.db },
+    { label: 'Anthropic key', ok: h.anthropic_key_set },
+    { label: 'Google OAuth',  ok: h.google_oauth_set, warn: !h.google_oauth_set },
+  ];
+
+  const disk = h.disk;
+  const diskOk = disk.pct_used < 85;
+  chips.push({ label: `Disk ${disk.used_gb}/${disk.total_gb} GB (${disk.pct_used}%)`, ok: diskOk, warn: disk.pct_used > 70 });
+  chips.push({ label: `Uptime ${fmtUptime(h.uptime_seconds)}`, ok: true });
+
+  document.getElementById('health-row').innerHTML = chips.map(c => `
+    <div class="health-chip">
+      <div class="dot ${c.ok ? (c.warn ? 'dot-yellow' : 'dot-green') : 'dot-red'}"></div>
+      ${c.label}
+    </div>
+  `).join('');
+}
+
+function fmtUptime(secs) {
+  const d = Math.floor(secs / 86400);
+  const h = Math.floor((secs % 86400) / 3600);
+  const m = Math.floor((secs % 3600) / 60);
+  if (d > 0) return `${d}d ${h}h`;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
+}
+
+// ── Stat cards ────────────────────────────────────────────────────────────────
+function renderStats(s) {
+  const u = s.users, sr = s.searches, wb = s.wordbank;
+
+  document.getElementById('cards').innerHTML = `
+    ${card('Total users',          fmt(u.total),   `+${u.week} this week · +${u.month} this month`)}
+    ${card('Total searches',       fmt(sr.total),  `+${sr.week} this week · +${sr.month} this month`)}
+    ${card('Word bank entries',    fmt(wb.total),  `+${wb.today} today`)}
+    ${card('New users today',      fmt(u.today),   `${u.week} this week`)}
+    ${card('Searches today',       fmt(sr.today),  `${sr.week} this week`)}
+    ${card('WB entries today',     fmt(wb.today),  '')}
+  `;
+
+  renderLineChart('chart-searches', s.daily_searches, 'Searches', 'oklch(58% 0.17 54)');
+  renderLineChart('chart-users',    s.daily_users,    'New users', '#3b82f6');
+  renderWordList('top-month',   s.top_words_month);
+  renderWordList('top-alltime', s.top_words_alltime);
+  renderAuthChart(s.users.oauth, s.users.password);
+  renderUsersTable(s.recent_users);
+}
+
+function card(label, value, sub) {
+  return `
+    <div class="card">
+      <div class="card-label">${label}</div>
+      <div class="card-value">${value}</div>
+      ${sub ? `<div class="card-sub">${sub}</div>` : ''}
+    </div>`;
+}
+
+function fmt(n) {
+  return Number(n).toLocaleString();
+}
+
+// ── Line chart ────────────────────────────────────────────────────────────────
+function renderLineChart(id, data, label, color) {
+  const labels = data.map(d => {
+    const dt = new Date(d.date + 'T00:00:00');
+    return dt.toLocaleDateString([], { month: 'short', day: 'numeric' });
+  });
+  const values = data.map(d => d.count);
+
+  const existing = id === 'chart-searches' ? _searchChart : _userChart;
+  if (existing) {
+    existing.data.labels = labels;
+    existing.data.datasets[0].data = values;
+    existing.update();
+    return;
+  }
+
+  const ctx = document.getElementById(id).getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label,
+        data: values,
+        borderColor: color,
+        backgroundColor: color + '22',
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 4,
+        fill: true,
+        tension: 0.35,
+      }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          ticks: { color: '#7a8099', font: { size: 10 }, maxTicksLimit: 6, maxRotation: 0 },
+          grid:  { color: '#262b3a' },
+        },
+        y: {
+          ticks: { color: '#7a8099', font: { size: 10 }, precision: 0 },
+          grid:  { color: '#262b3a' },
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+  if (id === 'chart-searches') _searchChart = chart;
+  else _userChart = chart;
+}
+
+// ── Auth donut ────────────────────────────────────────────────────────────────
+function renderAuthChart(oauth, password) {
+  const data = [oauth, password];
+  const labels = ['Google / Apple', 'Email / password'];
+  if (_authChart) {
+    _authChart.data.datasets[0].data = data;
+    _authChart.update();
+    return;
+  }
+  const ctx = document.getElementById('chart-auth').getContext('2d');
+  _authChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: ['#3b82f6', '#22c55e'],
+        borderColor: '#181c27',
+        borderWidth: 3,
+        hoverOffset: 4,
+      }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#7a8099', font: { size: 11 }, boxWidth: 12, padding: 14 },
+        },
+      },
+      cutout: '68%',
+    },
+  });
+}
+
+// ── Word lists ────────────────────────────────────────────────────────────────
+function renderWordList(id, words) {
+  if (!words || !words.length) {
+    document.getElementById(id).innerHTML = '<span class="muted" style="font-size:0.8rem">No data yet.</span>';
+    return;
+  }
+  const max = words[0].count;
+  document.getElementById(id).innerHTML = words.slice(0, 10).map((w, i) => `
+    <div class="word-row">
+      <span class="word-rank">${i + 1}</span>
+      <span class="word-name">${esc(w.word)}</span>
+      <div class="word-bar-wrap"><div class="word-bar" style="width:${Math.round(w.count / max * 100)}%"></div></div>
+      <span class="word-count">${w.count}</span>
+    </div>
+  `).join('');
+}
+
+// ── Users table ───────────────────────────────────────────────────────────────
+function renderUsersTable(users) {
+  if (!users || !users.length) {
+    document.getElementById('users-tbody').innerHTML = '<tr><td colspan="5" class="muted">No users yet.</td></tr>';
+    return;
+  }
+  document.getElementById('users-tbody').innerHTML = users.map(u => `
+    <tr>
+      <td class="muted">${u.id}</td>
+      <td>${esc(u.name || '—')}</td>
+      <td>${esc(u.email)}</td>
+      <td><span class="badge ${u.auth === 'oauth' ? 'badge-oauth' : 'badge-password'}">${u.auth}</span></td>
+      <td class="muted">${fmtDate(u.created_at)}</td>
+    </tr>
+  `).join('');
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })
+       + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
