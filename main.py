@@ -55,6 +55,14 @@ class SearchLog(Base):
     word        = Column(String, nullable=False, index=True)
     searched_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
 
+class UserSearchLog(Base):
+    """Per-user search events for authenticated users."""
+    __tablename__ = "user_search_log"
+    id          = Column(Integer, primary_key=True)
+    user_id     = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    word        = Column(String, nullable=False)
+    searched_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
+
 Base.metadata.create_all(engine)
 
 # ── SQLite migrations (add columns that may not exist yet) ────────────────────
@@ -200,6 +208,20 @@ def _log_search(word: str) -> None:
     finally:
         db.close()
 
+def _log_user_search(user_id: int, word: str) -> None:
+    """Write one per-user search row."""
+    w = word.strip().lower()
+    if len(w) < 2:
+        return
+    db = SessionLocal()
+    try:
+        db.add(UserSearchLog(user_id=user_id, word=w))
+        db.commit()
+    except Exception:
+        db.rollback()
+    finally:
+        db.close()
+
 
 # ── /define ──────────────────────────────────────────────────────────────────
 
@@ -211,7 +233,8 @@ LANG_NAMES = {
 
 @app.post("/define")
 @limiter.limit("20/minute")
-async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks):
+async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
+                      user: Optional[User] = Depends(optional_user)):
     lang_code    = (req.lang or 'auto').strip().lower()
     lang_name    = LANG_NAMES.get(lang_code)   # None if auto/unknown
     lang_note = (
@@ -267,8 +290,10 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks)
             if key not in result:
                 raise ValueError(f"Missing key: {key}")
 
-        # Log the search anonymously after we know the response was good
+        # Log anonymously (always) and per-user (when authenticated)
         bg.add_task(_log_search, req.word)
+        if user:
+            bg.add_task(_log_user_search, user.id, req.word)
         return result
 
     except json.JSONDecodeError as exc:
@@ -927,9 +952,9 @@ button{width:100%;padding:10px;background:#c47028;color:#fff;border:none;border-
                 f'{label}</span>')
 
     tr_rows = "".join(
-        f'<tr style="border-bottom:1px solid #f0f0f0">'
+        f'<tr style="border-bottom:1px solid #f0f0f0;cursor:pointer" onclick="location.href=\'/admin/user/{u.id}?key={key}\'">'
         f'<td style="padding:9px 14px;color:#aaa">{u.id}</td>'
-        f'<td style="padding:9px 14px">{u.name or "—"}</td>'
+        f'<td style="padding:9px 14px"><a href="/admin/user/{u.id}?key={key}" style="color:#c47028;font-weight:500;text-decoration:none">{u.name or "—"}</a></td>'
         f'<td style="padding:9px 14px">{u.email}</td>'
         f'<td style="padding:9px 14px"><span style="padding:2px 8px;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;'
         f'background:{"#dbeafe;color:#1d4ed8" if u.google_id else "#dcfce7;color:#15803d"}">'
@@ -1013,6 +1038,221 @@ a{{color:#c47028;text-decoration:none}}
         <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Joined</th>
       </tr></thead>
       <tbody>{tr_rows}</tbody>
+    </table>
+  </div>
+
+</div>
+</body></html>"""
+
+    return HTMLResponse(html)
+
+
+# ── /admin/user/{user_id} ────────────────────────────────────────────────────
+@app.get("/admin/user/{user_id}", response_class=HTMLResponse)
+async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends(get_db)):
+    admin_key = os.getenv("ADMIN_KEY", "")
+    if not key or not admin_key or key != admin_key:
+        return HTMLResponse('<meta http-equiv="refresh" content="0;url=/admin">', status_code=302)
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        return HTMLResponse("<h1>User not found</h1>", status_code=404)
+
+    now        = datetime.datetime.utcnow()
+    thirty_ago = (now - datetime.timedelta(days=29)).replace(hour=0, minute=0, second=0, microsecond=0)
+
+    # ── Per-user search stats ──────────────────────────────────────────────────
+    total_searches = db.query(func.count(UserSearchLog.id)).filter(UserSearchLog.user_id == user_id).scalar() or 0
+
+    daily_rows = (
+        db.query(func.date(UserSearchLog.searched_at).label("day"), func.count(UserSearchLog.id).label("n"))
+        .filter(UserSearchLog.user_id == user_id, UserSearchLog.searched_at >= thirty_ago)
+        .group_by(func.date(UserSearchLog.searched_at))
+        .all()
+    )
+    daily_map = {r.day: r.n for r in daily_rows}
+    days = [(thirty_ago + datetime.timedelta(days=i)).strftime("%Y-%m-%d") for i in range(30)]
+    daily_counts = [daily_map.get(d, 0) for d in days]
+
+    top_words = (
+        db.query(UserSearchLog.word, func.count(UserSearchLog.id).label("n"))
+        .filter(UserSearchLog.user_id == user_id)
+        .group_by(UserSearchLog.word)
+        .order_by(func.count(UserSearchLog.id).desc())
+        .limit(15)
+        .all()
+    )
+
+    wb_entries = (
+        db.query(WordBankEntry)
+        .filter(WordBankEntry.user_id == user_id)
+        .order_by(WordBankEntry.saved_at.desc())
+        .all()
+    )
+
+    # ── Sparkline ─────────────────────────────────────────────────────────────
+    maxv = max(daily_counts) if daily_counts else 1
+    maxv = maxv or 1
+    W, H, pl, pr, pt, pb = 800, 120, 40, 12, 8, 24
+    cW, cH = W - pl - pr, H - pt - pb
+    n = len(daily_counts)
+    def px(i): return pl + (i / (n - 1)) * cW if n > 1 else pl
+    def py(v): return pt + cH - (v / maxv) * cH
+    pts  = " ".join(f"{px(i):.1f},{py(v):.1f}" for i, v in enumerate(daily_counts))
+    area = f"M{px(0):.1f},{py(daily_counts[0]):.1f} " + " ".join(f"L{px(i):.1f},{py(v):.1f}" for i, v in enumerate(daily_counts))
+    area += f" L{px(n-1):.1f},{pt+cH} L{px(0):.1f},{pt+cH} Z"
+    tick_html = ""
+    for i in [0, 9, 19, 29]:
+        if i < len(days):
+            d = datetime.datetime.strptime(days[i], "%Y-%m-%d")
+            lbl = d.strftime("%b %-d")
+            tick_html += f'<text x="{px(i):.1f}" y="{H-2}" fill="#bbb" font-size="10" text-anchor="middle" font-family="system-ui">{lbl}</text>'
+    # Y-axis
+    for f in [0.5, 1.0]:
+        y = py(maxv * f)
+        tick_html += f'<line x1="{pl}" y1="{y:.1f}" x2="{pl+cW}" y2="{y:.1f}" stroke="#eee" stroke-width="1"/>'
+        tick_html += f'<text x="{pl-4}" y="{y+4:.1f}" fill="#bbb" font-size="9" text-anchor="end" font-family="system-ui">{round(maxv*f)}</text>'
+    sparkline_svg = (f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:100px;display:block;overflow:visible">'
+                     f'<path d="{area}" fill="#c47028" fill-opacity=".12"/>'
+                     f'<polyline points="{pts}" fill="none" stroke="#c47028" stroke-width="2" stroke-linejoin="round"/>'
+                     f'{tick_html}</svg>')
+
+    # ── Daily table ────────────────────────────────────────────────────────────
+    daily_table_rows = ""
+    for i in range(29, -1, -1):
+        d   = days[i]
+        cnt = daily_counts[i]
+        if cnt == 0 and i < 25:
+            continue  # skip old zero days to keep table concise
+        dt  = datetime.datetime.strptime(d, "%Y-%m-%d")
+        lbl = dt.strftime("%b %-d, %Y")
+        bar = f'<div style="height:6px;background:#eee;border-radius:3px;width:120px"><div style="width:{round(cnt/maxv*100)}%;height:6px;background:#c47028;border-radius:3px"></div></div>'
+        daily_table_rows += (
+            f'<tr style="border-bottom:1px solid #f0f0f0">'
+            f'<td style="padding:8px 14px;color:#555">{lbl}</td>'
+            f'<td style="padding:8px 14px;font-weight:600">{cnt}</td>'
+            f'<td style="padding:8px 14px">{bar}</td>'
+            f'</tr>'
+        )
+
+    # ── Top words ──────────────────────────────────────────────────────────────
+    top_words_html = ""
+    if top_words:
+        mx = top_words[0].n or 1
+        for i, r in enumerate(top_words):
+            pct = round(r.n / mx * 100)
+            top_words_html += (
+                f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
+                f'<span style="color:#bbb;font-size:.65rem;width:14px;text-align:right">{i+1}</span>'
+                f'<span style="flex:1;font-family:Georgia,serif;font-size:.85rem">{r.word}</span>'
+                f'<div style="width:60px;height:4px;background:#eee;border-radius:2px"><div style="width:{pct}%;height:4px;background:#c47028;border-radius:2px"></div></div>'
+                f'<span style="color:#aaa;font-size:.7rem;min-width:18px;text-align:right">{r.n}</span>'
+                f'</div>'
+            )
+    else:
+        top_words_html = '<span style="color:#aaa;font-size:.82rem">No searches recorded yet.</span>'
+
+    # ── Word bank ──────────────────────────────────────────────────────────────
+    wb_html = ""
+    if wb_entries:
+        for e in wb_entries:
+            d = json.loads(e.data)
+            saved = e.saved_at.strftime("%b %-d, %Y") if e.saved_at else "—"
+            wb_html += (
+                f'<tr style="border-bottom:1px solid #f0f0f0">'
+                f'<td style="padding:8px 14px;font-family:Georgia,serif;font-weight:500">{e.word}</td>'
+                f'<td style="padding:8px 14px;color:#555;font-size:.8rem">{d.get("pos","—")}</td>'
+                f'<td style="padding:8px 14px;color:#555;font-size:.8rem;max-width:340px">{d.get("definition","—")}</td>'
+                f'<td style="padding:8px 14px;color:#aaa;font-size:.78rem">{saved}</td>'
+                f'</tr>'
+            )
+    else:
+        wb_html = '<tr><td colspan="4" style="padding:12px 14px;color:#aaa">No words collected yet.</td></tr>'
+
+    auth_label = "Google / Apple OAuth" if user.google_id else "Email / password"
+    joined = user.created_at.strftime("%b %-d, %Y at %H:%M UTC") if user.created_at else "—"
+
+    def sec(title):
+        return f'<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#999;margin:28px 0 12px">{title}</div>'
+
+    def card(label, val, sub=""):
+        return (f'<div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:18px">'
+                f'<div style="font-size:.68rem;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">{label}</div>'
+                f'<div style="font-size:1.8rem;font-weight:700;color:#111;line-height:1">{val}</div>'
+                f'{"<div style=font-size:.72rem;color:#999;margin-top:5px>" + sub + "</div>" if sub else ""}'
+                f'</div>')
+
+    html = f"""<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{user.name or user.email} — Lexio Admin</title>
+<style>*{{box-sizing:border-box;margin:0;padding:0}}body{{font-family:system-ui,sans-serif;background:#f5f4f0;color:#1a1a1a;font-size:14px}}</style>
+</head><body>
+
+<div style="display:flex;align-items:center;gap:10px;padding:14px 24px;background:#fff;border-bottom:1px solid #e5e5e5;position:sticky;top:0;z-index:10">
+  <svg width="22" height="22" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="9" fill="#c47028"/><text x="18" y="25" font-family="Georgia,serif" font-size="20" font-weight="700" fill="white" text-anchor="middle">w</text></svg>
+  <strong>Lexio</strong>
+  <span style="font-size:.65rem;font-weight:700;padding:2px 7px;background:#fef3e2;color:#c47028;border-radius:20px;text-transform:uppercase;letter-spacing:.04em">Admin</span>
+  <span style="color:#ddd;margin:0 4px">/</span>
+  <span style="font-size:.9rem;color:#555">User #{user.id}</span>
+  <div style="margin-left:auto;display:flex;gap:10px">
+    <a href="/admin?key={key}" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555;text-decoration:none">← Dashboard</a>
+    <a href="/admin/user/{user_id}?key={key}" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555;text-decoration:none">↻ Refresh</a>
+  </div>
+</div>
+
+<div style="padding:24px;max-width:1100px;margin:0 auto">
+
+  <!-- User info -->
+  <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:20px;display:flex;align-items:center;gap:18px;margin-bottom:4px">
+    <div style="width:52px;height:52px;border-radius:50%;background:#c47028;color:#fff;font-size:1.3rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+      {(user.name or user.email)[0].upper()}
+    </div>
+    <div>
+      <div style="font-size:1.05rem;font-weight:700">{user.name or "—"}</div>
+      <div style="color:#777;font-size:.85rem;margin-top:2px">{user.email}</div>
+      <div style="color:#aaa;font-size:.75rem;margin-top:4px">{auth_label} · Joined {joined}</div>
+    </div>
+  </div>
+
+  {sec("Usage overview")}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">
+    {card("Total lookups", f"{total_searches:,}")}
+    {card("Words collected", f"{len(wb_entries):,}")}
+    {card("Auth method", "OAuth" if user.google_id else "Password")}
+  </div>
+
+  {sec("Lookups per day — last 30 days")}
+  <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:20px">
+    {sparkline_svg}
+  </div>
+
+  {sec("Day-by-day breakdown")}
+  <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="border-bottom:1px solid #eee">
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Date</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Lookups</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa"></th>
+      </tr></thead>
+      <tbody>{daily_table_rows or '<tr><td colspan="3" style="padding:12px 14px;color:#aaa">No activity yet.</td></tr>'}</tbody>
+    </table>
+  </div>
+
+  {sec("Most looked-up words")}
+  <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:20px">
+    {top_words_html}
+  </div>
+
+  {sec(f"Word bank ({len(wb_entries)} words)")}
+  <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="border-bottom:1px solid #eee">
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Word</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">POS</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Definition</th>
+        <th style="text-align:left;padding:10px 14px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#aaa">Saved</th>
+      </tr></thead>
+      <tbody>{wb_html}</tbody>
     </table>
   </div>
 
