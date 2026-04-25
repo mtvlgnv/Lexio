@@ -1831,7 +1831,7 @@ function analyze() {
 }
 
 function computeReadingStats(text) {
-  const words = (text.match(/\b[a-zA-Z]+\b/g) || []).length;
+  const words = (text.match(/([\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF\uAC00-\uD7AF\u3400-\u4DBF]|[A-Za-z\u00C0-\u024F\u0400-\u04FF\u0600-\u06FF\u0590-\u05FF\u0900-\u097F\u0370-\u03FF]+)/g) || []).length;
   const mins  = Math.max(1, Math.round(words / 200));
   return `${words.toLocaleString()} words · ~${mins} min read`;
 }
@@ -1869,7 +1869,10 @@ function getSentenceIndex(charPos, starts) {
 function renderTokens(text) {
   const container = document.getElementById('token-view');
   container.innerHTML = '';
-  const parts = text.split(/([A-Za-z\u00C0-\u024F''‑-]+)/);
+  // Split into clickable tokens.
+  // CJK characters (Chinese, Japanese, Korean) are matched one at a time since
+  // they have no spaces between words. All other scripts match full words.
+  const parts = text.split(/([\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF\uAC00-\uD7AF\u3400-\u4DBF\uF900-\uFAFF]|[A-Za-z\u00C0-\u024F\u0400-\u04FF\u0600-\u06FF\u0750-\u077F\u0590-\u05FF\u0900-\u097F\u0370-\u03FF\u0E00-\u0E7F''‑-]+)/);
   const sentStarts = computeSentenceBoundaries(text);
   let wordIdx = 0;
   let charPos = 0;
