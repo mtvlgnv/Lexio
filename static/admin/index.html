@@ -6,118 +6,101 @@
   <title>Lexio Admin</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #f5f5f0; color: #1a1a1a; font-size: 14px; min-height: 100vh; }
 
-    :root {
-      --bg:       #0f1117;
-      --surface:  #181c27;
-      --border:   #262b3a;
-      --text:     #e8eaf0;
-      --muted:    #7a8099;
-      --accent:   #c47028;
-      --accent-lt:#2a1a08;
-      --green:    #22c55e;
-      --red:      #ef4444;
-      --yellow:   #f59e0b;
-      --blue:     #3b82f6;
-      --radius:   10px;
-    }
+    /* Login */
+    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-box { background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 36px; width: 340px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .login-box h1 { font-size: 1.2rem; }
+    .login-box p  { font-size: 0.82rem; color: #666; }
+    .login-box input { padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; outline: none; width: 100%; }
+    .login-box input:focus { border-color: #c47028; }
+    .login-box button { padding: 10px; background: #c47028; color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+    .login-box button:hover { background: #a85f20; }
+    #login-err { font-size: 0.8rem; color: #c00; display: none; }
 
-    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; min-height: 100vh; }
-
-    /* ── Login ─── */
-    #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
-    .login-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 40px 36px; width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 18px; }
-    .login-box h1 { font-size: 1.25rem; font-weight: 700; }
-    .login-box p  { font-size: 0.82rem; color: var(--muted); }
-    .login-box input { padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); font-size: 0.9rem; outline: none; transition: border-color 0.15s; width: 100%; }
-    .login-box input:focus { border-color: var(--accent); }
-    .login-box button { padding: 10px; background: var(--accent); color: #fff; border: none; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
-    .login-box button:hover { opacity: 0.88; }
-    #login-err { font-size: 0.8rem; color: var(--red); display: none; }
-
-    /* ── Dashboard ─── */
+    /* Dashboard */
     #dashboard { display: none; }
+    #err-banner { background: #fff0f0; border: 1px solid #fcc; color: #c00; padding: 10px 20px; font-size: 0.82rem; display: none; }
 
-    .topbar { display: flex; align-items: center; gap: 12px; padding: 16px 28px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 10; }
-    .topbar-logo { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 1rem; }
-    .topbar-badge { font-size: 0.68rem; font-weight: 600; padding: 2px 8px; background: var(--accent-lt); color: var(--accent); border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
-    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
-    #refresh-btn { padding: 6px 14px; font-size: 0.8rem; font-weight: 500; background: transparent; border: 1px solid var(--border); border-radius: 20px; color: var(--muted); cursor: pointer; transition: border-color 0.15s, color 0.15s; }
-    #refresh-btn:hover { border-color: var(--accent); color: var(--text); }
-    #last-updated { font-size: 0.75rem; color: var(--muted); }
+    .topbar { display: flex; align-items: center; gap: 10px; padding: 14px 24px; background: #fff; border-bottom: 1px solid #e5e5e5; }
+    .topbar-logo { font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+    .topbar-badge { font-size: 0.65rem; font-weight: 700; padding: 2px 7px; background: #fef3e2; color: #c47028; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+    #last-updated { font-size: 0.75rem; color: #999; }
+    #refresh-btn { padding: 5px 14px; font-size: 0.8rem; background: #fff; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; color: #555; }
+    #refresh-btn:hover { border-color: #c47028; color: #c47028; }
 
-    .main { padding: 28px; max-width: 1300px; margin: 0 auto; }
-    .section-title { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; margin-top: 32px; }
+    .main { padding: 24px; max-width: 1280px; margin: 0 auto; }
+    .section-title { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin: 28px 0 12px; }
     .section-title:first-child { margin-top: 0; }
 
-    /* ── Health ─── */
-    .health-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
-    .health-chip { display: flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; border: 1px solid var(--border); background: var(--surface); }
+    /* Health chips */
+    .health-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: #fff; border: 1px solid #e5e5e5; border-radius: 20px; font-size: 0.78rem; font-weight: 500; }
     .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .dot-green  { background: var(--green);  box-shadow: 0 0 6px var(--green); }
-    .dot-red    { background: var(--red);    box-shadow: 0 0 6px var(--red); }
-    .dot-yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+    .dot-green  { background: #22c55e; }
+    .dot-red    { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
 
-    /* ── Cards ─── */
-    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 20px 16px; }
-    .card-label { font-size: 0.72rem; color: var(--muted); font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.06em; }
-    .card-value { font-size: 1.85rem; font-weight: 700; line-height: 1; }
-    .card-sub   { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
+    /* Cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; }
+    .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 18px; }
+    .card-label { font-size: 0.7rem; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+    .card-value { font-size: 1.8rem; font-weight: 700; color: #111; line-height: 1; }
+    .card-sub   { font-size: 0.73rem; color: #999; margin-top: 5px; }
 
-    /* ── Charts ─── */
-    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media (max-width: 800px) { .charts { grid-template-columns: 1fr; } }
-    .chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .chart-card h3 { font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.06em; }
-    .svg-chart { width: 100%; height: 180px; display: block; overflow: visible; }
+    /* Charts */
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 700px) { .charts { grid-template-columns: 1fr; } }
+    .chart-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 18px; }
+    .chart-card h3 { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #999; margin-bottom: 14px; }
+    svg.chart { width: 100%; height: 160px; display: block; overflow: visible; }
 
-    /* ── Bottom grid ─── */
-    .bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-    @media (max-width: 900px) { .bottom-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 600px) { .bottom-grid { grid-template-columns: 1fr; } }
-    .list-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .list-card h3 { font-size: 0.8rem; font-weight: 600; color: var(--muted); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.06em; }
+    /* Bottom grid */
+    .bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    @media (max-width: 800px) { .bottom-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 540px) { .bottom-grid { grid-template-columns: 1fr; } }
+    .list-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 18px; }
+    .list-card h3 { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #999; margin-bottom: 12px; }
 
-    /* ── Word list ─── */
-    .word-list { display: flex; flex-direction: column; gap: 9px; }
-    .word-row { display: flex; align-items: center; gap: 8px; }
-    .word-rank { font-size: 0.66rem; color: var(--muted); width: 14px; text-align: right; flex-shrink: 0; }
-    .word-name { flex: 1; font-size: 0.86rem; font-family: Georgia, serif; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .word-bar-bg { height: 4px; background: var(--border); border-radius: 2px; width: 56px; flex-shrink: 0; }
-    .word-bar-fg { height: 4px; border-radius: 2px; background: var(--accent); }
-    .word-count  { font-size: 0.7rem; color: var(--muted); flex-shrink: 0; min-width: 20px; text-align: right; }
+    /* Word list */
+    .word-list { display: flex; flex-direction: column; gap: 8px; }
+    .word-row { display: flex; align-items: center; gap: 7px; }
+    .word-rank { font-size: 0.65rem; color: #bbb; width: 14px; text-align: right; flex-shrink: 0; }
+    .word-name { flex: 1; font-size: 0.84rem; font-family: Georgia, serif; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .word-bg   { width: 52px; height: 4px; background: #eee; border-radius: 2px; flex-shrink: 0; }
+    .word-fg   { height: 4px; border-radius: 2px; background: #c47028; }
+    .word-n    { font-size: 0.7rem; color: #999; min-width: 18px; text-align: right; flex-shrink: 0; }
 
-    /* ── Auth breakdown ─── */
-    .auth-bars { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+    /* Auth bars */
+    .auth-bars { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
     .auth-row  { display: flex; flex-direction: column; gap: 5px; }
-    .auth-row-top { display: flex; justify-content: space-between; font-size: 0.78rem; }
-    .auth-label { color: var(--muted); }
-    .auth-val   { font-weight: 600; }
-    .auth-track { height: 8px; background: var(--border); border-radius: 4px; }
-    .auth-fill  { height: 8px; border-radius: 4px; transition: width 0.5s ease; }
+    .auth-top  { display: flex; justify-content: space-between; font-size: 0.78rem; color: #555; }
+    .auth-val  { font-weight: 600; color: #111; }
+    .auth-track{ height: 7px; background: #eee; border-radius: 4px; }
+    .auth-fill { height: 7px; border-radius: 4px; }
 
-    /* ── Table ─── */
-    .table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    /* Table */
+    .table-wrap { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; overflow: hidden; overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
-    th { text-align: left; padding: 10px 16px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); border-bottom: 1px solid var(--border); }
-    td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+    th { text-align: left; padding: 10px 16px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #999; border-bottom: 1px solid #eee; }
+    td { padding: 10px 16px; font-size: 0.82rem; border-bottom: 1px solid #f0f0f0; color: #333; }
     tr:last-child td { border-bottom: none; }
-    tbody tr:hover { background: rgba(255,255,255,0.02); }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.66rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
-    .badge-oauth    { background: #1e3a5f; color: #60a5fa; }
-    .badge-password { background: #1e3a2a; color: #4ade80; }
-    .tc-muted { color: var(--muted); }
+    tbody tr:hover { background: #fafaf8; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .badge-oauth    { background: #dbeafe; color: #1d4ed8; }
+    .badge-password { background: #dcfce7; color: #15803d; }
+    .muted { color: #999; }
   </style>
 </head>
 <body>
 
-<!-- ── Login ── -->
 <div id="login-screen">
   <div class="login-box">
     <div>
       <h1>Lexio Admin</h1>
-      <p style="margin-top:6px">Enter your admin key to continue.</p>
+      <p style="margin-top:4px">Enter your admin key to continue.</p>
     </div>
     <input id="key-input" type="password" placeholder="Admin key" autocomplete="off">
     <div id="login-err">Wrong key — try again.</div>
@@ -125,8 +108,8 @@
   </div>
 </div>
 
-<!-- ── Dashboard ── -->
 <div id="dashboard">
+  <div id="err-banner"></div>
   <div class="topbar">
     <div class="topbar-logo">
       <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
@@ -137,17 +120,14 @@
     </div>
     <span class="topbar-badge">Admin</span>
     <div class="topbar-right">
-      <span id="last-updated">—</span>
+      <span id="last-updated">Loading…</span>
       <button id="refresh-btn" onclick="loadAll()">↻ Refresh</button>
     </div>
   </div>
 
   <div class="main">
-
     <div class="section-title">System health</div>
-    <div class="health-row" id="health-row">
-      <div class="health-chip"><div class="dot dot-yellow"></div> Loading…</div>
-    </div>
+    <div class="health-row" id="health-row"><div class="chip"><div class="dot dot-yellow"></div>Loading…</div></div>
 
     <div class="section-title">Overview</div>
     <div class="cards" id="cards">
@@ -161,40 +141,24 @@
 
     <div class="section-title">Trends — last 30 days</div>
     <div class="charts">
-      <div class="chart-card">
-        <h3>Searches per day</h3>
-        <svg id="chart-searches" class="svg-chart" viewBox="0 0 500 160" preserveAspectRatio="none"></svg>
-      </div>
-      <div class="chart-card">
-        <h3>New users per day</h3>
-        <svg id="chart-users" class="svg-chart" viewBox="0 0 500 160" preserveAspectRatio="none"></svg>
-      </div>
+      <div class="chart-card"><h3>Searches per day</h3><svg id="chart-searches" class="chart" viewBox="0 0 500 140"></svg></div>
+      <div class="chart-card"><h3>New users per day</h3><svg id="chart-users" class="chart" viewBox="0 0 500 140"></svg></div>
     </div>
 
     <div class="section-title">Top words &amp; auth</div>
     <div class="bottom-grid">
-      <div class="list-card">
-        <h3>Top words — this month</h3>
-        <div class="word-list" id="top-month"><div class="tc-muted" style="font-size:0.8rem">Loading…</div></div>
-      </div>
-      <div class="list-card">
-        <h3>Top words — all time</h3>
-        <div class="word-list" id="top-alltime"><div class="tc-muted" style="font-size:0.8rem">Loading…</div></div>
-      </div>
-      <div class="list-card">
-        <h3>Auth breakdown</h3>
-        <div class="auth-bars" id="auth-bars"><div class="tc-muted" style="font-size:0.8rem">Loading…</div></div>
-      </div>
+      <div class="list-card"><h3>Top words — this month</h3><div class="word-list" id="top-month"><span class="muted">Loading…</span></div></div>
+      <div class="list-card"><h3>Top words — all time</h3><div class="word-list" id="top-alltime"><span class="muted">Loading…</span></div></div>
+      <div class="list-card"><h3>Auth breakdown</h3><div class="auth-bars" id="auth-bars"><span class="muted">Loading…</span></div></div>
     </div>
 
     <div class="section-title">Recent sign-ups</div>
     <div class="table-wrap">
       <table>
         <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Auth</th><th>Joined</th></tr></thead>
-        <tbody id="users-tbody"><tr><td colspan="5" class="tc-muted">Loading…</td></tr></tbody>
+        <tbody id="users-tbody"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody>
       </table>
     </div>
-
   </div>
 </div>
 
@@ -202,189 +166,186 @@
 'use strict';
 let _key = '';
 
-// ── Login ─────────────────────────────────────────────────────────────────────
+function showErr(msg) {
+  const b = document.getElementById('err-banner');
+  b.textContent = 'Error: ' + msg;
+  b.style.display = '';
+}
+
 document.getElementById('key-input').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
 
 async function tryLogin() {
   const k = document.getElementById('key-input').value.trim();
   if (!k) return;
-  const res = await fetch('/api/admin/health', { headers: { 'X-Admin-Key': k } }).catch(() => null);
-  if (!res || res.status === 403) { document.getElementById('login-err').style.display = ''; return; }
+  let res;
+  try { res = await fetch('/api/admin/health', { headers: { 'X-Admin-Key': k } }); }
+  catch (e) { document.getElementById('login-err').textContent = 'Network error: ' + e.message; document.getElementById('login-err').style.display = ''; return; }
+  if (res.status === 403) { document.getElementById('login-err').textContent = 'Wrong key — try again.'; document.getElementById('login-err').style.display = ''; return; }
+  if (!res.ok) { document.getElementById('login-err').textContent = 'Server error ' + res.status; document.getElementById('login-err').style.display = ''; return; }
   _key = k;
   try { sessionStorage.setItem('lexio_admin_key', k); } catch {}
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = '';
   loadAll();
-  setInterval(loadAll, 60_000);
+  setInterval(loadAll, 60000);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   try { const s = sessionStorage.getItem('lexio_admin_key'); if (s) { document.getElementById('key-input').value = s; tryLogin(); } } catch {}
 });
 
-// ── Load ──────────────────────────────────────────────────────────────────────
 async function loadAll() {
-  const [health, stats] = await Promise.all([
-    fetch('/api/admin/health', { headers: { 'X-Admin-Key': _key } }).then(r => r.json()).catch(() => null),
-    fetch('/api/admin/stats',  { headers: { 'X-Admin-Key': _key } }).then(r => r.json()).catch(() => null),
-  ]);
-  if (health) renderHealth(health);
-  if (stats)  renderStats(stats);
-  document.getElementById('last-updated').textContent = 'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  let health = null, stats = null;
+  try {
+    const r = await fetch('/api/admin/health', { headers: { 'X-Admin-Key': _key } });
+    health = await r.json();
+  } catch(e) { showErr('health fetch: ' + e.message); }
+
+  try {
+    const r = await fetch('/api/admin/stats', { headers: { 'X-Admin-Key': _key } });
+    stats = await r.json();
+  } catch(e) { showErr('stats fetch: ' + e.message); }
+
+  if (health) { try { renderHealth(health); } catch(e) { showErr('renderHealth: ' + e.message); } }
+  if (stats)  { try { renderStats(stats);  } catch(e) { showErr('renderStats: ' + e.message); } }
+
+  document.getElementById('last-updated').textContent =
+    'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-// ── Health ────────────────────────────────────────────────────────────────────
 function renderHealth(h) {
-  const chips = [
+  const items = [
     { label: 'API',           ok: h.status === 'ok' },
     { label: 'Database',      ok: h.db },
     { label: 'Anthropic key', ok: h.anthropic_key_set },
     { label: 'Google OAuth',  ok: h.google_oauth_set, warn: !h.google_oauth_set },
-    { label: `Disk ${h.disk.used_gb}/${h.disk.total_gb} GB (${h.disk.pct_used}%)`, ok: h.disk.pct_used < 85, warn: h.disk.pct_used > 70 },
-    { label: `Uptime ${fmtUptime(h.uptime_seconds)}`, ok: true },
+    { label: 'Disk ' + h.disk.used_gb + '/' + h.disk.total_gb + ' GB (' + h.disk.pct_used + '%)', ok: h.disk.pct_used < 85, warn: h.disk.pct_used > 70 },
+    { label: 'Uptime ' + fmtUptime(h.uptime_seconds), ok: true },
   ];
-  document.getElementById('health-row').innerHTML = chips.map(c =>
-    `<div class="health-chip"><div class="dot ${c.ok ? (c.warn ? 'dot-yellow' : 'dot-green') : 'dot-red'}"></div>${c.label}</div>`
+  document.getElementById('health-row').innerHTML = items.map(c =>
+    '<div class="chip"><div class="dot dot-' + (c.ok ? (c.warn ? 'yellow' : 'green') : 'red') + '"></div>' + esc(c.label) + '</div>'
   ).join('');
 }
 
 function fmtUptime(s) {
-  const d = Math.floor(s/86400), h = Math.floor((s%86400)/3600), m = Math.floor((s%3600)/60);
-  return d > 0 ? `${d}d ${h}h` : h > 0 ? `${h}h ${m}m` : `${m}m`;
+  const d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+  return d > 0 ? d + 'd ' + h + 'h' : h > 0 ? h + 'h ' + m + 'm' : m + 'm';
 }
 
-// ── Stat cards ────────────────────────────────────────────────────────────────
 function renderStats(s) {
   const u = s.users, sr = s.searches, wb = s.wordbank;
-  document.getElementById('cards').innerHTML = [
-    card('Total users',       fmt(u.total),   `+${u.week} this week · +${u.month} this month`),
-    card('Total searches',    fmt(sr.total),  `+${sr.week} this week · +${sr.month} this month`),
-    card('Word bank entries', fmt(wb.total),  `+${wb.today} today`),
-    card('New users today',   fmt(u.today),   `${u.week} this week`),
-    card('Searches today',    fmt(sr.today),  `${sr.week} this week`),
-    card('WB entries today',  fmt(wb.today),  ''),
-  ].join('');
+  document.getElementById('cards').innerHTML =
+    card('Total users',       fmt(u.total),   '+' + u.week + ' this week · +' + u.month + ' this month') +
+    card('Total searches',    fmt(sr.total),  '+' + sr.week + ' this week · +' + sr.month + ' this month') +
+    card('Word bank entries', fmt(wb.total),  '+' + wb.today + ' today') +
+    card('New users today',   fmt(u.today),   u.week + ' this week') +
+    card('Searches today',    fmt(sr.today),  sr.week + ' this week') +
+    card('WB entries today',  fmt(wb.today),  '');
 
-  drawLineChart('chart-searches', s.daily_searches, '#c47028');
-  drawLineChart('chart-users',    s.daily_users,    '#3b82f6');
-  renderWordList('top-month',   s.top_words_month);
-  renderWordList('top-alltime', s.top_words_alltime);
-  renderAuthBars(s.users);
-  renderUsersTable(s.recent_users);
+  try { drawChart('chart-searches', s.daily_searches, '#c47028'); } catch(e) { showErr('chart-searches: ' + e.message); }
+  try { drawChart('chart-users',    s.daily_users,    '#3b82f6'); } catch(e) { showErr('chart-users: ' + e.message); }
+  try { renderWordList('top-month',   s.top_words_month);   } catch(e) { showErr('top-month: ' + e.message); }
+  try { renderWordList('top-alltime', s.top_words_alltime); } catch(e) { showErr('top-alltime: ' + e.message); }
+  try { renderAuthBars(s.users); } catch(e) { showErr('auth: ' + e.message); }
+  try { renderTable(s.recent_users); } catch(e) { showErr('table: ' + e.message); }
 }
 
 function card(label, value, sub) {
-  return `<div class="card"><div class="card-label">${label}</div><div class="card-value">${value}</div>${sub ? `<div class="card-sub">${sub}</div>` : ''}</div>`;
+  return '<div class="card"><div class="card-label">' + label + '</div><div class="card-value">' + value + '</div>' + (sub ? '<div class="card-sub">' + sub + '</div>' : '') + '</div>';
 }
 function fmt(n) { return Number(n).toLocaleString(); }
 
-// ── SVG line chart ────────────────────────────────────────────────────────────
-function drawLineChart(id, data, color) {
-  const W = 500, H = 160, pad = { t: 10, b: 28, l: 32, r: 8 };
-  const cW = W - pad.l - pad.r, cH = H - pad.t - pad.b;
-  const vals = data.map(d => d.count);
-  const maxV = Math.max(...vals, 1);
-  const n    = vals.length;
+function drawChart(id, data, color) {
+  const W = 500, H = 140, pl = 28, pr = 8, pt = 8, pb = 24;
+  const cW = W - pl - pr, cH = H - pt - pb;
+  const vals = data.map(function(d) { return d.count; });
+  const maxV = Math.max.apply(null, vals.concat([1]));
+  const n = vals.length;
+  if (n < 2) return;
 
-  const px = i => pad.l + (i / (n - 1)) * cW;
-  const py = v => pad.t + cH - (v / maxV) * cH;
+  function px(i) { return pl + (i / (n - 1)) * cW; }
+  function py(v) { return pt + cH - (v / maxV) * cH; }
 
-  // Area fill path
-  const pts  = vals.map((v, i) => `${px(i)},${py(v)}`).join(' ');
-  const area = `M${px(0)},${py(0)} ` + vals.map((v, i) => `L${px(i)},${py(v)}`).join(' ')
-             + ` L${px(n-1)},${pad.t+cH} L${px(0)},${pad.t+cH} Z`;
+  var polyPts = vals.map(function(v, i) { return px(i) + ',' + py(v); }).join(' ');
+  var areaD = 'M' + px(0) + ',' + py(vals[0]);
+  for (var i = 1; i < n; i++) areaD += ' L' + px(i) + ',' + py(vals[i]);
+  areaD += ' L' + px(n-1) + ',' + (pt + cH) + ' L' + px(0) + ',' + (pt + cH) + ' Z';
 
-  // X-axis tick labels (every 5 days)
-  const tickIdxs = [0, 5, 10, 15, 20, 25, 29];
-  const ticks = tickIdxs.map(i => {
-    const dt = new Date(data[i].date + 'T00:00:00');
-    const lbl = dt.toLocaleDateString([], { month: 'short', day: 'numeric' });
-    return `<text x="${px(i)}" y="${H - 6}" fill="#7a8099" font-size="10" text-anchor="middle" font-family="system-ui,sans-serif">${lbl}</text>`;
+  var gridY = [0.5, 1].map(function(f) {
+    var y = py(maxV * f);
+    return '<line x1="' + pl + '" y1="' + y + '" x2="' + (W - pr) + '" y2="' + y + '" stroke="#eee" stroke-width="1"/>' +
+           '<text x="' + (pl - 4) + '" y="' + (y + 4) + '" fill="#bbb" font-size="9" text-anchor="end">' + Math.round(maxV * f) + '</text>';
   }).join('');
 
-  // Y-axis gridlines (3 lines)
-  const gridLines = [0.25, 0.5, 0.75, 1].map(f => {
-    const y = py(maxV * f);
-    const lbl = Math.round(maxV * f);
-    return `<line x1="${pad.l}" y1="${y}" x2="${pad.l+cW}" y2="${y}" stroke="#262b3a" stroke-width="1"/>
-            <text x="${pad.l - 4}" y="${y + 4}" fill="#7a8099" font-size="9" text-anchor="end" font-family="system-ui,sans-serif">${lbl}</text>`;
+  var tickIdxs = [0, 6, 12, 18, 24, 29];
+  var ticks = tickIdxs.filter(function(i) { return i < n; }).map(function(i) {
+    var d = new Date(data[i].date + 'T00:00:00');
+    var lbl = d.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    return '<text x="' + px(i) + '" y="' + (H - 4) + '" fill="#bbb" font-size="9" text-anchor="middle">' + lbl + '</text>';
   }).join('');
 
-  document.getElementById(id).innerHTML = `
-    <defs>
-      <linearGradient id="g${id}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%"   stop-color="${color}" stop-opacity="0.25"/>
-        <stop offset="100%" stop-color="${color}" stop-opacity="0.02"/>
-      </linearGradient>
-    </defs>
-    ${gridLines}
-    <path d="${area}" fill="url(#g${id})"/>
-    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-    ${ticks}
-  `;
+  var gid = 'g' + id.replace(/-/g, '');
+  var svg = '<defs><linearGradient id="' + gid + '" x1="0" y1="0" x2="0" y2="1">' +
+            '<stop offset="0%" stop-color="' + color + '" stop-opacity="0.2"/>' +
+            '<stop offset="100%" stop-color="' + color + '" stop-opacity="0.01"/>' +
+            '</linearGradient></defs>' +
+            gridY +
+            '<path d="' + areaD + '" fill="url(#' + gid + ')"/>' +
+            '<polyline points="' + polyPts + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>' +
+            ticks;
+
+  var el = document.getElementById(id);
+  if (el) el.innerHTML = svg;
 }
 
-// ── Auth breakdown ────────────────────────────────────────────────────────────
+function renderWordList(id, words) {
+  var el = document.getElementById(id);
+  if (!words || !words.length) { el.innerHTML = '<span class="muted">No data yet.</span>'; return; }
+  var max = words[0].count;
+  el.innerHTML = words.slice(0, 10).map(function(w, i) {
+    var pct = Math.round(w.count / max * 100);
+    return '<div class="word-row">' +
+      '<span class="word-rank">' + (i + 1) + '</span>' +
+      '<span class="word-name">' + esc(w.word) + '</span>' +
+      '<div class="word-bg"><div class="word-fg" style="width:' + pct + '%"></div></div>' +
+      '<span class="word-n">' + w.count + '</span></div>';
+  }).join('');
+}
+
 function renderAuthBars(u) {
-  const total = u.total || 1;
-  document.getElementById('auth-bars').innerHTML = [
+  var total = u.total || 1;
+  var items = [
     { label: 'Google / Apple', val: u.oauth,    color: '#3b82f6' },
     { label: 'Email / password', val: u.password, color: '#22c55e' },
-  ].map(r => `
-    <div class="auth-row">
-      <div class="auth-row-top">
-        <span class="auth-label">${r.label}</span>
-        <span class="auth-val">${r.val}</span>
-      </div>
-      <div class="auth-track">
-        <div class="auth-fill" style="width:${Math.round(r.val/total*100)}%;background:${r.color}"></div>
-      </div>
-    </div>
-  `).join('');
+  ];
+  document.getElementById('auth-bars').innerHTML = items.map(function(r) {
+    var pct = Math.round(r.val / total * 100);
+    return '<div class="auth-row">' +
+      '<div class="auth-top"><span>' + r.label + '</span><span class="auth-val">' + r.val + '</span></div>' +
+      '<div class="auth-track"><div class="auth-fill" style="width:' + pct + '%;background:' + r.color + '"></div></div>' +
+      '</div>';
+  }).join('');
 }
 
-// ── Word list ─────────────────────────────────────────────────────────────────
-function renderWordList(id, words) {
-  if (!words || !words.length) {
-    document.getElementById(id).innerHTML = '<div class="tc-muted" style="font-size:0.8rem">No data yet.</div>';
-    return;
-  }
-  const max = words[0].count;
-  document.getElementById(id).innerHTML = words.slice(0, 10).map((w, i) => `
-    <div class="word-row">
-      <span class="word-rank">${i+1}</span>
-      <span class="word-name">${esc(w.word)}</span>
-      <div class="word-bar-bg"><div class="word-bar-fg" style="width:${Math.round(w.count/max*100)}%"></div></div>
-      <span class="word-count">${w.count}</span>
-    </div>
-  `).join('');
-}
-
-// ── Users table ───────────────────────────────────────────────────────────────
-function renderUsersTable(users) {
-  if (!users || !users.length) {
-    document.getElementById('users-tbody').innerHTML = '<tr><td colspan="5" class="tc-muted">No users yet.</td></tr>';
-    return;
-  }
-  document.getElementById('users-tbody').innerHTML = users.map(u => `
-    <tr>
-      <td class="tc-muted">${u.id}</td>
-      <td>${esc(u.name || '—')}</td>
-      <td>${esc(u.email)}</td>
-      <td><span class="badge ${u.auth === 'oauth' ? 'badge-oauth' : 'badge-password'}">${u.auth}</span></td>
-      <td class="tc-muted">${fmtDate(u.created_at)}</td>
-    </tr>
-  `).join('');
+function renderTable(users) {
+  if (!users || !users.length) { document.getElementById('users-tbody').innerHTML = '<tr><td colspan="5" class="muted">No users yet.</td></tr>'; return; }
+  document.getElementById('users-tbody').innerHTML = users.map(function(u) {
+    return '<tr>' +
+      '<td class="muted">' + u.id + '</td>' +
+      '<td>' + esc(u.name || '—') + '</td>' +
+      '<td>' + esc(u.email) + '</td>' +
+      '<td><span class="badge badge-' + u.auth + '">' + u.auth + '</span></td>' +
+      '<td class="muted">' + fmtDate(u.created_at) + '</td>' +
+      '</tr>';
+  }).join('');
 }
 
 function fmtDate(iso) {
   if (!iso) return '—';
-  const d = new Date(iso);
-  return d.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })
-       + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  var d = new Date(iso);
+  return d.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
-
-function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
 </body>
 </html>
