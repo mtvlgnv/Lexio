@@ -450,6 +450,59 @@
       .model-pill { padding:5px 9px; font-size:0.68rem; }
     }
 
+    /* ── Model-switch confirmation bar ─────────────────────── */
+    .model-switch-confirm {
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; padding:9px 18px;
+      background:var(--surface); border-top:1px solid var(--border-light);
+      font-size:.82rem; color:var(--text); flex-shrink:0;
+      animation: fadeSlideDown .15s ease;
+    }
+    .model-switch-confirm.hidden { display:none; }
+    @keyframes fadeSlideDown {
+      from { opacity:0; transform:translateY(-6px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .model-switch-msg-word { font-weight:600; }
+    .model-switch-actions { display:flex; gap:6px; flex-shrink:0; }
+    .model-switch-cancel {
+      padding:5px 12px; border:1px solid var(--border); border-radius:20px;
+      background:transparent; font-size:.8rem; color:var(--muted); cursor:pointer;
+      font-family:inherit;
+    }
+    .model-switch-cancel:hover { background:var(--token-hover); }
+    .model-switch-go {
+      padding:5px 14px; border:none; border-radius:20px;
+      background:var(--accent); color:#fff; font-size:.8rem;
+      font-weight:600; cursor:pointer; font-family:inherit;
+      transition:opacity .15s;
+    }
+    .model-switch-go:hover { opacity:.85; }
+
+    /* ── Model result tabs (inside right panel) ─────────────── */
+    .model-result-tabs {
+      display:flex; gap:4px; padding:10px 20px 0;
+      flex-wrap:wrap;
+    }
+    .model-result-tabs.hidden { display:none; }
+    .model-result-tab {
+      padding:4px 13px; border-radius:20px; font-size:.73rem; font-weight:500;
+      cursor:pointer; border:1.5px solid var(--border);
+      background:transparent; color:var(--muted); font-family:inherit;
+      transition:all .15s; white-space:nowrap;
+    }
+    .model-result-tab.active {
+      border-color:var(--accent); color:var(--accent);
+      background:color-mix(in srgb, var(--accent) 8%, transparent);
+      font-weight:600;
+    }
+    .model-result-tab:hover:not(.active) { background:var(--token-hover); color:var(--text); }
+    .model-result-tab .tab-dot {
+      display:inline-block; width:5px; height:5px; border-radius:50%;
+      background:var(--accent); margin-right:4px; vertical-align:middle;
+      margin-bottom:1px;
+    }
+
     /* ── Tweaks panel ───────────────────────────────────────── */
     #tweaks-panel { display:none; border-top:1px solid var(--border-light); padding:10px 24px 12px; background:var(--bg); transition:background 0.3s; flex-shrink:0; }
     #tweaks-panel.visible { display:block; }
@@ -1294,15 +1347,24 @@
     <div class="model-selector-row" id="model-selector-row">
       <span class="model-selector-label">Model</span>
       <div class="model-pills" id="model-pills">
-        <button class="model-pill" data-model="haiku" onclick="setModel('haiku')">Haiku</button>
-        <button class="model-pill" data-model="gpt-4-mini" onclick="setModel('gpt-4-mini')">GPT-4o Mini</button>
-        <button class="model-pill" data-model="gemini" onclick="setModel('gemini')">Gemini</button>
-        <button class="model-pill active" data-model="sonnet" onclick="setModel('sonnet')">Sonnet 4.5</button>
+        <button class="model-pill" data-model="haiku" onclick="onModelPillClick('haiku')">Haiku</button>
+        <button class="model-pill" data-model="gpt-4-mini" onclick="onModelPillClick('gpt-4-mini')">GPT-4o Mini</button>
+        <button class="model-pill" data-model="gemini" onclick="onModelPillClick('gemini')">Gemini</button>
+        <button class="model-pill active" data-model="sonnet" onclick="onModelPillClick('sonnet')">Sonnet 4.5</button>
       </div>
       <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
         <span id="usage-text">0 / 30</span>
         <span class="usage-bar"><span class="usage-fill" id="usage-fill" style="width:0%"></span></span>
       </span>
+    </div>
+
+    <!-- Model-switch confirmation bar -->
+    <div id="model-switch-confirm" class="model-switch-confirm hidden">
+      <span id="model-switch-msg"></span>
+      <div class="model-switch-actions">
+        <button class="model-switch-cancel" onclick="cancelModelSwitch()">Cancel</button>
+        <button class="model-switch-go" id="model-switch-go">Compare →</button>
+      </div>
     </div>
 
     <div class="panel-footer" style="border-top:none">
@@ -1367,6 +1429,9 @@
     </div>
 
     <div id="def-result" class="hidden">
+      <!-- Model comparison tabs — shown when ≥2 model results exist -->
+      <div id="model-result-tabs" class="model-result-tabs hidden"></div>
+
       <div class="def-word-row">
         <div class="def-word-col">
           <span id="def-word" class="def-word"></span>
@@ -1995,6 +2060,11 @@ function setTheme(t) {
 
 /* ── Model selection ───────────────────────────────────────── */
 let currentModel = 'sonnet';
+let _pendingSwitchModel = null;   // model the user wants to switch to
+
+const MODEL_LABELS = {
+  haiku: 'Haiku', 'gpt-4-mini': 'GPT-4o Mini', gemini: 'Gemini', sonnet: 'Sonnet 4.5'
+};
 
 function setModel(model) {
   currentModel = model;
@@ -2013,6 +2083,75 @@ function setModel(model) {
       body: JSON.stringify({ model })
     }).catch(() => {});
   }
+}
+
+/* Smart pill click: if a result is shown, offer comparison; otherwise just switch */
+function onModelPillClick(model) {
+  cancelModelSwitch();  // close any open confirmation first
+
+  // No result shown yet — just switch normally
+  if (!resultWord) { setModel(model); return; }
+  // Already viewing this model's result — no-op
+  if (model === currentResultModel) return;
+
+  // Already have this model's result cached — switch instantly
+  if (modelResults[model]) {
+    setModel(model);
+    currentResultModel = model;
+    showResult(resultWord, modelResults[model], false, model);
+    return;
+  }
+
+  // Need to fetch — show confirmation bar
+  _pendingSwitchModel = model;
+  const label  = MODEL_LABELS[model] || model;
+  const word   = resultWord || 'this word';
+  const msg    = document.getElementById('model-switch-msg');
+  msg.innerHTML = `Compare <strong class="model-switch-msg-word">${word}</strong> with <strong>${label}</strong>?`;
+  document.getElementById('model-switch-go').onclick = confirmModelSwitch;
+  document.getElementById('model-switch-confirm').classList.remove('hidden');
+}
+
+function cancelModelSwitch() {
+  _pendingSwitchModel = null;
+  document.getElementById('model-switch-confirm').classList.add('hidden');
+}
+
+async function confirmModelSwitch() {
+  const model = _pendingSwitchModel;
+  if (!model || !resultWord || !resultContext) { cancelModelSwitch(); return; }
+  cancelModelSwitch();
+  setModel(model);
+  // Re-highlight the correct word token (fetchDefinition uses activeToken)
+  document.querySelectorAll('.word-token').forEach(t => {
+    if (t.textContent.toLowerCase() === resultWord) {
+      activeToken = t; t.classList.add('pulsing');
+    }
+  });
+  await fetchDefinition(resultWord, resultContext, model);
+}
+
+/* Render tabs above the definition when ≥2 models have results */
+function renderModelTabs() {
+  const tabs = document.getElementById('model-result-tabs');
+  if (!tabs) return;
+  const keys = Object.keys(modelResults);
+  if (keys.length < 2) { tabs.innerHTML = ''; tabs.classList.add('hidden'); return; }
+
+  tabs.innerHTML = keys.map(m => {
+    const label = MODEL_LABELS[m] || m;
+    const active = m === currentResultModel ? 'active' : '';
+    const dot = active ? '<span class="tab-dot"></span>' : '';
+    return `<button class="model-result-tab ${active}" onclick="switchResultModel('${m}')">${dot}${label}</button>`;
+  }).join('');
+  tabs.classList.remove('hidden');
+}
+
+function switchResultModel(model) {
+  if (!modelResults[model]) return;
+  currentResultModel = model;
+  setModel(model);
+  showResult(resultWord, modelResults[model], false, model);
 }
 
 async function initializeModelSelector() {
@@ -2327,6 +2466,7 @@ function resetToEdit() {
   document.getElementById('reading-stats').classList.add('hidden');
   inputText.value = currentContext;
   activeToken = null; currentResult = null;
+  clearModelResults(); cancelModelSwitch();
   showPlaceholder(); hideError(); updateCharCount(); startPlaceholderRotation();
 }
 
@@ -2467,20 +2607,37 @@ function posType(pos) {
   return 'other';
 }
 
-/* ── Cache key ──────────────────────────────────────────────── */
-function cacheKey(word, context) { return word.toLowerCase()+'::'+context.slice(0,120)+'::'+currentLang; }
+/* ── Cache key (includes model so each model is cached separately) ── */
+function cacheKey(word, context, model) { return word.toLowerCase()+'::'+context.slice(0,120)+'::'+currentLang+'::'+(model||currentModel); }
+
+/* ── Per-word model results (cleared on new word click) ─────── */
+let resultWord    = null;   // word currently shown in right panel
+let resultContext = null;   // context it was looked up in
+let modelResults  = {};     // { modelKey: data } for resultWord
+let currentResultModel = null;  // which model's result is displayed
+
+function clearModelResults() {
+  resultWord = null; resultContext = null;
+  modelResults = {}; currentResultModel = null;
+  const tabs = document.getElementById('model-result-tabs');
+  if (tabs) { tabs.innerHTML = ''; tabs.classList.add('hidden'); }
+}
 
 /* ── Fetch definition ───────────────────────────────────────── */
-async function fetchDefinition(word, context) {
+async function fetchDefinition(word, context, modelOverride) {
   hideError();
-  const key = cacheKey(word, context);
+  cancelModelSwitch();
+  const model = modelOverride || currentModel;
+  const key = cacheKey(word, context, model);
   if (defCache.has(key)) {
     if (activeToken) activeToken.classList.remove('pulsing');
-    showResult(word, defCache.get(key)); return;
+    // Still store in modelResults so tabs render correctly
+    modelResults[model] = defCache.get(key);
+    showResult(word, defCache.get(key), false, model); return;
   }
   showLoading(word);
   try {
-    const resp = await fetch('/define', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({word,context,lang:currentLang,model:currentModel}) });
+    const resp = await fetch('/define', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({word,context,lang:currentLang,model}) });
     if (!resp.ok) {
       if (resp.status===429) throw new Error('⏱ Too many requests — wait a moment and try again.');
       if (resp.status === 402) {
@@ -2497,6 +2654,7 @@ async function fetchDefinition(word, context) {
     const data = await resp.json();
     if (data._usage) updateUsagePill(data._usage.used, data._usage.limit);
     defCache.set(key, data);
+    modelResults[model] = data;
     addToHistory(word, data);
     if (activeToken) activeToken.classList.remove('pulsing');
     // Mark all tokens of this word as looked-up
@@ -2504,7 +2662,7 @@ async function fetchDefinition(word, context) {
     document.querySelectorAll('.word-token').forEach(t => {
       if (t.textContent.toLowerCase() === word.toLowerCase()) t.classList.add('looked-up');
     });
-    showResult(word, data);
+    showResult(word, data, false, model);
   } catch(err) {
     clearHighlights(); activeToken = null;
     showPlaceholder(); showError(err.message);
@@ -2573,10 +2731,24 @@ function showLoading(word) {
 }
 
 /* ── Show result with sequential cascade animation ──────────── */
-function showResult(word, data, fromHistory=false) {
+function showResult(word, data, fromHistory=false, model) {
   document.getElementById('def-placeholder').classList.add('hidden');
   document.getElementById('def-loading').classList.add('hidden');
   currentResult = {word, data, context: currentContext};
+
+  // Track per-word model state (only for live clicks, not history)
+  if (!fromHistory) {
+    const usedModel = model || currentModel;
+    if (resultWord !== word.toLowerCase()) {
+      // New word — reset model results
+      modelResults = {};
+      resultWord    = word.toLowerCase();
+      resultContext = currentContext;
+    }
+    modelResults[usedModel]  = data;
+    currentResultModel       = usedModel;
+    renderModelTabs();
+  }
 
   // Populate
   document.getElementById('def-word').textContent = word;
