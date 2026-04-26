@@ -2076,7 +2076,7 @@ function setModel(model) {
   );
 
   // Update user preference if authenticated
-  if (isLoggedIn) {
+  if (authToken) {
     fetch('/api/user-model', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
@@ -2160,7 +2160,7 @@ async function initializeModelSelector() {
   currentModel = saved;
 
   // If authenticated, prefer server-side preference
-  if (isLoggedIn && authToken) {
+  if (authToken) {
     try {
       const res = await fetch('/api/user-model', {
         headers: { 'Authorization': `Bearer ${authToken}` }
