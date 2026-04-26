@@ -3195,7 +3195,7 @@ async function _oauthSignIn(endpoint, body) {
 }
 
 async function syncWordBank() {
-  if (!authToken || !wordBank.length) return;
+  if (!authToken) return;
   try {
     const res  = await fetch('/wordbank/sync', {
       method:  'POST',
@@ -3204,7 +3204,7 @@ async function syncWordBank() {
     });
     if (!res.ok) return;
     const data = await res.json();
-    // Merge: server is source of truth for saved words
+    // Merge: server is source of truth — always pull server words down even if local is empty
     if (data.entries && data.entries.length > 0) {
       const localKeys = new Set(wordBank.map(e => e.word.toLowerCase()));
       data.entries.forEach(e => {
