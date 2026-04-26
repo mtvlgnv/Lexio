@@ -41,8 +41,13 @@ class User(Base):
     name            = Column(String, nullable=True)
     pwd_hash        = Column(String, nullable=True)   # nullable for OAuth-only users
     google_id       = Column(String, nullable=True, index=True)
-    preferred_model = Column(String, default="sonnet", nullable=False)
-    created_at      = Column(DateTime, default=datetime.datetime.utcnow)
+    preferred_model  = Column(String, default="sonnet", nullable=False)
+    is_pro           = Column(Integer, default=0, nullable=False)   # 0=free, 1=pro
+    monthly_lookups  = Column(Integer, default=0, nullable=False)
+    lookup_month     = Column(String, nullable=True)   # "2025-04"
+    monthly_ocr      = Column(Integer, default=0, nullable=False)
+    ocr_month        = Column(String, nullable=True)
+    created_at       = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):
     __tablename__ = "wordbank"
@@ -67,6 +72,15 @@ class UserSearchLog(Base):
     word        = Column(String, nullable=False)
     searched_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
 
+class AnonUsage(Base):
+    """IP-based usage tracking for anonymous users."""
+    __tablename__ = "anon_usage"
+    id      = Column(Integer, primary_key=True)
+    ip      = Column(String, nullable=False, index=True)
+    month   = Column(String, nullable=False, index=True)   # "2025-04"
+    lookups = Column(Integer, default=0, nullable=False)
+    ocr     = Column(Integer, default=0, nullable=False)
+
 Base.metadata.create_all(engine)
 
 # ── SQLite migrations (add columns that may not exist yet) ────────────────────
@@ -82,8 +96,113 @@ def _run_migrations():
         if "preferred_model" not in cols:
             conn.execute(__import__('sqlalchemy').text("ALTER TABLE users ADD COLUMN preferred_model TEXT DEFAULT 'haiku'"))
             conn.commit()
+        # Add usage / pro columns if missing
+        cols = [row[1] for row in conn.execute(__import__('sqlalchemy').text("PRAGMA table_info(users)"))]
+        for col_name, ddl in [
+            ("is_pro",          "ALTER TABLE users ADD COLUMN is_pro INTEGER NOT NULL DEFAULT 0"),
+            ("monthly_lookups", "ALTER TABLE users ADD COLUMN monthly_lookups INTEGER NOT NULL DEFAULT 0"),
+            ("lookup_month",    "ALTER TABLE users ADD COLUMN lookup_month TEXT"),
+            ("monthly_ocr",     "ALTER TABLE users ADD COLUMN monthly_ocr INTEGER NOT NULL DEFAULT 0"),
+            ("ocr_month",       "ALTER TABLE users ADD COLUMN ocr_month TEXT"),
+        ]:
+            if col_name not in cols:
+                conn.execute(__import__('sqlalchemy').text(ddl))
+                conn.commit()
+        # Create anon_usage table
+        conn.execute(__import__('sqlalchemy').text("""
+            CREATE TABLE IF NOT EXISTS anon_usage (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                ip TEXT NOT NULL,
+                month TEXT NOT NULL,
+                lookups INTEGER NOT NULL DEFAULT 0,
+                ocr INTEGER NOT NULL DEFAULT 0
+            )
+        """))
+        conn.commit()
 
 _run_migrations()
+
+# ── Usage limits ─────────────────────────────────────────────────────────────
+FREE_LOOKUP_LIMIT = 30
+FREE_OCR_LIMIT    = 3
+
+def _get_client_ip(request: Request) -> str:
+    """Return the real client IP, respecting X-Real-IP from nginx."""
+    xff = request.headers.get("x-forwarded-for")
+    if xff:
+        return xff.split(",")[0].strip()
+    real = request.headers.get("x-real-ip")
+    if real:
+        return real.strip()
+    return request.client.host if request.client else "unknown"
+
+
+def _check_usage(
+    db: DBSession,
+    user: Optional["User"],
+    ip: str,
+    kind: str,   # "lookup" | "ocr"
+) -> dict:
+    """
+    Check and (if allowed) increment the usage counter.
+    Returns {"allowed": bool, "used": int, "limit": int}.
+    """
+    now_month = datetime.datetime.utcnow().strftime("%Y-%m")
+    limit = FREE_LOOKUP_LIMIT if kind == "lookup" else FREE_OCR_LIMIT
+
+    if user:
+        u = db.query(User).filter(User.id == user.id).first()
+        if u and u.is_pro:
+            return {"allowed": True, "used": 0, "limit": -1}   # unlimited
+
+        if u:
+            if kind == "lookup":
+                if u.lookup_month != now_month:
+                    u.monthly_lookups = 0
+                    u.lookup_month    = now_month
+                used = u.monthly_lookups
+                if used >= limit:
+                    db.commit()
+                    return {"allowed": False, "used": used, "limit": limit}
+                u.monthly_lookups += 1
+            else:
+                if u.ocr_month != now_month:
+                    u.monthly_ocr = 0
+                    u.ocr_month   = now_month
+                used = u.monthly_ocr
+                if used >= limit:
+                    db.commit()
+                    return {"allowed": False, "used": used, "limit": limit}
+                u.monthly_ocr += 1
+            db.commit()
+            return {"allowed": True, "used": used + 1, "limit": limit}
+
+    # Anonymous — track by IP
+    row = db.query(AnonUsage).filter(
+        AnonUsage.ip    == ip,
+        AnonUsage.month == now_month,
+    ).first()
+    if not row:
+        row = AnonUsage(ip=ip, month=now_month, lookups=0, ocr=0)
+        db.add(row)
+        db.flush()
+
+    if kind == "lookup":
+        used = row.lookups
+        if used >= limit:
+            db.commit()
+            return {"allowed": False, "used": used, "limit": limit}
+        row.lookups += 1
+    else:
+        used = row.ocr
+        if used >= limit:
+            db.commit()
+            return {"allowed": False, "used": used, "limit": limit}
+        row.ocr += 1
+
+    db.commit()
+    return {"allowed": True, "used": used + 1, "limit": limit}
+
 
 # ── In-memory cache for top-words (refreshed every hour) ─────────────────────
 _top_words_cache: dict = {"data": None, "fetched_at": None}
@@ -282,7 +401,17 @@ LANG_NAMES = {
 @app.post("/define")
 @limiter.limit("20/minute")
 async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
-                      user: Optional[User] = Depends(optional_user)):
+                      user: Optional[User] = Depends(optional_user),
+                      db: DBSession = Depends(get_db)):
+    ip    = _get_client_ip(request)
+    usage = _check_usage(db, user, ip, "lookup")
+    if not usage["allowed"]:
+        raise HTTPException(
+            status_code=402,
+            detail={"code": "limit_exceeded", "kind": "lookup",
+                    "used": usage["used"], "limit": usage["limit"]},
+        )
+
     lang_code    = (req.lang or 'auto').strip().lower()
     lang_name    = LANG_NAMES.get(lang_code)   # None if auto/unknown
     lang_note = (
@@ -372,7 +501,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         bg.add_task(_log_search, req.word)
         if user:
             bg.add_task(_log_user_search, user.id, req.word)
-        return result
+        return {**result, "_usage": {"used": usage["used"], "limit": usage["limit"]}}
 
     except json.JSONDecodeError as exc:
         raise HTTPException(status_code=502, detail=f"Failed to parse model response: {exc}")
@@ -1418,7 +1547,9 @@ async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends
 
 @app.post("/ocr")
 @limiter.limit("5/minute")
-async def ocr_image(request: Request, file: UploadFile = File(...)):
+async def ocr_image(request: Request, file: UploadFile = File(...),
+                    user: Optional[User] = Depends(optional_user),
+                    db: DBSession = Depends(get_db)):
     """Extract text from an uploaded image using Gemini or OpenAI vision."""
     # Validate MIME type
     if not file.content_type or not file.content_type.startswith("image/"):
@@ -1428,6 +1559,15 @@ async def ocr_image(request: Request, file: UploadFile = File(...)):
     image_bytes = await file.read()
     if len(image_bytes) > 10 * 1024 * 1024:
         raise HTTPException(status_code=422, detail="Image must be smaller than 10 MB.")
+
+    ip    = _get_client_ip(request)
+    usage = _check_usage(db, user, ip, "ocr")
+    if not usage["allowed"]:
+        raise HTTPException(
+            status_code=402,
+            detail={"code": "limit_exceeded", "kind": "ocr",
+                    "used": usage["used"], "limit": usage["limit"]},
+        )
 
     ocr_prompt = (
         "Extract all text visible in this image exactly as it appears. "
@@ -1477,6 +1617,35 @@ async def ocr_image(request: Request, file: UploadFile = File(...)):
         raise HTTPException(status_code=422, detail="No text found in the image.")
 
     return {"text": text}
+
+
+# ── /api/usage ────────────────────────────────────────────────────────────────
+
+@app.get("/api/usage")
+async def get_usage(request: Request, user: Optional[User] = Depends(optional_user),
+                    db: DBSession = Depends(get_db)):
+    """Return current-month usage for the caller (authenticated or anonymous)."""
+    now_month = datetime.datetime.utcnow().strftime("%Y-%m")
+    ip = _get_client_ip(request)
+
+    if user:
+        u = db.query(User).filter(User.id == user.id).first()
+        if u and u.is_pro:
+            return {"is_pro": True, "lookup": {"used": 0, "limit": -1}, "ocr": {"used": 0, "limit": -1}}
+        lookups = u.monthly_lookups if u and u.lookup_month == now_month else 0
+        ocr     = u.monthly_ocr     if u and u.ocr_month   == now_month else 0
+        return {
+            "is_pro": False,
+            "lookup": {"used": lookups, "limit": FREE_LOOKUP_LIMIT},
+            "ocr":    {"used": ocr,     "limit": FREE_OCR_LIMIT},
+        }
+
+    row = db.query(AnonUsage).filter(AnonUsage.ip == ip, AnonUsage.month == now_month).first()
+    return {
+        "is_pro": False,
+        "lookup": {"used": row.lookups if row else 0, "limit": FREE_LOOKUP_LIMIT},
+        "ocr":    {"used": row.ocr     if row else 0, "limit": FREE_OCR_LIMIT},
+    }
 
 
 # ── Static frontend ───────────────────────────────────────────────────────────

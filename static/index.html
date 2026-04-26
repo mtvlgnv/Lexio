@@ -1081,6 +1081,98 @@
     @media (max-width: 1000px) {
       .lp-features-grid { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* ── Pro upgrade modal ───────────────────────────── */
+    .pro-modal-backdrop {
+      position: fixed; inset: 0; z-index: 9000;
+      background: rgba(0,0,0,.55); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .pro-modal-backdrop.hidden { display: none; }
+    .pro-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 36px 32px 28px;
+      max-width: 420px; width: 100%;
+      position: relative;
+      box-shadow: 0 24px 80px rgba(0,0,0,.18);
+      text-align: center;
+    }
+    .pro-modal-close {
+      position: absolute; top: 14px; right: 16px;
+      background: none; border: none; cursor: pointer;
+      font-size: 1rem; color: var(--muted); line-height: 1;
+    }
+    .pro-modal-icon { font-size: 2.2rem; margin-bottom: 10px; }
+    .pro-modal-title {
+      font-size: 1.25rem; font-weight: 700;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .pro-modal-sub {
+      font-size: .88rem; color: var(--muted); margin-bottom: 22px;
+    }
+    .pro-plan-card {
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      border-radius: 14px;
+      padding: 22px 20px 18px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .pro-plan-header {
+      display: flex; align-items: baseline;
+      justify-content: space-between; margin-bottom: 14px;
+    }
+    .pro-plan-name {
+      font-weight: 700; font-size: .95rem; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .pro-plan-price {
+      font-size: 1.6rem; font-weight: 800; color: var(--text);
+    }
+    .pro-plan-per { font-size: .75rem; font-weight: 400; color: var(--muted); }
+    .pro-plan-perks {
+      list-style: none; padding: 0; margin: 0 0 18px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .pro-plan-perks li { font-size: .86rem; color: var(--muted); }
+    .pro-plan-perks li::first-letter { color: var(--accent); }
+    .pro-plan-btn {
+      display: block; width: 100%;
+      background: var(--accent); color: #fff;
+      border-radius: 9px; padding: 12px 0;
+      text-align: center; font-weight: 700; font-size: .95rem;
+      text-decoration: none;
+      transition: opacity .15s;
+    }
+    .pro-plan-btn:hover { opacity: .88; }
+    .pro-plan-note {
+      font-size: .72rem; color: var(--muted);
+      text-align: center; margin-top: 10px;
+    }
+    .pro-modal-reset {
+      font-size: .76rem; color: var(--muted);
+    }
+
+    /* ── Usage pill (shown in model row) ──────────────── */
+    .usage-pill {
+      font-size: .72rem; color: var(--muted);
+      margin-left: auto; white-space: nowrap;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .usage-pill .usage-bar {
+      width: 48px; height: 4px; background: var(--border);
+      border-radius: 2px; overflow: hidden;
+    }
+    .usage-pill .usage-fill {
+      height: 4px; border-radius: 2px;
+      background: var(--accent);
+      transition: width .3s;
+    }
+    .usage-pill.danger { color: #e55; }
+    .usage-pill.danger .usage-fill { background: #e55; }
   </style>
 </head>
 <body data-theme="warm">
@@ -1207,6 +1299,10 @@
         <button class="model-pill" data-model="gemini" onclick="setModel('gemini')">Gemini</button>
         <button class="model-pill active" data-model="sonnet" onclick="setModel('sonnet')">Sonnet 4.5</button>
       </div>
+      <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
+        <span id="usage-text">0 / 30</span>
+        <span class="usage-bar"><span class="usage-fill" id="usage-fill" style="width:0%"></span></span>
+      </span>
     </div>
 
     <div class="panel-footer" style="border-top:none">
@@ -1943,6 +2039,50 @@ async function initializeModelSelector() {
   );
 }
 
+/* ── Pro modal ─────────────────────────────────────────── */
+function showProModal(kind, used, limit) {
+  const sub = document.getElementById('pro-modal-sub');
+  if (kind === 'ocr') {
+    sub.textContent = `You've used all ${limit} free OCR scans this month.`;
+  } else {
+    sub.textContent = `You've used all ${limit} free lookups this month.`;
+  }
+  document.getElementById('pro-modal').classList.remove('hidden');
+}
+function closeProModal() {
+  document.getElementById('pro-modal').classList.add('hidden');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProModal(); });
+
+/* ── Usage pill ────────────────────────────────────────── */
+function updateUsagePill(used, limit) {
+  const pill  = document.getElementById('usage-pill');
+  const text  = document.getElementById('usage-text');
+  const fill  = document.getElementById('usage-fill');
+  if (!pill || limit < 0) return;   // Pro = unlimited, hide pill
+  const pct = Math.min(100, Math.round(used / limit * 100));
+  text.textContent = `${used} / ${limit}`;
+  fill.style.width = pct + '%';
+  pill.classList.toggle('danger', pct >= 80);
+  if (pct >= 80) pill.title = `${limit - used} lookups left this month`;
+}
+
+async function loadUsage() {
+  try {
+    const token = localStorage.getItem('lexio_token');
+    const headers = token ? { Authorization: 'Bearer ' + token } : {};
+    const res = await fetch('/api/usage', { headers });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (data.is_pro) {
+      const pill = document.getElementById('usage-pill');
+      if (pill) pill.style.display = 'none';
+    } else {
+      updateUsagePill(data.lookup.used, data.lookup.limit);
+    }
+  } catch (_) {}
+}
+
 /* ── OCR / photo-to-text ────────────────────────────── */
 function triggerOCR() {
   document.getElementById('ocr-file-input').click();
@@ -1970,6 +2110,13 @@ async function handleOCRFile(input) {
   try {
     const res = await fetch('/ocr', { method: 'POST', body: formData });
     if (!res.ok) {
+      if (res.status === 402) {
+        const err = await res.json().catch(() => ({}));
+        const d = err.detail || {};
+        cancelOCR();
+        showProModal(d.kind || 'ocr', d.used || 0, d.limit || 3);
+        return;
+      }
       const err = await res.json().catch(() => ({ detail: 'Unknown error' }));
       throw new Error(err.detail || `HTTP ${res.status}`);
     }
@@ -2336,10 +2483,19 @@ async function fetchDefinition(word, context) {
     const resp = await fetch('/define', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({word,context,lang:currentLang,model:currentModel}) });
     if (!resp.ok) {
       if (resp.status===429) throw new Error('⏱ Too many requests — wait a moment and try again.');
+      if (resp.status === 402) {
+        const err = await resp.json().catch(() => ({}));
+        const d = err.detail || {};
+        clearHighlights(); activeToken = null;
+        showPlaceholder();
+        showProModal(d.kind || 'lookup', d.used || 0, d.limit || 30);
+        return;
+      }
       const err = await resp.json().catch(()=>({detail:resp.statusText}));
       throw new Error(err.detail||`HTTP ${resp.status}`);
     }
     const data = await resp.json();
+    if (data._usage) updateUsagePill(data._usage.used, data._usage.limit);
     defCache.set(key, data);
     addToHistory(word, data);
     if (activeToken) activeToken.classList.remove('pulsing');
@@ -3044,6 +3200,37 @@ initOAuthProviders();
 
 // Init model selector
 initializeModelSelector();
+
+// Load usage on page start
+loadUsage();
 </script>
+
+<!-- ── Pro upgrade modal ──────────────────────────────── -->
+<div id="pro-modal" class="pro-modal-backdrop hidden" onclick="if(event.target===this)closeProModal()">
+  <div class="pro-modal">
+    <button class="pro-modal-close" onclick="closeProModal()">✕</button>
+    <div class="pro-modal-icon">⚡</div>
+    <h2 class="pro-modal-title">You've hit your free limit</h2>
+    <p class="pro-modal-sub" id="pro-modal-sub">You've used all 30 free lookups this month.</p>
+    <div class="pro-plan-card">
+      <div class="pro-plan-header">
+        <span class="pro-plan-name">Lexio Pro</span>
+        <span class="pro-plan-price">$4.99<span class="pro-plan-per">/month</span></span>
+      </div>
+      <ul class="pro-plan-perks">
+        <li>✓ Unlimited word lookups</li>
+        <li>✓ Unlimited OCR scans</li>
+        <li>✓ All 4 AI models</li>
+        <li>✓ Word bank sync across devices</li>
+        <li>✓ Priority support</li>
+      </ul>
+      <a class="pro-plan-btn" href="mailto:hello@lexio.site?subject=Lexio%20Pro%20upgrade" target="_blank">
+        Get Pro →
+      </a>
+      <p class="pro-plan-note">Reply to this email and we'll activate your account within 24 hours.</p>
+    </div>
+    <p class="pro-modal-reset">Your free quota resets on the 1st of each month.</p>
+  </div>
+</div>
 </body>
 </html>
