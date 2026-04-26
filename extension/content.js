@@ -354,6 +354,18 @@ styleEl.textContent = `
     color: oklch(48% 0.2 25); line-height: 1.5;
   }
   @media (prefers-color-scheme: dark) { .lx-err { color: oklch(72% 0.2 25); } }
+
+  /* Toast */
+  .lx-toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(8px);
+    background: oklch(22% 0.015 65); color: oklch(96% 0.006 75);
+    padding: 8px 16px; border-radius: 20px;
+    font-size: 0.82rem; font-weight: 500;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    opacity: 0; transition: opacity 0.18s, transform 0.18s;
+    pointer-events: none; white-space: nowrap; z-index: 9999;
+  }
+  .lx-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 `;
 shadow.appendChild(styleEl);
 
@@ -361,6 +373,18 @@ shadow.appendChild(styleEl);
 const popup = document.createElement('div');
 popup.id = 'lx';
 shadow.appendChild(popup);
+
+// ── Toast element ─────────────────────────────────────────────────────────────
+const toast = document.createElement('div');
+toast.className = 'lx-toast';
+shadow.appendChild(toast);
+let _toastTimer = null;
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
 function esc(s) {
@@ -633,6 +657,7 @@ function toggleSave() {
     };
     chrome.runtime.sendMessage({ type: 'SAVE_WORD', entry }, () => {
       isSaved = true; updateSaveBtn();
+      showToast('✓ Word collected');
     });
   }
 }

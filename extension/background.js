@@ -136,7 +136,27 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         });
         const data = await resp.json();
         if (!resp.ok) throw new Error(data.detail || 'Sign in failed');
-        chrome.storage.local.set({ lexio_token: data.token, lexio_user: data.user });
+
+        const token = data.token;
+        chrome.storage.local.set({ lexio_token: token, lexio_user: data.user });
+
+        // Sync any locally-saved words to the server, and pull back the full list
+        try {
+          const stored = await new Promise(r => chrome.storage.local.get('lexio_wordbank', r));
+          const localBank = stored.lexio_wordbank || [];
+          const syncResp = await fetch(`${API_BASE}/wordbank/sync`, {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body:    JSON.stringify({ entries: localBank }),
+          });
+          if (syncResp.ok) {
+            const syncData = await syncResp.json();
+            if (syncData.entries) {
+              chrome.storage.local.set({ lexio_wordbank: syncData.entries });
+            }
+          }
+        } catch {}
+
         sendResponse({ ok: true, user: data.user });
       } catch (err) {
         sendResponse({ ok: false, error: err.message });
