@@ -41,16 +41,22 @@ let cachedWord       = '';  // which word these results belong to
 let modelDropOpen    = false;
 
 // Load initial state from storage
-chrome.storage.local.get(['lexio_enabled', 'lexio_lang', 'lexio_model'], d => {
-  enabled      = d.lexio_enabled !== false;
-  currentLang  = d.lexio_lang  || 'auto';
-  currentModel = d.lexio_model || 'sonnet';
-});
-chrome.storage.onChanged.addListener(changes => {
-  if ('lexio_enabled' in changes) enabled      = changes.lexio_enabled.newValue !== false;
-  if ('lexio_lang'    in changes) currentLang  = changes.lexio_lang.newValue    || 'auto';
-  if ('lexio_model'   in changes) currentModel = changes.lexio_model.newValue   || 'sonnet';
-});
+try {
+  chrome.storage.local.get(['lexio_enabled', 'lexio_lang', 'lexio_model'], d => {
+    enabled      = d.lexio_enabled !== false;
+    currentLang  = d.lexio_lang  || 'auto';
+    currentModel = d.lexio_model || 'sonnet';
+  });
+  chrome.storage.onChanged.addListener(changes => {
+    if ('lexio_enabled' in changes) enabled      = changes.lexio_enabled.newValue !== false;
+    if ('lexio_lang'    in changes) currentLang  = changes.lexio_lang.newValue    || 'auto';
+    if ('lexio_model'   in changes) currentModel = changes.lexio_model.newValue   || 'sonnet';
+  });
+} catch (e) {
+  // Extension context invalidated (page was open when extension reloaded).
+  // Disable gracefully — the user needs to refresh the page.
+  enabled = false;
+}
 
 // ── Shadow DOM host ───────────────────────────────────────────────────────────
 const host = document.createElement('div');
@@ -680,17 +686,25 @@ function runDefine(word, refRect, anchorEl, modelOverride) {
   if (refRect) showPopup(refRect);
 
   const sentWord = word;
-  chrome.runtime.sendMessage({ type: 'DEFINE', word, context, lang: currentLang, model }, resp => {
-    if (currentWord !== sentWord) return;
-    if (resp?.ok) {
-      const data = { ...resp.data, _context: context };
-      currentData = data;
-      wordModelResults[model] = data;
-      renderResult(word, data);
-    } else {
-      renderError(resp?.error || 'Could not fetch definition.');
-    }
-  });
+  try {
+    chrome.runtime.sendMessage({ type: 'DEFINE', word, context, lang: currentLang, model }, resp => {
+      if (currentWord !== sentWord) return;
+      if (chrome.runtime.lastError) {
+        renderError('Reload this page to re-activate Lexio.');
+        return;
+      }
+      if (resp?.ok) {
+        const data = { ...resp.data, _context: context };
+        currentData = data;
+        wordModelResults[model] = data;
+        renderResult(word, data);
+      } else {
+        renderError(resp?.error || 'Could not fetch definition.');
+      }
+    });
+  } catch (e) {
+    renderError('Reload this page to re-activate Lexio.');
+  }
 }
 
 // ── Mouse-up handler ──────────────────────────────────────────────────────────
