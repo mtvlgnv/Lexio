@@ -275,6 +275,47 @@
 
     .panel-label { padding:16px 24px 0; font-size:0.68rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); flex-shrink:0; }
 
+    /* ── OCR / photo button ─────────────────────────────── */
+    .panel-header-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 24px 0; flex-shrink:0;
+    }
+    .panel-header-row .panel-label { padding:0; }
+    .ocr-btn {
+      display:flex; align-items:center; gap:6px;
+      background:var(--bg); border:1px solid var(--border);
+      border-radius:var(--radius-sm); padding:5px 11px;
+      font-family:'DM Sans',inherit; font-size:0.75rem; font-weight:500;
+      color:var(--text-mid); cursor:pointer;
+      transition:background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .ocr-btn:hover { background:var(--accent-lt); border-color:var(--accent-mid); color:var(--accent); }
+    .ocr-btn svg { flex-shrink:0; }
+    #ocr-overlay {
+      position:absolute; inset:0; border-radius:inherit;
+      background:var(--surface); z-index:20;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:14px; padding:24px;
+    }
+    #ocr-overlay.hidden { display:none; }
+    #ocr-preview {
+      max-width:100%; max-height:180px; border-radius:8px;
+      object-fit:contain; border:1px solid var(--border);
+    }
+    #ocr-status {
+      font-size:0.82rem; color:var(--text-mid); text-align:center; line-height:1.5;
+    }
+    .ocr-spinner {
+      width:24px; height:24px; border:2.5px solid var(--border);
+      border-top-color:var(--accent); border-radius:50%;
+      animation:spin 0.75s linear infinite;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .ocr-cancel {
+      font-size:0.75rem; color:var(--muted); background:none; border:none;
+      cursor:pointer; text-decoration:underline; text-underline-offset:2px;
+    }
+
     /* Reading stats */
     .reading-stats {
       padding:5px 24px 0; font-size:0.72rem; color:var(--muted);
@@ -371,35 +412,43 @@
     button.btn-secondary:hover { background:var(--bg); color:var(--text); }
     button.hidden { display:none !important; }
 
-    /* ── Model selector row ─────────────────────────────────── */
+    /* ── Model selector ─────────────────────────────────────── */
     .model-selector-row {
       display:flex; justify-content:center; align-items:center;
-      padding:10px 24px 6px; gap:8px;
+      gap:10px; padding:12px 24px 10px;
+      border-top:1px solid var(--border-light);
+      background:var(--bg); transition:background 0.3s,border-color 0.3s;
+    }
+    .model-selector-label {
+      font-size:0.65rem; font-weight:700; letter-spacing:0.1em;
+      text-transform:uppercase; color:var(--muted); white-space:nowrap;
     }
     .model-pills {
       display:inline-flex;
-      background:var(--bg); border:1.5px solid var(--border);
-      border-radius:30px; padding:3px; gap:2px;
+      background:var(--surface); border:1.5px solid var(--border);
+      border-radius:40px; padding:3px; gap:2px;
+      box-shadow:0 1px 6px rgba(0,0,0,0.07);
     }
     .model-pill {
-      display:flex; align-items:center; gap:5px;
-      padding:6px 13px; border:none; border-radius:20px;
+      padding:7px 16px; border:none; border-radius:40px;
       background:transparent; font-family:'DM Sans',inherit;
-      font-size:0.74rem; font-weight:500;
-      color:var(--muted); cursor:pointer;
-      transition:background 0.15s, color 0.15s, box-shadow 0.15s;
+      font-size:0.78rem; font-weight:500; color:var(--muted);
+      cursor:pointer; transition:all 0.16s;
       white-space:nowrap; line-height:1;
     }
     .model-pill.active {
-      background:var(--accent); color:#fff;
-      box-shadow:0 1px 5px rgba(0,0,0,0.14);
+      background:var(--accent); color:#fff; font-weight:600;
+      box-shadow:0 1px 8px rgba(0,0,0,0.18);
     }
     .model-pill:hover:not(.active) { background:var(--token-hover); color:var(--text); }
-    .model-pill-dot {
-      width:6px; height:6px; border-radius:50%;
-      background:currentColor; opacity:0.5; flex-shrink:0;
+    @media (max-width: 600px) {
+      .model-selector-label { display:none; }
+      .model-pill { padding:6px 11px; font-size:0.72rem; }
+      .model-selector-row { padding:10px 12px 8px; }
     }
-    .model-pill.active .model-pill-dot { opacity:1; background:#fff; }
+    @media (max-width: 400px) {
+      .model-pill { padding:5px 9px; font-size:0.68rem; }
+    }
 
     /* ── Tweaks panel ───────────────────────────────────────── */
     #tweaks-panel { display:none; border-top:1px solid var(--border-light); padding:10px 24px 12px; background:var(--bg); transition:background 0.3s; flex-shrink:0; }
@@ -675,26 +724,32 @@
       .tagline, .shortcut-hint { display:none; }
       .lang-btn { display:flex; }
       main { flex-direction:column; height:auto; padding:12px; }
-      .panel-left  { margin-right:0; margin-bottom:10px; min-height:260px; }
+      .panel-left  { margin-right:0; margin-bottom:10px; min-height:420px; }
       .panel-right { width:100%; min-height:300px; }
+      #input-text  { min-height:220px; }
+      #token-view  { min-height:220px; }
     }
 
     /* ── Scroll nudge ───────────────────────────────────────── */
     #scroll-nudge {
-      position: fixed; bottom: 24px; right: 28px;
-      display: flex; flex-direction: row; align-items: center; gap: 6px;
-      color: var(--muted); font-size: 0.7rem; letter-spacing: 0.06em;
-      text-transform: uppercase; cursor: pointer; z-index: 10;
-      opacity: 1; transition: opacity 0.4s ease;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 6px 12px 6px 10px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: row; align-items: center; gap: 7px;
+      color: var(--text-mid); font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      cursor: pointer; z-index: 10;
+      opacity: 1; transition: opacity 0.4s ease, background 0.15s, color 0.15s;
+      background: var(--surface); border: 1.5px solid var(--border);
+      border-radius: 30px; padding: 9px 20px 9px 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+      white-space: nowrap;
       animation: nudge-bob 2.6s ease-in-out infinite;
     }
+    #scroll-nudge:hover { background: var(--bg); color: var(--accent); border-color: var(--accent-mid); }
+    #scroll-nudge svg { color: var(--accent); }
     #scroll-nudge.hidden { opacity: 0; pointer-events: none; }
     @keyframes nudge-bob {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(4px); }
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(5px); }
     }
     body.in-app #scroll-nudge { display: none; }
 
@@ -1103,7 +1158,23 @@
 
   <!-- ── Left panel ─────────────────────────────────────────── -->
   <div class="panel panel-left" id="left-panel">
-    <div class="panel-label" data-i18n="panelLabel">Text</div>
+    <div class="panel-header-row">
+      <div class="panel-label" data-i18n="panelLabel">Text</div>
+      <button class="ocr-btn" onclick="triggerOCR()" title="Scan text from a photo">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Scan image
+      </button>
+      <input type="file" id="ocr-file-input" accept="image/*" capture="environment" style="display:none" onchange="handleOCRFile(this)">
+    </div>
+
+    <!-- OCR overlay (shown while processing) -->
+    <div id="ocr-overlay" class="hidden">
+      <img id="ocr-preview" src="" alt="Uploaded image">
+      <div class="ocr-spinner" id="ocr-spinner"></div>
+      <div id="ocr-status">Extracting text…</div>
+      <button class="ocr-cancel" onclick="cancelOCR()">Cancel</button>
+    </div>
+
     <div class="reading-stats hidden" id="reading-stats"></div>
 
     <div class="tooltip-box" id="tooltip-0">
@@ -1129,23 +1200,16 @@
     </div>
 
     <div class="model-selector-row" id="model-selector-row">
+      <span class="model-selector-label">Model</span>
       <div class="model-pills" id="model-pills">
-        <button class="model-pill" data-model="haiku" onclick="setModel('haiku')">
-          <span class="model-pill-dot"></span>Haiku
-        </button>
-        <button class="model-pill" data-model="gpt-4-mini" onclick="setModel('gpt-4-mini')">
-          <span class="model-pill-dot"></span>GPT-4o Mini
-        </button>
-        <button class="model-pill" data-model="gemini" onclick="setModel('gemini')">
-          <span class="model-pill-dot"></span>Gemini
-        </button>
-        <button class="model-pill active" data-model="sonnet" onclick="setModel('sonnet')">
-          <span class="model-pill-dot"></span>Sonnet 4.5
-        </button>
+        <button class="model-pill" data-model="haiku" onclick="setModel('haiku')">Haiku</button>
+        <button class="model-pill" data-model="gpt-4-mini" onclick="setModel('gpt-4-mini')">GPT-4o Mini</button>
+        <button class="model-pill" data-model="gemini" onclick="setModel('gemini')">Gemini</button>
+        <button class="model-pill active" data-model="sonnet" onclick="setModel('sonnet')">Sonnet 4.5</button>
       </div>
     </div>
 
-    <div class="panel-footer">
+    <div class="panel-footer" style="border-top:none">
       <span class="char-count" id="char-count"></span>
       <button class="btn-sample" id="sample-btn" onclick="cycleSample()" data-i18n="trySample">Try a sample</button>
       <div class="footer-spacer"></div>
@@ -1877,6 +1941,58 @@ async function initializeModelSelector() {
   document.querySelectorAll('.model-pill').forEach(b =>
     b.classList.toggle('active', b.dataset.model === currentModel)
   );
+}
+
+/* ── OCR / photo-to-text ────────────────────────────── */
+function triggerOCR() {
+  document.getElementById('ocr-file-input').click();
+}
+
+async function handleOCRFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  input.value = ''; // reset so same file can be re-selected
+
+  // Show overlay with preview
+  const overlay = document.getElementById('ocr-overlay');
+  const preview = document.getElementById('ocr-preview');
+  const status  = document.getElementById('ocr-status');
+  const spinner = document.getElementById('ocr-spinner');
+
+  preview.src = URL.createObjectURL(file);
+  overlay.classList.remove('hidden');
+  spinner.style.display = 'block';
+  status.textContent = 'Extracting text…';
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const res = await fetch('/ocr', { method: 'POST', body: formData });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(err.detail || `HTTP ${res.status}`);
+    }
+    const { text } = await res.json();
+
+    // Populate textarea and close overlay
+    const ta = document.getElementById('input-text');
+    ta.value = text;
+    ta.dispatchEvent(new Event('input'));
+    document.getElementById('char-count').textContent = `${text.length.toLocaleString()} chars`;
+    cancelOCR();
+  } catch (err) {
+    spinner.style.display = 'none';
+    status.textContent = `⚠ ${err.message}`;
+  }
+}
+
+function cancelOCR() {
+  const overlay = document.getElementById('ocr-overlay');
+  overlay.classList.add('hidden');
+  const preview = document.getElementById('ocr-preview');
+  if (preview.src) URL.revokeObjectURL(preview.src);
+  preview.src = '';
 }
 
 /* ── UI language (interface i18n) ───────────────────────────── */

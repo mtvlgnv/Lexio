@@ -5,7 +5,7 @@ import secrets
 import datetime
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Request, Depends, Header, BackgroundTasks
+from fastapi import FastAPI, HTTPException, Request, Depends, Header, BackgroundTasks, File, UploadFile
 from sqlalchemy import func
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field, AnyHttpUrl, EmailStr
 import anthropic
 import openai
 from google import genai as google_genai
+from google.genai import types as genai_types
 from dotenv import load_dotenv
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -1411,6 +1412,61 @@ async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends
 </body></html>"""
 
     return HTMLResponse(html)
+
+
+# ── /ocr ─────────────────────────────────────────────────────────────────────
+
+@app.post("/ocr")
+@limiter.limit("5/minute")
+async def ocr_image(request: Request, file: UploadFile = File(...)):
+    """Extract text from an uploaded image using Gemini or OpenAI vision."""
+    # Validate MIME type
+    if not file.content_type or not file.content_type.startswith("image/"):
+        raise HTTPException(status_code=422, detail="Only image files are accepted.")
+
+    # Read and validate size (10 MB max)
+    image_bytes = await file.read()
+    if len(image_bytes) > 10 * 1024 * 1024:
+        raise HTTPException(status_code=422, detail="Image must be smaller than 10 MB.")
+
+    ocr_prompt = (
+        "Extract all text visible in this image exactly as it appears. "
+        "Preserve paragraph breaks. Return only the extracted text, no commentary."
+    )
+
+    try:
+        if os.getenv("GOOGLE_API_KEY"):
+            response = google_client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=[
+                    genai_types.Part.from_bytes(data=image_bytes, mime_type=file.content_type),
+                    ocr_prompt,
+                ],
+            )
+            text = response.text.strip()
+        elif os.getenv("OPENAI_API_KEY"):
+            import base64
+            b64 = base64.b64encode(image_bytes).decode()
+            response = openai_client.chat.completions.create(
+                model="gpt-4o",
+                max_tokens=2000,
+                messages=[{"role": "user", "content": [
+                    {"type": "image_url", "image_url": {"url": f"data:{file.content_type};base64,{b64}", "detail": "high"}},
+                    {"type": "text", "text": ocr_prompt},
+                ]}],
+            )
+            text = response.choices[0].message.content.strip()
+        else:
+            raise HTTPException(status_code=503, detail="No vision API key configured (GOOGLE_API_KEY or OPENAI_API_KEY required).")
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"Vision API error: {exc}")
+
+    if not text:
+        raise HTTPException(status_code=422, detail="No text found in the image.")
+
+    return {"text": text}
 
 
 # ── Static frontend ───────────────────────────────────────────────────────────
