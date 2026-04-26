@@ -4,8 +4,8 @@ const API_BASE = 'https://lexio.site';
 
 // ── In-memory definition cache (cleared when service worker restarts) ─────────
 const defCache = new Map();
-function cacheKey(word, context, lang) {
-  return `${word.toLowerCase()}::${context.slice(0, 120)}::${lang}`;
+function cacheKey(word, context, lang, model) {
+  return `${word.toLowerCase()}::${context.slice(0, 120)}::${lang}::${model || 'sonnet'}`;
 }
 
 // ── Context menu ──────────────────────────────────────────────────────────────
@@ -31,10 +31,11 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
   // ── Fetch definition ────────────────────────────────────────────
   if (msg.type === 'DEFINE') {
-    chrome.storage.local.get(['lexio_token', 'lexio_lang'], async (stored) => {
+    chrome.storage.local.get(['lexio_token', 'lexio_lang', 'lexio_model'], async (stored) => {
       // If content script sends 'auto' it may not have loaded storage yet — fall back to stored pref
-      const lang = (msg.lang && msg.lang !== 'auto') ? msg.lang : (stored.lexio_lang || 'auto');
-      const key     = cacheKey(msg.word, msg.context || '', lang);
+      const lang  = (msg.lang && msg.lang !== 'auto') ? msg.lang : (stored.lexio_lang || 'auto');
+      const model = msg.model || stored.lexio_model || 'sonnet';
+      const key   = cacheKey(msg.word, msg.context || '', lang, model);
 
       if (defCache.has(key)) {
         sendResponse({ ok: true, data: defCache.get(key), cached: true });
@@ -48,7 +49,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         const resp = await fetch(`${API_BASE}/define`, {
           method:  'POST',
           headers,
-          body:    JSON.stringify({ word: msg.word, context: msg.context || '', lang }),
+          body:    JSON.stringify({ word: msg.word, context: msg.context || '', lang, model }),
         });
 
         if (resp.status === 429) throw new Error('Too many requests — wait a moment.');
@@ -153,13 +154,14 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
   // ── Get stored state (for popup) ─────────────────────────────────
   if (msg.type === 'GET_STATE') {
-    chrome.storage.local.get(['lexio_token', 'lexio_user', 'lexio_lang', 'lexio_wordbank', 'lexio_enabled'], (d) => {
+    chrome.storage.local.get(['lexio_token', 'lexio_user', 'lexio_lang', 'lexio_wordbank', 'lexio_enabled', 'lexio_model'], (d) => {
       sendResponse({
         token:    d.lexio_token    || null,
         user:     d.lexio_user     || null,
         lang:     d.lexio_lang     || 'auto',
         wbCount:  (d.lexio_wordbank || []).length,
         enabled:  d.lexio_enabled !== false, // default on
+        model:    d.lexio_model    || 'sonnet',
       });
     });
     return true;
@@ -176,6 +178,13 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type === 'SET_LANG') {
     chrome.storage.local.set({ lexio_lang: msg.lang });
     defCache.clear(); // lang change invalidates cache
+    sendResponse({ ok: true });
+    return true;
+  }
+
+  // ── Set model ────────────────────────────────────────────────────
+  if (msg.type === 'SET_MODEL') {
+    chrome.storage.local.set({ lexio_model: msg.model });
     sendResponse({ ok: true });
     return true;
   }
