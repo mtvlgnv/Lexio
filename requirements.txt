@@ -9,3 +9,5 @@ bcrypt<4
 python-jose[cryptography]
 sqlalchemy
 python-multipart
+openai
+google-genai

@@ -12,6 +12,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, AnyHttpUrl, EmailStr
 import anthropic
+import openai
+from google import genai as google_genai
 from dotenv import load_dotenv
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -33,12 +35,13 @@ SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
 class User(Base):
     __tablename__ = "users"
-    id         = Column(Integer, primary_key=True, index=True)
-    email      = Column(String, unique=True, nullable=False, index=True)
-    name       = Column(String, nullable=True)
-    pwd_hash   = Column(String, nullable=True)   # nullable for OAuth-only users
-    google_id  = Column(String, nullable=True, index=True)
-    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    id              = Column(Integer, primary_key=True, index=True)
+    email           = Column(String, unique=True, nullable=False, index=True)
+    name            = Column(String, nullable=True)
+    pwd_hash        = Column(String, nullable=True)   # nullable for OAuth-only users
+    google_id       = Column(String, nullable=True, index=True)
+    preferred_model = Column(String, default="sonnet", nullable=False)
+    created_at      = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):
     __tablename__ = "wordbank"
@@ -72,6 +75,11 @@ def _run_migrations():
         cols = [row[1] for row in conn.execute(__import__('sqlalchemy').text("PRAGMA table_info(users)"))]
         if "google_id" not in cols:
             conn.execute(__import__('sqlalchemy').text("ALTER TABLE users ADD COLUMN google_id TEXT"))
+            conn.commit()
+        # Add preferred_model column if missing
+        cols = [row[1] for row in conn.execute(__import__('sqlalchemy').text("PRAGMA table_info(users)"))]
+        if "preferred_model" not in cols:
+            conn.execute(__import__('sqlalchemy').text("ALTER TABLE users ADD COLUMN preferred_model TEXT DEFAULT 'haiku'"))
             conn.commit()
 
 _run_migrations()
@@ -166,7 +174,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+# ── API Clients ──────────────────────────────────────────────────────────────
+anthropic_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+openai_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
+google_client = google_genai.Client(api_key=os.getenv("GOOGLE_API_KEY", ""))
 
 
 # ── Request / response models ─────────────────────────────────────────────────
@@ -175,6 +186,7 @@ class DefineRequest(BaseModel):
     word:    str = Field(..., min_length=1, max_length=60)
     context: str = Field(..., min_length=1, max_length=8_000)
     lang:    str = Field(default="auto", max_length=40)
+    model:   str = Field(default="sonnet", max_length=40)  # haiku, gemini, gpt-4-mini, sonnet
 
 class FetchRequest(BaseModel):
     url: AnyHttpUrl
@@ -221,6 +233,41 @@ def _log_user_search(user_id: int, word: str) -> None:
         db.rollback()
     finally:
         db.close()
+
+
+# ── Model wrappers ───────────────────────────────────────────────────────────
+
+def _call_anthropic(prompt: str, model: str = "claude-haiku-4-5-20251001") -> str:
+    """Call Anthropic API and return the response text."""
+    message = anthropic_client.messages.create(
+        model=model,
+        max_tokens=600,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return message.content[0].text.strip()
+
+
+def _call_openai(prompt: str) -> str:
+    """Call OpenAI API (GPT-4 mini) and return the response text."""
+    if not os.getenv("OPENAI_API_KEY"):
+        raise ValueError("OPENAI_API_KEY not configured")
+    response = openai_client.chat.completions.create(
+        model="gpt-4o-mini",
+        max_tokens=600,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.choices[0].message.content.strip()
+
+
+def _call_google(prompt: str) -> str:
+    """Call Google Gemini API and return the response text."""
+    if not os.getenv("GOOGLE_API_KEY"):
+        raise ValueError("GOOGLE_API_KEY not configured")
+    response = google_client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt,
+    )
+    return response.text.strip()
 
 
 # ── /define ──────────────────────────────────────────────────────────────────
@@ -273,14 +320,31 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         )
         required_keys = ("pos", "contextual")
 
-    try:
-        message = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=600,
-            messages=[{"role": "user", "content": prompt}],
-        )
+    # Determine which model to use
+    model_choice = (req.model or "haiku").lower().strip()
 
-        text = message.content[0].text.strip()
+    # Map user-friendly names to internal names
+    model_map = {
+        "haiku": "haiku",
+        "gemini": "gemini",
+        "gpt-4-mini": "gpt-4-mini",
+        "gpt-4o-mini": "gpt-4-mini",  # alias
+        "sonnet": "sonnet",
+    }
+    actual_model = model_map.get(model_choice, "haiku")  # default to haiku
+
+    try:
+        # Call the appropriate API
+        if actual_model == "gemini":
+            text = _call_google(prompt)
+        elif actual_model in ("gpt-4-mini",):
+            text = _call_openai(prompt)
+        elif actual_model == "sonnet":
+            text = _call_anthropic(prompt, "claude-sonnet-4-5-20250929")
+        else:  # haiku (default)
+            text = _call_anthropic(prompt, "claude-haiku-4-5-20251001")
+
+        # Clean up markdown code blocks if present
         if text.startswith("```"):
             lines = text.splitlines()
             text  = "\n".join(l for l in lines if not l.startswith("```")).strip()
@@ -289,6 +353,19 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         for key in required_keys:
             if key not in result:
                 raise ValueError(f"Missing key: {key}")
+
+        # Save user's model preference if authenticated
+        if user:
+            db = SessionLocal()
+            try:
+                user_record = db.query(User).filter(User.id == user.id).first()
+                if user_record and user_record.preferred_model != actual_model:
+                    user_record.preferred_model = actual_model
+                    db.commit()
+            except Exception:
+                db.rollback()
+            finally:
+                db.close()
 
         # Log anonymously (always) and per-user (when authenticated)
         bg.add_task(_log_search, req.word)
@@ -302,6 +379,8 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         raise HTTPException(status_code=502, detail=str(exc))
     except anthropic.APIError as exc:
         raise HTTPException(status_code=502, detail=f"Anthropic API error: {exc}")
+    except Exception as exc:
+        raise HTTPException(status_code=502, detail=f"API error: {exc}")
 
 
 # ── /fetch-text ───────────────────────────────────────────────────────────────
@@ -413,6 +492,78 @@ async def login(request: Request, body: LoginRequest, db: DBSession = Depends(ge
 @app.get("/auth/me")
 async def me(user: User = Depends(current_user)):
     return {"id": user.id, "email": user.email, "name": user.name}
+
+
+# ── /api/models ───────────────────────────────────────────────────────────────
+
+@app.get("/api/models")
+async def get_models():
+    """Return available models and their status."""
+    return {
+        "models": [
+            {
+                "id": "haiku",
+                "name": "Claude Haiku",
+                "provider": "Anthropic",
+                "available": True,  # Always available
+                "description": "Fast and compact model"
+            },
+            {
+                "id": "gpt-4-mini",
+                "name": "GPT-4o Mini",
+                "provider": "OpenAI",
+                "available": bool(os.getenv("OPENAI_API_KEY")),
+                "description": "Efficient and capable model"
+            },
+            {
+                "id": "gemini",
+                "name": "Gemini 2.5 Flash",
+                "provider": "Google",
+                "available": bool(os.getenv("GOOGLE_API_KEY")),
+                "description": "Fast multimodal model"
+            },
+            {
+                "id": "sonnet",
+                "name": "Claude Sonnet 3.5",
+                "provider": "Anthropic",
+                "available": True,
+                "description": "Advanced reasoning model"
+            }
+        ]
+    }
+
+
+@app.get("/api/user-model")
+async def get_user_model(user: User = Depends(optional_user)):
+    """Get the user's preferred model."""
+    if not user:
+        return {"model": "haiku"}
+    db = SessionLocal()
+    try:
+        user_record = db.query(User).filter(User.id == user.id).first()
+        if user_record:
+            return {"model": user_record.preferred_model or "haiku"}
+    finally:
+        db.close()
+    return {"model": "haiku"}
+
+
+class ModelUpdateRequest(BaseModel):
+    model: str = Field(..., max_length=40)
+
+
+@app.post("/api/user-model")
+async def update_user_model(req: ModelUpdateRequest, user: User = Depends(current_user), db: DBSession = Depends(get_db)):
+    """Update the user's preferred model."""
+    valid_models = {"haiku", "gpt-4-mini", "gemini", "sonnet"}
+    if req.model not in valid_models:
+        raise HTTPException(status_code=400, detail=f"Invalid model: {req.model}")
+
+    user_record = db.query(User).filter(User.id == user.id).first()
+    if user_record:
+        user_record.preferred_model = req.model
+        db.commit()
+    return {"model": req.model}
 
 
 # ── /api/config ───────────────────────────────────────────────────────────────
