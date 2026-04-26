@@ -8,17 +8,17 @@ chrome.runtime.sendMessage({ type: 'GET_STATE' }, state => {
   // Language
   document.getElementById('lang-select').value = state.lang || 'auto';
 
-  // Word bank count
-  const n = state.wbCount || 0;
-  document.getElementById('wb-count').textContent =
-    n === 0 ? 'No words collected yet' : `${n} word${n !== 1 ? 's' : ''} collected`;
-
   // Auth state
   if (state.user) {
     showSignedIn(state.user);
   } else {
     showSignedOut();
   }
+});
+
+// Load word bank directly from storage for the list
+chrome.storage.local.get('lexio_wordbank', d => {
+  renderWordBank(d.lexio_wordbank || []);
 });
 
 // ── Toggle enable/disable ─────────────────────────────────────────────────────
@@ -93,4 +93,46 @@ function showSignedOut() {
   document.getElementById('auth-email').value    = '';
   document.getElementById('auth-password').value = '';
   document.getElementById('auth-error').classList.add('hidden');
+}
+
+// ── Word bank list ────────────────────────────────────────────────────────────
+function renderWordBank(bank) {
+  const countEl = document.getElementById('wb-count');
+  const listEl  = document.getElementById('wb-list');
+  const n = bank.length;
+
+  countEl.textContent = n === 0 ? 'No words collected yet' : `${n} word${n !== 1 ? 's' : ''} collected`;
+
+  if (n === 0) {
+    listEl.innerHTML = '<div class="wb-empty">Words you collect will appear here.</div>';
+    return;
+  }
+
+  listEl.innerHTML = bank.map((e, i) => {
+    const word = e.word || '';
+    const pos  = e.pos  || '';
+    const def  = e.contextual || e.definition || '';
+    return `
+      <div class="wb-item" data-idx="${i}">
+        <div class="wb-item-body">
+          <div class="wb-item-word">${esc(word)}</div>
+          <div class="wb-item-def"><span class="wb-item-pos">${esc(pos)}</span>${esc(def)}</div>
+        </div>
+        <button class="wb-del" data-word="${esc(word)}" title="Remove">✕</button>
+      </div>`;
+  }).join('');
+
+  listEl.querySelectorAll('.wb-del').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const word = btn.dataset.word;
+      chrome.runtime.sendMessage({ type: 'UNSAVE_WORD', word }, () => {
+        chrome.storage.local.get('lexio_wordbank', d => renderWordBank(d.lexio_wordbank || []));
+      });
+    });
+  });
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }

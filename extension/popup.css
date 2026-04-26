@@ -129,9 +129,35 @@ body {
 .user-name  { font-size: 0.85rem; font-weight: 600; }
 .user-email { font-size: 0.72rem; color: var(--muted); }
 
-/* ── Word bank row ──────────────────────────────────── */
-.wordbank-row { display: flex; align-items: center; justify-content: space-between; }
+/* ── Word bank section ──────────────────────────────── */
+.wordbank-section { padding-bottom: 8px; }
+.wordbank-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .wb-count { font-size: 0.8rem; color: var(--text-mid); }
+.wb-list { display: flex; flex-direction: column; gap: 1px; max-height: 220px; overflow-y: auto; }
+.wb-list::-webkit-scrollbar { width: 4px; }
+.wb-list::-webkit-scrollbar-track { background: transparent; }
+.wb-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.wb-item {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 7px 4px; border-radius: 7px;
+  cursor: default;
+}
+.wb-item:hover { background: var(--bg); }
+.wb-item-body { flex: 1; min-width: 0; }
+.wb-item-word { font-size: 0.83rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wb-item-pos  { font-size: 0.7rem; color: var(--accent); font-weight: 500; margin-right: 4px; }
+.wb-item-def  { font-size: 0.74rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wb-del {
+  flex-shrink: 0; width: 18px; height: 18px;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: 0.9rem; line-height: 1;
+  border-radius: 4px; display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.1s, color 0.1s;
+  padding: 0;
+}
+.wb-item:hover .wb-del { opacity: 1; }
+.wb-del:hover { color: var(--danger); }
+.wb-empty { font-size: 0.8rem; color: var(--muted); padding: 4px 0 6px; }
 
 /* ── Buttons ────────────────────────────────────────── */
 .btn-primary {
