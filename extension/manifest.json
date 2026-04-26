@@ -17,6 +17,11 @@
       "exclude_matches": ["https://lexio.site/*"],
       "js": ["content.js"],
       "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://lexio.site/*"],
+      "js": ["site-bridge.js"],
+      "run_at": "document_idle"
     }
   ],
 

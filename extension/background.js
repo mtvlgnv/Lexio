@@ -208,4 +208,36 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     sendResponse({ ok: true });
     return true;
   }
+
+  // ── Token from lexio.site (site-bridge.js) ───────────────────────
+  // Automatically keeps the extension token in sync with the website
+  // login so the user never has to log in via the extension popup.
+  if (msg.type === 'SITE_TOKEN') {
+    chrome.storage.local.get(['lexio_token', 'lexio_wordbank'], async (stored) => {
+      if (msg.token) {
+        // Store the token if it changed
+        if (stored.lexio_token !== msg.token) {
+          chrome.storage.local.set({ lexio_token: msg.token });
+        }
+        // Push any locally-saved words up to the server
+        const bank = stored.lexio_wordbank || [];
+        if (bank.length > 0) {
+          try {
+            await fetch(`${API_BASE}/wordbank/sync`, {
+              method:  'POST',
+              headers: {
+                'Content-Type':  'application/json',
+                'Authorization': `Bearer ${msg.token}`,
+              },
+              body: JSON.stringify({ entries: bank }),
+            });
+          } catch {}
+        }
+      } else {
+        // User logged out on the website — clear the extension token too
+        chrome.storage.local.remove('lexio_token');
+      }
+    });
+    return true;
+  }
 });
