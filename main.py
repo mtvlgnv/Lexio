@@ -1443,7 +1443,17 @@ async def ocr_image(request: Request, file: UploadFile = File(...)):
                     ocr_prompt,
                 ],
             )
-            text = response.text.strip()
+            # response.text can be None when thinking mode produces no text part;
+            # fall back to iterating candidates/parts manually
+            text = (response.text or "").strip()
+            if not text:
+                try:
+                    parts = response.candidates[0].content.parts
+                    text = " ".join(
+                        p.text for p in parts if getattr(p, "text", None) and not getattr(p, "thought", False)
+                    ).strip()
+                except Exception:
+                    pass
         elif os.getenv("OPENAI_API_KEY"):
             import base64
             b64 = base64.b64encode(image_bytes).decode()
