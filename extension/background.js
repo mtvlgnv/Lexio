@@ -46,11 +46,23 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         const headers = { 'Content-Type': 'application/json' };
         if (stored.lexio_token) headers['Authorization'] = `Bearer ${stored.lexio_token}`;
 
-        const resp = await fetch(`${API_BASE}/define`, {
-          method:  'POST',
-          headers,
-          body:    JSON.stringify({ word: msg.word, context: msg.context || '', lang, model }),
-        });
+        async function callDefine(modelToUse) {
+          const resp = await fetch(`${API_BASE}/define`, {
+            method:  'POST',
+            headers,
+            body:    JSON.stringify({ word: msg.word, context: msg.context || '', lang, model: modelToUse }),
+          });
+          return resp;
+        }
+
+        // First attempt with requested model
+        let resp = await callDefine(model);
+
+        // If the chosen provider is down/unconfigured, fall back to Sonnet once.
+        // (Common when Gemini/GPT keys are not set on the server.)
+        if (!resp.ok && resp.status >= 500 && model !== 'sonnet') {
+          resp = await callDefine('sonnet');
+        }
 
         if (resp.status === 429) throw new Error('Too many requests — wait a moment.');
         if (!resp.ok) {
