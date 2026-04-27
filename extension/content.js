@@ -409,6 +409,14 @@ function posClass(pos) {
   return 'pos-other';
 }
 
+function normalizePos(pos) {
+  if (!pos) return '';
+  let s = String(pos).trim();
+  // Some model responses may include a prefix like "English label: VERB".
+  s = s.replace(/^\s*english\s*label\s*:\s*/i, '').trim();
+  return s;
+}
+
 function svgBookmark(filled) {
   return filled
     ? `<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>`
@@ -555,6 +563,7 @@ function renderResult(word, data) {
   const hasIPA   = data.ipa       && data.ipa       !== 'null';
   const isPhrase = word.trim().split(/\s+/).length > 1;
   const model    = currentModel;
+  const posText  = normalizePos(data.pos);
 
   const defBlock = isPhrase
     ? `${data.definition  ? `<div class="lx-def">${esc(data.definition)}</div>`  : ''}
@@ -567,7 +576,7 @@ function renderResult(word, data) {
       <span class="lx-word">${esc(word)}</span>
       ${isPhrase
         ? `<span class="lx-pos pos-other">phrase</span>`
-        : (data.pos ? `<span class="lx-pos ${posClass(data.pos)}">${esc(data.pos)}</span>` : '')}
+        : (posText ? `<span class="lx-pos ${posClass(posText)}">${esc(posText)}</span>` : '')}
       <button class="lx-close">×</button>
     </div>
     ${hasIPA ? `<div class="lx-ipa">${esc(data.ipa)}</div>` : ''}
