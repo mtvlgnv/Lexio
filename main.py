@@ -3,13 +3,16 @@ import os
 import json
 import secrets
 import datetime
+import html as _html
+import ipaddress
+import socket as _socket
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Request, Depends, Header, BackgroundTasks, File, UploadFile
+from fastapi import FastAPI, HTTPException, Request, Depends, Header, BackgroundTasks, File, UploadFile, Form
 from sqlalchemy import func
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field, AnyHttpUrl, EmailStr
 import anthropic
 import openai
@@ -220,7 +223,13 @@ def get_db():
 # ── Auth helpers ─────────────────────────────────────────────────────────────
 
 pwd_ctx    = CryptContext(schemes=["bcrypt"], deprecated="auto")
-SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_hex(32))
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError(
+        "SECRET_KEY environment variable is not set. "
+        "Add SECRET_KEY=<value> to your .env file. "
+        "Generate one with: python -c \"import secrets; print(secrets.token_hex(32))\""
+    )
 ALGORITHM  = "HS256"
 TOKEN_TTL  = datetime.timedelta(days=90)
 
@@ -289,9 +298,10 @@ async def rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONRe
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=["https://lexio.site"],
+    allow_origin_regex=r"chrome-extension://[a-z]{32}",
+    allow_methods=["GET", "POST", "DELETE"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 # ── API Clients ──────────────────────────────────────────────────────────────
@@ -513,6 +523,20 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         raise HTTPException(status_code=502, detail=f"API error: {exc}")
 
 
+def _is_safe_url(url: str) -> bool:
+    """Return False if the URL resolves to a private/reserved IP (SSRF guard)."""
+    from urllib.parse import urlparse
+    try:
+        hostname = urlparse(url).hostname
+        if not hostname:
+            return False
+        ip = ipaddress.ip_address(_socket.gethostbyname(hostname))
+        return (ip.is_global and not ip.is_private and not ip.is_loopback
+                and not ip.is_link_local and not ip.is_reserved and not ip.is_multicast)
+    except Exception:
+        return False
+
+
 # ── /fetch-text ───────────────────────────────────────────────────────────────
 
 @app.post("/fetch-text")
@@ -521,6 +545,9 @@ async def fetch_article(request: Request, payload: FetchRequest):
     try:
         import trafilatura
         url = str(payload.url)
+
+        if not _is_safe_url(url):
+            raise HTTPException(status_code=422, detail="URL not allowed.")
 
         def _extract() -> str | None:
             downloaded = trafilatura.fetch_url(url)
@@ -1071,15 +1098,25 @@ async def admin_stats(db: DBSession = Depends(get_db), _=Depends(_check_admin)):
     }
 
 
+def _make_admin_cookie() -> str:
+    payload = {
+        "admin": True,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=8),
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+def _verify_admin_cookie(request: Request) -> bool:
+    token = request.cookies.get("admin_sess", "")
+    try:
+        data = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return data.get("admin") is True
+    except Exception:
+        return False
+
+
 # ── /admin  (server-side rendered, no JS required) ───────────────────────────
-from fastapi.responses import HTMLResponse
 
-@app.get("/admin", response_class=HTMLResponse)
-@app.get("/admin/", response_class=HTMLResponse)
-async def admin_page(key: str = "", db: DBSession = Depends(get_db)):
-    admin_key = os.getenv("ADMIN_KEY", "")
-
-    login_form = """<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+_LOGIN_FORM_TMPL = """<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lexio Admin</title>
 <style>
@@ -1093,16 +1130,31 @@ button{width:100%;padding:10px;background:#c47028;color:#fff;border:none;border-
 </style></head><body>
 <div class="box">
   <h1>Lexio Admin</h1><p>Enter your admin key to view the dashboard.</p>
-  <form method="get" action="/admin">
+  <form method="post" action="/admin">
     <input name="key" type="password" placeholder="Admin key" autofocus>
     <button type="submit">Access dashboard</button>
   </form>
   {error}
 </div></body></html>"""
 
-    if not key or not admin_key or key != admin_key:
-        error = '<p class="err">Wrong key.</p>' if key else ''
-        return HTMLResponse(login_form.replace("{error}", error))
+@app.post("/admin", response_class=HTMLResponse)
+@app.post("/admin/", response_class=HTMLResponse)
+async def admin_login(request: Request, key: str = Form(...)):
+    admin_key = os.getenv("ADMIN_KEY", "")
+    if not admin_key or key != admin_key:
+        error_html = _LOGIN_FORM_TMPL.replace("{error}", '<p class="err">Wrong key.</p>')
+        return HTMLResponse(error_html, status_code=401)
+    resp = RedirectResponse(url="/admin", status_code=303)
+    resp.set_cookie("admin_sess", _make_admin_cookie(),
+                    httponly=True, secure=True, samesite="strict", max_age=28800)
+    return resp
+
+
+@app.get("/admin", response_class=HTMLResponse)
+@app.get("/admin/", response_class=HTMLResponse)
+async def admin_page(request: Request, db: DBSession = Depends(get_db)):
+    if not _verify_admin_cookie(request):
+        return HTMLResponse(_LOGIN_FORM_TMPL.replace("{error}", ""))
 
     # ── Gather all stats ──────────────────────────────────────────────────────
     now   = datetime.datetime.utcnow()
@@ -1232,11 +1284,13 @@ button{width:100%;padding:10px;background:#c47028;color:#fff;border:none;border-
                 f'<span style="width:8px;height:8px;border-radius:50%;background:{dot};flex-shrink:0;display:inline-block"></span>'
                 f'{label}</span>')
 
+    def _h(s): return _html.escape(str(s or "—"))
+
     tr_rows = "".join(
-        f'<tr style="border-bottom:1px solid #f0f0f0;cursor:pointer" onclick="location.href=\'/admin/user/{u.id}?key={key}\'">'
+        f'<tr style="border-bottom:1px solid #f0f0f0;cursor:pointer" onclick="location.href=\'/admin/user/{u.id}\'">'
         f'<td style="padding:9px 14px;color:#aaa">{u.id}</td>'
-        f'<td style="padding:9px 14px"><a href="/admin/user/{u.id}?key={key}" style="color:#c47028;font-weight:500;text-decoration:none">{u.name or "—"}</a></td>'
-        f'<td style="padding:9px 14px">{u.email}</td>'
+        f'<td style="padding:9px 14px"><a href="/admin/user/{u.id}" style="color:#c47028;font-weight:500;text-decoration:none">{_h(u.name or "—")}</a></td>'
+        f'<td style="padding:9px 14px">{_h(u.email)}</td>'
         f'<td style="padding:9px 14px"><span style="padding:2px 8px;border-radius:20px;font-size:.65rem;font-weight:700;text-transform:uppercase;'
         f'background:{"#dbeafe;color:#1d4ed8" if u.google_id else "#dcfce7;color:#15803d"}">'
         f'{"oauth" if u.google_id else "password"}</span></td>'
@@ -1260,7 +1314,7 @@ a{{color:#c47028;text-decoration:none}}
   <strong>Lexio</strong>
   <span style="font-size:.65rem;font-weight:700;padding:2px 7px;background:#fef3e2;color:#c47028;border-radius:20px;text-transform:uppercase;letter-spacing:.04em">Admin</span>
   <span style="margin-left:auto;font-size:.75rem;color:#aaa">Generated {now.strftime("%b %-d, %Y %H:%M")} UTC</span>
-  <a href="/admin?key={key}" style="margin-left:12px;padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555">↻ Refresh</a>
+  <a href="/admin" style="margin-left:12px;padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555">↻ Refresh</a>
   <a href="/admin" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555">Sign out</a>
 </div>
 
@@ -1330,9 +1384,8 @@ a{{color:#c47028;text-decoration:none}}
 
 # ── /admin/user/{user_id} ────────────────────────────────────────────────────
 @app.get("/admin/user/{user_id}", response_class=HTMLResponse)
-async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends(get_db)):
-    admin_key = os.getenv("ADMIN_KEY", "")
-    if not key or not admin_key or key != admin_key:
+async def admin_user_detail(user_id: int, request: Request, db: DBSession = Depends(get_db)):
+    if not _verify_admin_cookie(request):
         return HTMLResponse('<meta http-equiv="refresh" content="0;url=/admin">', status_code=302)
 
     user = db.query(User).filter(User.id == user_id).first()
@@ -1370,6 +1423,8 @@ async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends
         .order_by(WordBankEntry.saved_at.desc())
         .all()
     )
+
+    def _h(s): return _html.escape(str(s or "—"))
 
     # ── Sparkline ─────────────────────────────────────────────────────────────
     maxv = max(daily_counts) if daily_counts else 1
@@ -1425,7 +1480,7 @@ async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends
             top_words_html += (
                 f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
                 f'<span style="color:#bbb;font-size:.65rem;width:14px;text-align:right">{i+1}</span>'
-                f'<span style="flex:1;font-family:Georgia,serif;font-size:.85rem">{r.word}</span>'
+                f'<span style="flex:1;font-family:Georgia,serif;font-size:.85rem">{_h(r.word)}</span>'
                 f'<div style="width:60px;height:4px;background:#eee;border-radius:2px"><div style="width:{pct}%;height:4px;background:#c47028;border-radius:2px"></div></div>'
                 f'<span style="color:#aaa;font-size:.7rem;min-width:18px;text-align:right">{r.n}</span>'
                 f'</div>'
@@ -1441,9 +1496,9 @@ async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends
             saved = e.saved_at.strftime("%b %-d, %Y") if e.saved_at else "—"
             wb_html += (
                 f'<tr style="border-bottom:1px solid #f0f0f0">'
-                f'<td style="padding:8px 14px;font-family:Georgia,serif;font-weight:500">{e.word}</td>'
-                f'<td style="padding:8px 14px;color:#555;font-size:.8rem">{d.get("pos","—")}</td>'
-                f'<td style="padding:8px 14px;color:#555;font-size:.8rem;max-width:340px">{d.get("definition","—")}</td>'
+                f'<td style="padding:8px 14px;font-family:Georgia,serif;font-weight:500">{_h(e.word)}</td>'
+                f'<td style="padding:8px 14px;color:#555;font-size:.8rem">{_h(d.get("pos","—"))}</td>'
+                f'<td style="padding:8px 14px;color:#555;font-size:.8rem;max-width:340px">{_h(d.get("definition","—"))}</td>'
                 f'<td style="padding:8px 14px;color:#aaa;font-size:.78rem">{saved}</td>'
                 f'</tr>'
             )
@@ -1465,7 +1520,7 @@ async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends
 
     html = f"""<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{user.name or user.email} — Lexio Admin</title>
+<title>{_h(user.name or user.email)} — Lexio Admin</title>
 <style>*{{box-sizing:border-box;margin:0;padding:0}}body{{font-family:system-ui,sans-serif;background:#f5f4f0;color:#1a1a1a;font-size:14px}}</style>
 </head><body>
 
@@ -1476,8 +1531,8 @@ async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends
   <span style="color:#ddd;margin:0 4px">/</span>
   <span style="font-size:.9rem;color:#555">User #{user.id}</span>
   <div style="margin-left:auto;display:flex;gap:10px">
-    <a href="/admin?key={key}" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555;text-decoration:none">← Dashboard</a>
-    <a href="/admin/user/{user_id}?key={key}" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555;text-decoration:none">↻ Refresh</a>
+    <a href="/admin" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555;text-decoration:none">← Dashboard</a>
+    <a href="/admin/user/{user_id}" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;color:#555;text-decoration:none">↻ Refresh</a>
   </div>
 </div>
 
@@ -1486,11 +1541,11 @@ async def admin_user_detail(user_id: int, key: str = "", db: DBSession = Depends
   <!-- User info -->
   <div style="background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:20px;display:flex;align-items:center;gap:18px;margin-bottom:4px">
     <div style="width:52px;height:52px;border-radius:50%;background:#c47028;color:#fff;font-size:1.3rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-      {(user.name or user.email)[0].upper()}
+      {_h((user.name or user.email)[0].upper())}
     </div>
     <div>
-      <div style="font-size:1.05rem;font-weight:700">{user.name or "—"}</div>
-      <div style="color:#777;font-size:.85rem;margin-top:2px">{user.email}</div>
+      <div style="font-size:1.05rem;font-weight:700">{_h(user.name or "—")}</div>
+      <div style="color:#777;font-size:.85rem;margin-top:2px">{_h(user.email)}</div>
       <div style="color:#aaa;font-size:.75rem;margin-top:4px">{auth_label} · Joined {joined}</div>
     </div>
   </div>
