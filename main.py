@@ -334,8 +334,23 @@ class LoginRequest(BaseModel):
     email:    EmailStr
     password: str
 
+class WBEntry(BaseModel):
+    word:       str = Field(..., min_length=1, max_length=200)
+    pos:        Optional[str] = Field(default=None, max_length=100)
+    ipa:        Optional[str] = Field(default=None, max_length=200)
+    definition: Optional[str] = Field(default=None, max_length=2000)
+    contextual: Optional[str] = Field(default=None, max_length=2000)
+    why:        Optional[str] = Field(default=None, max_length=1000)
+    simpler:    Optional[str] = Field(default=None, max_length=200)
+    etymology:  Optional[str] = Field(default=None, max_length=1000)
+    register:   Optional[str] = Field(default=None, max_length=100)
+    savedAt:    Optional[str] = Field(default=None, max_length=50)
+    context:    Optional[str] = Field(default=None, max_length=1000)
+
+    model_config = {"extra": "ignore"}   # silently drop unknown fields
+
 class WBSyncRequest(BaseModel):
-    entries: list[dict]   # list of word bank objects from the client
+    entries: list[WBEntry] = Field(default_factory=list, max_length=500)
 
 
 # ── Search logging (fire-and-forget, completely anonymous) ────────────────────
@@ -465,7 +480,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         required_keys = ("pos", "contextual")
 
     # Determine which model to use
-    model_choice = (req.model or "haiku").lower().strip()
+    model_choice = (req.model or "sonnet").lower().strip()
 
     # Map user-friendly names to internal names
     model_map = {
@@ -475,7 +490,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         "gpt-4o-mini": "gpt-4-mini",  # alias
         "sonnet": "sonnet",
     }
-    actual_model = model_map.get(model_choice, "haiku")  # default to haiku
+    actual_model = model_map.get(model_choice, "sonnet")  # default to sonnet
 
     try:
         # Call the appropriate API
@@ -500,7 +515,6 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
 
         # Save user's model preference if authenticated
         if user:
-            db = SessionLocal()
             try:
                 user_record = db.query(User).filter(User.id == user.id).first()
                 if user_record and user_record.preferred_model != actual_model:
@@ -508,8 +522,6 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
                     db.commit()
             except Exception:
                 db.rollback()
-            finally:
-                db.close()
 
         # Log anonymously (always) and per-user (when authenticated)
         bg.add_task(_log_search, req.word)
@@ -669,7 +681,7 @@ async def get_models():
         "models": [
             {
                 "id": "haiku",
-                "name": "Claude Haiku",
+                "name": "Claude Haiku 4.5",
                 "provider": "Anthropic",
                 "available": True,  # Always available
                 "description": "Fast and compact model"
@@ -690,7 +702,7 @@ async def get_models():
             },
             {
                 "id": "sonnet",
-                "name": "Claude Sonnet 3.5",
+                "name": "Claude Sonnet 4.5",
                 "provider": "Anthropic",
                 "available": True,
                 "description": "Advanced reasoning model"
@@ -700,18 +712,15 @@ async def get_models():
 
 
 @app.get("/api/user-model")
-async def get_user_model(user: User = Depends(optional_user)):
+async def get_user_model(
+    user:  Optional[User] = Depends(optional_user),
+    db:    DBSession       = Depends(get_db),
+):
     """Get the user's preferred model."""
     if not user:
-        return {"model": "haiku"}
-    db = SessionLocal()
-    try:
-        user_record = db.query(User).filter(User.id == user.id).first()
-        if user_record:
-            return {"model": user_record.preferred_model or "haiku"}
-    finally:
-        db.close()
-    return {"model": "haiku"}
+        return {"model": "sonnet"}
+    user_record = db.query(User).filter(User.id == user.id).first()
+    return {"model": (user_record.preferred_model if user_record else None) or "sonnet"}
 
 
 class ModelUpdateRequest(BaseModel):
@@ -743,6 +752,62 @@ async def api_config():
     }
 
 
+_google_jwks_cache: dict = {"keys": None, "fetched_at": None}
+_GOOGLE_JWKS_TTL = datetime.timedelta(hours=6)
+
+def _get_google_jwks() -> list:
+    now = datetime.datetime.utcnow()
+    if (
+        _google_jwks_cache["keys"] is not None
+        and _google_jwks_cache["fetched_at"] is not None
+        and now - _google_jwks_cache["fetched_at"] < _GOOGLE_JWKS_TTL
+    ):
+        return _google_jwks_cache["keys"]
+    import urllib.request as _ur2
+    import json as _json
+    with _ur2.urlopen("https://www.googleapis.com/oauth2/v3/certs", timeout=8) as r:
+        data = _json.loads(r.read())
+    _google_jwks_cache["keys"] = data.get("keys", [])
+    _google_jwks_cache["fetched_at"] = now
+    return _google_jwks_cache["keys"]
+
+def _verify_google_jwt(token: str, client_id: str) -> dict:
+    """Verify Google ID token locally using cached JWKS. No token in URL."""
+    from jose import jwt as jose_jwt, JWTError as _JWTErr
+    from jose.exceptions import ExpiredSignatureError, JWTClaimsError
+
+    try:
+        header = jose_jwt.get_unverified_header(token)
+    except Exception:
+        raise ValueError("Malformed token header")
+
+    kid = header.get("kid")
+    keys = _get_google_jwks()
+    key  = next((k for k in keys if k.get("kid") == kid), None)
+
+    # If kid not found, refresh cache once and retry
+    if key is None:
+        _google_jwks_cache["fetched_at"] = None
+        keys = _get_google_jwks()
+        key  = next((k for k in keys if k.get("kid") == kid), None)
+
+    if key is None:
+        raise ValueError("Google public key not found")
+
+    claims = jose_jwt.decode(
+        token,
+        key,
+        algorithms=["RS256"],
+        audience=client_id,
+    )
+
+    issuer = claims.get("iss", "")
+    if issuer not in ("https://accounts.google.com", "accounts.google.com"):
+        raise ValueError("Invalid token issuer")
+
+    return claims
+
+
 # ── /auth/google ──────────────────────────────────────────────────────────────
 
 class GoogleAuthRequest(BaseModel):
@@ -752,32 +817,20 @@ class GoogleAuthRequest(BaseModel):
 @limiter.limit("10/minute")
 async def google_auth(request: Request, body: GoogleAuthRequest, db: DBSession = Depends(get_db)):
     """Verify Google ID token and sign in / register the user."""
-    import asyncio, urllib.request as _ur, json as _json
-
     token = body.credential.strip()
+
     google_client_id = os.getenv("GOOGLE_CLIENT_ID", "")
+    if not google_client_id:
+        raise HTTPException(status_code=500, detail="Google Sign-In is not configured.")
 
-    # Verify token via Google's tokeninfo endpoint (no extra libraries needed)
-    def _fetch_tokeninfo():
-        url = f"https://oauth2.googleapis.com/tokeninfo?id_token={token}"
-        try:
-            with _ur.urlopen(url, timeout=6) as r:
-                return _json.loads(r.read()), r.status
-        except Exception as exc:
-            logger.error("/auth/google error: %s", exc)
-            raise HTTPException(status_code=401, detail="Sign-in failed. Please try again.")
-
-    info, status = await asyncio.to_thread(_fetch_tokeninfo)
-
-    if status != 200 or info.get("error"):
-        raise HTTPException(status_code=401, detail="Invalid Google token.")
-
-    # Validate audience (aud must match our client id)
-    if google_client_id and info.get("aud") != google_client_id:
-        raise HTTPException(status_code=401, detail="Token audience mismatch.")
+    try:
+        info = await asyncio.to_thread(_verify_google_jwt, token, google_client_id)
+    except Exception as exc:
+        logger.error("/auth/google local verification failed: %s", exc)
+        raise HTTPException(status_code=401, detail="Sign-in failed. Please try again.")
 
     email = info.get("email")
-    if not email or info.get("email_verified") != "true":
+    if not email or not info.get("email_verified"):
         raise HTTPException(status_code=401, detail="Google account email is not verified.")
 
     google_sub = info.get("sub")  # stable unique Google user ID
@@ -898,17 +951,18 @@ async def sync_wordbank(
 
     # Upsert client entries
     for entry in body.entries:
-        word = (entry.get("word") or "").strip()
+        word = entry.word.strip()
         if not word:
             continue
         key = word.lower()
+        entry_dict = entry.model_dump(exclude_none=True)
         if key in existing:
-            existing[key].data = json.dumps(entry)
+            existing[key].data = json.dumps(entry_dict)
         else:
             new_entry = WordBankEntry(
-                user_id  = user.id,
-                word     = word,
-                data     = json.dumps(entry),
+                user_id = user.id,
+                word    = word,
+                data    = json.dumps(entry_dict),
             )
             db.add(new_entry)
             existing[key] = new_entry
