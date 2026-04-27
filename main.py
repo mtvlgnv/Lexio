@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 import json
 import secrets
@@ -29,6 +30,9 @@ from passlib.context import CryptContext
 from jose import jwt, JWTError
 
 load_dotenv()
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("lexio")
 
 # ── Database ─────────────────────────────────────────────────────────────────
 
@@ -283,7 +287,7 @@ def optional_user(
 
 # ── Rate limiter ─────────────────────────────────────────────────────────────
 
-limiter = Limiter(key_func=get_remote_address)
+limiter = Limiter(key_func=_get_client_ip)
 app = FastAPI(title="Lexio")
 app.state.limiter = limiter
 
@@ -437,26 +441,26 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         # Phrase / sentence: skip pos & ipa, focus on meaning and usage
         prompt = (
             f'The phrase or sentence "{req.word}" appears in this text: "{req.context}"\n'
-            f"{lang_note} Respond ONLY in JSON with no markdown:\n"
-            '{\"definition\": \"plain-English meaning of this phrase/sentence, 1-2 sentences\", '
+            f"{lang_note} Respond ONLY in valid JSON with no markdown:\n"
+            '{\"definition\": \"meaning of this phrase/sentence, 1-2 sentences\", '
             '\"contextual\": \"what it specifically means in this passage, 1-2 sentences\", '
             '\"why\": \"why the author chose this phrasing, 1 sentence\", '
-            '\"register\": \"exactly one of: formal, literary, technical, colloquial, neutral, archaic\"}'
+            '\"register\": \"exactly one of (in English): formal, literary, technical, colloquial, neutral, archaic\"}'
         )
         required_keys = ("definition", "contextual")
     else:
         # Single word: full analysis
         prompt = (
             f'The word "{req.word}" appears in this text: "{req.context}"\n'
-            f"{lang_note} Respond ONLY in JSON with no markdown:\n"
-            '{\"pos\": \"noun/verb/etc (in English)\", '
+            f"{lang_note} Respond ONLY in valid JSON with no markdown:\n"
+            '{\"pos\": \"part of speech in English only, e.g. noun, verb, adjective\", '
             '\"ipa\": \"IPA transcription e.g. /ɪˈfɛm.ər.əl/ — or null if uncertain\", '
             '\"definition\": \"general dictionary definition, 1 sentence\", '
             '\"contextual\": \"definition as used in this passage, 1-2 sentences\", '
             '\"why\": \"why this word rather than a simpler synonym, 1 sentence\", '
             '\"simpler\": \"the simplest common one-word synonym, or null if none\", '
             '\"etymology\": \"brief word origin, e.g. from Latin ephemeron — or null if uncertain\", '
-            '\"register\": \"exactly one of: formal, literary, technical, colloquial, neutral, archaic\"}'
+            '\"register\": \"exactly one of (in English): formal, literary, technical, colloquial, neutral, archaic\"}'
         )
         required_keys = ("pos", "contextual")
 
@@ -514,13 +518,17 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         return {**result, "_usage": {"used": usage["used"], "limit": usage["limit"]}}
 
     except json.JSONDecodeError as exc:
-        raise HTTPException(status_code=502, detail=f"Failed to parse model response: {exc}")
+        logger.error("/define JSON parse error: %s", exc)
+        raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
     except ValueError as exc:
-        raise HTTPException(status_code=502, detail=str(exc))
+        logger.error("/define value error: %s", exc)
+        raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
     except anthropic.APIError as exc:
-        raise HTTPException(status_code=502, detail=f"Anthropic API error: {exc}")
+        logger.error("/define Anthropic error: %s", exc)
+        raise HTTPException(status_code=502, detail="AI provider error. Please try again.")
     except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"API error: {exc}")
+        logger.error("/define unexpected error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=502, detail="An unexpected error occurred. Please try again.")
 
 
 def _is_safe_url(url: str) -> bool:
@@ -571,7 +579,8 @@ async def fetch_article(request: Request, payload: FetchRequest):
     except HTTPException:
         raise
     except Exception as exc:
-        raise HTTPException(status_code=422, detail=str(exc))
+        logger.error("/fetch-text error: %s", exc)
+        raise HTTPException(status_code=422, detail="Could not extract text from that URL.")
 
 
 # ── /stats/top-words ─────────────────────────────────────────────────────────
@@ -755,7 +764,8 @@ async def google_auth(request: Request, body: GoogleAuthRequest, db: DBSession =
             with _ur.urlopen(url, timeout=6) as r:
                 return _json.loads(r.read()), r.status
         except Exception as exc:
-            raise HTTPException(status_code=401, detail=f"Google token verification failed: {exc}")
+            logger.error("/auth/google error: %s", exc)
+            raise HTTPException(status_code=401, detail="Sign-in failed. Please try again.")
 
     info, status = await asyncio.to_thread(_fetch_tokeninfo)
 
@@ -815,7 +825,8 @@ async def apple_auth(request: Request, body: AppleAuthRequest, db: DBSession = D
     try:
         jwks = await asyncio.to_thread(_fetch_jwks)
     except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"Could not fetch Apple public keys: {exc}")
+        logger.error("/auth/apple key fetch error: %s", exc)
+        raise HTTPException(status_code=502, detail="Sign-in failed. Please try again.")
 
     # Decode header to find the right key
     try:
@@ -839,7 +850,8 @@ async def apple_auth(request: Request, body: AppleAuthRequest, db: DBSession = D
             issuer="https://appleid.apple.com",
         )
     except _JWTError as exc:
-        raise HTTPException(status_code=401, detail=f"Apple token invalid: {exc}")
+        logger.error("/auth/apple token invalid: %s", exc)
+        raise HTTPException(status_code=401, detail="Sign-in failed. Please try again.")
 
     email    = payload.get("email")
     apple_sub = payload.get("sub")  # stable unique Apple user ID
@@ -1507,6 +1519,9 @@ async def admin_user_detail(user_id: int, request: Request, db: DBSession = Depe
 
     auth_label = "Google / Apple OAuth" if user.google_id else "Email / password"
     joined = user.created_at.strftime("%b %-d, %Y at %H:%M UTC") if user.created_at else "—"
+    pro_label = "⭐ Pro" if user.is_pro else "Free tier"
+    pro_val   = 1 if user.is_pro else 0
+    pro_badge_style = "background:#fef3e2;color:#c47028;border-color:#f5c87a" if user.is_pro else "background:#f5f5f5;color:#666;border-color:#ddd"
 
     def sec(title):
         return f'<div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#999;margin:28px 0 12px">{title}</div>'
@@ -1547,8 +1562,22 @@ async def admin_user_detail(user_id: int, request: Request, db: DBSession = Depe
       <div style="font-size:1.05rem;font-weight:700">{_h(user.name or "—")}</div>
       <div style="color:#777;font-size:.85rem;margin-top:2px">{_h(user.email)}</div>
       <div style="color:#aaa;font-size:.75rem;margin-top:4px">{auth_label} · Joined {joined}</div>
+      <div style="margin-top:8px">
+        <button onclick="togglePro()" id="pro-btn" style="padding:5px 14px;border:1px solid #ddd;border-radius:20px;font-size:.8rem;cursor:pointer;{pro_badge_style}">{pro_label}</button>
+      </div>
     </div>
   </div>
+  <script>
+  async function togglePro() {{
+    const newVal = {pro_val} ? 0 : 1;
+    await fetch('/admin/user/{user_id}/set-pro', {{
+      method: 'POST',
+      headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{is_pro: newVal}})
+    }});
+    location.reload();
+  }}
+  </script>
 
   {sec("Usage overview")}
   <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">
@@ -1596,6 +1625,43 @@ async def admin_user_detail(user_id: int, request: Request, db: DBSession = Depe
 </body></html>"""
 
     return HTMLResponse(html)
+
+
+# ── /api/admin/user/{user_id}/set-pro (API key auth) ─────────────────────────
+
+@app.post("/api/admin/user/{user_id}/set-pro")
+async def admin_set_pro(
+    user_id: int,
+    body: dict,
+    db: DBSession = Depends(get_db),
+    _: None = Depends(_check_admin),
+):
+    """Toggle is_pro for a user. Body: {"is_pro": 0|1}"""
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    is_pro = int(bool(body.get("is_pro", 0)))
+    user.is_pro = is_pro
+    db.commit()
+    return {"user_id": user_id, "is_pro": is_pro}
+
+
+@app.post("/admin/user/{user_id}/set-pro", response_class=JSONResponse)
+async def admin_set_pro_ui(
+    user_id: int,
+    request: Request,
+    db: DBSession = Depends(get_db),
+):
+    if not _verify_admin_cookie(request):
+        raise HTTPException(status_code=403, detail="Forbidden")
+    body = await request.json()
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    is_pro = int(bool(body.get("is_pro", 0)))
+    user.is_pro = is_pro
+    db.commit()
+    return {"user_id": user_id, "is_pro": is_pro}
 
 
 # ── /ocr ─────────────────────────────────────────────────────────────────────
@@ -1666,7 +1732,8 @@ async def ocr_image(request: Request, file: UploadFile = File(...),
     except HTTPException:
         raise
     except Exception as exc:
-        raise HTTPException(status_code=502, detail=f"Vision API error: {exc}")
+        logger.error("/ocr error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=502, detail="Image processing failed. Please try again.")
 
     if not text:
         raise HTTPException(status_code=422, detail="No text found in the image.")
