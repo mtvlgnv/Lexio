@@ -2122,5 +2122,18 @@ async def pro_status(user: User = Depends(current_user), db: DBSession = Depends
     return {"is_pro": bool(u and u.is_pro)}
 
 
+# ── Named static page routes ─────────────────────────────────────────────────
+
+@app.get("/pro", response_class=HTMLResponse, include_in_schema=False)
+async def pro_page():
+    with open("static/pro.html", encoding="utf-8") as f:
+        return HTMLResponse(f.read())
+
+@app.get("/privacy", response_class=HTMLResponse, include_in_schema=False)
+async def privacy_page():
+    with open("static/privacy.html", encoding="utf-8") as f:
+        return HTMLResponse(f.read())
+
+
 # ── Static frontend ───────────────────────────────────────────────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
