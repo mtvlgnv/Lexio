@@ -2126,7 +2126,7 @@ async def pro_status(user: User = Depends(current_user), db: DBSession = Depends
 
 @app.get("/pro", response_class=HTMLResponse, include_in_schema=False)
 async def pro_page():
-    with open("static/pro.html", encoding="utf-8") as f:
+    with open("static/pro/index.html", encoding="utf-8") as f:
         return HTMLResponse(f.read())
 
 @app.get("/privacy", response_class=HTMLResponse, include_in_schema=False)
