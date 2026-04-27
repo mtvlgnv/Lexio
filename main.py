@@ -54,6 +54,7 @@ class User(Base):
     lookup_month     = Column(String, nullable=True)   # "2025-04"
     monthly_ocr      = Column(Integer, default=0, nullable=False)
     ocr_month        = Column(String, nullable=True)
+    token_version    = Column(Integer, default=0, nullable=False)   # incremented on logout
     created_at       = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):
@@ -90,42 +91,89 @@ class AnonUsage(Base):
 
 Base.metadata.create_all(engine)
 
-# ── SQLite migrations (add columns that may not exist yet) ────────────────────
-def _run_migrations():
-    with engine.connect() as conn:
-        # Add google_id column if missing
-        cols = [row[1] for row in conn.execute(__import__('sqlalchemy').text("PRAGMA table_info(users)"))]
-        if "google_id" not in cols:
-            conn.execute(__import__('sqlalchemy').text("ALTER TABLE users ADD COLUMN google_id TEXT"))
-            conn.commit()
-        # Add preferred_model column if missing
-        cols = [row[1] for row in conn.execute(__import__('sqlalchemy').text("PRAGMA table_info(users)"))]
-        if "preferred_model" not in cols:
-            conn.execute(__import__('sqlalchemy').text("ALTER TABLE users ADD COLUMN preferred_model TEXT DEFAULT 'haiku'"))
-            conn.commit()
-        # Add usage / pro columns if missing
-        cols = [row[1] for row in conn.execute(__import__('sqlalchemy').text("PRAGMA table_info(users)"))]
-        for col_name, ddl in [
-            ("is_pro",          "ALTER TABLE users ADD COLUMN is_pro INTEGER NOT NULL DEFAULT 0"),
+# ── SQLite migrations ─────────────────────────────────────────────────────────
+#
+# Each migration is a (version, description, callable) tuple.
+# Applied migrations are tracked in the `schema_version` table so each step
+# runs exactly once, even when new ones are added in future deploys.
+
+from sqlalchemy import text as _sa_text
+
+def _cols(conn, table: str) -> set:
+    """Return the set of column names for *table*."""
+    return {row[1] for row in conn.execute(_sa_text(f"PRAGMA table_info({table})"))}
+
+_MIGRATIONS: list[tuple[int, str, object]] = [
+    (1, "add google_id", lambda conn, _: (
+        conn.execute(_sa_text("ALTER TABLE users ADD COLUMN google_id TEXT"))
+        if "google_id" not in _cols(conn, "users") else None
+    )),
+    (2, "add preferred_model", lambda conn, _: (
+        conn.execute(_sa_text("ALTER TABLE users ADD COLUMN preferred_model TEXT DEFAULT 'haiku'"))
+        if "preferred_model" not in _cols(conn, "users") else None
+    )),
+    (3, "add is_pro", lambda conn, _: (
+        conn.execute(_sa_text("ALTER TABLE users ADD COLUMN is_pro INTEGER NOT NULL DEFAULT 0"))
+        if "is_pro" not in _cols(conn, "users") else None
+    )),
+    (4, "add monthly_lookups/lookup_month", lambda conn, _: [
+        conn.execute(_sa_text(ddl))
+        for col, ddl in [
             ("monthly_lookups", "ALTER TABLE users ADD COLUMN monthly_lookups INTEGER NOT NULL DEFAULT 0"),
             ("lookup_month",    "ALTER TABLE users ADD COLUMN lookup_month TEXT"),
-            ("monthly_ocr",     "ALTER TABLE users ADD COLUMN monthly_ocr INTEGER NOT NULL DEFAULT 0"),
-            ("ocr_month",       "ALTER TABLE users ADD COLUMN ocr_month TEXT"),
-        ]:
-            if col_name not in cols:
-                conn.execute(__import__('sqlalchemy').text(ddl))
-                conn.commit()
-        # Create anon_usage table
-        conn.execute(__import__('sqlalchemy').text("""
-            CREATE TABLE IF NOT EXISTS anon_usage (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                ip TEXT NOT NULL,
-                month TEXT NOT NULL,
-                lookups INTEGER NOT NULL DEFAULT 0,
-                ocr INTEGER NOT NULL DEFAULT 0
+        ] if col not in _cols(conn, "users")
+    ]),
+    (5, "add monthly_ocr/ocr_month", lambda conn, _: [
+        conn.execute(_sa_text(ddl))
+        for col, ddl in [
+            ("monthly_ocr", "ALTER TABLE users ADD COLUMN monthly_ocr INTEGER NOT NULL DEFAULT 0"),
+            ("ocr_month",   "ALTER TABLE users ADD COLUMN ocr_month TEXT"),
+        ] if col not in _cols(conn, "users")
+    ]),
+    (6, "create anon_usage table", lambda conn, _: conn.execute(_sa_text("""
+        CREATE TABLE IF NOT EXISTS anon_usage (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ip TEXT NOT NULL,
+            month TEXT NOT NULL,
+            lookups INTEGER NOT NULL DEFAULT 0,
+            ocr INTEGER NOT NULL DEFAULT 0
+        )
+    """))),
+    (7, "add token_version", lambda conn, _: (
+        conn.execute(_sa_text("ALTER TABLE users ADD COLUMN token_version INTEGER NOT NULL DEFAULT 0"))
+        if "token_version" not in _cols(conn, "users") else None
+    )),
+]
+
+def _run_migrations():
+    with engine.connect() as conn:
+        # Ensure the version-tracking table exists
+        conn.execute(_sa_text("""
+            CREATE TABLE IF NOT EXISTS schema_version (
+                version INTEGER PRIMARY KEY,
+                description TEXT NOT NULL,
+                applied_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%S','now'))
             )
         """))
         conn.commit()
+
+        applied = {row[0] for row in conn.execute(_sa_text("SELECT version FROM schema_version"))}
+
+        for ver, desc, fn in _MIGRATIONS:
+            if ver in applied:
+                continue
+            try:
+                fn(conn, ver)
+                conn.execute(
+                    _sa_text("INSERT INTO schema_version (version, description) VALUES (:v, :d)"),
+                    {"v": ver, "d": desc},
+                )
+                conn.commit()
+                logger.info("Migration %d applied: %s", ver, desc)
+            except Exception as exc:
+                conn.rollback()
+                logger.error("Migration %d failed (%s): %s", ver, desc, exc)
+                raise
 
 _run_migrations()
 
@@ -235,7 +283,7 @@ if not SECRET_KEY:
         "Generate one with: python -c \"import secrets; print(secrets.token_hex(32))\""
     )
 ALGORITHM  = "HS256"
-TOKEN_TTL  = datetime.timedelta(days=90)
+TOKEN_TTL  = datetime.timedelta(days=30)
 
 
 def hash_password(plain: str) -> str:
@@ -244,17 +292,18 @@ def hash_password(plain: str) -> str:
 def verify_password(plain: str, hashed: str) -> bool:
     return pwd_ctx.verify(plain, hashed)
 
-def create_token(user_id: int) -> str:
+def create_token(user_id: int, token_version: int = 0) -> str:
     payload = {
         "sub": str(user_id),
+        "ver": token_version,
         "exp": datetime.datetime.utcnow() + TOKEN_TTL,
     }
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
-def decode_token(token: str) -> int:
+def _decode_token_payload(token: str) -> dict:
+    """Decode JWT and return the raw payload dict."""
     try:
-        data = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        return int(data["sub"])
+        return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except (JWTError, KeyError, ValueError):
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
@@ -264,11 +313,17 @@ def current_user(
 ) -> User:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Not authenticated")
-    token = authorization.split(" ", 1)[1]
-    uid   = decode_token(token)
-    user  = db.query(User).filter(User.id == uid).first()
+    payload = _decode_token_payload(authorization.split(" ", 1)[1])
+    try:
+        uid = int(payload["sub"])
+        ver = int(payload.get("ver", 0))
+    except (KeyError, ValueError):
+        raise HTTPException(status_code=401, detail="Invalid token")
+    user = db.query(User).filter(User.id == uid).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
+    if ver != (user.token_version or 0):
+        raise HTTPException(status_code=401, detail="Token has been revoked — please sign in again")
     return user
 
 def optional_user(
@@ -278,9 +333,13 @@ def optional_user(
     if not authorization or not authorization.startswith("Bearer "):
         return None
     try:
-        token = authorization.split(" ", 1)[1]
-        uid   = decode_token(token)
-        return db.query(User).filter(User.id == uid).first()
+        payload = _decode_token_payload(authorization.split(" ", 1)[1])
+        uid = int(payload["sub"])
+        ver = int(payload.get("ver", 0))
+        user = db.query(User).filter(User.id == uid).first()
+        if user and ver == (user.token_version or 0):
+            return user
+        return None
     except HTTPException:
         return None
 
@@ -651,7 +710,7 @@ async def register(request: Request, body: RegisterRequest, db: DBSession = Depe
     db.add(user)
     db.commit()
     db.refresh(user)
-    return {"token": create_token(user.id), "user": {"id": user.id, "email": user.email, "name": user.name}}
+    return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
 
 
 # ── /auth/login ───────────────────────────────────────────────────────────────
@@ -662,7 +721,7 @@ async def login(request: Request, body: LoginRequest, db: DBSession = Depends(ge
     user = db.query(User).filter(User.email == body.email).first()
     if not user or not user.pwd_hash or not verify_password(body.password, user.pwd_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password.")
-    return {"token": create_token(user.id), "user": {"id": user.id, "email": user.email, "name": user.name}}
+    return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
 
 
 # ── /auth/me ──────────────────────────────────────────────────────────────────
@@ -670,6 +729,63 @@ async def login(request: Request, body: LoginRequest, db: DBSession = Depends(ge
 @app.get("/auth/me")
 async def me(user: User = Depends(current_user)):
     return {"id": user.id, "email": user.email, "name": user.name}
+
+
+# ── /auth/logout ──────────────────────────────────────────────────────────────
+
+@app.post("/auth/logout")
+async def logout(user: User = Depends(current_user), db: DBSession = Depends(get_db)):
+    """Invalidate all existing tokens for this user by bumping token_version."""
+    db.query(User).filter(User.id == user.id).update(
+        {User.token_version: (user.token_version or 0) + 1}
+    )
+    db.commit()
+    return {"ok": True}
+
+
+# ── /auth/change-password ─────────────────────────────────────────────────────
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str = Field(..., min_length=1)
+    new_password:     str = Field(..., min_length=8)
+
+@app.post("/auth/change-password")
+@limiter.limit("5/minute")
+async def change_password(
+    request: Request,
+    body: ChangePasswordRequest,
+    user: User = Depends(current_user),
+    db: DBSession = Depends(get_db),
+):
+    """Change password for email/password accounts; invalidates all existing sessions."""
+    if not user.pwd_hash:
+        raise HTTPException(status_code=400, detail="Password change is not available for social sign-in accounts.")
+    if not verify_password(body.current_password, user.pwd_hash):
+        raise HTTPException(status_code=401, detail="Current password is incorrect.")
+    new_version = (user.token_version or 0) + 1
+    db.query(User).filter(User.id == user.id).update({
+        User.pwd_hash:      hash_password(body.new_password),
+        User.token_version: new_version,
+    })
+    db.commit()
+    # Return a fresh token so the caller stays logged in
+    return {"ok": True, "token": create_token(user.id, new_version)}
+
+
+# ── /auth/account (DELETE) ────────────────────────────────────────────────────
+
+@app.delete("/auth/account", status_code=200)
+async def delete_account(
+    user: User = Depends(current_user),
+    db:   DBSession = Depends(get_db),
+):
+    """Permanently delete the authenticated user's account and all associated data."""
+    uid = user.id
+    db.query(UserSearchLog).filter(UserSearchLog.user_id == uid).delete()
+    db.query(WordBankEntry).filter(WordBankEntry.user_id == uid).delete()
+    db.query(User).filter(User.id == uid).delete()
+    db.commit()
+    return {"ok": True}
 
 
 # ── /api/models ───────────────────────────────────────────────────────────────
@@ -848,7 +964,7 @@ async def google_auth(request: Request, body: GoogleAuthRequest, db: DBSession =
             user.google_id = google_sub
             db.commit()
 
-    return {"token": create_token(user.id), "user": {"id": user.id, "email": user.email, "name": user.name}}
+    return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
 
 
 # ── /auth/apple ───────────────────────────────────────────────────────────────
@@ -931,7 +1047,7 @@ async def apple_auth(request: Request, body: AppleAuthRequest, db: DBSession = D
             user.google_id = f"apple:{apple_sub}"
             db.commit()
 
-    return {"token": create_token(user.id), "user": {"id": user.id, "email": user.email, "name": user.name}}
+    return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
 
 
 # ── /wordbank/sync ────────────────────────────────────────────────────────────

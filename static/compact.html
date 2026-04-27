@@ -323,6 +323,22 @@
       transition: background 0.12s, color 0.12s;
     }
     #copy-btn:hover { background: var(--bg); color: var(--text); }
+
+    /* Model selector */
+    #model-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 6px;
+      font-family: inherit;
+      font-size: 0.7rem;
+      color: var(--muted);
+      cursor: pointer;
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    #model-select:focus { border-color: var(--accent); color: var(--text); }
   </style>
 </head>
 <body>
@@ -338,6 +354,12 @@
   <textarea id="paste-area" placeholder="Paste any text…" spellcheck="false"></textarea>
   <div class="input-row">
     <span id="char-count"></span>
+    <select id="model-select" title="AI model" onchange="saveModel(this.value)">
+      <option value="sonnet">Sonnet</option>
+      <option value="haiku">Haiku</option>
+      <option value="gpt-4-mini">GPT-4o Mini</option>
+      <option value="gemini">Gemini</option>
+    </select>
     <button id="edit-btn" class="btn-ghost hidden" onclick="resetToEdit()">← Edit</button>
     <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze</button>
   </div>
@@ -375,6 +397,17 @@ let context = '';
 let activeToken = null;
 let cache = new Map();
 let currentResult = null;
+
+// ── Model preference ────────────────────────────────────────
+const MODEL_KEY = 'lexio_compact_model';
+const modelSelect = document.getElementById('model-select');
+const savedModel = localStorage.getItem(MODEL_KEY) || 'sonnet';
+modelSelect.value = savedModel;
+function saveModel(val) {
+  localStorage.setItem(MODEL_KEY, val);
+  cache.clear(); // cache is model-specific
+}
+function getModel() { return localStorage.getItem(MODEL_KEY) || 'sonnet'; }
 
 const textarea  = document.getElementById('paste-area');
 const charCount = document.getElementById('char-count');
@@ -455,7 +488,8 @@ function handleClick(span, word) {
 /* ── Fetch ─────────────────────────────────────────────── */
 async function fetchDef(word) {
   hideError();
-  const key = word.toLowerCase() + '::' + context.slice(0, 120);
+  const model = getModel();
+  const key = word.toLowerCase() + '::' + context.slice(0, 120) + '::' + model;
   if (cache.has(key)) {
     if (activeToken) activeToken.classList.remove('pulsing');
     showResult(word, cache.get(key));
@@ -467,7 +501,7 @@ async function fetchDef(word) {
     const resp = await fetch('/define', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ word, context, lang: 'auto' }),
+      body: JSON.stringify({ word, context, lang: 'auto', model }),
     });
     if (!resp.ok) {
       const e = await resp.json().catch(() => ({ detail: resp.statusText }));
