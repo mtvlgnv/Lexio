@@ -3142,6 +3142,8 @@ function triggerGoogleSignIn() {
   const nonce = typeof crypto.randomUUID === 'function'
     ? crypto.randomUUID()
     : Math.random().toString(36).slice(2) + Date.now();
+  // Store nonce so we can verify it matches the claim inside the returned id_token
+  try { sessionStorage.setItem('google_oauth_nonce', nonce); } catch {}
   const params = new URLSearchParams({
     client_id:     _googleClientId,
     redirect_uri:  location.origin + '/google-callback.html',
@@ -3161,7 +3163,10 @@ function triggerGoogleSignIn() {
     if (e.origin !== location.origin || e.data?.type !== 'google-credential') return;
     window.removeEventListener('message', handler);
     try { popup.close(); } catch {}
-    await _oauthSignIn('/auth/google', { credential: e.data.credential });
+    // Retrieve and clear the stored nonce before sending to backend
+    let storedNonce = null;
+    try { storedNonce = sessionStorage.getItem('google_oauth_nonce'); sessionStorage.removeItem('google_oauth_nonce'); } catch {}
+    await _oauthSignIn('/auth/google', { credential: e.data.credential, nonce: storedNonce });
   };
   window.addEventListener('message', handler);
 }
@@ -3396,10 +3401,10 @@ loadUsage();
         <li>✓ Word bank sync across devices</li>
         <li>✓ Priority support</li>
       </ul>
-      <a class="pro-plan-btn" href="mailto:hello@lexio.site?subject=Lexio%20Pro%20upgrade" target="_blank">
-        Get Pro →
+      <a class="pro-plan-btn" href="/pro" onclick="closeProModal()">
+        See Pro plans →
       </a>
-      <p class="pro-plan-note">Reply to this email and we'll activate your account within 24 hours.</p>
+      <p class="pro-plan-note">Instant activation · cancel any time</p>
     </div>
     <p class="pro-modal-reset">Your free quota resets on the 1st of each month.</p>
   </div>

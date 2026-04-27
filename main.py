@@ -502,11 +502,21 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
 
     lang_code    = (req.lang or 'auto').strip().lower()
     lang_name    = LANG_NAMES.get(lang_code)   # None if auto/unknown
-    lang_note = (
-        f"You MUST respond entirely in {lang_name}. Every field in the JSON must be written in {lang_name}, not English."
-        if lang_name
-        else "Respond in the same language as the input text."
-    )
+
+    # Structural fields (pos, ipa, register, simpler) are always English because
+    # they are used as machine-readable labels in the UI.  Semantic fields
+    # (definition, contextual, why, etymology) are localised when a language is
+    # explicitly chosen, or matched to the input language when lang is 'auto'.
+    if lang_name:
+        lang_note = (
+            f"The semantic fields (definition, contextual, why, etymology) MUST be written entirely in {lang_name}. "
+            f"The structural/label fields (pos, ipa, simpler, register) MUST remain in English."
+        )
+    else:
+        lang_note = (
+            "Write semantic fields (definition, contextual, why, etymology) in the same language as the input text. "
+            "Keep structural/label fields (pos, ipa, simpler, register) in English."
+        )
 
     word_count = len(req.word.strip().split())
     is_phrase   = word_count > 1
@@ -519,7 +529,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
             '{\"definition\": \"meaning of this phrase/sentence, 1-2 sentences\", '
             '\"contextual\": \"what it specifically means in this passage, 1-2 sentences\", '
             '\"why\": \"why the author chose this phrasing, 1 sentence\", '
-            '\"register\": \"exactly one of (in English): formal, literary, technical, colloquial, neutral, archaic\"}'
+            '\"register\": \"exactly one of these English labels: formal, literary, technical, colloquial, neutral, archaic\"}'
         )
         required_keys = ("definition", "contextual")
     else:
@@ -527,14 +537,14 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         prompt = (
             f'The word "{req.word}" appears in this text: "{req.context}"\n'
             f"{lang_note} Respond ONLY in valid JSON with no markdown:\n"
-            '{\"pos\": \"part of speech in English only, e.g. noun, verb, adjective\", '
+            '{\"pos\": \"English label: noun, verb, adjective, adverb, etc.\", '
             '\"ipa\": \"IPA transcription e.g. /ɪˈfɛm.ər.əl/ — or null if uncertain\", '
             '\"definition\": \"general dictionary definition, 1 sentence\", '
             '\"contextual\": \"definition as used in this passage, 1-2 sentences\", '
             '\"why\": \"why this word rather than a simpler synonym, 1 sentence\", '
-            '\"simpler\": \"the simplest common one-word synonym, or null if none\", '
+            '\"simpler\": \"simplest English one-word synonym, or null if none applies\", '
             '\"etymology\": \"brief word origin, e.g. from Latin ephemeron — or null if uncertain\", '
-            '\"register\": \"exactly one of (in English): formal, literary, technical, colloquial, neutral, archaic\"}'
+            '\"register\": \"exactly one of these English labels: formal, literary, technical, colloquial, neutral, archaic\"}'
         )
         required_keys = ("pos", "contextual")
 
@@ -602,18 +612,84 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         raise HTTPException(status_code=502, detail="An unexpected error occurred. Please try again.")
 
 
+def _ip_is_safe(addr: str) -> bool:
+    """Return True only if the IP address is globally routable."""
+    try:
+        ip = ipaddress.ip_address(addr)
+        return (
+            ip.is_global
+            and not ip.is_private
+            and not ip.is_loopback
+            and not ip.is_link_local
+            and not ip.is_reserved
+            and not ip.is_multicast
+            and not ip.is_unspecified
+        )
+    except ValueError:
+        return False
+
 def _is_safe_url(url: str) -> bool:
-    """Return False if the URL resolves to a private/reserved IP (SSRF guard)."""
+    """
+    Return False if any resolved address (IPv4 or IPv6) for the URL's hostname
+    is non-global (SSRF guard).  Uses getaddrinfo so all A/AAAA records are
+    checked — gethostbyname() only returns a single IPv4 result and misses IPv6.
+    """
     from urllib.parse import urlparse
     try:
-        hostname = urlparse(url).hostname
+        parsed = urlparse(url)
+        hostname = parsed.hostname
         if not hostname:
             return False
-        ip = ipaddress.ip_address(_socket.gethostbyname(hostname))
-        return (ip.is_global and not ip.is_private and not ip.is_loopback
-                and not ip.is_link_local and not ip.is_reserved and not ip.is_multicast)
+        scheme = parsed.scheme.lower()
+        if scheme not in ("http", "https"):
+            return False
+        # getaddrinfo returns all A + AAAA records
+        results = _socket.getaddrinfo(hostname, None)
+        if not results:
+            return False
+        for res in results:
+            addr = res[4][0]
+            if not _ip_is_safe(addr):
+                return False
+        return True
     except Exception:
         return False
+
+
+def _safe_fetch(url: str, max_redirects: int = 3) -> str | None:
+    """
+    Fetch *url* with a redirect-following loop that re-checks SSRF safety on
+    every hop.  Returns the raw HTML/text or None on failure.
+    """
+    import urllib.request as _ur
+    import urllib.error as _ue
+
+    current_url = url
+    for _ in range(max_redirects + 1):
+        if not _is_safe_url(current_url):
+            return None
+        req = _ur.Request(
+            current_url,
+            headers={"User-Agent": "Mozilla/5.0 (compatible; Lexio/1.0; +https://lexio.site)"},
+        )
+        try:
+            with _ur.urlopen(req, timeout=10) as resp:
+                # Follow redirect manually so we can re-check the destination
+                final_url = resp.geturl()
+                if final_url != current_url:
+                    current_url = final_url
+                    continue
+                content_type = resp.headers.get_content_type() or ""
+                if not any(t in content_type for t in ("html", "text", "xml")):
+                    return None
+                return resp.read(2_000_000).decode("utf-8", errors="replace")
+        except _ue.HTTPError as exc:
+            if exc.code in (301, 302, 303, 307, 308) and exc.headers.get("Location"):
+                from urllib.parse import urljoin
+                current_url = urljoin(current_url, exc.headers["Location"])
+                continue
+            return None
+    return None   # too many redirects
 
 
 # ── /fetch-text ───────────────────────────────────────────────────────────────
@@ -629,11 +705,11 @@ async def fetch_article(request: Request, payload: FetchRequest):
             raise HTTPException(status_code=422, detail="URL not allowed.")
 
         def _extract() -> str | None:
-            downloaded = trafilatura.fetch_url(url)
-            if not downloaded:
+            html_content = _safe_fetch(url)
+            if not html_content:
                 return None
             return trafilatura.extract(
-                downloaded,
+                html_content,
                 include_comments=False,
                 include_tables=False,
                 favor_precision=True,
@@ -887,8 +963,11 @@ def _get_google_jwks() -> list:
     _google_jwks_cache["fetched_at"] = now
     return _google_jwks_cache["keys"]
 
-def _verify_google_jwt(token: str, client_id: str) -> dict:
-    """Verify Google ID token locally using cached JWKS. No token in URL."""
+def _verify_google_jwt(token: str, client_id: str, expected_nonce: Optional[str] = None) -> dict:
+    """
+    Verify Google ID token locally using cached JWKS.
+    If *expected_nonce* is provided it must match the nonce claim in the token.
+    """
     from jose import jwt as jose_jwt, JWTError as _JWTErr
     from jose.exceptions import ExpiredSignatureError, JWTClaimsError
 
@@ -921,6 +1000,12 @@ def _verify_google_jwt(token: str, client_id: str) -> dict:
     if issuer not in ("https://accounts.google.com", "accounts.google.com"):
         raise ValueError("Invalid token issuer")
 
+    # Nonce binding: reject the token if the caller supplied a nonce and it doesn't match
+    if expected_nonce is not None:
+        token_nonce = claims.get("nonce", "")
+        if not token_nonce or token_nonce != expected_nonce:
+            raise ValueError("Nonce mismatch — possible replay attack")
+
     return claims
 
 
@@ -928,6 +1013,7 @@ def _verify_google_jwt(token: str, client_id: str) -> dict:
 
 class GoogleAuthRequest(BaseModel):
     credential: str
+    nonce: Optional[str] = Field(default=None, max_length=256)
 
 @app.post("/auth/google")
 @limiter.limit("10/minute")
@@ -940,7 +1026,7 @@ async def google_auth(request: Request, body: GoogleAuthRequest, db: DBSession =
         raise HTTPException(status_code=500, detail="Google Sign-In is not configured.")
 
     try:
-        info = await asyncio.to_thread(_verify_google_jwt, token, google_client_id)
+        info = await asyncio.to_thread(_verify_google_jwt, token, google_client_id, body.nonce)
     except Exception as exc:
         logger.error("/auth/google local verification failed: %s", exc)
         raise HTTPException(status_code=401, detail="Sign-in failed. Please try again.")
@@ -1408,7 +1494,7 @@ async def admin_page(request: Request, db: DBSession = Depends(get_db)):
             out.append(
                 f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">'
                 f'<span style="color:#bbb;font-size:.65rem;width:14px;text-align:right">{i+1}</span>'
-                f'<span style="flex:1;font-family:Georgia,serif;font-size:.84rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{r.word}</span>'
+                f'<span style="flex:1;font-family:Georgia,serif;font-size:.84rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{_h(r.word)}</span>'
                 f'<div style="width:52px;height:4px;background:#eee;border-radius:2px"><div style="width:{pct}%;height:4px;background:#c47028;border-radius:2px"></div></div>'
                 f'<span style="color:#aaa;font-size:.7rem;min-width:18px;text-align:right">{r.n}</span>'
                 f'</div>'
@@ -1938,6 +2024,102 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
         "lookup": {"used": row.lookups if row else 0, "limit": FREE_LOOKUP_LIMIT},
         "ocr":    {"used": row.ocr     if row else 0, "limit": FREE_OCR_LIMIT},
     }
+
+
+# ── Stripe ───────────────────────────────────────────────────────────────────
+
+@app.post("/stripe/checkout")
+@limiter.limit("10/minute")
+async def stripe_checkout(
+    request: Request,
+    user: User = Depends(current_user),
+):
+    """
+    Create a Stripe Checkout Session for the Lexio Pro monthly subscription.
+    Returns {"url": <hosted checkout URL>}.
+    """
+    import stripe as _stripe
+    _stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
+    price_id = os.getenv("STRIPE_PRICE_ID", "")
+    if not _stripe.api_key or not price_id:
+        raise HTTPException(status_code=500, detail="Payments are not configured yet.")
+
+    if user.is_pro:
+        raise HTTPException(status_code=400, detail="Your account is already Pro.")
+
+    session = _stripe.checkout.Session.create(
+        mode="subscription",
+        line_items=[{"price": price_id, "quantity": 1}],
+        customer_email=user.email,
+        metadata={"lexio_user_id": str(user.id)},
+        success_url=os.getenv("SITE_URL", "https://lexio.site") + "/pro?success=1",
+        cancel_url=os.getenv("SITE_URL",  "https://lexio.site") + "/pro?cancelled=1",
+    )
+    return {"url": session.url}
+
+
+@app.post("/stripe/webhook")
+async def stripe_webhook(request: Request, db: DBSession = Depends(get_db)):
+    """
+    Receive Stripe webhook events.  On checkout.session.completed activate Pro
+    for the corresponding user.  Signature is verified against STRIPE_WEBHOOK_SECRET.
+    """
+    import stripe as _stripe
+    _stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
+    webhook_secret  = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+
+    payload   = await request.body()
+    sig_header = request.headers.get("stripe-signature", "")
+
+    try:
+        event = _stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
+    except _stripe.error.SignatureVerificationError:
+        raise HTTPException(status_code=400, detail="Invalid Stripe signature")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Malformed webhook payload")
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        uid_str = (session.get("metadata") or {}).get("lexio_user_id")
+        if uid_str:
+            try:
+                uid = int(uid_str)
+                db.query(User).filter(User.id == uid).update({User.is_pro: 1})
+                db.commit()
+                logger.info("Stripe: activated Pro for user %d", uid)
+            except Exception as exc:
+                logger.error("Stripe webhook DB update failed: %s", exc)
+
+    elif event["type"] in ("customer.subscription.deleted", "customer.subscription.updated"):
+        # Handle cancellation / lapse — mark user as non-pro
+        sub = event["data"]["object"]
+        status = sub.get("status", "")
+        if status in ("canceled", "unpaid", "past_due"):
+            customer_email = None
+            try:
+                customer_id = sub.get("customer")
+                if customer_id:
+                    import stripe as _s2
+                    _s2.api_key = _stripe.api_key
+                    cust = _s2.Customer.retrieve(customer_id)
+                    customer_email = cust.get("email")
+            except Exception:
+                pass
+            if customer_email:
+                db.query(User).filter(User.email == customer_email).update({User.is_pro: 0})
+                db.commit()
+                logger.info("Stripe: revoked Pro for %s (status=%s)", customer_email, status)
+
+    return {"received": True}
+
+
+# ── /api/pro-status ───────────────────────────────────────────────────────────
+
+@app.get("/api/pro-status")
+async def pro_status(user: User = Depends(current_user), db: DBSession = Depends(get_db)):
+    """Return Pro status for the authenticated user (used by the /pro page)."""
+    u = db.query(User).filter(User.id == user.id).first()
+    return {"is_pro": bool(u and u.is_pro)}
 
 
 # ── Static frontend ───────────────────────────────────────────────────────────
