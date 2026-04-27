@@ -34,6 +34,61 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("lexio")
 
+# ── JSON parsing helpers ──────────────────────────────────────────────────────
+
+def _extract_json_object(text: str) -> str | None:
+    """
+    Best-effort extraction of the first top-level JSON object from a string.
+    Helps when models wrap JSON with prose or code fences.
+    """
+    if not text:
+        return None
+    s = text.strip()
+    start = s.find("{")
+    if start < 0:
+        return None
+    depth = 0
+    in_str = False
+    esc = False
+    for i in range(start, len(s)):
+        ch = s[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == "\"":
+                in_str = False
+        else:
+            if ch == "\"":
+                in_str = True
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return s[start : i + 1]
+    return None
+
+def _safe_json_loads(text: str) -> dict:
+    """
+    Parse model output as JSON. First try strict json.loads; if that fails,
+    try extracting a JSON object and parsing that.
+    """
+    try:
+        obj = json.loads(text)
+        if not isinstance(obj, dict):
+            raise ValueError("Model output JSON is not an object")
+        return obj
+    except Exception:
+        extracted = _extract_json_object(text)
+        if not extracted:
+            raise
+        obj = json.loads(extracted)
+        if not isinstance(obj, dict):
+            raise ValueError("Extracted JSON is not an object")
+        return obj
+
 # ── Database ─────────────────────────────────────────────────────────────────
 
 DATABASE_URL = "sqlite:///./lexio.db"
@@ -577,7 +632,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
             lines = text.splitlines()
             text  = "\n".join(l for l in lines if not l.startswith("```")).strip()
 
-        result = json.loads(text)
+        result = _safe_json_loads(text)
         for key in required_keys:
             if key not in result:
                 raise ValueError(f"Missing key: {key}")
