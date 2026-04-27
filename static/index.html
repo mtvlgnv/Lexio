@@ -1357,6 +1357,10 @@
         </div>
       </div>
       <div class="menu-section">
+        <button class="menu-item" id="menu-pro-btn" onclick="handleProCta();closeMenu()" style="color:var(--accent);font-weight:600">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>Upgrade to Pro — $4.99/mo</span>
+        </button>
         <button class="menu-item" data-action="desktop" onclick="openDesktopModal();closeMenu()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           <span data-i18n="macApp">Get the Mac app</span>
@@ -3501,9 +3505,10 @@ initializeModelSelector();
 loadUsage();
 
 /* ── Pro section CTA ────────────────────────────────────── */
+let _userIsPro = false;
+
 async function handleProCta() {
   const token = localStorage.getItem('lexio_token');
-  const btn = document.getElementById('lp-pro-btn');
 
   // Not logged in → open auth modal
   if (!token) {
@@ -3511,22 +3516,15 @@ async function handleProCta() {
     return;
   }
 
-  // Check if already Pro
-  try {
-    const r = await fetch('/api/pro-status', { headers: { 'Authorization': 'Bearer ' + token } });
-    if (r.ok) {
-      const d = await r.json();
-      if (d.is_pro) {
-        btn.textContent = 'Already Pro ✓';
-        btn.disabled = true;
-        return;
-      }
-    }
-  } catch {}
+  if (_userIsPro) {
+    const lp = document.getElementById('lp-pro-btn');
+    if (lp) { lp.textContent = 'Already Pro ✓'; lp.disabled = true; }
+    return;
+  }
 
   // Start Stripe checkout
-  btn.textContent = 'Preparing checkout…';
-  btn.disabled = true;
+  const btns = [document.getElementById('lp-pro-btn'), document.getElementById('menu-pro-btn')];
+  btns.forEach(b => { if (b) { b.textContent = 'Preparing checkout…'; b.disabled = true; } });
   try {
     const r = await fetch('/stripe/checkout', {
       method: 'POST',
@@ -3537,15 +3535,32 @@ async function handleProCta() {
       window.location.href = d.url;
     } else {
       alert(d.detail || 'Something went wrong — please try again.');
-      btn.textContent = 'Get Pro →';
-      btn.disabled = false;
+      btns.forEach(b => { if (b) { b.textContent = b.id === 'lp-pro-btn' ? 'Get Pro →' : 'Upgrade to Pro — $4.99/mo'; b.disabled = false; } });
     }
   } catch {
     alert('Could not connect to the payment server — please try again.');
-    btn.textContent = 'Get Pro →';
-    btn.disabled = false;
+    btns.forEach(b => { if (b) { b.textContent = b.id === 'lp-pro-btn' ? 'Get Pro →' : 'Upgrade to Pro — $4.99/mo'; b.disabled = false; } });
   }
 }
+
+async function checkProStatus() {
+  const token = localStorage.getItem('lexio_token');
+  if (!token) return;
+  try {
+    const r = await fetch('/api/pro-status', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (r.ok) {
+      const d = await r.json();
+      _userIsPro = !!d.is_pro;
+      if (_userIsPro) {
+        const lp = document.getElementById('lp-pro-btn');
+        if (lp) { lp.textContent = 'Already Pro ✓'; lp.disabled = true; }
+        const mp = document.getElementById('menu-pro-btn');
+        if (mp) mp.style.display = 'none'; // hide from menu if already Pro
+      }
+    }
+  } catch {}
+}
+checkProStatus();
 </script>
 
 <!-- ── Pro upgrade modal ──────────────────────────────── -->
