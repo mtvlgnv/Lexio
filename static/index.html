@@ -3244,24 +3244,8 @@ function signOut() {
   closeAuthModal();
 }
 
-/* ── Paddle Billing ─────────────────────────────────────────── */
-let _paddlePriceId = null;
-
-function _initPaddle(token) {
-  if (!token || typeof Paddle === 'undefined') return;
-  // Sandbox tokens start with "test_" — must set environment before Initialize
-  if (token.startsWith('test_')) {
-    Paddle.Environment.set('sandbox');
-  }
-  Paddle.Initialize({
-    token,
-    eventCallback: (e) => {
-      if (e.name === 'checkout.error') {
-        console.error('Paddle checkout error:', e.data);
-      }
-    },
-  });
-}
+/* ── Gumroad ────────────────────────────────────────────────── */
+let _gumroadUrl = null;
 
 /* ── OAuth Sign-in (Google) ──────────────────────────────────── */
 let _googleClientId = null;
@@ -3273,19 +3257,7 @@ async function initOAuthProviders() {
     const cfg = await res.json();
     _googleClientId = cfg.google_client_id || null;
 
-    // Init Paddle if configured
-    if (cfg.paddle_client_token) {
-      _paddlePriceId = cfg.paddle_price_id || null;
-      if (typeof Paddle !== 'undefined') {
-        _initPaddle(cfg.paddle_client_token);
-      } else {
-        // Load Paddle.js then init
-        const s = document.createElement('script');
-        s.src = 'https://cdn.paddle.com/paddle/v2/paddle.js';
-        s.onload = () => _initPaddle(cfg.paddle_client_token);
-        document.head.appendChild(s);
-      }
-    }
+    _gumroadUrl = cfg.gumroad_url || null;
 
     if (!_googleClientId) return;
     // Show the button as soon as we have the client ID — no GSI dependency
@@ -3554,23 +3526,20 @@ let _userIsPro = false;
 
 async function handleProCta() {
   const token = localStorage.getItem('lexio_token');
-
-  // Not logged in → open auth modal
   if (!token) { openAuthModal?.(); return; }
 
-  // Verify token is still valid before opening checkout
+  // Verify token and get fresh user data
+  let usr = {};
   try {
     const r = await fetch('/auth/me', { headers: { Authorization: 'Bearer ' + token } });
     if (!r.ok) {
-      // Token expired — clear it and ask to sign in again
       localStorage.removeItem('lexio_token');
       localStorage.removeItem('lexio_user');
       openAuthModal?.();
       return;
     }
-    // Refresh user data from server
-    const fresh = await r.json();
-    try { localStorage.setItem('lexio_user', JSON.stringify(fresh)); } catch {}
+    usr = await r.json();
+    try { localStorage.setItem('lexio_user', JSON.stringify(usr)); } catch {}
   } catch { openAuthModal?.(); return; }
 
   if (_userIsPro) {
@@ -3579,24 +3548,18 @@ async function handleProCta() {
     return;
   }
 
-  if (!_paddlePriceId || typeof Paddle === 'undefined') {
+  if (!_gumroadUrl) {
     alert('Payments are not configured yet — please try again later.');
     return;
   }
 
-  try {
-    const usr = JSON.parse(localStorage.getItem('lexio_user') || '{}');
-    const checkoutOpts = {
-      items: [{ priceId: _paddlePriceId, quantity: 1 }],
-      settings: { successUrl: location.origin + '/?pro=success' },
-    };
-    if (usr.email) checkoutOpts.customer = { email: usr.email };
-    if (usr.id)    checkoutOpts.customData = { lexio_user_id: String(usr.id) };
-    Paddle.Checkout.open(checkoutOpts);
-  } catch (e) {
-    console.error('Paddle open error:', e);
-    alert('Could not open checkout — please try again.');
-  }
+  // Redirect to Gumroad with user ID embedded in URL params
+  // (Gumroad echoes url_params back in the webhook so we can identify the buyer)
+  const url = new URL(_gumroadUrl);
+  url.searchParams.set('wanted', 'true');
+  if (usr.id)    url.searchParams.set('lexio_user_id', String(usr.id));
+  if (usr.email) url.searchParams.set('email', usr.email);
+  window.location.href = url.toString();
 }
 
 async function checkProStatus() {

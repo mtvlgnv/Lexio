@@ -518,38 +518,40 @@
     } catch {}
   }
 
-  /* ── Paddle init ─────────────────────────────────────────── */
-  let _paddlePriceId = null;
-  async function initPaddle() {
+  /* ── Gumroad ─────────────────────────────────────────────── */
+  let _gumroadUrl = null;
+  async function initGumroad() {
     try {
       const r = await fetch('/api/config');
       if (!r.ok) return;
       const cfg = await r.json();
-      if (!cfg.paddle_client_token) return;
-      _paddlePriceId = cfg.paddle_price_id || null;
-      const s = document.createElement('script');
-      s.src = 'https://cdn.paddle.com/paddle/v2/paddle.js';
-      s.onload = () => Paddle.Initialize({ token: cfg.paddle_client_token });
-      document.head.appendChild(s);
+      _gumroadUrl = cfg.gumroad_url || null;
     } catch {}
   }
-  initPaddle();
+  initGumroad();
   initPage();
 
-  /* ── Paddle checkout ─────────────────────────────────────── */
-  function startCheckout() {
+  async function startCheckout() {
     if (!token) { window.location.href = '/'; return; }
-    if (!_paddlePriceId || typeof Paddle === 'undefined') {
+
+    // Verify token and get fresh user
+    let usr = {};
+    try {
+      const r = await fetch('/auth/me', { headers: { Authorization: 'Bearer ' + token } });
+      if (!r.ok) { window.location.href = '/'; return; }
+      usr = await r.json();
+    } catch { window.location.href = '/'; return; }
+
+    if (!_gumroadUrl) {
       alert('Payments are not configured yet — please try again later.');
       return;
     }
-    const usr = JSON.parse(localStorage.getItem('lexio_user') || '{}');
-    Paddle.Checkout.open({
-      items: [{ priceId: _paddlePriceId, quantity: 1 }],
-      customer: { email: usr.email || undefined },
-      customData: { lexio_user_id: String(usr.id || '') },
-      settings: { successUrl: location.origin + '/?pro=success' },
-    });
+
+    const url = new URL(_gumroadUrl);
+    url.searchParams.set('wanted', 'true');
+    if (usr.id)    url.searchParams.set('lexio_user_id', String(usr.id));
+    if (usr.email) url.searchParams.set('email', usr.email);
+    window.location.href = url.toString();
   }
 </script>
 </body>

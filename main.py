@@ -994,10 +994,9 @@ async def update_user_model(req: ModelUpdateRequest, user: User = Depends(curren
 async def api_config():
     """Return public client-side configuration (no secrets)."""
     return {
-        "google_client_id":    os.getenv("GOOGLE_CLIENT_ID", ""),
-        "apple_services_id":   os.getenv("APPLE_SERVICES_ID", ""),
-        "paddle_client_token": os.getenv("PADDLE_CLIENT_TOKEN", ""),
-        "paddle_price_id":     os.getenv("PADDLE_PRICE_ID", ""),
+        "google_client_id":  os.getenv("GOOGLE_CLIENT_ID", ""),
+        "apple_services_id": os.getenv("APPLE_SERVICES_ID", ""),
+        "gumroad_url":       os.getenv("GUMROAD_PRODUCT_URL", ""),
     }
 
 
@@ -2083,75 +2082,62 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
     }
 
 
-# ── Paddle ───────────────────────────────────────────────────────────────────
-import hmac as _hmac
-import hashlib as _hashlib
+# ── Gumroad ───────────────────────────────────────────────────────────────────
 
-
-@app.post("/paddle/webhook")
-async def paddle_webhook(request: Request, db: DBSession = Depends(get_db)):
+@app.post("/gumroad/webhook")
+async def gumroad_webhook(request: Request, db: DBSession = Depends(get_db)):
     """
-    Receive Paddle Billing webhook events.
-    Activates / revokes Pro based on subscription lifecycle.
-    Signature verified per Paddle docs:
-      X-Paddle-Signature: ts=<unix>;h1=<hex>
-      signed_payload = f"{ts}:{raw_body}"
+    Receive Gumroad sale/refund/subscription pings (form-encoded).
+    Verifies seller_id matches GUMROAD_SELLER_ID.
+    Identifies the buyer via lexio_user_id embedded in url_params,
+    falling back to email.
     """
-    secret  = os.getenv("PADDLE_WEBHOOK_SECRET", "")
-    payload = await request.body()
-    sig_header = request.headers.get("X-Paddle-Signature", "")
+    form = await request.form()
 
-    # Parse ts and h1 from the signature header
+    # Verify this ping came from our Gumroad account
+    expected_seller = os.getenv("GUMROAD_SELLER_ID", "")
+    if expected_seller and form.get("seller_id") != expected_seller:
+        raise HTTPException(status_code=400, detail="Unknown seller")
+
+    # Ignore test pings in production (set GUMROAD_ALLOW_TEST=1 to accept them)
+    if form.get("test") == "true" and not os.getenv("GUMROAD_ALLOW_TEST"):
+        return {"received": True, "skipped": "test"}
+
+    # url_params is a JSON string of whatever we appended to the checkout URL
     try:
-        parts = dict(p.split("=", 1) for p in sig_header.split(";"))
-        ts = parts["ts"]
-        h1 = parts["h1"]
+        url_params = json.loads(form.get("url_params") or "{}")
     except Exception:
-        raise HTTPException(status_code=400, detail="Malformed signature header")
+        url_params = {}
 
-    signed = f"{ts}:{payload.decode()}"
-    expected = _hmac.new(secret.encode(), signed.encode(), _hashlib.sha256).hexdigest()
-    if not _hmac.compare_digest(expected, h1):
-        raise HTTPException(status_code=400, detail="Invalid webhook signature")
+    uid_str    = url_params.get("lexio_user_id")
+    user_email = form.get("email", "").strip().lower()
+    refunded   = form.get("refunded") == "true"
 
-    try:
-        event = json.loads(payload)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Malformed payload")
-
-    event_type  = event.get("event_type", "")
-    data_obj    = event.get("data", {})
-    custom_data = data_obj.get("custom_data") or {}
-    uid_str     = custom_data.get("lexio_user_id")
-    customer    = data_obj.get("customer") or {}
-    user_email  = customer.get("email")
-
-    ACTIVATE_EVENTS = {"subscription.created", "subscription.activated"}
-    REVOKE_EVENTS   = {"subscription.canceled", "subscription.past_due",
-                       "subscription.paused",   "subscription.trialing_canceled"}
-
-    if event_type in ACTIVATE_EVENTS:
+    def _find_user() -> Optional[User]:
         if uid_str:
             try:
-                db.query(User).filter(User.id == int(uid_str)).update({User.is_pro: 1})
-                db.commit()
-                logger.info("Paddle: Pro activated for user %s", uid_str)
-            except Exception as exc:
-                logger.error("Paddle activate failed: %s", exc)
-
-    elif event_type in REVOKE_EVENTS:
-        target = None
-        if uid_str:
-            try:
-                target = db.query(User).filter(User.id == int(uid_str)).first()
+                u = db.query(User).filter(User.id == int(uid_str)).first()
+                if u:
+                    return u
             except Exception:
                 pass
-        if not target and user_email:
-            target = db.query(User).filter(User.email == user_email).first()
-        if target:
-            target.is_pro = 0
-            db.commit()
-            logger.info("Paddle: Pro revoked for user %s (%s)", target.id, event_type)
+        if user_email:
+            return db.query(User).filter(User.email == user_email).first()
+        return None
+
+    target = _find_user()
+    if not target:
+        logger.warning("Gumroad webhook: no user found (uid=%s email=%s)", uid_str, user_email)
+        return {"received": True, "warning": "user not found"}
+
+    if refunded:
+        target.is_pro = 0
+        db.commit()
+        logger.info("Gumroad: Pro revoked for user %d (refund)", target.id)
+    else:
+        target.is_pro = 1
+        db.commit()
+        logger.info("Gumroad: Pro activated for user %d", target.id)
 
     return {"received": True}
 
