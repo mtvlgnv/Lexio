@@ -3552,11 +3552,26 @@ if (new URLSearchParams(location.search).get('pro') === 'success') {
 /* ── Pro section CTA ────────────────────────────────────── */
 let _userIsPro = false;
 
-function handleProCta() {
+async function handleProCta() {
   const token = localStorage.getItem('lexio_token');
 
   // Not logged in → open auth modal
   if (!token) { openAuthModal?.(); return; }
+
+  // Verify token is still valid before opening checkout
+  try {
+    const r = await fetch('/auth/me', { headers: { Authorization: 'Bearer ' + token } });
+    if (!r.ok) {
+      // Token expired — clear it and ask to sign in again
+      localStorage.removeItem('lexio_token');
+      localStorage.removeItem('lexio_user');
+      openAuthModal?.();
+      return;
+    }
+    // Refresh user data from server
+    const fresh = await r.json();
+    try { localStorage.setItem('lexio_user', JSON.stringify(fresh)); } catch {}
+  } catch { openAuthModal?.(); return; }
 
   if (_userIsPro) {
     const lp = document.getElementById('lp-pro-btn');
@@ -3571,13 +3586,15 @@ function handleProCta() {
 
   try {
     const usr = JSON.parse(localStorage.getItem('lexio_user') || '{}');
-    Paddle.Checkout.open({
+    const checkoutOpts = {
       items: [{ priceId: _paddlePriceId, quantity: 1 }],
-      customer: { email: usr.email || undefined },
-      customData: { lexio_user_id: String(usr.id || '') },
       settings: { successUrl: location.origin + '/?pro=success' },
-    });
+    };
+    if (usr.email) checkoutOpts.customer = { email: usr.email };
+    if (usr.id)    checkoutOpts.customData = { lexio_user_id: String(usr.id) };
+    Paddle.Checkout.open(checkoutOpts);
   } catch (e) {
+    console.error('Paddle open error:', e);
     alert('Could not open checkout — please try again.');
   }
 }
