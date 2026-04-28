@@ -11,4 +11,3 @@ sqlalchemy
 python-multipart
 openai
 google-genai
-stripe

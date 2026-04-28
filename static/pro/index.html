@@ -527,7 +527,7 @@
     btn.textContent = 'Preparing checkout…';
     btn.setAttribute('aria-disabled', 'true');
     try {
-      const r = await fetch('/stripe/checkout', {
+      const r = await fetch('/lemonsqueezy/checkout', {
         method: 'POST',
         headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
       });

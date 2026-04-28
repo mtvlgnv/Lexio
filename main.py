@@ -2081,89 +2081,122 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
     }
 
 
-# ── Stripe ───────────────────────────────────────────────────────────────────
+# ── Lemon Squeezy ────────────────────────────────────────────────────────────
+import hmac as _hmac
+import hashlib as _hashlib
+import urllib.request as _ls_ur
+import urllib.error   as _ls_ue
 
-@app.post("/stripe/checkout")
+def _ls_post(path: str, body: dict) -> dict:
+    """Make a synchronous POST to the Lemon Squeezy API."""
+    api_key = os.getenv("LEMONSQUEEZY_API_KEY", "")
+    data = json.dumps(body).encode()
+    req  = _ls_ur.Request(
+        f"https://api.lemonsqueezy.com/v1{path}",
+        data=data,
+        headers={
+            "Authorization": f"Bearer {api_key}",
+            "Accept":        "application/vnd.api+json",
+            "Content-Type":  "application/vnd.api+json",
+        },
+        method="POST",
+    )
+    with _ls_ur.urlopen(req, timeout=12) as resp:
+        return json.loads(resp.read())
+
+
+@app.post("/lemonsqueezy/checkout")
 @limiter.limit("10/minute")
-async def stripe_checkout(
-    request: Request,
-    user: User = Depends(current_user),
-):
+async def ls_checkout(request: Request, user: User = Depends(current_user)):
     """
-    Create a Stripe Checkout Session for the Lexio Pro monthly subscription.
-    Returns {"url": <hosted checkout URL>}.
+    Create a Lemon Squeezy hosted checkout for Lexio Pro.
+    Returns {"url": <checkout URL>}.
     """
-    import stripe as _stripe
-    _stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
-    price_id = os.getenv("STRIPE_PRICE_ID", "")
-    if not _stripe.api_key or not price_id:
-        raise HTTPException(status_code=500, detail="Payments are not configured yet.")
+    api_key    = os.getenv("LEMONSQUEEZY_API_KEY",  "")
+    store_id   = os.getenv("LEMONSQUEEZY_STORE_ID", "")
+    variant_id = os.getenv("LEMONSQUEEZY_VARIANT_ID", "")
+    site_url   = os.getenv("SITE_URL", "https://lexio.site")
 
+    if not api_key or not store_id or not variant_id:
+        raise HTTPException(status_code=500, detail="Payments are not configured yet.")
     if user.is_pro:
         raise HTTPException(status_code=400, detail="Your account is already Pro.")
 
-    session = _stripe.checkout.Session.create(
-        mode="subscription",
-        line_items=[{"price": price_id, "quantity": 1}],
-        customer_email=user.email,
-        metadata={"lexio_user_id": str(user.id)},
-        success_url=os.getenv("SITE_URL", "https://lexio.site") + "/pro?success=1",
-        cancel_url=os.getenv("SITE_URL",  "https://lexio.site") + "/pro?cancelled=1",
-    )
-    return {"url": session.url}
-
-
-@app.post("/stripe/webhook")
-async def stripe_webhook(request: Request, db: DBSession = Depends(get_db)):
-    """
-    Receive Stripe webhook events.  On checkout.session.completed activate Pro
-    for the corresponding user.  Signature is verified against STRIPE_WEBHOOK_SECRET.
-    """
-    import stripe as _stripe
-    _stripe.api_key = os.getenv("STRIPE_SECRET_KEY", "")
-    webhook_secret  = os.getenv("STRIPE_WEBHOOK_SECRET", "")
-
-    payload   = await request.body()
-    sig_header = request.headers.get("stripe-signature", "")
+    body = {
+        "data": {
+            "type": "checkouts",
+            "attributes": {
+                "checkout_data": {
+                    "email": user.email,
+                    "custom": {"lexio_user_id": str(user.id)},
+                },
+                "product_options": {
+                    "redirect_url": site_url + "/?pro=success",
+                },
+                "expires_at": None,
+            },
+            "relationships": {
+                "store":   {"data": {"type": "stores",   "id": str(store_id)}},
+                "variant": {"data": {"type": "variants", "id": str(variant_id)}},
+            },
+        }
+    }
 
     try:
-        event = _stripe.Webhook.construct_event(payload, sig_header, webhook_secret)
-    except _stripe.error.SignatureVerificationError:
-        raise HTTPException(status_code=400, detail="Invalid Stripe signature")
-    except Exception:
-        raise HTTPException(status_code=400, detail="Malformed webhook payload")
+        data = await asyncio.to_thread(_ls_post, "/checkouts", body)
+        url  = data["data"]["attributes"]["url"]
+        return {"url": url}
+    except Exception as exc:
+        logger.error("Lemon Squeezy checkout error: %s", exc)
+        raise HTTPException(status_code=502, detail="Could not create checkout — please try again.")
 
-    if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
-        uid_str = (session.get("metadata") or {}).get("lexio_user_id")
+
+@app.post("/lemonsqueezy/webhook")
+async def ls_webhook(request: Request, db: DBSession = Depends(get_db)):
+    """
+    Receive Lemon Squeezy webhook events.
+    Activates / revokes Pro based on subscription lifecycle events.
+    Signature verified with HMAC-SHA256 against LEMONSQUEEZY_WEBHOOK_SECRET.
+    """
+    secret  = os.getenv("LEMONSQUEEZY_WEBHOOK_SECRET", "")
+    payload = await request.body()
+    sig     = request.headers.get("X-Signature", "")
+
+    expected = _hmac.new(secret.encode(), payload, _hashlib.sha256).hexdigest()
+    if not _hmac.compare_digest(expected, sig):
+        raise HTTPException(status_code=400, detail="Invalid webhook signature")
+
+    try:
+        event = json.loads(payload)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Malformed payload")
+
+    event_name  = event.get("meta", {}).get("event_name", "")
+    custom      = event.get("meta", {}).get("custom_data", {}) or {}
+    uid_str     = custom.get("lexio_user_id")
+    attrs       = event.get("data", {}).get("attributes", {})
+    user_email  = attrs.get("user_email") or attrs.get("email")
+
+    if event_name in ("subscription_created", "order_created"):
         if uid_str:
             try:
-                uid = int(uid_str)
-                db.query(User).filter(User.id == uid).update({User.is_pro: 1})
+                db.query(User).filter(User.id == int(uid_str)).update({User.is_pro: 1})
                 db.commit()
-                logger.info("Stripe: activated Pro for user %d", uid)
+                logger.info("LemonSqueezy: Pro activated for user %s", uid_str)
             except Exception as exc:
-                logger.error("Stripe webhook DB update failed: %s", exc)
+                logger.error("LemonSqueezy activate failed: %s", exc)
 
-    elif event["type"] in ("customer.subscription.deleted", "customer.subscription.updated"):
-        # Handle cancellation / lapse — mark user as non-pro
-        sub = event["data"]["object"]
-        status = sub.get("status", "")
-        if status in ("canceled", "unpaid", "past_due"):
-            customer_email = None
+    elif event_name in ("subscription_cancelled", "subscription_expired", "subscription_paused"):
+        if user_email:
+            db.query(User).filter(User.email == user_email).update({User.is_pro: 0})
+            db.commit()
+            logger.info("LemonSqueezy: Pro revoked for %s (%s)", user_email, event_name)
+        elif uid_str:
             try:
-                customer_id = sub.get("customer")
-                if customer_id:
-                    import stripe as _s2
-                    _s2.api_key = _stripe.api_key
-                    cust = _s2.Customer.retrieve(customer_id)
-                    customer_email = cust.get("email")
+                db.query(User).filter(User.id == int(uid_str)).update({User.is_pro: 0})
+                db.commit()
             except Exception:
                 pass
-            if customer_email:
-                db.query(User).filter(User.email == customer_email).update({User.is_pro: 0})
-                db.commit()
-                logger.info("Stripe: revoked Pro for %s (status=%s)", customer_email, status)
 
     return {"received": True}
 
