@@ -518,17 +518,17 @@
     } catch {}
   }
 
-  /* ── Gumroad ─────────────────────────────────────────────── */
-  let _gumroadUrl = null;
-  async function initGumroad() {
+  /* ── Payhip ──────────────────────────────────────────────── */
+  let _payhipUrl = null;
+  async function initPayhip() {
     try {
       const r = await fetch('/api/config');
       if (!r.ok) return;
       const cfg = await r.json();
-      _gumroadUrl = cfg.gumroad_url || null;
+      _payhipUrl = cfg.payhip_url || null;
     } catch {}
   }
-  initGumroad();
+  initPayhip();
   initPage();
 
   async function startCheckout() {
@@ -542,14 +542,13 @@
       usr = await r.json();
     } catch { window.location.href = '/'; return; }
 
-    if (!_gumroadUrl) {
+    if (!_payhipUrl) {
       alert('Payments are not configured yet — please try again later.');
       return;
     }
 
-    const url = new URL(_gumroadUrl);
-    url.searchParams.set('wanted', 'true');
-    if (usr.id)    url.searchParams.set('lexio_user_id', String(usr.id));
+    // Redirect to Payhip; pass email so it pre-fills the checkout form
+    const url = new URL(_payhipUrl);
     if (usr.email) url.searchParams.set('email', usr.email);
     window.location.href = url.toString();
   }

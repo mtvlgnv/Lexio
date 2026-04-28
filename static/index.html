@@ -3245,7 +3245,7 @@ function signOut() {
 }
 
 /* ── Gumroad ────────────────────────────────────────────────── */
-let _gumroadUrl = null;
+let _payhipUrl = null;
 
 /* ── OAuth Sign-in (Google) ──────────────────────────────────── */
 let _googleClientId = null;
@@ -3257,7 +3257,7 @@ async function initOAuthProviders() {
     const cfg = await res.json();
     _googleClientId = cfg.google_client_id || null;
 
-    _gumroadUrl = cfg.gumroad_url || null;
+    _payhipUrl = cfg.payhip_url || null;
 
     if (!_googleClientId) return;
     // Show the button as soon as we have the client ID — no GSI dependency
@@ -3548,16 +3548,13 @@ async function handleProCta() {
     return;
   }
 
-  if (!_gumroadUrl) {
+  if (!_payhipUrl) {
     alert('Payments are not configured yet — please try again later.');
     return;
   }
 
-  // Redirect to Gumroad with user ID embedded in URL params
-  // (Gumroad echoes url_params back in the webhook so we can identify the buyer)
-  const url = new URL(_gumroadUrl);
-  url.searchParams.set('wanted', 'true');
-  if (usr.id)    url.searchParams.set('lexio_user_id', String(usr.id));
+  // Redirect to Payhip; pass email so it pre-fills the checkout form
+  const url = new URL(_payhipUrl);
   if (usr.email) url.searchParams.set('email', usr.email);
   window.location.href = url.toString();
 }

@@ -996,7 +996,7 @@ async def api_config():
     return {
         "google_client_id":  os.getenv("GOOGLE_CLIENT_ID", ""),
         "apple_services_id": os.getenv("APPLE_SERVICES_ID", ""),
-        "gumroad_url":       os.getenv("GUMROAD_PRODUCT_URL", ""),
+        "payhip_url":        os.getenv("PAYHIP_PRODUCT_URL", ""),
     }
 
 
@@ -2082,62 +2082,58 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
     }
 
 
-# ── Gumroad ───────────────────────────────────────────────────────────────────
+# ── Payhip ────────────────────────────────────────────────────────────────────
+import hmac as _hmac
+import hashlib as _hashlib
 
-@app.post("/gumroad/webhook")
-async def gumroad_webhook(request: Request, db: DBSession = Depends(get_db)):
+@app.post("/payhip/webhook")
+async def payhip_webhook(request: Request, db: DBSession = Depends(get_db)):
     """
-    Receive Gumroad sale/refund/subscription pings (form-encoded).
-    Verifies seller_id matches GUMROAD_SELLER_ID.
-    Identifies the buyer via lexio_user_id embedded in url_params,
-    falling back to email.
+    Receive Payhip webhook events (JSON).
+    Signature verified: HMAC-SHA256 of raw body with PAYHIP_WEBHOOK_SECRET,
+    compared against the Payhip-Signature header.
+    Activates Pro on payment_completed / subscription_activated,
+    revokes on refund_issued / subscription_cancelled / subscription_expired.
+    User identified by email.
     """
-    form = await request.form()
+    secret  = os.getenv("PAYHIP_WEBHOOK_SECRET", "")
+    payload = await request.body()
 
-    # Verify this ping came from our Gumroad account
-    expected_seller = os.getenv("GUMROAD_SELLER_ID", "")
-    if expected_seller and form.get("seller_id") != expected_seller:
-        raise HTTPException(status_code=400, detail="Unknown seller")
+    if secret:
+        sig      = request.headers.get("Payhip-Signature", "")
+        expected = _hmac.new(secret.encode(), payload, _hashlib.sha256).hexdigest()
+        if not _hmac.compare_digest(expected, sig):
+            raise HTTPException(status_code=400, detail="Invalid signature")
 
-    # Ignore test pings in production (set GUMROAD_ALLOW_TEST=1 to accept them)
-    if form.get("test") == "true" and not os.getenv("GUMROAD_ALLOW_TEST"):
-        return {"received": True, "skipped": "test"}
-
-    # url_params is a JSON string of whatever we appended to the checkout URL
     try:
-        url_params = json.loads(form.get("url_params") or "{}")
+        data = json.loads(payload)
     except Exception:
-        url_params = {}
+        raise HTTPException(status_code=400, detail="Malformed payload")
 
-    uid_str    = url_params.get("lexio_user_id")
-    user_email = form.get("email", "").strip().lower()
-    refunded   = form.get("refunded") == "true"
+    event      = data.get("event", "")
+    buyer      = data.get("buyer", data)          # some versions nest under "buyer"
+    user_email = (buyer.get("email") or data.get("email") or "").strip().lower()
 
-    def _find_user() -> Optional[User]:
-        if uid_str:
-            try:
-                u = db.query(User).filter(User.id == int(uid_str)).first()
-                if u:
-                    return u
-            except Exception:
-                pass
-        if user_email:
-            return db.query(User).filter(User.email == user_email).first()
-        return None
+    ACTIVATE = {"payment_completed", "subscription_activated", "subscription_renewed"}
+    REVOKE   = {"refund_issued", "subscription_cancelled", "subscription_expired"}
 
-    target = _find_user()
+    if not user_email:
+        logger.warning("Payhip webhook: no email in payload (event=%s)", event)
+        return {"received": True}
+
+    target = db.query(User).filter(User.email == user_email).first()
     if not target:
-        logger.warning("Gumroad webhook: no user found (uid=%s email=%s)", uid_str, user_email)
+        logger.warning("Payhip webhook: no user found for %s (event=%s)", user_email, event)
         return {"received": True, "warning": "user not found"}
 
-    if refunded:
-        target.is_pro = 0
-        db.commit()
-        logger.info("Gumroad: Pro revoked for user %d (refund)", target.id)
-    else:
+    if event in ACTIVATE:
         target.is_pro = 1
         db.commit()
-        logger.info("Gumroad: Pro activated for user %d", target.id)
+        logger.info("Payhip: Pro activated for user %d (%s)", target.id, event)
+    elif event in REVOKE:
+        target.is_pro = 0
+        db.commit()
+        logger.info("Payhip: Pro revoked for user %d (%s)", target.id, event)
 
     return {"received": True}
 
