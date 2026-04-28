@@ -3249,7 +3249,18 @@ let _paddlePriceId = null;
 
 function _initPaddle(token) {
   if (!token || typeof Paddle === 'undefined') return;
-  Paddle.Initialize({ token });
+  // Sandbox tokens start with "test_" — must set environment before Initialize
+  if (token.startsWith('test_')) {
+    Paddle.Environment.set('sandbox');
+  }
+  Paddle.Initialize({
+    token,
+    eventCallback: (e) => {
+      if (e.name === 'checkout.error') {
+        console.error('Paddle checkout error:', e.data);
+      }
+    },
+  });
 }
 
 /* ── OAuth Sign-in (Google) ──────────────────────────────────── */
