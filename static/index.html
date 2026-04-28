@@ -3244,6 +3244,14 @@ function signOut() {
   closeAuthModal();
 }
 
+/* ── Paddle Billing ─────────────────────────────────────────── */
+let _paddlePriceId = null;
+
+function _initPaddle(token) {
+  if (!token || typeof Paddle === 'undefined') return;
+  Paddle.Initialize({ token });
+}
+
 /* ── OAuth Sign-in (Google) ──────────────────────────────────── */
 let _googleClientId = null;
 
@@ -3253,6 +3261,21 @@ async function initOAuthProviders() {
     if (!res.ok) return;
     const cfg = await res.json();
     _googleClientId = cfg.google_client_id || null;
+
+    // Init Paddle if configured
+    if (cfg.paddle_client_token) {
+      _paddlePriceId = cfg.paddle_price_id || null;
+      if (typeof Paddle !== 'undefined') {
+        _initPaddle(cfg.paddle_client_token);
+      } else {
+        // Load Paddle.js then init
+        const s = document.createElement('script');
+        s.src = 'https://cdn.paddle.com/paddle/v2/paddle.js';
+        s.onload = () => _initPaddle(cfg.paddle_client_token);
+        document.head.appendChild(s);
+      }
+    }
+
     if (!_googleClientId) return;
     // Show the button as soon as we have the client ID — no GSI dependency
     const wrap = document.getElementById('oauth-btn-wrap');
@@ -3518,14 +3541,11 @@ if (new URLSearchParams(location.search).get('pro') === 'success') {
 /* ── Pro section CTA ────────────────────────────────────── */
 let _userIsPro = false;
 
-async function handleProCta() {
+function handleProCta() {
   const token = localStorage.getItem('lexio_token');
 
   // Not logged in → open auth modal
-  if (!token) {
-    openAuthModal?.();
-    return;
-  }
+  if (!token) { openAuthModal?.(); return; }
 
   if (_userIsPro) {
     const lp = document.getElementById('lp-pro-btn');
@@ -3533,24 +3553,21 @@ async function handleProCta() {
     return;
   }
 
-  // Start Stripe checkout
-  const btns = [document.getElementById('lp-pro-btn'), document.getElementById('menu-pro-btn')];
-  btns.forEach(b => { if (b) { b.textContent = 'Preparing checkout…'; b.disabled = true; } });
+  if (!_paddlePriceId || typeof Paddle === 'undefined') {
+    alert('Payments are not configured yet — please try again later.');
+    return;
+  }
+
   try {
-    const r = await fetch('/lemonsqueezy/checkout', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+    const usr = JSON.parse(localStorage.getItem('lexio_user') || '{}');
+    Paddle.Checkout.open({
+      items: [{ priceId: _paddlePriceId, quantity: 1 }],
+      customer: { email: usr.email || undefined },
+      customData: { lexio_user_id: String(usr.id || '') },
+      settings: { successUrl: location.origin + '/?pro=success' },
     });
-    const d = await r.json();
-    if (r.ok && d.url) {
-      window.location.href = d.url;
-    } else {
-      alert(d.detail || 'Something went wrong — please try again.');
-      btns.forEach(b => { if (b) { b.textContent = b.id === 'lp-pro-btn' ? 'Get Pro →' : 'Upgrade to Pro — $4.99/mo'; b.disabled = false; } });
-    }
-  } catch {
-    alert('Could not connect to the payment server — please try again.');
-    btns.forEach(b => { if (b) { b.textContent = b.id === 'lp-pro-btn' ? 'Get Pro →' : 'Upgrade to Pro — $4.99/mo'; b.disabled = false; } });
+  } catch (e) {
+    alert('Could not open checkout — please try again.');
   }
 }
 

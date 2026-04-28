@@ -994,8 +994,10 @@ async def update_user_model(req: ModelUpdateRequest, user: User = Depends(curren
 async def api_config():
     """Return public client-side configuration (no secrets)."""
     return {
-        "google_client_id": os.getenv("GOOGLE_CLIENT_ID", ""),
-        "apple_services_id": os.getenv("APPLE_SERVICES_ID", ""),
+        "google_client_id":    os.getenv("GOOGLE_CLIENT_ID", ""),
+        "apple_services_id":   os.getenv("APPLE_SERVICES_ID", ""),
+        "paddle_client_token": os.getenv("PADDLE_CLIENT_TOKEN", ""),
+        "paddle_price_id":     os.getenv("PADDLE_PRICE_ID", ""),
     }
 
 
@@ -2081,89 +2083,35 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
     }
 
 
-# ── Lemon Squeezy ────────────────────────────────────────────────────────────
+# ── Paddle ───────────────────────────────────────────────────────────────────
 import hmac as _hmac
 import hashlib as _hashlib
-import urllib.request as _ls_ur
-import urllib.error   as _ls_ue
-
-def _ls_post(path: str, body: dict) -> dict:
-    """Make a synchronous POST to the Lemon Squeezy API."""
-    api_key = os.getenv("LEMONSQUEEZY_API_KEY", "")
-    data = json.dumps(body).encode()
-    req  = _ls_ur.Request(
-        f"https://api.lemonsqueezy.com/v1{path}",
-        data=data,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Accept":        "application/vnd.api+json",
-            "Content-Type":  "application/vnd.api+json",
-        },
-        method="POST",
-    )
-    with _ls_ur.urlopen(req, timeout=12) as resp:
-        return json.loads(resp.read())
 
 
-@app.post("/lemonsqueezy/checkout")
-@limiter.limit("10/minute")
-async def ls_checkout(request: Request, user: User = Depends(current_user)):
+@app.post("/paddle/webhook")
+async def paddle_webhook(request: Request, db: DBSession = Depends(get_db)):
     """
-    Create a Lemon Squeezy hosted checkout for Lexio Pro.
-    Returns {"url": <checkout URL>}.
+    Receive Paddle Billing webhook events.
+    Activates / revokes Pro based on subscription lifecycle.
+    Signature verified per Paddle docs:
+      X-Paddle-Signature: ts=<unix>;h1=<hex>
+      signed_payload = f"{ts}:{raw_body}"
     """
-    api_key    = os.getenv("LEMONSQUEEZY_API_KEY",  "")
-    store_id   = os.getenv("LEMONSQUEEZY_STORE_ID", "")
-    variant_id = os.getenv("LEMONSQUEEZY_VARIANT_ID", "")
-    site_url   = os.getenv("SITE_URL", "https://lexio.site")
-
-    if not api_key or not store_id or not variant_id:
-        raise HTTPException(status_code=500, detail="Payments are not configured yet.")
-    if user.is_pro:
-        raise HTTPException(status_code=400, detail="Your account is already Pro.")
-
-    body = {
-        "data": {
-            "type": "checkouts",
-            "attributes": {
-                "checkout_data": {
-                    "email": user.email,
-                    "custom": {"lexio_user_id": str(user.id)},
-                },
-                "product_options": {
-                    "redirect_url": site_url + "/?pro=success",
-                },
-                "expires_at": None,
-            },
-            "relationships": {
-                "store":   {"data": {"type": "stores",   "id": str(store_id)}},
-                "variant": {"data": {"type": "variants", "id": str(variant_id)}},
-            },
-        }
-    }
-
-    try:
-        data = await asyncio.to_thread(_ls_post, "/checkouts", body)
-        url  = data["data"]["attributes"]["url"]
-        return {"url": url}
-    except Exception as exc:
-        logger.error("Lemon Squeezy checkout error: %s", exc)
-        raise HTTPException(status_code=502, detail="Could not create checkout — please try again.")
-
-
-@app.post("/lemonsqueezy/webhook")
-async def ls_webhook(request: Request, db: DBSession = Depends(get_db)):
-    """
-    Receive Lemon Squeezy webhook events.
-    Activates / revokes Pro based on subscription lifecycle events.
-    Signature verified with HMAC-SHA256 against LEMONSQUEEZY_WEBHOOK_SECRET.
-    """
-    secret  = os.getenv("LEMONSQUEEZY_WEBHOOK_SECRET", "")
+    secret  = os.getenv("PADDLE_WEBHOOK_SECRET", "")
     payload = await request.body()
-    sig     = request.headers.get("X-Signature", "")
+    sig_header = request.headers.get("X-Paddle-Signature", "")
 
-    expected = _hmac.new(secret.encode(), payload, _hashlib.sha256).hexdigest()
-    if not _hmac.compare_digest(expected, sig):
+    # Parse ts and h1 from the signature header
+    try:
+        parts = dict(p.split("=", 1) for p in sig_header.split(";"))
+        ts = parts["ts"]
+        h1 = parts["h1"]
+    except Exception:
+        raise HTTPException(status_code=400, detail="Malformed signature header")
+
+    signed = f"{ts}:{payload.decode()}"
+    expected = _hmac.new(secret.encode(), signed.encode(), _hashlib.sha256).hexdigest()
+    if not _hmac.compare_digest(expected, h1):
         raise HTTPException(status_code=400, detail="Invalid webhook signature")
 
     try:
@@ -2171,32 +2119,39 @@ async def ls_webhook(request: Request, db: DBSession = Depends(get_db)):
     except Exception:
         raise HTTPException(status_code=400, detail="Malformed payload")
 
-    event_name  = event.get("meta", {}).get("event_name", "")
-    custom      = event.get("meta", {}).get("custom_data", {}) or {}
-    uid_str     = custom.get("lexio_user_id")
-    attrs       = event.get("data", {}).get("attributes", {})
-    user_email  = attrs.get("user_email") or attrs.get("email")
+    event_type  = event.get("event_type", "")
+    data_obj    = event.get("data", {})
+    custom_data = data_obj.get("custom_data") or {}
+    uid_str     = custom_data.get("lexio_user_id")
+    customer    = data_obj.get("customer") or {}
+    user_email  = customer.get("email")
 
-    if event_name in ("subscription_created", "order_created"):
+    ACTIVATE_EVENTS = {"subscription.created", "subscription.activated"}
+    REVOKE_EVENTS   = {"subscription.canceled", "subscription.past_due",
+                       "subscription.paused",   "subscription.trialing_canceled"}
+
+    if event_type in ACTIVATE_EVENTS:
         if uid_str:
             try:
                 db.query(User).filter(User.id == int(uid_str)).update({User.is_pro: 1})
                 db.commit()
-                logger.info("LemonSqueezy: Pro activated for user %s", uid_str)
+                logger.info("Paddle: Pro activated for user %s", uid_str)
             except Exception as exc:
-                logger.error("LemonSqueezy activate failed: %s", exc)
+                logger.error("Paddle activate failed: %s", exc)
 
-    elif event_name in ("subscription_cancelled", "subscription_expired", "subscription_paused"):
-        if user_email:
-            db.query(User).filter(User.email == user_email).update({User.is_pro: 0})
-            db.commit()
-            logger.info("LemonSqueezy: Pro revoked for %s (%s)", user_email, event_name)
-        elif uid_str:
+    elif event_type in REVOKE_EVENTS:
+        target = None
+        if uid_str:
             try:
-                db.query(User).filter(User.id == int(uid_str)).update({User.is_pro: 0})
-                db.commit()
+                target = db.query(User).filter(User.id == int(uid_str)).first()
             except Exception:
                 pass
+        if not target and user_email:
+            target = db.query(User).filter(User.email == user_email).first()
+        if target:
+            target.is_pro = 0
+            db.commit()
+            logger.info("Paddle: Pro revoked for user %s (%s)", target.id, event_type)
 
     return {"received": True}
 

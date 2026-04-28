@@ -518,32 +518,38 @@
     } catch {}
   }
 
+  /* ── Paddle init ─────────────────────────────────────────── */
+  let _paddlePriceId = null;
+  async function initPaddle() {
+    try {
+      const r = await fetch('/api/config');
+      if (!r.ok) return;
+      const cfg = await r.json();
+      if (!cfg.paddle_client_token) return;
+      _paddlePriceId = cfg.paddle_price_id || null;
+      const s = document.createElement('script');
+      s.src = 'https://cdn.paddle.com/paddle/v2/paddle.js';
+      s.onload = () => Paddle.Initialize({ token: cfg.paddle_client_token });
+      document.head.appendChild(s);
+    } catch {}
+  }
+  initPaddle();
   initPage();
 
-  /* ── Stripe checkout ─────────────────────────────────────── */
-  async function startCheckout() {
+  /* ── Paddle checkout ─────────────────────────────────────── */
+  function startCheckout() {
     if (!token) { window.location.href = '/'; return; }
-    const btn = document.getElementById('checkout-btn');
-    btn.textContent = 'Preparing checkout…';
-    btn.setAttribute('aria-disabled', 'true');
-    try {
-      const r = await fetch('/lemonsqueezy/checkout', {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-      });
-      const d = await r.json();
-      if (r.ok && d.url) {
-        window.location.href = d.url;
-      } else {
-        alert(d.detail || 'Something went wrong — please try again.');
-        btn.textContent = 'Get Pro →';
-        btn.removeAttribute('aria-disabled');
-      }
-    } catch {
-      alert('Could not connect to the payment server — please try again.');
-      btn.textContent = 'Get Pro →';
-      btn.removeAttribute('aria-disabled');
+    if (!_paddlePriceId || typeof Paddle === 'undefined') {
+      alert('Payments are not configured yet — please try again later.');
+      return;
     }
+    const usr = JSON.parse(localStorage.getItem('lexio_user') || '{}');
+    Paddle.Checkout.open({
+      items: [{ priceId: _paddlePriceId, quantity: 1 }],
+      customer: { email: usr.email || undefined },
+      customData: { lexio_user_id: String(usr.id || '') },
+      settings: { successUrl: location.origin + '/?pro=success' },
+    });
   }
 </script>
 </body>
