@@ -3174,7 +3174,8 @@ function fcShowCard() {
   document.getElementById('fc-progress').textContent = `${done + 1} / ${_fcTotal}`;
   const e = _fcQueue[0];
   document.getElementById('fc-word').textContent = e.word;
-  document.getElementById('fc-ctx').textContent  = e.context ? `"${e.context.slice(0,160)}…"` : '';
+  const sentence = e.context ? extractSentence(e.context, e.word) : '';
+  document.getElementById('fc-ctx').textContent  = sentence ? `"${sentence}"` : '';
   document.getElementById('fc-pos').textContent  = e.pos || '';
   document.getElementById('fc-pos').style.display = e.pos ? '' : 'none';
   document.getElementById('fc-def').textContent  = e.contextual || '';
