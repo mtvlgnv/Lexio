@@ -705,7 +705,7 @@
     .fc-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:28px 24px; text-align:center; border:1.5px solid var(--border); border-radius:14px; background:var(--bg); }
     .fc-back-face { transform:rotateY(180deg); background:var(--accent-lt); border-color:var(--accent-mid); }
     .fc-word { font-family:'Lora',serif; font-size:2rem; font-weight:600; color:var(--text); line-height:1.2; }
-    .fc-ctx { font-size:0.76rem; color:var(--muted); line-height:1.6; font-style:italic; max-width:320px; }
+    .fc-ctx { font-size:0.76rem; color:var(--muted); line-height:1.6; font-style:italic; max-width:320px; border-top:1px solid var(--accent-mid); padding-top:10px; margin-top:4px; }
     .fc-tap-hint { font-size:0.65rem; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:6px; }
     .fc-pos-badge { font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); background:var(--surface); padding:3px 10px; border-radius:20px; border:1px solid var(--accent-mid); }
     .fc-def { font-size:0.94rem; color:var(--text); line-height:1.65; }
@@ -2126,12 +2126,12 @@
       <div class="fc-card" id="fc-card" onclick="flipCard()">
         <div class="fc-face fc-front-face">
           <div class="fc-word" id="fc-word"></div>
-          <div class="fc-ctx" id="fc-ctx"></div>
           <div class="fc-tap-hint">tap to reveal</div>
         </div>
         <div class="fc-face fc-back-face">
           <div class="fc-pos-badge" id="fc-pos"></div>
           <div class="fc-def" id="fc-def"></div>
+          <div class="fc-ctx" id="fc-ctx"></div>
         </div>
       </div>
     </div>
@@ -3168,7 +3168,9 @@ function fcShowCard() {
   document.getElementById('fc-progress').textContent = `${done + 1} / ${_fcTotal}`;
   const e = _fcQueue[0];
   document.getElementById('fc-word').textContent = e.word;
-  document.getElementById('fc-ctx').textContent  = e.context ? `"${e.context.slice(0,160)}…"` : '';
+  const ctxEl = document.getElementById('fc-ctx');
+  ctxEl.textContent = e.context ? `"${e.context}"` : '';
+  ctxEl.style.display = e.context ? '' : 'none';
   document.getElementById('fc-pos').textContent  = e.pos || '';
   document.getElementById('fc-pos').style.display = e.pos ? '' : 'none';
   document.getElementById('fc-def').textContent  = e.contextual || '';
