@@ -690,6 +690,40 @@
     .wb-delete:hover { background:var(--danger-bg); color:var(--danger); }
     .wb-def { font-size:0.84rem; color:var(--text-mid); line-height:1.6; font-weight:300; }
 
+    /* ── Flashcard overlay ──────────────────────────────────── */
+    #fc-overlay { position:fixed; inset:0; z-index:110; background:rgba(0,0,0,0.52); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.18s ease; }
+    #fc-overlay.hidden { display:none; }
+    .fc-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:460px; display:flex; flex-direction:column; border:1px solid var(--border); overflow:hidden; min-height:400px; }
+    .fc-header { display:flex; align-items:center; gap:10px; padding:16px 20px; border-bottom:1px solid var(--border-light); flex-shrink:0; }
+    .fc-title { font-weight:600; font-size:0.88rem; flex:1; text-align:center; color:var(--text); }
+    .fc-progress { font-size:0.72rem; color:var(--muted); min-width:40px; }
+    .fc-close { background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--muted); line-height:1; padding:0 2px; border-radius:4px; transition:background 0.12s; }
+    .fc-close:hover { background:var(--bg); }
+    .fc-card-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:28px 24px; perspective:900px; }
+    .fc-card { width:100%; min-height:210px; position:relative; cursor:pointer; transform-style:preserve-3d; transition:transform 0.42s cubic-bezier(0.4,0,0.2,1); }
+    .fc-card.flipped { transform:rotateY(180deg); }
+    .fc-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:28px 24px; text-align:center; border:1.5px solid var(--border); border-radius:14px; background:var(--bg); }
+    .fc-back-face { transform:rotateY(180deg); background:var(--accent-lt); border-color:var(--accent-mid); }
+    .fc-word { font-family:'Lora',serif; font-size:2rem; font-weight:600; color:var(--text); line-height:1.2; }
+    .fc-ctx { font-size:0.76rem; color:var(--muted); line-height:1.6; font-style:italic; max-width:320px; }
+    .fc-tap-hint { font-size:0.65rem; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:6px; }
+    .fc-pos-badge { font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); background:var(--surface); padding:3px 10px; border-radius:20px; border:1px solid var(--accent-mid); }
+    .fc-def { font-size:0.94rem; color:var(--text); line-height:1.65; }
+    .fc-actions { display:flex; gap:10px; padding:18px 24px; border-top:1px solid var(--border-light); flex-shrink:0; }
+    .fc-actions.hidden { display:none; }
+    .fc-btn { flex:1; padding:11px; border-radius:40px; border:none; font-family:inherit; font-size:0.86rem; font-weight:600; cursor:pointer; transition:all 0.15s; }
+    .fc-again { background:var(--surface); border:1.5px solid var(--border); color:var(--text-mid); }
+    .fc-again:hover { background:var(--bg); color:var(--text); }
+    .fc-got { background:var(--accent); color:#fff; }
+    .fc-got:hover { opacity:.88; }
+    .fc-done { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:40px 24px; text-align:center; }
+    .fc-done.hidden { display:none; }
+    .fc-done-emoji { font-size:2.8rem; line-height:1; }
+    .fc-done-title { font-size:1.25rem; font-weight:700; color:var(--text); }
+    .fc-done-sub { font-size:0.86rem; color:var(--muted); line-height:1.6; }
+    .fc-done-btns { display:flex; gap:10px; margin-top:6px; }
+    .fc-done-btns .fc-btn { min-width:140px; }
+
     /* ── Desktop app modal ──────────────────────────────────── */
     #desktop-modal { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.18s ease; }
     #desktop-modal.hidden { display:none; }
@@ -2071,10 +2105,51 @@
       <span class="wb-title">Word Bank</span>
       <span class="wb-count" id="wb-count"></span>
       <div class="wb-header-spacer"></div>
+      <button class="wb-action-btn" onclick="openFlashcards()">Review →</button>
       <button class="wb-action-btn" onclick="exportCSV()">Export TSV</button>
       <button class="wb-close-btn" onclick="closeWordBank()">×</button>
     </div>
     <div id="wb-list"></div>
+  </div>
+</div>
+
+<!-- ── Flashcard overlay ─────────────────────────────────────── -->
+<div id="fc-overlay" class="hidden">
+  <div class="fc-inner">
+    <div class="fc-header">
+      <span class="fc-progress" id="fc-progress">1 / 1</span>
+      <span class="fc-title">Flashcard Review</span>
+      <button class="fc-close" onclick="closeFlashcards()">×</button>
+    </div>
+
+    <div class="fc-card-wrap" id="fc-card-wrap">
+      <div class="fc-card" id="fc-card" onclick="flipCard()">
+        <div class="fc-face fc-front-face">
+          <div class="fc-word" id="fc-word"></div>
+          <div class="fc-ctx" id="fc-ctx"></div>
+          <div class="fc-tap-hint">tap to reveal</div>
+        </div>
+        <div class="fc-face fc-back-face">
+          <div class="fc-pos-badge" id="fc-pos"></div>
+          <div class="fc-def" id="fc-def"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fc-actions hidden" id="fc-actions">
+      <button class="fc-btn fc-again" onclick="fcNext(false)">✗ Again</button>
+      <button class="fc-btn fc-got"   onclick="fcNext(true)">✓ Got it</button>
+    </div>
+
+    <div class="fc-done hidden" id="fc-done">
+      <div class="fc-done-emoji" id="fc-done-emoji">🎉</div>
+      <div class="fc-done-title">Session complete!</div>
+      <div class="fc-done-sub" id="fc-done-sub"></div>
+      <div class="fc-done-btns">
+        <button class="fc-btn fc-again" onclick="closeFlashcards()">Close</button>
+        <button class="fc-btn fc-got"   onclick="fcStart()">Again</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3058,6 +3133,72 @@ function renderWordBankList() {
   list.innerHTML=wordBank.map((e,i)=>`<div class="wb-entry"><div class="wb-entry-header"><span class="wb-word">${e.word}</span>${e.pos?`<span class="wb-pos">${e.pos}</span>`:''}<button class="wb-delete" onclick="deleteFromBank(${i})" title="Remove">×</button></div><p class="wb-def">${e.contextual}</p></div>`).join('');
 }
 function deleteFromBank(i) { wordBank.splice(i,1); saveWordBank(); renderWordBankList(); }
+
+/* ── Flashcard review ───────────────────────────────────────── */
+let _fcQueue=[], _fcTotal=0, _fcKnown=0, _fcFlipped=false;
+
+function openFlashcards() {
+  if (!wordBank.length) { alert('Save some words first — click the bookmark on any definition.'); return; }
+  closeWordBank();
+  fcStart();
+  document.getElementById('fc-overlay').classList.remove('hidden');
+}
+function closeFlashcards() { document.getElementById('fc-overlay').classList.add('hidden'); }
+
+function fcStart() {
+  _fcQueue = [...wordBank].sort(() => Math.random() - 0.5);
+  _fcTotal = _fcQueue.length;
+  _fcKnown = 0;
+  document.getElementById('fc-done').classList.add('hidden');
+  document.getElementById('fc-card-wrap').style.display = '';
+  document.getElementById('fc-actions').classList.add('hidden');
+  fcShowCard();
+}
+
+function fcShowCard() {
+  const done = _fcTotal - _fcQueue.length;
+  document.getElementById('fc-progress').textContent = `${done + 1} / ${_fcTotal}`;
+  const e = _fcQueue[0];
+  document.getElementById('fc-word').textContent = e.word;
+  document.getElementById('fc-ctx').textContent  = e.context ? `"${e.context.slice(0,160)}…"` : '';
+  document.getElementById('fc-pos').textContent  = e.pos || '';
+  document.getElementById('fc-pos').style.display = e.pos ? '' : 'none';
+  document.getElementById('fc-def').textContent  = e.contextual || '';
+  const card = document.getElementById('fc-card');
+  card.classList.remove('flipped');
+  card.style.cssText = '';
+  _fcFlipped = false;
+}
+
+function flipCard() {
+  if (_fcFlipped) return;
+  _fcFlipped = true;
+  document.getElementById('fc-card').classList.add('flipped');
+  setTimeout(() => document.getElementById('fc-actions').classList.remove('hidden'), 320);
+}
+
+function fcNext(known) {
+  if (known) _fcKnown++;
+  _fcQueue.shift();
+  if (!_fcQueue.length) { fcFinish(); return; }
+  const card = document.getElementById('fc-card');
+  const dir  = known ? '60px' : '-60px';
+  card.style.cssText = `opacity:0;transform:translateX(${dir});transition:opacity 0.17s,transform 0.17s`;
+  document.getElementById('fc-actions').classList.add('hidden');
+  setTimeout(() => { fcShowCard(); }, 170);
+}
+
+function fcFinish() {
+  document.getElementById('fc-card-wrap').style.display = 'none';
+  document.getElementById('fc-actions').classList.add('hidden');
+  const pct = Math.round((_fcKnown / _fcTotal) * 100);
+  document.getElementById('fc-done-emoji').textContent = pct >= 80 ? '🎉' : pct >= 50 ? '💪' : '📖';
+  document.getElementById('fc-done-sub').textContent =
+    `You knew ${_fcKnown} of ${_fcTotal} word${_fcTotal !== 1 ? 's' : ''} (${pct}%).`;
+  document.getElementById('fc-progress').textContent = `${_fcTotal} / ${_fcTotal}`;
+  document.getElementById('fc-done').classList.remove('hidden');
+}
+
 function exportCSV() {
   if (!wordBank.length) return;
   const header=['Word','Part of Speech','Contextual Definition','Why This Word','Etymology','Register','Simpler Synonym','Context (excerpt)','Saved'].join('\t');
@@ -3504,12 +3645,13 @@ inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key===
 document.addEventListener('keydown', e => {
   const tag = document.activeElement?.tagName;
   if (tag==='TEXTAREA'||tag==='INPUT') return;
-  if (e.key==='Escape') { closeWordBank(); closeDesktopModal(); closeExtModal(); closeAuthModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeExtModal(); closeAuthModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
   if (e.key==='?')  toggleShortcuts();
   if (e.key==='b'||e.key==='B') openWordBank();
 });
 
 document.getElementById('wb-overlay').addEventListener('click', e => { if(e.target===document.getElementById('wb-overlay')) closeWordBank(); });
+document.getElementById('fc-overlay').addEventListener('click', e => { if(e.target===document.getElementById('fc-overlay')) closeFlashcards(); });
 document.getElementById('shortcuts-overlay').addEventListener('click', e => { if(e.target===document.getElementById('shortcuts-overlay')) toggleShortcuts(); });
 document.getElementById('desktop-modal').addEventListener('click', e => { if(e.target===document.getElementById('desktop-modal')) closeDesktopModal(); });
 document.getElementById('ext-modal').addEventListener('click', e => { if(e.target===document.getElementById('ext-modal')) closeExtModal(); });
