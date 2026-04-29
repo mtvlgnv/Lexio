@@ -444,7 +444,12 @@
     @media (max-width: 600px) {
       .model-selector-label { display:none; }
       .model-pill { padding:6px 11px; font-size:0.72rem; }
-      .model-selector-row { padding:10px 12px 8px; }
+      .model-selector-row {
+        padding:10px 12px 8px;
+        flex-wrap: wrap; justify-content: center; gap: 6px;
+      }
+      .model-pills { order: 1; }
+      .usage-pill { order: 2; margin-left: 0; width: 100%; justify-content: center; }
     }
     @media (max-width: 400px) {
       .model-pill { padding:5px 9px; font-size:0.68rem; }
