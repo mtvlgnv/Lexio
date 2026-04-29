@@ -800,6 +800,7 @@
     #scroll-nudge:hover { background: var(--bg); color: var(--accent); border-color: var(--accent-mid); }
     #scroll-nudge svg { color: var(--accent); }
     #scroll-nudge.hidden { opacity: 0; pointer-events: none; }
+    @media (max-width: 760px) { #scroll-nudge { display: none !important; } }
     @keyframes nudge-bob {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50%       { transform: translateX(-50%) translateY(5px); }
