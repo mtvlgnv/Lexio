@@ -3114,7 +3114,7 @@ function toggleSave() {
   if (!currentResult) return;
   const {word,data} = currentResult;
   if (isSaved(word)) { wordBank=wordBank.filter(e=>e.word.toLowerCase()!==word.toLowerCase()); }
-  else { wordBank.unshift({word,pos:data.pos||'',contextual:data.contextual||'',why:data.why||'',simpler:data.simpler||null,etymology:data.etymology||null,register:data.register||null,context:currentContext.slice(0,200),savedAt:new Date().toISOString()}); }
+  else { wordBank.unshift({word,pos:data.pos||'',contextual:data.contextual||'',why:data.why||'',simpler:data.simpler||null,etymology:data.etymology||null,register:data.register||null,context:extractSentence(currentContext,word),savedAt:new Date().toISOString()}); }
   saveWordBank(); updateSaveBtn(word);
 }
 
@@ -3133,6 +3133,14 @@ function renderWordBankList() {
   list.innerHTML=wordBank.map((e,i)=>`<div class="wb-entry"><div class="wb-entry-header"><span class="wb-word">${e.word}</span>${e.pos?`<span class="wb-pos">${e.pos}</span>`:''}<button class="wb-delete" onclick="deleteFromBank(${i})" title="Remove">×</button></div><p class="wb-def">${e.contextual}</p></div>`).join('');
 }
 function deleteFromBank(i) { wordBank.splice(i,1); saveWordBank(); renderWordBankList(); }
+
+function extractSentence(text, word) {
+  // Split on sentence-ending punctuation, keep the delimiter
+  const sentences = text.match(/[^.!?]+[.!?]*/g) || [];
+  const lower = word.toLowerCase();
+  const hit = sentences.find(s => s.toLowerCase().includes(lower));
+  return hit ? hit.trim() : text.slice(0, 220).trim();
+}
 
 /* ── Flashcard review ───────────────────────────────────────── */
 let _fcQueue=[], _fcTotal=0, _fcKnown=0, _fcFlipped=false;
