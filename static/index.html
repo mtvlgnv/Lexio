@@ -2992,7 +2992,10 @@ function showResult(word, data, fromHistory=false, model) {
   const simplerRow  = document.getElementById('def-simpler');
   const simplerWord = document.getElementById('def-simpler-word');
   const s = data.simpler;
-  if (s && s !== 'null' && s.toLowerCase() !== word.toLowerCase()) {
+  // Only show if it's a genuine short synonym (≤3 words), not a sentence the AI wrote
+  const simplerIsValid = s && s !== 'null' && s.toLowerCase() !== word.toLowerCase()
+    && s.trim().split(/\s+/).length <= 3 && !s.includes(',') && !s.includes(';');
+  if (simplerIsValid) {
     simplerWord.textContent = s; simplerRow.classList.remove('hidden');
   } else { simplerRow.classList.add('hidden'); }
 
@@ -3135,11 +3138,14 @@ function renderWordBankList() {
 function deleteFromBank(i) { wordBank.splice(i,1); saveWordBank(); renderWordBankList(); }
 
 function extractSentence(text, word) {
-  // Split on sentence-ending punctuation, keep the delimiter
-  const sentences = text.match(/[^.!?]+[.!?]*/g) || [];
+  // Split on sentence boundaries (. ! ? followed by space or end)
+  const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [];
   const lower = word.toLowerCase();
-  const hit = sentences.find(s => s.toLowerCase().includes(lower));
-  return hit ? hit.trim() : text.slice(0, 220).trim();
+  // Find shortest sentence that contains the word (avoids grabbing huge run-ons)
+  const hits = sentences.filter(s => s.toLowerCase().includes(lower));
+  if (!hits.length) return text.slice(0, 220).trim();
+  const hit = hits.sort((a, b) => a.length - b.length)[0];
+  return hit.trim();
 }
 
 /* ── Flashcard review ───────────────────────────────────────── */
