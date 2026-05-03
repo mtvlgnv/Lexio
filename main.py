@@ -233,7 +233,7 @@ def _run_migrations():
 _run_migrations()
 
 # ── Usage limits ─────────────────────────────────────────────────────────────
-FREE_LOOKUP_LIMIT = 30
+FREE_LOOKUP_LIMIT = 5
 FREE_OCR_LIMIT    = 3
 
 def _get_client_ip(request: Request) -> str:
