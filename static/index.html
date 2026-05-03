@@ -1357,6 +1357,7 @@
 <header>
   <img src="/favicon-32.png" width="22" height="22" alt="" style="border-radius:6px;flex-shrink:0;">
   <span class="brand">Le<em>x</em>io</span>
+  <span id="pro-header-badge" style="display:none;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-left:-6px;margin-top:2px;flex-shrink:0;">PRO</span>
   <span class="tagline" data-i18n="tagline">AI contextual definition solutions</span>
   <div class="header-spacer"></div>
 
@@ -2846,12 +2847,12 @@ function clearModelResults() {
 }
 
 /* ── Fetch definition ───────────────────────────────────────── */
-async function fetchDefinition(word, context, modelOverride) {
+async function fetchDefinition(word, context, modelOverride, bypassCache=false) {
   hideError();
   cancelModelSwitch();
   const model = modelOverride || currentModel;
   const key = cacheKey(word, context, model);
-  if (defCache.has(key)) {
+  if (!bypassCache && defCache.has(key)) {
     if (activeToken) activeToken.classList.remove('pulsing');
     // Still store in modelResults so tabs render correctly
     modelResults[model] = defCache.get(key);
@@ -3080,7 +3081,7 @@ function retryDefinition() {
   if (!currentResult || _retryCount >= MAX_RETRIES) return;
   _retryCount++;
   updateRetryBtn();
-  fetchDefinition(currentResult.word, currentResult.context || currentContext, currentResultModel);
+  fetchDefinition(currentResult.word, currentResult.context || currentContext, currentResultModel, true);
 }
 
 function copyDefinition() {
@@ -3773,11 +3774,24 @@ async function checkProStatus() {
     if (r.ok) {
       const d = await r.json();
       _userIsPro = !!d.is_pro;
+      // PRO badge in header
+      const badge = document.getElementById('pro-header-badge');
+      if (badge) badge.style.display = _userIsPro ? '' : 'none';
       if (_userIsPro) {
         const lp = document.getElementById('lp-pro-btn');
         if (lp) { lp.textContent = 'Already Pro ✓'; lp.disabled = true; }
         const mp = document.getElementById('menu-pro-btn');
-        if (mp) mp.style.display = 'none'; // hide from menu if already Pro
+        if (mp) mp.style.display = 'none';
+      } else {
+        // Lock non-Haiku pills for free users
+        document.querySelectorAll('.model-pill:not([data-model="haiku"])').forEach(p => {
+          p.disabled = true;
+          p.title = 'Upgrade to Pro to unlock';
+          p.style.opacity = '0.4';
+          p.style.cursor = 'not-allowed';
+        });
+        // Force Haiku if a Pro model was remembered
+        if (currentModel !== 'haiku') setModel('haiku');
       }
     }
   } catch {}
