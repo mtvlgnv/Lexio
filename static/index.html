@@ -1480,7 +1480,7 @@
         <button class="model-pill active" data-model="sonnet" onclick="onModelPillClick('sonnet')">Sonnet 4.5</button>
       </div>
       <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
-        <span id="usage-text">0 / 5</span>
+        <span id="usage-text">0 / 30</span>
         <span class="usage-bar"><span class="usage-fill" id="usage-fill" style="width:0%"></span></span>
       </span>
     </div>
@@ -1594,6 +1594,10 @@
           <button id="share-btn" class="action-btn" onclick="shareAsImage()" title="Share as image">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             <span data-i18n="share">Share</span>
+          </button>
+          <button id="retry-btn" class="action-btn" onclick="retryDefinition()" title="Re-request definition" style="display:none">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+            <span id="retry-label">Try again</span>
           </button>
         </div>
       </div>
@@ -1835,9 +1839,11 @@
           </div>
         </div>
         <ul class="lp-pro-perks">
-          <li>5 word lookups / month</li>
+          <li>30 word lookups / month</li>
           <li>3 OCR scans / month</li>
-          <li>Try all 4 AI models</li>
+          <li>Claude Haiku model</li>
+          <li>Re-request definition up to 5×</li>
+          <li class="muted-perk">GPT-4o Mini, Gemini, Sonnet</li>
           <li class="muted-perk">Word bank sync across devices</li>
         </ul>
         <a class="lp-pro-cta" href="#" style="background:var(--bg);color:var(--text);border:1.5px solid var(--border)" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Use for free</a>
@@ -2827,6 +2833,7 @@ function cacheKey(word, context, model) { return word.toLowerCase()+'::'+context
 
 /* ── Per-word model results (cleared on new word click) ─────── */
 let resultWord    = null;   // word currently shown in right panel
+let _retryCount   = 0;     // re-requests for current word
 let resultContext = null;   // context it was looked up in
 let modelResults  = {};     // { modelKey: data } for resultWord
 let currentResultModel = null;  // which model's result is displayed
@@ -2955,14 +2962,16 @@ function showResult(word, data, fromHistory=false, model) {
   if (!fromHistory) {
     const usedModel = model || currentModel;
     if (resultWord !== word.toLowerCase()) {
-      // New word — reset model results
+      // New word — reset model results and retry counter
       modelResults = {};
       resultWord    = word.toLowerCase();
       resultContext = currentContext;
+      _retryCount   = 0;
     }
     modelResults[usedModel]  = data;
     currentResultModel       = usedModel;
     renderModelTabs();
+    updateRetryBtn();
   }
 
   // Populate
@@ -3051,6 +3060,30 @@ function toggleMoreSection() {
 }
 
 /* ── Copy ───────────────────────────────────────────────────── */
+/* ── Retry / re-request definition ─────────────────────────── */
+const MAX_RETRIES = 5;
+let _retryCount   = 0;
+
+function updateRetryBtn() {
+  const btn = document.getElementById('retry-btn');
+  if (!btn || !resultWord) return;
+  const remaining = MAX_RETRIES - _retryCount;
+  if (remaining <= 0) {
+    btn.style.display = 'none';
+  } else {
+    btn.style.display = '';
+    document.getElementById('retry-label').textContent =
+      remaining < MAX_RETRIES ? `Try again (${remaining} left)` : 'Try again';
+  }
+}
+
+function retryDefinition() {
+  if (!currentResult || _retryCount >= MAX_RETRIES) return;
+  _retryCount++;
+  updateRetryBtn();
+  fetchDefinition(currentResult.word, currentResult.context || currentContext, currentResultModel);
+}
+
 function copyDefinition() {
   if (!currentResult) return;
   const {word,data} = currentResult;
