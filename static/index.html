@@ -3110,26 +3110,156 @@ function copyPermalink() {
 
 /* ── Share as image ─────────────────────────────────────────── */
 async function shareAsImage() {
-  if (!currentResult || !window.html2canvas) { showError('Share not ready — try again in a moment.'); return; }
-  const resultEl = document.getElementById('def-result');
-  if (resultEl.classList.contains('hidden')) return;
-  const btn=document.getElementById('share-btn'); const orig=btn.innerHTML; btn.textContent='…';
+  if (!currentResult) return;
+  const btn = document.getElementById('share-btn');
+  const orig = btn.innerHTML; btn.textContent = '…';
   try {
-    resultEl.classList.add('screenshot-mode');
-    const canvas = await html2canvas(resultEl, { scale:2, useCORS:true, logging:false,
-      backgroundColor: getComputedStyle(document.body).getPropertyValue('--surface').trim()||'#fff' });
-    resultEl.classList.remove('screenshot-mode');
-    const filename = `lexio-${currentResult.word.toLowerCase()}.png`;
-    if (navigator.canShare) {
-      canvas.toBlob(async blob => {
-        try { const f=new File([blob],filename,{type:'image/png'}); if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:currentResult.word});return;} } catch {}
-        downloadCanvas(canvas,filename);
-      },'image/png');
-    } else { downloadCanvas(canvas,filename); }
-  } catch { resultEl.classList.remove('screenshot-mode'); showError('Could not generate image.'); }
-  finally { btn.innerHTML=orig; }
+    const { word, data } = currentResult;
+    const meaning    = data.meaning    || '';
+    const contextual = data.contextual || '';
+    const pos        = (data.pos || '').toUpperCase();
+    const DPR = 2;
+    const W   = 760, PAD = 52;
+    const ACCENT = '#b5541a', TEXT = '#1c1714', MUTED = '#7a6f68',
+          LABEL = '#a89890', BG = '#faf8f5', BORDER = '#e4dcd4',
+          BADGE_BG = '#f0e6dc';
+
+    // ── helpers ───────────────────────────────────────────────
+    function rr(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x+r, y);
+      ctx.lineTo(x+w-r, y); ctx.arcTo(x+w,y,x+w,y+r,r);
+      ctx.lineTo(x+w, y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+      ctx.lineTo(x+r, y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+      ctx.lineTo(x, y+r); ctx.arcTo(x,y,x+r,y,r);
+      ctx.closePath();
+    }
+    function wrapLines(ctx, text, maxW) {
+      const words = text.split(' '), lines = [];
+      let line = '';
+      for (const w of words) {
+        const test = line ? line + ' ' + w : w;
+        if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; }
+        else line = test;
+      }
+      if (line) lines.push(line);
+      return lines;
+    }
+
+    // ── measure pass to get final height ─────────────────────
+    const tmp = document.createElement('canvas');
+    tmp.width = W * DPR; tmp.height = 10;
+    const tc = tmp.getContext('2d');
+    tc.scale(DPR, DPR);
+
+    let y = PAD;
+    y += 58 + 12;                           // word
+    if (pos) y += 30 + 14;                 // badge
+    y += 14 + 8;                            // MEANING label
+    tc.font = '400 18px DM Sans,sans-serif';
+    y += wrapLines(tc, meaning, W-PAD*2).length * 29 + 24;
+    if (contextual) {
+      y += 1 + 24;                          // divider + gap
+      y += 14 + 8;                          // IN THIS CONTEXT label
+      tc.font = '300 17px DM Sans,sans-serif';
+      y += wrapLines(tc, contextual, W-PAD*2).length * 27 + 20;
+    }
+    y += 1 + 22 + 22 + PAD;               // footer divider + footer + pad
+
+    // ── draw pass ─────────────────────────────────────────────
+    const canvas = document.createElement('canvas');
+    canvas.width = W * DPR; canvas.height = y * DPR;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(DPR, DPR);
+
+    // background card
+    ctx.fillStyle = BG;
+    rr(ctx, 0, 0, W, y, 28); ctx.fill();
+
+    let cy = PAD;
+
+    // word
+    ctx.fillStyle = TEXT;
+    ctx.font = '600 52px Lora,Georgia,serif';
+    ctx.fillText(word, PAD, cy + 46);
+    cy += 58;
+
+    // POS badge
+    if (pos) {
+      cy += 12;
+      ctx.font = '700 11px DM Sans,Arial,sans-serif';
+      const bw = ctx.measureText(pos).width + 22;
+      ctx.fillStyle = BADGE_BG; rr(ctx, PAD, cy, bw, 24, 12); ctx.fill();
+      ctx.fillStyle = ACCENT;
+      ctx.fillText(pos, PAD + 11, cy + 16);
+      cy += 24 + 14;
+    } else { cy += 14; }
+
+    // MEANING label
+    ctx.font = '700 11px DM Sans,Arial,sans-serif';
+    ctx.fillStyle = LABEL;
+    ctx.fillText('MEANING', PAD, cy + 11);
+    cy += 14 + 8;
+
+    // meaning text
+    ctx.font = '400 18px DM Sans,Arial,sans-serif';
+    ctx.fillStyle = TEXT;
+    for (const line of wrapLines(ctx, meaning, W - PAD*2)) {
+      ctx.fillText(line, PAD, cy + 18); cy += 29;
+    }
+    cy += 24;
+
+    // contextual block
+    if (contextual) {
+      ctx.strokeStyle = BORDER; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(PAD, cy); ctx.lineTo(W-PAD, cy); ctx.stroke();
+      cy += 24;
+
+      ctx.font = '700 11px DM Sans,Arial,sans-serif';
+      ctx.fillStyle = LABEL;
+      ctx.fillText('IN THIS CONTEXT', PAD, cy + 11);
+      cy += 14 + 8;
+
+      ctx.font = '300 17px DM Sans,Arial,sans-serif';
+      ctx.fillStyle = MUTED;
+      for (const line of wrapLines(ctx, contextual, W - PAD*2)) {
+        ctx.fillText(line, PAD, cy + 17); cy += 27;
+      }
+      cy += 20;
+    }
+
+    // footer divider
+    ctx.strokeStyle = BORDER; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(PAD, cy); ctx.lineTo(W-PAD, cy); ctx.stroke();
+    cy += 22;
+
+    // footer branding
+    ctx.font = '600 14px DM Sans,Arial,sans-serif';
+    ctx.fillStyle = ACCENT;
+    ctx.fillText('Lexio', PAD, cy + 14);
+    ctx.font = '400 14px DM Sans,Arial,sans-serif';
+    ctx.fillStyle = MUTED;
+    ctx.fillText('· lexio.site', PAD + ctx.measureText('Lexio').width + 5, cy + 14);
+    ctx.fillStyle = LABEL;
+    const tag = 'AI contextual definitions';
+    ctx.fillText(tag, W - PAD - ctx.measureText(tag).width, cy + 14);
+
+    // ── share or download ─────────────────────────────────────
+    const filename = `lexio-${word.toLowerCase()}.png`;
+    canvas.toBlob(async blob => {
+      try {
+        const f = new File([blob], filename, { type: 'image/png' });
+        if (navigator.canShare?.({ files: [f] })) {
+          await navigator.share({ files: [f], title: word }); return;
+        }
+      } catch {}
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = filename; a.click();
+    }, 'image/png');
+
+  } catch(e) { showError('Could not generate card.'); }
+  finally { btn.innerHTML = orig; }
 }
-function downloadCanvas(canvas,filename) { const a=document.createElement('a'); a.href=canvas.toDataURL('image/png'); a.download=filename; a.click(); }
 
 /* ── Save / word bank ───────────────────────────────────────── */
 function isSaved(word) { return wordBank.some(e=>e.word.toLowerCase()===word.toLowerCase()); }
