@@ -3899,34 +3899,45 @@ async function handleProCta() {
   window.location.href = url.toString();
 }
 
+function _lockProModels() {
+  document.querySelectorAll('.model-pill:not([data-model="haiku"])').forEach(p => {
+    p.disabled = true;
+    p.title = 'Upgrade to Pro to unlock';
+    p.style.opacity = '0.4';
+    p.style.cursor = 'not-allowed';
+  });
+  if (currentModel !== 'haiku') setModel('haiku');
+}
+function _unlockProModels() {
+  document.querySelectorAll('.model-pill').forEach(p => {
+    p.disabled = false;
+    p.title = '';
+    p.style.opacity = '';
+    p.style.cursor = '';
+  });
+}
+
+// Lock immediately — unlock only if Pro is confirmed
+_lockProModels();
+
 async function checkProStatus() {
   const token = localStorage.getItem('lexio_token');
-  if (!token) return;
+  if (!token) return; // stays locked
   try {
     const r = await fetch('/api/pro-status', { headers: { 'Authorization': 'Bearer ' + token } });
-    if (r.ok) {
-      const d = await r.json();
-      _userIsPro = !!d.is_pro;
-      // PRO badge in header
-      const badge = document.getElementById('pro-header-badge');
-      if (badge) badge.style.display = _userIsPro ? '' : 'none';
-      if (_userIsPro) {
-        const lp = document.getElementById('lp-pro-btn');
-        if (lp) { lp.textContent = 'Already Pro ✓'; lp.disabled = true; }
-        const mp = document.getElementById('menu-pro-btn');
-        if (mp) mp.style.display = 'none';
-      } else {
-        // Lock non-Haiku pills for free users
-        document.querySelectorAll('.model-pill:not([data-model="haiku"])').forEach(p => {
-          p.disabled = true;
-          p.title = 'Upgrade to Pro to unlock';
-          p.style.opacity = '0.4';
-          p.style.cursor = 'not-allowed';
-        });
-        // Force Haiku if a Pro model was remembered
-        if (currentModel !== 'haiku') setModel('haiku');
-      }
+    if (!r.ok) return;
+    const d = await r.json();
+    _userIsPro = !!d.is_pro;
+    const badge = document.getElementById('pro-header-badge');
+    if (badge) badge.style.display = _userIsPro ? '' : 'none';
+    if (_userIsPro) {
+      _unlockProModels();
+      const lp = document.getElementById('lp-pro-btn');
+      if (lp) { lp.textContent = 'Already Pro ✓'; lp.disabled = true; }
+      const mp = document.getElementById('menu-pro-btn');
+      if (mp) mp.style.display = 'none';
     }
+    // free users stay locked (already locked above)
   } catch {}
 }
 checkProStatus();
