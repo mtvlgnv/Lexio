@@ -103,6 +103,21 @@ app.setAsDefaultProtocolClient('lexio');
 
 app.on('open-url', (event, url) => {
   event.preventDefault();
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === 'auth') {
+      const token = parsed.searchParams.get('token');
+      const user  = parsed.searchParams.get('user');
+      if (token && win) {
+        // Inject token into compact.html's localStorage and fire event
+        win.webContents.executeJavaScript(`
+          localStorage.setItem('lexio_token', ${JSON.stringify(token)});
+          ${user ? `localStorage.setItem('lexio_user', ${JSON.stringify(user)});` : ''}
+          window.dispatchEvent(new CustomEvent('lexio-auth', { detail: { token: ${JSON.stringify(token)}, user: ${user ? JSON.stringify(JSON.parse(user)) : 'null'} } }));
+        `).catch(() => {});
+      }
+    }
+  } catch {}
   showWindow();
 });
 

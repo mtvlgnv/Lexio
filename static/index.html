@@ -2188,6 +2188,16 @@
 /* ── Constants ─────────────────────────────────────────────── */
 const MAX_HISTORY = 5;
 const WB_KEY      = 'lexio_wbv1';
+
+/* ── Desktop app auth handoff ───────────────────────────────── */
+// After login, if opened from the Mac app, redirect token back via lexio:// scheme
+function _maybeRedirectDesktop(token, user) {
+  if (!new URLSearchParams(location.search).has('desktop_auth')) return;
+  const u = new URL('lexio://auth');
+  u.searchParams.set('token', token);
+  u.searchParams.set('user', JSON.stringify(user));
+  window.location.href = u.toString();
+}
 const TWEAKS_KEY  = 'lexio_tweaks';
 const VISITED_KEY = 'lexio_visited';
 
@@ -3565,6 +3575,7 @@ async function submitAuth() {
     updateAcctBtn();
     closeAuthModal();
     syncWordBank();
+    _maybeRedirectDesktop(authToken, authUser);
     // If the user had text ready, continue to analyze automatically
     if (inputText && inputText.value.trim()) analyze();
   } catch (err) {
@@ -3660,6 +3671,7 @@ async function _oauthSignIn(endpoint, body) {
     updateAcctBtn();
     closeAuthModal();
     syncWordBank();
+    _maybeRedirectDesktop(authToken, authUser);
     // If the user had text ready, continue to analyze automatically
     if (inputText && inputText.value.trim()) analyze();
   } catch(e) {

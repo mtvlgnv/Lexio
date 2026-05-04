@@ -347,6 +347,8 @@
 <div id="titlebar">
   <span class="brand">Le<em>x</em>io</span>
   <div class="spacer"></div>
+  <button id="signin-btn" onclick="openSignIn()" style="display:none;background:none;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:0.72rem;font-weight:500;color:var(--text-mid);cursor:pointer;-webkit-app-region:no-drag">Sign in</button>
+  <span id="user-chip" style="display:none;font-size:0.72rem;color:var(--text-mid);background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:3px 10px;cursor:pointer;-webkit-app-region:no-drag" onclick="signOut()" title="Sign out">·</span>
 </div>
 
 <!-- Input -->
@@ -410,16 +412,23 @@ function saveModel(val) {
 function getModel() { return localStorage.getItem(MODEL_KEY) || 'haiku'; }
 
 // ── Pro status — lock non-Haiku for free users ───────────────
-(async function checkProStatus() {
+lockFreeModels(); // lock immediately; unlock below if Pro confirmed
+async function checkProStatus() {
   try {
     const token = localStorage.getItem('lexio_token');
     if (!token) { lockFreeModels(); return; }
     const r = await fetch('/api/pro-status', { headers: { Authorization: 'Bearer ' + token } });
     if (!r.ok) { lockFreeModels(); return; }
     const d = await r.json();
-    if (!d.is_pro) lockFreeModels();
+    if (d.is_pro) {
+      ['gpt-4-mini', 'gemini', 'sonnet'].forEach(m => {
+        const opt = modelSelect.querySelector(`option[value="${m}"]`);
+        if (opt) { opt.disabled = false; opt.textContent = opt.textContent.replace(' 🔒',''); }
+      });
+    } else { lockFreeModels(); }
   } catch { lockFreeModels(); }
-})();
+}
+checkProStatus();
 
 function lockFreeModels() {
   ['gpt-4-mini', 'gemini', 'sonnet'].forEach(m => {
@@ -431,6 +440,48 @@ function lockFreeModels() {
     saveModel('haiku');
   }
 }
+
+// ── Auth ─────────────────────────────────────────────────────
+function updateAuthUI() {
+  const token = localStorage.getItem('lexio_token');
+  const user  = (() => { try { return JSON.parse(localStorage.getItem('lexio_user')); } catch { return null; } })();
+  const signInBtn  = document.getElementById('signin-btn');
+  const userChip   = document.getElementById('user-chip');
+  if (token && user) {
+    signInBtn.style.display = 'none';
+    userChip.style.display  = '';
+    userChip.textContent = user.email ? user.email.split('@')[0] : 'Account';
+  } else {
+    signInBtn.style.display = '';
+    userChip.style.display  = 'none';
+  }
+}
+
+function openSignIn() {
+  // Open main site with desktop_auth flag — after login it redirects lexio://auth?token=...
+  window.open('https://lexio.site?desktop_auth=1', '_blank');
+}
+
+function signOut() {
+  if (!confirm('Sign out of Lexio?')) return;
+  localStorage.removeItem('lexio_token');
+  localStorage.removeItem('lexio_user');
+  updateAuthUI();
+  lockFreeModels();
+}
+
+// Listen for token injected by Electron main process
+window.addEventListener('lexio-auth', e => {
+  if (e.detail?.token) {
+    localStorage.setItem('lexio_token', e.detail.token);
+    if (e.detail.user) localStorage.setItem('lexio_user', JSON.stringify(e.detail.user));
+    updateAuthUI();
+    // Re-run pro check with new token
+    checkProStatus();
+  }
+});
+
+updateAuthUI();
 
 const textarea  = document.getElementById('paste-area');
 const charCount = document.getElementById('char-count');
