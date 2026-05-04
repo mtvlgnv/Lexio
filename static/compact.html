@@ -355,10 +355,10 @@
   <div class="input-row">
     <span id="char-count"></span>
     <select id="model-select" title="AI model" onchange="saveModel(this.value)">
-      <option value="sonnet">Sonnet</option>
       <option value="haiku">Haiku</option>
-      <option value="gpt-4-mini">GPT-4o Mini</option>
-      <option value="gemini">Gemini</option>
+      <option value="gpt-4-mini">GPT-4o Mini 🔒</option>
+      <option value="gemini">Gemini 🔒</option>
+      <option value="sonnet">Sonnet 4.5 🔒</option>
     </select>
     <button id="edit-btn" class="btn-ghost hidden" onclick="resetToEdit()">← Edit</button>
     <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze</button>
@@ -401,13 +401,36 @@ let currentResult = null;
 // ── Model preference ────────────────────────────────────────
 const MODEL_KEY = 'lexio_compact_model';
 const modelSelect = document.getElementById('model-select');
-const savedModel = localStorage.getItem(MODEL_KEY) || 'sonnet';
+const savedModel = localStorage.getItem(MODEL_KEY) || 'haiku';
 modelSelect.value = savedModel;
 function saveModel(val) {
   localStorage.setItem(MODEL_KEY, val);
-  cache.clear(); // cache is model-specific
+  cache.clear();
 }
-function getModel() { return localStorage.getItem(MODEL_KEY) || 'sonnet'; }
+function getModel() { return localStorage.getItem(MODEL_KEY) || 'haiku'; }
+
+// ── Pro status — lock non-Haiku for free users ───────────────
+(async function checkProStatus() {
+  try {
+    const token = localStorage.getItem('lexio_token');
+    if (!token) { lockFreeModels(); return; }
+    const r = await fetch('/api/pro-status', { headers: { Authorization: 'Bearer ' + token } });
+    if (!r.ok) { lockFreeModels(); return; }
+    const d = await r.json();
+    if (!d.is_pro) lockFreeModels();
+  } catch { lockFreeModels(); }
+})();
+
+function lockFreeModels() {
+  ['gpt-4-mini', 'gemini', 'sonnet'].forEach(m => {
+    const opt = modelSelect.querySelector(`option[value="${m}"]`);
+    if (opt) opt.disabled = true;
+  });
+  if (['gpt-4-mini', 'gemini', 'sonnet'].includes(modelSelect.value)) {
+    modelSelect.value = 'haiku';
+    saveModel('haiku');
+  }
+}
 
 const textarea  = document.getElementById('paste-area');
 const charCount = document.getElementById('char-count');
@@ -504,6 +527,12 @@ async function fetchDef(word) {
       body: JSON.stringify({ word, context, lang: 'auto', model }),
     });
     if (!resp.ok) {
+      if (resp.status === 402) {
+        throw new Error('Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.');
+      }
+      if (resp.status === 403) {
+        throw new Error('This model requires a Pro plan. Upgrade at lexio.site.');
+      }
       const e = await resp.json().catch(() => ({ detail: resp.statusText }));
       throw new Error(e.detail || `HTTP ${resp.status}`);
     }
