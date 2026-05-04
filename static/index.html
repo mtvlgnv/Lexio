@@ -441,6 +441,7 @@
       box-shadow:0 1px 8px rgba(0,0,0,0.18);
     }
     .model-pill:hover:not(.active) { background:var(--token-hover); color:var(--text); }
+    .pill-short { display: none; }
     @media (max-width: 600px) {
       .model-selector-label { display:none; }
       .model-pill { padding:6px 11px; font-size:0.72rem; }
@@ -451,7 +452,9 @@
       .model-pills { order: 1; }
       .usage-pill { order: 2; margin-left: 0; width: 100%; justify-content: center; }
     }
-    @media (max-width: 400px) {
+    @media (max-width: 430px) {
+      .pill-full { display: none; }
+      .pill-short { display: inline; }
       .model-pill { padding:5px 9px; font-size:0.68rem; }
     }
 
@@ -1476,9 +1479,9 @@
       <span class="model-selector-label">Model</span>
       <div class="model-pills" id="model-pills">
         <button class="model-pill" data-model="haiku" onclick="onModelPillClick('haiku')">Haiku</button>
-        <button class="model-pill" data-model="gpt-4-mini" onclick="onModelPillClick('gpt-4-mini')">GPT-4o Mini</button>
+        <button class="model-pill" data-model="gpt-4-mini" onclick="onModelPillClick('gpt-4-mini')"><span class="pill-full">GPT-4o Mini</span><span class="pill-short">GPT-4o</span></button>
         <button class="model-pill" data-model="gemini" onclick="onModelPillClick('gemini')">Gemini</button>
-        <button class="model-pill active" data-model="sonnet" onclick="onModelPillClick('sonnet')">Sonnet 4.5</button>
+        <button class="model-pill active" data-model="sonnet" onclick="onModelPillClick('sonnet')"><span class="pill-full">Sonnet 4.5</span><span class="pill-short">Sonnet</span></button>
       </div>
       <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
         <span id="usage-text">0 / 30</span>
