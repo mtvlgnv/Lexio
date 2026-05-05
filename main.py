@@ -7,6 +7,8 @@ import datetime
 import html as _html
 import ipaddress
 import socket as _socket
+import smtplib
+from email.mime.text import MIMEText
 from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Request, Depends, Header, BackgroundTasks, File, UploadFile, Form
@@ -144,6 +146,15 @@ class AnonUsage(Base):
     lookups = Column(Integer, default=0, nullable=False)
     ocr     = Column(Integer, default=0, nullable=False)
 
+class PasswordResetToken(Base):
+    """Single-use password reset tokens, expire after 1 hour."""
+    __tablename__ = "password_reset_tokens"
+    id         = Column(Integer, primary_key=True)
+    user_id    = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    token      = Column(String, unique=True, nullable=False, index=True)
+    expires_at = Column(DateTime, nullable=False)
+    used       = Column(Integer, default=0, nullable=False)   # 0=unused, 1=used
+
 Base.metadata.create_all(engine)
 
 # ── SQLite migrations ─────────────────────────────────────────────────────────
@@ -198,6 +209,15 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
         conn.execute(_sa_text("ALTER TABLE users ADD COLUMN token_version INTEGER NOT NULL DEFAULT 0"))
         if "token_version" not in _cols(conn, "users") else None
     )),
+    (8, "create password_reset_tokens table", lambda conn, _: conn.execute(_sa_text("""
+        CREATE TABLE IF NOT EXISTS password_reset_tokens (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL REFERENCES users(id),
+            token TEXT NOT NULL UNIQUE,
+            expires_at TEXT NOT NULL,
+            used INTEGER NOT NULL DEFAULT 0
+        )
+    """))),
 ]
 
 def _run_migrations():
@@ -904,6 +924,99 @@ async def change_password(
     })
     db.commit()
     # Return a fresh token so the caller stays logged in
+    return {"ok": True, "token": create_token(user.id, new_version)}
+
+
+# ── /auth/forgot-password & /auth/reset-password ─────────────────────────────
+
+SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SMTP_USER = os.getenv("SMTP_USER", "")
+SMTP_PASS = os.getenv("SMTP_PASS", "")
+SITE_URL  = os.getenv("SITE_URL", "https://lexio.site")
+
+def _send_reset_email(to_email: str, token: str):
+    if not SMTP_USER or not SMTP_PASS:
+        logger.warning("SMTP not configured — skipping password reset email")
+        return
+    reset_url = f"{SITE_URL}/reset-password?token={token}"
+    body = f"""Hi,
+
+You requested a password reset for your Lexio account.
+
+Click the link below to set a new password (valid for 1 hour):
+
+{reset_url}
+
+If you didn't request this, you can safely ignore this email.
+
+— The Lexio team
+"""
+    msg = MIMEText(body)
+    msg["Subject"] = "Reset your Lexio password"
+    msg["From"]    = f"Lexio <{SMTP_USER}>"
+    msg["To"]      = to_email
+    try:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as s:
+            s.starttls()
+            s.login(SMTP_USER, SMTP_PASS)
+            s.sendmail(SMTP_USER, [to_email], msg.as_string())
+    except Exception as exc:
+        logger.error("Failed to send reset email to %s: %s", to_email, exc)
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+@app.post("/auth/forgot-password")
+@limiter.limit("3/minute")
+async def forgot_password(
+    request: Request,
+    body: ForgotPasswordRequest,
+    background_tasks: BackgroundTasks,
+    db: DBSession = Depends(get_db),
+):
+    # Always return 200 so we don't leak whether an email is registered
+    user = db.query(User).filter(User.email == body.email).first()
+    if user and user.pwd_hash:
+        # Invalidate any existing unused tokens for this user
+        db.query(PasswordResetToken).filter(
+            PasswordResetToken.user_id == user.id,
+            PasswordResetToken.used == 0,
+        ).update({PasswordResetToken.used: 1})
+        token = secrets.token_urlsafe(32)
+        expires = datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+        db.add(PasswordResetToken(user_id=user.id, token=token, expires_at=expires))
+        db.commit()
+        background_tasks.add_task(_send_reset_email, user.email, token)
+    return {"ok": True}
+
+class ResetPasswordRequest(BaseModel):
+    token:    str
+    password: str = Field(..., min_length=8)
+
+@app.post("/auth/reset-password")
+@limiter.limit("5/minute")
+async def reset_password(
+    request: Request,
+    body: ResetPasswordRequest,
+    db: DBSession = Depends(get_db),
+):
+    rec = db.query(PasswordResetToken).filter(
+        PasswordResetToken.token == body.token,
+        PasswordResetToken.used  == 0,
+    ).first()
+    if not rec or rec.expires_at < datetime.datetime.utcnow():
+        raise HTTPException(status_code=400, detail="This reset link is invalid or has expired.")
+    user = db.query(User).filter(User.id == rec.user_id).first()
+    if not user:
+        raise HTTPException(status_code=400, detail="User not found.")
+    new_version = (user.token_version or 0) + 1
+    db.query(User).filter(User.id == user.id).update({
+        User.pwd_hash:      hash_password(body.password),
+        User.token_version: new_version,
+    })
+    rec.used = 1
+    db.commit()
     return {"ok": True, "token": create_token(user.id, new_version)}
 
 

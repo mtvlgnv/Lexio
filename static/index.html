@@ -1974,6 +1974,53 @@
   </div>
 </div>
 
+<!-- ── Forgot password modal ────────────────────────────────── -->
+<div id="forgot-modal" class="hidden" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:24px;">
+  <div class="auth-inner" style="max-width:400px;width:100%;">
+    <div class="wb-header">
+      <span class="wb-title">Reset password</span>
+      <div class="wb-header-spacer"></div>
+      <button class="wb-close-btn" onclick="closeForgotPassword()">×</button>
+    </div>
+    <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;">
+      <p style="font-size:0.83rem;color:var(--text-mid);margin:0;">Enter your email and we'll send you a link to reset your password.</p>
+      <div class="auth-field">
+        <label>Email</label>
+        <input id="forgot-email" type="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="auth-error hidden" id="forgot-error"></div>
+      <div id="forgot-success" class="hidden" style="font-size:0.83rem;color:var(--accent);padding:10px 12px;background:var(--accent-lt);border-radius:var(--radius-sm);border:1px solid var(--accent-mid);">
+        If that email has an account, a reset link is on its way. Check your inbox.
+      </div>
+      <button class="auth-submit" id="forgot-submit" onclick="submitForgotPassword()">Send reset link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Reset password modal (shown when ?token= is in URL) ── -->
+<div id="reset-modal" class="hidden" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:24px;">
+  <div class="auth-inner" style="max-width:400px;width:100%;">
+    <div class="wb-header">
+      <span class="wb-title">Set new password</span>
+    </div>
+    <div style="padding:20px 24px;display:flex;flex-direction:column;gap:14px;">
+      <div class="auth-field">
+        <label>New password</label>
+        <input id="reset-password" type="password" placeholder="At least 8 characters" autocomplete="new-password">
+      </div>
+      <div class="auth-field">
+        <label>Confirm password</label>
+        <input id="reset-password2" type="password" placeholder="Repeat password" autocomplete="new-password">
+      </div>
+      <div class="auth-error hidden" id="reset-error"></div>
+      <div id="reset-success" class="hidden" style="font-size:0.83rem;color:var(--accent);padding:10px 12px;background:var(--accent-lt);border-radius:var(--radius-sm);border:1px solid var(--accent-mid);">
+        Password updated! You're now signed in.
+      </div>
+      <button class="auth-submit" id="reset-submit" onclick="submitResetPassword()">Set new password</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── Desktop app modal ────────────────────────────────────── -->
 <div id="desktop-modal" class="hidden">
   <div class="desktop-inner">
@@ -2070,7 +2117,7 @@
         </div>
         <div class="auth-error hidden" id="auth-error"></div>
         <button class="auth-submit" id="auth-submit" onclick="submitAuth()">Sign in</button>
-        <p class="auth-info">Your word bank syncs to the cloud when signed in. <a onclick="switchAuthTab('register')">No account yet?</a></p>
+        <p class="auth-info">Your word bank syncs to the cloud when signed in. <a onclick="switchAuthTab('register')">No account yet?</a> · <a onclick="openForgotPassword()" style="cursor:pointer">Forgot password?</a></p>
         <div id="oauth-btn-wrap" style="display:none; flex-direction:column; gap:10px;">
           <div class="auth-divider">or</div>
           <button class="btn-oauth" onclick="triggerGoogleSignIn()">
@@ -3594,6 +3641,72 @@ function signOut() {
   closeAuthModal();
 }
 
+/* ── Forgot / Reset password ────────────────────────────────── */
+function openForgotPassword() {
+  closeAuthModal();
+  document.getElementById('forgot-modal').classList.remove('hidden');
+  document.getElementById('forgot-email').value = document.getElementById('auth-email').value || '';
+  document.getElementById('forgot-error').classList.add('hidden');
+  document.getElementById('forgot-success').classList.add('hidden');
+  document.getElementById('forgot-submit').disabled = false;
+}
+function closeForgotPassword() {
+  document.getElementById('forgot-modal').classList.add('hidden');
+}
+async function submitForgotPassword() {
+  const email = document.getElementById('forgot-email').value.trim();
+  const errEl = document.getElementById('forgot-error');
+  const okEl  = document.getElementById('forgot-success');
+  errEl.classList.add('hidden');
+  okEl.classList.add('hidden');
+  if (!email) { errEl.textContent = 'Please enter your email.'; errEl.classList.remove('hidden'); return; }
+  document.getElementById('forgot-submit').disabled = true;
+  try {
+    await fetch('/auth/forgot-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+  } catch {}
+  okEl.classList.remove('hidden');
+}
+
+let _resetToken = null;
+function _checkResetToken() {
+  const params = new URLSearchParams(location.search);
+  _resetToken = params.get('token');
+  if (_resetToken && location.pathname === '/reset-password') {
+    document.getElementById('reset-modal').classList.remove('hidden');
+  }
+}
+async function submitResetPassword() {
+  const pw  = document.getElementById('reset-password').value;
+  const pw2 = document.getElementById('reset-password2').value;
+  const errEl = document.getElementById('reset-error');
+  const okEl  = document.getElementById('reset-success');
+  errEl.classList.add('hidden');
+  okEl.classList.add('hidden');
+  if (pw.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; errEl.classList.remove('hidden'); return; }
+  if (pw !== pw2)    { errEl.textContent = 'Passwords do not match.'; errEl.classList.remove('hidden'); return; }
+  document.getElementById('reset-submit').disabled = true;
+  try {
+    const r = await fetch('/auth/reset-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: _resetToken, password: pw }),
+    });
+    const d = await r.json();
+    if (!r.ok) { errEl.textContent = d.detail || 'Something went wrong.'; errEl.classList.remove('hidden'); document.getElementById('reset-submit').disabled = false; return; }
+    // Auto sign-in with the new token
+    authToken = d.token;
+    if (d.user) { authUser = d.user; try { localStorage.setItem('lexio_token', d.token); localStorage.setItem('lexio_user', JSON.stringify(d.user)); } catch {} }
+    okEl.classList.remove('hidden');
+    document.getElementById('reset-submit').style.display = 'none';
+    updateAcctBtn();
+    setTimeout(() => { document.getElementById('reset-modal').classList.add('hidden'); history.replaceState({}, '', '/'); }, 2000);
+  } catch { errEl.textContent = 'Network error. Please try again.'; errEl.classList.remove('hidden'); document.getElementById('reset-submit').disabled = false; }
+}
+
 /* ── Gumroad ────────────────────────────────────────────────── */
 let _payhipUrl = null;
 
@@ -3855,6 +3968,9 @@ document.getElementById('auth-modal').addEventListener('click', e => { if(e.targ
 
 // Init OAuth providers (Google + Apple)
 initOAuthProviders();
+
+// Check for password reset token in URL
+_checkResetToken();
 
 // Init model selector
 initializeModelSelector();
