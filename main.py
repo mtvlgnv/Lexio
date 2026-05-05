@@ -850,7 +850,11 @@ async def register(request: Request, body: RegisterRequest, db: DBSession = Depe
 @limiter.limit("10/minute")
 async def login(request: Request, body: LoginRequest, db: DBSession = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email).first()
-    if not user or not user.pwd_hash or not verify_password(body.password, user.pwd_hash):
+    if not user:
+        raise HTTPException(status_code=401, detail="Incorrect email or password.")
+    if not user.pwd_hash:
+        raise HTTPException(status_code=401, detail="This account uses Google sign-in. Please click 'Continue with Google'.")
+    if not verify_password(body.password, user.pwd_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password.")
     return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
 
