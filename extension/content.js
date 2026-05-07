@@ -33,7 +33,8 @@ let debounce     = null;
 let enabled      = true;
 let lastRefRect  = null;
 let currentLang  = 'auto';
-let currentModel = 'sonnet';
+let currentModel = 'haiku';
+let isPro        = false;
 
 // Per-word, per-model result cache
 let wordModelResults = {};  // { model: data }
@@ -42,15 +43,17 @@ let modelDropOpen    = false;
 
 // Load initial state from storage
 try {
-  chrome.storage.local.get(['lexio_enabled', 'lexio_lang', 'lexio_model'], d => {
+  chrome.storage.local.get(['lexio_enabled', 'lexio_lang', 'lexio_model', 'lexio_is_pro'], d => {
     enabled      = d.lexio_enabled !== false;
     currentLang  = d.lexio_lang  || 'auto';
-    currentModel = d.lexio_model || 'sonnet';
+    isPro        = !!d.lexio_is_pro;
+    currentModel = isPro ? (d.lexio_model || 'sonnet') : 'haiku';
   });
   chrome.storage.onChanged.addListener(changes => {
     if ('lexio_enabled' in changes) enabled      = changes.lexio_enabled.newValue !== false;
     if ('lexio_lang'    in changes) currentLang  = changes.lexio_lang.newValue    || 'auto';
-    if ('lexio_model'   in changes) currentModel = changes.lexio_model.newValue   || 'sonnet';
+    if ('lexio_is_pro'  in changes) { isPro = !!changes.lexio_is_pro.newValue; if (!isPro) currentModel = 'haiku'; }
+    if ('lexio_model'   in changes && isPro) currentModel = changes.lexio_model.newValue || 'sonnet';
   });
 } catch (e) {
   // Extension context invalidated (page was open when extension reloaded).
@@ -322,6 +325,7 @@ styleEl.textContent = `
   }
   .lx-model-drop-item:hover { background: oklch(95% 0.04 75); }
   .lx-model-drop-item.active { color: oklch(52% 0.17 54); font-weight: 700; }
+  .lx-model-drop-item.locked { opacity: 0.4; cursor: not-allowed; }
   .lx-model-drop-item.cached::after {
     content: '✓'; font-size: 0.65rem;
     color: oklch(58% 0.17 54); margin-left: 6px;
@@ -488,11 +492,12 @@ function renderModelDrop() {
 
   drop.innerHTML = MODEL_KEYS.map((m, i) => {
     const hasCached = (cachedWord === currentWord) && wordModelResults[m];
-    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}" data-model="${m}">${esc(MODEL_LABELS[m])}</button>` +
+    const locked = !isPro && m !== 'haiku';
+    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}${locked ? ' locked' : ''}" data-model="${m}" ${locked ? 'disabled title="Pro only"' : ''}>${esc(MODEL_LABELS[m])}${locked ? ' 🔒' : ''}</button>` +
       (i === 0 ? '<div class="lx-model-drop-sep"></div>' : '');
   }).join('');
 
-  drop.querySelectorAll('.lx-model-drop-item').forEach(btn => {
+  drop.querySelectorAll('.lx-model-drop-item:not([disabled])').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       const m = btn.dataset.model;
@@ -636,8 +641,17 @@ function renderResult(word, data) {
   if (lastRefRect) requestAnimationFrame(() => positionPopup(lastRefRect));
 }
 
-function renderError(msg) {
-  popup.innerHTML = `
+function renderError(msg, limitExceeded) {
+  popup.innerHTML = limitExceeded ? `
+    <div class="lx-head">
+      <span class="lx-word">${esc(currentWord)}</span>
+      <button class="lx-close">×</button>
+    </div>
+    <div class="lx-err" style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+      <span>Monthly lookup limit reached.</span>
+      <a href="https://lexio.site/#pro" target="_blank" style="display:inline-block;padding:6px 14px;background:oklch(58% 0.17 54);color:#fff;border-radius:8px;font-size:0.8rem;font-weight:600;text-decoration:none;">Upgrade to Pro →</a>
+    </div>
+  ` : `
     <div class="lx-head">
       <span class="lx-word">${esc(currentWord)}</span>
       <button class="lx-close">×</button>
@@ -708,7 +722,7 @@ function runDefine(word, refRect, anchorEl, modelOverride) {
         wordModelResults[model] = data;
         renderResult(word, data);
       } else {
-        renderError(resp?.error || 'Could not fetch definition.');
+        renderError(resp?.error || 'Could not fetch definition.', resp?.limit_exceeded);
       }
     });
   } catch (e) {

@@ -26,15 +26,30 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
+// ── Pro status helper ─────────────────────────────────────────────────────────
+async function fetchAndStoreProStatus(token) {
+  if (!token) { chrome.storage.local.set({ lexio_is_pro: false }); return; }
+  try {
+    const r = await fetch(`${API_BASE}/api/pro-status`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (r.ok) {
+      const d = await r.json();
+      chrome.storage.local.set({ lexio_is_pro: !!d.is_pro });
+    }
+  } catch {}
+}
+
 // ── Message handler ───────────────────────────────────────────────────────────
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
   // ── Fetch definition ────────────────────────────────────────────
   if (msg.type === 'DEFINE') {
-    chrome.storage.local.get(['lexio_token', 'lexio_lang', 'lexio_model'], async (stored) => {
-      // If content script sends 'auto' it may not have loaded storage yet — fall back to stored pref
+    chrome.storage.local.get(['lexio_token', 'lexio_lang', 'lexio_model', 'lexio_is_pro'], async (stored) => {
+      const isPro = !!stored.lexio_is_pro;
+      // Free users are locked to Haiku
       const lang  = (msg.lang && msg.lang !== 'auto') ? msg.lang : (stored.lexio_lang || 'auto');
-      const model = msg.model || stored.lexio_model || 'sonnet';
+      const model = isPro ? (msg.model || stored.lexio_model || 'sonnet') : 'haiku';
       const key   = cacheKey(msg.word, msg.context || '', lang, model);
 
       if (defCache.has(key)) {
@@ -58,13 +73,16 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         // First attempt with requested model
         let resp = await callDefine(model);
 
-        // If the chosen provider is down/unconfigured, fall back to Sonnet once.
-        // (Common when Gemini/GPT keys are not set on the server.)
-        if (!resp.ok && resp.status >= 500 && model !== 'sonnet') {
-          resp = await callDefine('sonnet');
+        // If the chosen provider is down/unconfigured, fall back to Haiku once.
+        if (!resp.ok && resp.status >= 500 && model !== 'haiku') {
+          resp = await callDefine('haiku');
         }
 
         if (resp.status === 429) throw new Error('Too many requests — wait a moment.');
+        if (resp.status === 402) {
+          sendResponse({ ok: false, error: 'Monthly lookup limit reached.', limit_exceeded: true });
+          return;
+        }
         if (!resp.ok) {
           const e = await resp.json().catch(() => ({}));
           throw new Error(e.detail || `Server error ${resp.status}`);
@@ -72,7 +90,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
         const data = await resp.json();
         defCache.set(key, data);
-        sendResponse({ ok: true, data });
+        sendResponse({ ok: true, data, isPro });
       } catch (err) {
         sendResponse({ ok: false, error: err.message });
       }
@@ -151,6 +169,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
         const token = data.token;
         chrome.storage.local.set({ lexio_token: token, lexio_user: data.user });
+        fetchAndStoreProStatus(token);
 
         // Sync any locally-saved words to the server, and pull back the full list
         try {
@@ -179,21 +198,22 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
   // ── Auth: sign out ───────────────────────────────────────────────
   if (msg.type === 'AUTH_LOGOUT') {
-    chrome.storage.local.remove(['lexio_token', 'lexio_user']);
+    chrome.storage.local.remove(['lexio_token', 'lexio_user', 'lexio_is_pro']);
     sendResponse({ ok: true });
     return true;
   }
 
   // ── Get stored state (for popup) ─────────────────────────────────
   if (msg.type === 'GET_STATE') {
-    chrome.storage.local.get(['lexio_token', 'lexio_user', 'lexio_lang', 'lexio_wordbank', 'lexio_enabled', 'lexio_model'], (d) => {
+    chrome.storage.local.get(['lexio_token', 'lexio_user', 'lexio_lang', 'lexio_wordbank', 'lexio_enabled', 'lexio_model', 'lexio_is_pro'], (d) => {
       sendResponse({
         token:    d.lexio_token    || null,
         user:     d.lexio_user     || null,
         lang:     d.lexio_lang     || 'auto',
         wbCount:  (d.lexio_wordbank || []).length,
-        enabled:  d.lexio_enabled !== false, // default on
+        enabled:  d.lexio_enabled !== false,
         model:    d.lexio_model    || 'sonnet',
+        isPro:    !!d.lexio_is_pro,
       });
     });
     return true;
@@ -230,6 +250,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         // Store the token if it changed
         if (stored.lexio_token !== msg.token) {
           chrome.storage.local.set({ lexio_token: msg.token });
+          fetchAndStoreProStatus(msg.token);
         }
         // Push any locally-saved words up to the server
         const bank = stored.lexio_wordbank || [];
