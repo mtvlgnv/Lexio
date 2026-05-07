@@ -325,7 +325,18 @@ styleEl.textContent = `
   }
   .lx-model-drop-item:hover { background: oklch(95% 0.04 75); }
   .lx-model-drop-item.active { color: oklch(52% 0.17 54); font-weight: 700; }
-  .lx-model-drop-item.locked { opacity: 0.4; cursor: not-allowed; }
+  .lx-model-drop-item.locked { opacity: 0.4; cursor: not-allowed; position: relative; }
+  .lx-model-drop-item.locked::after {
+    content: 'Buy Pro to unlock all models';
+    position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: calc(100% + 6px);
+    background: oklch(20% 0.01 65); color: oklch(94% 0.006 75);
+    font-size: 0.7rem; font-weight: 500; white-space: nowrap;
+    padding: 4px 8px; border-radius: 6px; pointer-events: none;
+    opacity: 0; transition: opacity 0.12s;
+    z-index: 10;
+  }
+  .lx-model-drop-item.locked:hover::after { opacity: 1; }
   .lx-model-drop-item.cached::after {
     content: '✓'; font-size: 0.65rem;
     color: oklch(58% 0.17 54); margin-left: 6px;
@@ -493,7 +504,7 @@ function renderModelDrop() {
   drop.innerHTML = MODEL_KEYS.map((m, i) => {
     const hasCached = (cachedWord === currentWord) && wordModelResults[m];
     const locked = !isPro && m !== 'haiku';
-    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}${locked ? ' locked' : ''}" data-model="${m}" ${locked ? 'disabled title="Buy Pro to unlock all models"' : ''}>${esc(MODEL_LABELS[m])}</button>` +
+    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}${locked ? ' locked' : ''}" data-model="${m}" ${locked ? 'disabled style="pointer-events:auto"' : ''}>${esc(MODEL_LABELS[m])}</button>` +
       (i === 0 ? '<div class="lx-model-drop-sep"></div>' : '');
   }).join('');
 
