@@ -493,7 +493,7 @@ function renderModelDrop() {
   drop.innerHTML = MODEL_KEYS.map((m, i) => {
     const hasCached = (cachedWord === currentWord) && wordModelResults[m];
     const locked = !isPro && m !== 'haiku';
-    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}${locked ? ' locked' : ''}" data-model="${m}" ${locked ? 'disabled title="Pro only"' : ''}>${esc(MODEL_LABELS[m])}${locked ? ' 🔒' : ''}</button>` +
+    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}${locked ? ' locked' : ''}" data-model="${m}" ${locked ? 'disabled title="Pro only"' : ''}>${esc(MODEL_LABELS[m])}</button>` +
       (i === 0 ? '<div class="lx-model-drop-sep"></div>' : '');
   }).join('');
 
@@ -649,7 +649,7 @@ function renderError(msg, limitExceeded) {
     </div>
     <div class="lx-err" style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
       <span>Monthly lookup limit reached.</span>
-      <a href="https://lexio.site/#pro" target="_blank" style="display:inline-block;padding:6px 14px;background:oklch(58% 0.17 54);color:#fff;border-radius:8px;font-size:0.8rem;font-weight:600;text-decoration:none;">Upgrade to Pro →</a>
+      <a href="https://lexio.site/#pro" target="_blank" style="display:inline-block;padding:6px 14px;background:oklch(58% 0.17 54);color:#fff;border-radius:8px;font-size:0.8rem;font-weight:600;text-decoration:none;">Upgrade to Pro</a>
     </div>
   ` : `
     <div class="lx-head">
