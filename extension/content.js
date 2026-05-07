@@ -325,17 +325,17 @@ styleEl.textContent = `
   }
   .lx-model-drop-item:hover { background: oklch(95% 0.04 75); }
   .lx-model-drop-item.active { color: oklch(52% 0.17 54); font-weight: 700; }
-  .lx-model-drop-item.locked { opacity: 0.4; cursor: not-allowed; position: relative; }
-  .lx-model-drop-item.locked::after {
-    content: 'Buy Pro to unlock all models';
-    position: absolute; left: calc(100% + 8px); top: 50%; transform: translateY(-50%);
-    background: oklch(20% 0.01 65); color: oklch(94% 0.006 75);
-    font-size: 0.7rem; font-weight: 500; white-space: nowrap;
-    padding: 4px 8px; border-radius: 6px; pointer-events: none;
-    opacity: 0; transition: opacity 0.12s;
-    z-index: 10;
+  .lx-upgrade-row {
+    display: block; width: 100%; padding: 6px 10px; border-radius: 7px;
+    font-size: 0.75rem; font-weight: 600; color: oklch(52% 0.17 54);
+    border: none; background: none; font-family: inherit;
+    text-align: left; cursor: pointer; transition: background 0.1s;
   }
-  .lx-model-drop-item.locked:hover::after { opacity: 1; }
+  .lx-upgrade-row:hover { background: oklch(95% 0.04 75); }
+  @media (prefers-color-scheme: dark) {
+    .lx-upgrade-row { color: oklch(74% 0.18 54); }
+    .lx-upgrade-row:hover { background: oklch(28% 0.02 65); }
+  }
   .lx-model-drop-item.cached::after {
     content: '✓'; font-size: 0.65rem;
     color: oklch(58% 0.17 54); margin-left: 6px;
@@ -500,14 +500,14 @@ function renderModelDrop() {
   drop.className = 'lx-model-drop';
   drop.id = 'lx-model-drop';
 
-  drop.innerHTML = MODEL_KEYS.map((m, i) => {
+  const visibleModels = isPro ? MODEL_KEYS : ['haiku'];
+  drop.innerHTML = visibleModels.map((m, i) => {
     const hasCached = (cachedWord === currentWord) && wordModelResults[m];
-    const locked = !isPro && m !== 'haiku';
-    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}${locked ? ' locked' : ''}" data-model="${m}" ${locked ? 'disabled style="pointer-events:auto"' : ''}>${esc(MODEL_LABELS[m])}</button>` +
-      (i === 0 ? '<div class="lx-model-drop-sep"></div>' : '');
-  }).join('');
+    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}" data-model="${m}">${esc(MODEL_LABELS[m])}</button>` +
+      (i === 0 && visibleModels.length > 1 ? '<div class="lx-model-drop-sep"></div>' : '');
+  }).join('') + (!isPro ? '<div class="lx-model-drop-sep"></div><button class="lx-upgrade-row">Upgrade to Pro for all models</button>' : '');
 
-  drop.querySelectorAll('.lx-model-drop-item:not([disabled])').forEach(btn => {
+  drop.querySelectorAll('.lx-model-drop-item').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       const m = btn.dataset.model;
@@ -515,6 +515,14 @@ function renderModelDrop() {
       selectModel(m);
     });
   });
+
+  const upgradeBtn = drop.querySelector('.lx-upgrade-row');
+  if (upgradeBtn) {
+    upgradeBtn.addEventListener('click', () => {
+      drop.remove(); modelDropOpen = false;
+      window.open('https://lexio.site/#pro', '_blank');
+    });
+  }
 
   const foot = shadow.querySelector('.lx-foot');
   if (foot) foot.appendChild(drop);
