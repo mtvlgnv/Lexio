@@ -493,7 +493,7 @@ function renderModelDrop() {
   drop.innerHTML = MODEL_KEYS.map((m, i) => {
     const hasCached = (cachedWord === currentWord) && wordModelResults[m];
     const locked = !isPro && m !== 'haiku';
-    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}${locked ? ' locked' : ''}" data-model="${m}" ${locked ? 'disabled title="Pro only"' : ''}>${esc(MODEL_LABELS[m])}</button>` +
+    return `<button class="lx-model-drop-item${m === currentModel ? ' active' : ''}${hasCached ? ' cached' : ''}${locked ? ' locked' : ''}" data-model="${m}" ${locked ? 'disabled title="Buy Pro to unlock all models"' : ''}>${esc(MODEL_LABELS[m])}</button>` +
       (i === 0 ? '<div class="lx-model-drop-sep"></div>' : '');
   }).join('');
 
