@@ -328,9 +328,9 @@ styleEl.textContent = `
   .lx-model-drop-item.locked { opacity: 0.4; cursor: not-allowed; position: relative; }
   .lx-model-drop-item.locked::after {
     content: 'Buy Pro to unlock all models';
-    position: absolute; left: calc(100% + 8px); top: 50%; transform: translateY(-50%);
+    position: absolute; bottom: calc(100% + 5px); left: 0; right: 0;
     background: oklch(20% 0.01 65); color: oklch(94% 0.006 75);
-    font-size: 0.7rem; font-weight: 500; white-space: nowrap;
+    font-size: 0.7rem; font-weight: 500; text-align: center;
     padding: 4px 8px; border-radius: 6px; pointer-events: none;
     opacity: 0; transition: opacity 0.12s;
     z-index: 10;
