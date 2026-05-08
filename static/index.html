@@ -1695,7 +1695,22 @@
 
   <!-- Hero + How it works -->
   <div class="lp-hero">
-    <canvas id="hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;filter:blur(72px);opacity:0.55;pointer-events:none;z-index:0;"></canvas>
+    <svg id="hero-aurora" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.5;" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="aurora-filter" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.0025 0.0035" numOctaves="3" seed="8" result="noise">
+            <animate attributeName="baseFrequency" dur="22s" keyTimes="0;0.33;0.66;1" values="0.0025 0.0035;0.004 0.003;0.003 0.005;0.0025 0.0035" repeatCount="indefinite"/>
+            <animate attributeName="seed" dur="40s" values="8;12;5;18;8" repeatCount="indefinite"/>
+          </feTurbulence>
+          <feColorMatrix type="hueRotate" values="0" result="colored">
+            <animate attributeName="values" from="0" to="360" dur="18s" repeatCount="indefinite"/>
+          </feColorMatrix>
+          <feColorMatrix type="saturate" values="2.2"/>
+          <feBlend in="SourceGraphic" mode="screen"/>
+        </filter>
+      </defs>
+      <rect width="100%" height="100%" filter="url(#aurora-filter)" style="fill: oklch(72% 0.16 55);"/>
+    </svg>
     <div class="lp-hero-left">
       <span class="lp-hero-eyebrow" data-i18n="heroEyebrow">Contextual understanding</span>
       <h1 data-i18n-html="heroH1">Read deeper.<br>Understand <em>everything.</em></h1>
@@ -4110,53 +4125,6 @@ async function checkProStatus() {
 }
 checkProStatus();
 
-/* ── Hero canvas aurora ─────────────────────────────────────── */
-(function() {
-  const canvas = document.getElementById('hero-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  // Blobs: [x%, y%, radius, hue, speed_x, speed_y, hue_speed]
-  const blobs = [
-    { x: 0.15, y: 0.4,  r: 0.55, h: 28,  sx: 0.00012, sy: 0.00009,  hs: 0.008 },
-    { x: 0.7,  y: 0.2,  r: 0.5,  h: 48,  sx: -0.0001, sy: 0.00013,  hs: 0.006 },
-    { x: 0.5,  y: 0.75, r: 0.45, h: 18,  sx: 0.00008, sy: -0.00011, hs: 0.010 },
-    { x: 0.85, y: 0.6,  r: 0.4,  h: 38,  sx: -0.00009,sy: 0.00007,  hs: 0.007 },
-    { x: 0.3,  y: 0.15, r: 0.38, h: 55,  sx: 0.00011, sy: 0.00008,  hs: 0.009 },
-  ];
-
-  let t = 0;
-  let W, H;
-
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    W = canvas.width  = rect.width;
-    H = canvas.height = rect.height;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  function draw() {
-    ctx.clearRect(0, 0, W, H);
-    for (const b of blobs) {
-      const x = (b.x + Math.sin(t * b.sx * 1000 + b.h) * 0.18) * W;
-      const y = (b.y + Math.cos(t * b.sy * 1000 + b.h) * 0.14) * H;
-      const r = b.r * Math.min(W, H) * 0.75;
-      const hue = (b.h + t * b.hs) % 360;
-      const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
-      grad.addColorStop(0,   `hsla(${hue}, 80%, 68%, 0.9)`);
-      grad.addColorStop(0.5, `hsla(${hue + 20}, 70%, 60%, 0.4)`);
-      grad.addColorStop(1,   `hsla(${hue + 40}, 60%, 55%, 0)`);
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    t++;
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
 </script>
 
 <!-- ── Pro upgrade modal ──────────────────────────────── -->
