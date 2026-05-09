@@ -1032,17 +1032,17 @@
     .lp-twin .lp-models-sub    { text-align: left; }
 
     .lp-features {
-      padding: 56px 48px;
+      padding: 48px 48px;
       background: var(--surface); border-top: 1px solid var(--border);
-      display: flex; flex-direction: column; align-items: center; gap: 36px;
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
     .lp-features-grid {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 20px; width: 100%; max-width: 900px;
+      gap: 10px; width: 100%; max-width: 900px;
     }
     .lp-feature {
-      padding: 24px; background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius); display: flex; flex-direction: column; gap: 12px;
+      padding: 18px 16px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); display: flex; flex-direction: column; gap: 8px;
       transition: border-color 0.15s;
     }
     .lp-feature:hover { border-color: var(--accent-mid); }
@@ -1056,9 +1056,9 @@
 
     /* AI Models comparison */
     .lp-models {
-      padding: 56px 48px;
+      padding: 48px 48px;
       background: var(--surface); border-top: 1px solid var(--border);
-      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
     }
     .lp-models-sub {
       font-size: 0.92rem; color: var(--text-mid); text-align: left;
@@ -1074,12 +1074,12 @@
     }
     .lp-models-grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
-      gap: 14px; width: 100%;
+      gap: 10px; width: 100%;
     }
     @media (max-width: 520px) { .lp-models-grid { grid-template-columns: 1fr; } }
     .lp-model-card {
-      padding: 22px 20px; background: var(--bg); border: 1px solid var(--border);
-      border-radius: var(--radius); display: flex; flex-direction: column; gap: 10px;
+      padding: 18px 16px; background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); display: flex; flex-direction: column; gap: 8px;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
     .lp-model-card:hover { border-color: var(--accent-mid); box-shadow: 0 2px 14px rgba(0,0,0,0.06); }
@@ -1773,6 +1773,7 @@
   <!-- Features -->
   <div class="lp-twin">
   <div class="lp-features">
+    <p class="lp-hero-steps-title" style="width:100%;text-align:left;">Features</p>
     <div class="lp-features-grid">
 
       <div class="lp-feature">
@@ -1837,12 +1838,7 @@
           <span class="lp-model-speed">Fastest</span>
         </div>
         <h3>Claude Haiku</h3>
-        <p>Lightweight and near-instant. Ideal for rapid lookups when you just need the meaning without waiting.</p>
-        <ul class="lp-model-traits">
-          <li>~1 s response time</li>
-          <li>Concise, accurate definitions</li>
-          <li>Best for high-frequency use</li>
-        </ul>
+        <p>Near-instant lookups. Concise and accurate — best for high-frequency reading.</p>
       </div>
       <div class="lp-model-card">
         <div class="lp-model-header">
@@ -1850,12 +1846,7 @@
           <span class="lp-model-speed">Balanced</span>
         </div>
         <h3>GPT-4o Mini</h3>
-        <p>OpenAI's efficient mid-tier model. Strong at precise contextual reasoning and nuanced language understanding.</p>
-        <ul class="lp-model-traits">
-          <li>Sharp contextual grasp</li>
-          <li>Reliable, consistent output</li>
-          <li>Good multilingual accuracy</li>
-        </ul>
+        <p>Sharp contextual reasoning with reliable multilingual accuracy.</p>
       </div>
       <div class="lp-model-card">
         <div class="lp-model-header">
@@ -1863,12 +1854,7 @@
           <span class="lp-model-speed">Multilingual</span>
         </div>
         <h3>Gemini 2.5 Flash</h3>
-        <p>Google's latest model excels across languages and brings broad world knowledge to every definition.</p>
-        <ul class="lp-model-traits">
-          <li>Widest language coverage</li>
-          <li>Rich cultural context</li>
-          <li>Fast with long passages</li>
-        </ul>
+        <p>Widest language coverage and rich cultural context across definitions.</p>
       </div>
       <div class="lp-model-card lp-model-card-featured">
         <div class="lp-model-header">
@@ -1876,15 +1862,9 @@
           <span class="lp-model-speed">Most thorough</span>
         </div>
         <h3>Claude Sonnet 4.5</h3>
-        <p>The deepest thinker. Richer etymologies, more precise "why this word" explanations, and literary-grade register analysis.</p>
-        <ul class="lp-model-traits">
-          <li>Deepest contextual analysis</li>
-          <li>Best etymology &amp; register</li>
-          <li>Preferred for serious reading</li>
-        </ul>
+        <p>Deepest analysis — richer etymologies, literary-grade register, and precise "why this word" explanations.</p>
         <span class="lp-model-default-tag">Default model</span>
       </div>
-
     </div>
   </div>
   </div><!-- end .lp-twin -->
