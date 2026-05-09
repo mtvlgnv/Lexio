@@ -1297,6 +1297,98 @@
     .lp-feedback-link:hover { border-color: var(--accent-mid); color: var(--accent); }
     @media (max-width: 760px) { .lp-feedback { padding: 48px 24px; } }
 
+    /* ── Landing nav ─────────────────────────────────────────── */
+    #lp-nav {
+      position: sticky; top: 0; z-index: 99;
+      background: color-mix(in oklch, var(--surface) 88%, transparent);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; gap: 2px;
+      height: 44px; padding: 0 24px;
+    }
+    body.in-app #lp-nav { display: none; }
+    .lp-nav-link {
+      font-size: 0.8rem; font-weight: 500; color: var(--muted);
+      text-decoration: none; padding: 5px 14px; border-radius: 20px;
+      transition: background 0.15s, color 0.15s; white-space: nowrap;
+    }
+    .lp-nav-link:hover { background: var(--bg); color: var(--text); }
+    .lp-nav-link.lp-nav-active { color: var(--accent); background: var(--accent-lt); }
+    @media (max-width: 520px) { .lp-nav-link span { display: none; } }
+
+    /* ── Testimonials ────────────────────────────────────────── */
+    .lp-testimonials {
+      padding: 72px 48px; background: var(--bg);
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; gap: 48px;
+    }
+    .lp-testimonials-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; width: 100%; max-width: 1100px;
+    }
+    @media (max-width: 900px) { .lp-testimonials-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .lp-testimonials { padding: 48px 24px; } }
+    .lp-testimonial {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 20px;
+      transition: border-color 0.15s;
+    }
+    .lp-testimonial:hover { border-color: var(--accent-mid); }
+    .lp-testimonial-stars { display: flex; gap: 3px; }
+    .lp-testimonial-stars svg { color: var(--accent); }
+    .lp-testimonial-quote {
+      font-family: 'Lora', serif; font-style: italic;
+      font-size: 0.94rem; color: var(--text); line-height: 1.7; flex: 1;
+    }
+    .lp-testimonial-author { display: flex; align-items: center; gap: 10px; }
+    .lp-testimonial-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--accent-lt); border: 1px solid var(--accent-mid);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Lora', serif; font-weight: 600; font-size: 0.88rem;
+      color: var(--accent); flex-shrink: 0;
+    }
+    .lp-testimonial-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .lp-testimonial-role { font-size: 0.74rem; color: var(--muted); margin-top: 1px; }
+
+    /* ── FAQ ─────────────────────────────────────────────────── */
+    .lp-faq {
+      padding: 72px 48px; background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+    @media (max-width: 760px) { .lp-faq { padding: 48px 24px; } }
+    .lp-faq-list { width: 100%; max-width: 720px; }
+    .lp-faq-item { border-bottom: 1px solid var(--border); }
+    .lp-faq-q {
+      width: 100%; background: none; border: none; padding: 18px 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      cursor: pointer; font-family: 'DM Sans', inherit; font-size: 0.93rem;
+      font-weight: 600; color: var(--text); text-align: left;
+    }
+    .lp-faq-q:hover { color: var(--accent); }
+    .lp-faq-icon {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+      background: var(--bg); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.25s, background 0.15s, border-color 0.15s;
+    }
+    .lp-faq-item.faq-open .lp-faq-icon {
+      transform: rotate(45deg); background: var(--accent-lt); border-color: var(--accent-mid);
+    }
+    .lp-faq-a {
+      display: grid; grid-template-rows: 0fr;
+      transition: grid-template-rows 0.28s ease;
+    }
+    .lp-faq-item.faq-open .lp-faq-a { grid-template-rows: 1fr; }
+    .lp-faq-a-inner { overflow: hidden; }
+    .lp-faq-a p {
+      font-size: 0.87rem; color: var(--text-mid); line-height: 1.75;
+      padding-bottom: 18px; max-width: 640px;
+    }
+    .lp-faq-a a { color: var(--accent); }
+
     .lp-footer {
       padding: 28px 48px;
       background: var(--surface); border-top: 1px solid var(--border);
@@ -1730,6 +1822,15 @@
 <!-- ── Landing page ───────────────────────────────────────────── -->
 <div id="landing">
 
+  <!-- Landing nav -->
+  <nav id="lp-nav">
+    <a class="lp-nav-link" href="#lp-features" data-section="lp-features">Features</a>
+    <a class="lp-nav-link" href="#lp-pro"      data-section="lp-pro">Pricing</a>
+    <a class="lp-nav-link" href="#lp-testimonials" data-section="lp-testimonials">Reviews</a>
+    <a class="lp-nav-link" href="#lp-faq"      data-section="lp-faq">FAQ</a>
+    <a class="lp-nav-link" href="#lp-download" data-section="lp-download">Download</a>
+  </nav>
+
   <!-- Hero + How it works -->
   <div class="lp-hero">
     <canvas id="hero-webgl" style="
@@ -1824,7 +1925,7 @@
 
 
 
-  <div class="lp-twin">
+  <div class="lp-twin" id="lp-features">
     <canvas id="twin-webgl" style="
       position:absolute;left:0;top:0;width:100%;height:100%;
       pointer-events:none;z-index:0;opacity:0.75;
@@ -1930,8 +2031,126 @@
   </div>
   </div><!-- end .lp-twin -->
 
+  <!-- Testimonials -->
+  <div class="lp-testimonials" id="lp-testimonials">
+    <h2 class="lp-section-title">What readers are saying</h2>
+    <div class="lp-testimonials-grid">
+
+      <div class="lp-testimonial">
+        <div class="lp-testimonial-stars">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="lp-testimonial-quote">"I read a lot of dense non-fiction and kept a dictionary tab open constantly. Lexio replaced that entirely — I just click the word and the meaning appears right in context. It actually understands what the author meant."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">A</div>
+          <div>
+            <div class="lp-testimonial-name">Alex R.</div>
+            <div class="lp-testimonial-role">PhD student, philosophy</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lp-testimonial">
+        <div class="lp-testimonial-stars">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="lp-testimonial-quote">"English is my third language and literary vocabulary was always a wall for me. Lexio doesn't just give me a definition — it tells me the tone and register of the word, which is exactly what I was missing."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">S</div>
+          <div>
+            <div class="lp-testimonial-name">Sofia M.</div>
+            <div class="lp-testimonial-role">Translator, Berlin</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lp-testimonial">
+        <div class="lp-testimonial-stars">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="lp-testimonial-quote">"Our book club uses Lexio to prep before meetings. Instead of everyone arriving with different interpretations of the same passage, we actually discuss the ideas. The etymology feature alone has sparked so many conversations."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">J</div>
+          <div>
+            <div class="lp-testimonial-name">James O.</div>
+            <div class="lp-testimonial-role">Book club organiser, London</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="lp-faq" id="lp-faq">
+    <h2 class="lp-section-title">Frequently asked questions</h2>
+    <div class="lp-faq-list">
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          Is Lexio free?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. The free plan gives you 30 word lookups and 3 image scans per month — no credit card required. Pro ($2.99/month) removes all limits and unlocks every AI model.</p></div></div>
+      </div>
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          Does the Chrome extension work on every website?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — the extension works on any page in Chrome. Select a word or phrase, right-click and choose "Define with Lexio", or use the keyboard shortcut. It works on news sites, PDFs opened in Chrome, academic papers, and more.</p></div></div>
+      </div>
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          What happens to the text I paste?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Only the word you look up and a short surrounding context window are sent to the AI provider. The full text you paste is never stored on our servers. See our <a href="/privacy.html">Privacy Policy</a> for full details.</p></div></div>
+      </div>
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          Which AI model should I use?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Claude Haiku is the free default — fast and accurate for everyday reading. If you're on Pro and reading literature, legal texts, or academic prose, Claude Sonnet 4.5 gives the deepest analysis. GPT-4o Mini and Gemini are great middle options.</p></div></div>
+      </div>
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          Which languages are supported?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>You can paste text in any language — English, Spanish, French, German, Dutch, Russian, Japanese, Chinese, Arabic, Portuguese, and Italian. Definitions can be returned in any of those languages too.</p></div></div>
+      </div>
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          Can I cancel my Pro subscription anytime?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes, cancel any time from your account settings. You keep Pro access until the end of the billing period, then automatically move to the free tier.</p></div></div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Apps CTA (merged) -->
-  <div class="lp-apps">
+  <div class="lp-apps" id="lp-download">
     <div class="lp-app-card">
       <span class="lp-ext-eyebrow" data-i18n="extEyebrow">Chrome Extension</span>
       <h3 data-i18n-html="extH2">Look up words <em>without</em><br>leaving the page.</h3>
@@ -4168,6 +4387,41 @@ checkProStatus();
     });
   }
   document.querySelectorAll(SELECTOR).forEach(attachGlow);
+})();
+
+// ── FAQ accordion ──────────────────────────────────────────────
+document.querySelectorAll('.lp-faq-q').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const item = this.closest('.lp-faq-item');
+    const isOpen = item.classList.contains('faq-open');
+    document.querySelectorAll('.lp-faq-item.faq-open').forEach(i => i.classList.remove('faq-open'));
+    if (!isOpen) item.classList.add('faq-open');
+  });
+});
+
+// ── Landing nav active state ───────────────────────────────────
+(function() {
+  const navLinks = document.querySelectorAll('.lp-nav-link[data-section]');
+  if (!navLinks.length) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.toggle('lp-nav-active', l.dataset.section === entry.target.id));
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -70% 0px' });
+  navLinks.forEach(l => {
+    const el = document.getElementById(l.dataset.section);
+    if (el) observer.observe(el);
+  });
+  // Smooth scroll for nav links
+  navLinks.forEach(l => {
+    l.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.getElementById(l.dataset.section);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
 })();
 
 </script>
