@@ -1025,6 +1025,7 @@
       display: flex; flex-direction: row; align-items: stretch;
       border-top: 1px solid var(--border);
       position: relative; overflow: hidden;
+      background: var(--bg);
     }
     .lp-twin .lp-features { border-top: none; flex: 1; }
     .lp-twin .lp-models   { border-top: none; flex: 1; }
@@ -1034,7 +1035,7 @@
 
     .lp-features {
       padding: 48px 48px;
-      background: var(--surface); border-top: 1px solid var(--border);
+      background: transparent; border-top: 1px solid var(--border);
       display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
     .lp-features-grid {
@@ -1042,7 +1043,7 @@
       gap: 10px; width: 100%; max-width: 900px;
     }
     .lp-feature {
-      padding: 18px 16px; background: var(--bg); border: 1px solid var(--border);
+      padding: 18px 16px; background: var(--surface); border: 1px solid var(--border);
       border-radius: var(--radius); display: flex; flex-direction: column; gap: 8px;
       transition: border-color 0.15s;
     }
@@ -1058,7 +1059,7 @@
     /* AI Models comparison */
     .lp-models {
       padding: 48px 48px;
-      background: var(--surface); border-top: 1px solid var(--border);
+      background: transparent; border-top: 1px solid var(--border);
       display: flex; flex-direction: column; align-items: center; gap: 16px;
     }
     .lp-models-sub {
@@ -1079,14 +1080,14 @@
     }
     @media (max-width: 520px) { .lp-models-grid { grid-template-columns: 1fr; } }
     .lp-model-card {
-      padding: 18px 16px; background: var(--bg); border: 1px solid var(--border);
+      padding: 18px 16px; background: var(--surface); border: 1px solid var(--border);
       border-radius: var(--radius); display: flex; flex-direction: column; gap: 8px;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
     .lp-model-card:hover { border-color: var(--accent-mid); box-shadow: 0 2px 14px rgba(0,0,0,0.06); }
     .lp-model-card-featured {
       border-color: var(--accent-mid); background: var(--accent-lt);
-      box-shadow: 0 2px 18px rgba(0,0,0,0.07);
+      box-shadow: 0 2px 18px rgba(0,0,0,0.25);
     }
     .lp-model-header { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
     .lp-model-badge {
@@ -1826,7 +1827,7 @@
   <div class="lp-twin">
     <canvas id="twin-webgl" style="
       position:absolute;left:0;top:0;width:100%;height:100%;
-      pointer-events:none;z-index:0;opacity:0.55;
+      pointer-events:none;z-index:0;opacity:0.75;
       --gradient-color-1:#ef7040;
       --gradient-color-2:#c2541e;
       --gradient-color-3:#7a3b9e;
