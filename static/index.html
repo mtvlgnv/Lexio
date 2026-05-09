@@ -1297,24 +1297,19 @@
     .lp-feedback-link:hover { border-color: var(--accent-mid); color: var(--accent); }
     @media (max-width: 760px) { .lp-feedback { padding: 48px 24px; } }
 
-    /* ── Landing nav ─────────────────────────────────────────── */
-    #lp-nav {
-      position: sticky; top: 0; z-index: 99;
-      background: color-mix(in oklch, var(--surface) 88%, transparent);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center; gap: 2px;
-      height: 44px; padding: 0 24px;
+    /* ── Landing nav (inside header) ────────────────────────── */
+    .lp-header-nav {
+      display: flex; align-items: center; gap: 2px;
     }
-    body.in-app #lp-nav { display: none; }
+    body.in-app .lp-header-nav { display: none; }
     .lp-nav-link {
       font-size: 0.8rem; font-weight: 500; color: var(--muted);
-      text-decoration: none; padding: 5px 14px; border-radius: 20px;
+      text-decoration: none; padding: 5px 12px; border-radius: 20px;
       transition: background 0.15s, color 0.15s; white-space: nowrap;
     }
     .lp-nav-link:hover { background: var(--bg); color: var(--text); }
     .lp-nav-link.lp-nav-active { color: var(--accent); background: var(--accent-lt); }
-    @media (max-width: 520px) { .lp-nav-link span { display: none; } }
+    @media (max-width: 900px) { .lp-header-nav { display: none; } }
 
     /* ── Testimonials ────────────────────────────────────────── */
     .lp-testimonials {
@@ -1515,6 +1510,16 @@
   <span class="brand">Le<em>x</em>io</span>
   <span id="pro-header-badge" style="display:none;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-left:-6px;margin-top:2px;flex-shrink:0;">PRO</span>
   <span class="tagline" data-i18n="tagline">AI contextual definition solutions</span>
+
+  <!-- Landing nav — hidden in app mode -->
+  <nav class="lp-header-nav">
+    <a class="lp-nav-link" href="#lp-features"      data-section="lp-features">Features</a>
+    <a class="lp-nav-link" href="#lp-pro"           data-section="lp-pro">Pricing</a>
+    <a class="lp-nav-link" href="#lp-testimonials"  data-section="lp-testimonials">Reviews</a>
+    <a class="lp-nav-link" href="#lp-faq"           data-section="lp-faq">FAQ</a>
+    <a class="lp-nav-link" href="#lp-download"      data-section="lp-download">Download</a>
+  </nav>
+
   <div class="header-spacer"></div>
 
   <!-- Saved word bank -->
@@ -1821,15 +1826,6 @@
 
 <!-- ── Landing page ───────────────────────────────────────────── -->
 <div id="landing">
-
-  <!-- Landing nav -->
-  <nav id="lp-nav">
-    <a class="lp-nav-link" href="#lp-features" data-section="lp-features">Features</a>
-    <a class="lp-nav-link" href="#lp-pro"      data-section="lp-pro">Pricing</a>
-    <a class="lp-nav-link" href="#lp-testimonials" data-section="lp-testimonials">Reviews</a>
-    <a class="lp-nav-link" href="#lp-faq"      data-section="lp-faq">FAQ</a>
-    <a class="lp-nav-link" href="#lp-download" data-section="lp-download">Download</a>
-  </nav>
 
   <!-- Hero + How it works -->
   <div class="lp-hero">
@@ -4401,7 +4397,7 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
 
 // ── Landing nav active state ───────────────────────────────────
 (function() {
-  const navLinks = document.querySelectorAll('.lp-nav-link[data-section]');
+  const navLinks = document.querySelectorAll('.lp-header-nav .lp-nav-link[data-section]');
   if (!navLinks.length) return;
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
