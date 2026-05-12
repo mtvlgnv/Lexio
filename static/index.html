@@ -1902,7 +1902,7 @@
         <div>
           <div class="lp-pro-col-label">Pro</div>
           <div class="lp-pro-price">
-            <span class="lp-pro-amount">$2.99</span>
+            <span class="lp-pro-amount lp-pro-amount-dynamic">$2.99</span>
             <span class="lp-pro-period">/month</span>
           </div>
         </div>
@@ -4286,36 +4286,45 @@ async function handleProCta() {
   const token = localStorage.getItem('lexio_token');
   if (!token) { openAuthModal?.(); return; }
 
-  // Verify token and get fresh user data
-  let usr = {};
-  try {
-    const r = await fetch('/auth/me', { headers: { Authorization: 'Bearer ' + token } });
-    if (!r.ok) {
-      localStorage.removeItem('lexio_token');
-      localStorage.removeItem('lexio_user');
-      openAuthModal?.();
-      return;
-    }
-    usr = await r.json();
-    try { localStorage.setItem('lexio_user', JSON.stringify(usr)); } catch {}
-  } catch { openAuthModal?.(); return; }
-
   if (_userIsPro) {
     const lp = document.getElementById('lp-pro-btn');
     if (lp) { lp.textContent = 'Already Pro ✓'; lp.disabled = true; }
     return;
   }
 
-  if (!_payhipUrl) {
-    alert('Payments are not configured yet — please try again later.');
-    return;
-  }
+  const btn = document.getElementById('lp-pro-btn');
+  if (btn) { btn.textContent = 'Redirecting…'; btn.disabled = true; }
 
-  // Redirect to Payhip; pass email so it pre-fills the checkout form
-  const url = new URL(_payhipUrl);
-  if (usr.email) url.searchParams.set('email', usr.email);
-  window.location.href = url.toString();
+  try {
+    const r = await fetch('/stripe/create-checkout', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      alert(e.detail || 'Could not start checkout. Please try again.');
+      if (btn) { btn.textContent = 'Get Pro →'; btn.disabled = false; }
+      return;
+    }
+    const { url } = await r.json();
+    window.location.href = url;
+  } catch {
+    alert('Network error — please try again.');
+    if (btn) { btn.textContent = 'Get Pro →'; btn.disabled = false; }
+  }
 }
+
+// ── Geo-localised Pro price ────────────────────────────────────
+(async function() {
+  try {
+    const r = await fetch('/stripe/price-info');
+    if (!r.ok) return;
+    const { symbol, amount } = await r.json();
+    document.querySelectorAll('.lp-pro-amount-dynamic').forEach(el => {
+      el.textContent = symbol + amount;
+    });
+  } catch {}
+})();
 
 function _lockProModels() {
   document.querySelectorAll('.model-pill:not([data-model="haiku"])').forEach(p => {

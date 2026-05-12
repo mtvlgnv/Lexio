@@ -106,7 +106,8 @@ class User(Base):
     pwd_hash        = Column(String, nullable=True)   # nullable for OAuth-only users
     google_id       = Column(String, nullable=True, index=True)
     preferred_model  = Column(String, default="sonnet", nullable=False)
-    is_pro           = Column(Integer, default=0, nullable=False)   # 0=free, 1=pro
+    is_pro             = Column(Integer, default=0, nullable=False)   # 0=free, 1=pro
+    stripe_customer_id = Column(String, nullable=True, index=True)
     monthly_lookups  = Column(Integer, default=0, nullable=False)
     lookup_month     = Column(String, nullable=True)   # "2025-04"
     monthly_ocr      = Column(Integer, default=0, nullable=False)
@@ -218,6 +219,10 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
             used INTEGER NOT NULL DEFAULT 0
         )
     """))),
+    (9, "add stripe_customer_id", lambda conn, _: (
+        conn.execute(_sa_text("ALTER TABLE users ADD COLUMN stripe_customer_id TEXT"))
+        if "stripe_customer_id" not in _cols(conn, "users") else None
+    )),
 ]
 
 def _run_migrations():
@@ -2199,58 +2204,167 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
     }
 
 
-# ── Payhip ────────────────────────────────────────────────────────────────────
-import hmac as _hmac
-import hashlib as _hashlib
+# ── Stripe ────────────────────────────────────────────────────────────────────
+import stripe as _stripe
+import httpx as _httpx
 
-@app.post("/payhip/webhook")
-async def payhip_webhook(request: Request, db: DBSession = Depends(get_db)):
-    """
-    Receive Payhip webhook events (JSON).
-    Signature verified: HMAC-SHA256 of raw body with PAYHIP_WEBHOOK_SECRET,
-    compared against the Payhip-Signature header.
-    Activates Pro on payment_completed / subscription_activated,
-    revokes on refund_issued / subscription_cancelled / subscription_expired.
-    User identified by email.
-    """
-    secret  = os.getenv("PAYHIP_WEBHOOK_SECRET", "")
+_stripe.api_key          = os.getenv("STRIPE_SECRET_KEY", "")
+_STRIPE_WEBHOOK_SECRET   = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+_STRIPE_PRICE_USD        = os.getenv("STRIPE_PRICE_USD", "")
+_STRIPE_PRICE_EUR        = os.getenv("STRIPE_PRICE_EUR", "")
+_STRIPE_PRICE_GBP        = os.getenv("STRIPE_PRICE_GBP", "")
+_SITE_URL                = os.getenv("SITE_URL", "https://lexio.site")
+
+# Countries billed in GBP
+_GBP_COUNTRIES = {"GB"}
+# Countries billed in EUR (eurozone + closely tied currencies)
+_EUR_COUNTRIES = {
+    "AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU",
+    "IE","IT","LV","LT","LU","MT","NL","PL","PT","RO","SK","SI","ES",
+    "SE","CH","NO","IS","LI","AL","BA","ME","MK","MD","RS","XK",
+}
+
+async def _country_from_ip(ip: str) -> str:
+    """Return ISO-3166-1 alpha-2 country code for *ip*, or '' on failure."""
+    # Skip private / loopback addresses
+    try:
+        addr = ipaddress.ip_address(ip)
+        if addr.is_private or addr.is_loopback:
+            return ""
+    except ValueError:
+        return ""
+    try:
+        async with _httpx.AsyncClient(timeout=3.0) as client:
+            r = await client.get(
+                f"https://ip-api.com/json/{ip}",
+                params={"fields": "countryCode", "lang": "en"},
+            )
+            if r.status_code == 200:
+                return r.json().get("countryCode", "")
+    except Exception:
+        pass
+    return ""
+
+def _price_for_country(country: str) -> tuple[str, str, str]:
+    """Return (stripe_price_id, currency_code, symbol)."""
+    if country in _GBP_COUNTRIES:
+        return _STRIPE_PRICE_GBP, "GBP", "£"
+    if country in _EUR_COUNTRIES:
+        return _STRIPE_PRICE_EUR, "EUR", "€"
+    return _STRIPE_PRICE_USD, "USD", "$"
+
+
+@app.get("/stripe/price-info")
+async def stripe_price_info(request: Request):
+    """Return currency symbol & amount for the visitor's location (no auth needed)."""
+    ip = request.client.host
+    # Prefer X-Forwarded-For when behind a proxy
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    if forwarded:
+        ip = forwarded.split(",")[0].strip()
+    country = await _country_from_ip(ip)
+    _, currency, symbol = _price_for_country(country)
+    return {"currency": currency, "symbol": symbol, "amount": "2.99", "country": country}
+
+
+@app.post("/stripe/create-checkout")
+async def stripe_create_checkout(
+    request: Request,
+    user: User = Depends(current_user),
+):
+    """Create a Stripe Checkout session and return its URL."""
+    if not _stripe.api_key:
+        raise HTTPException(status_code=503, detail="Payments not configured")
+
+    ip = request.client.host
+    forwarded = request.headers.get("X-Forwarded-For", "")
+    if forwarded:
+        ip = forwarded.split(",")[0].strip()
+    country = await _country_from_ip(ip)
+    price_id, _, _ = _price_for_country(country)
+
+    if not price_id:
+        raise HTTPException(status_code=503, detail="Stripe price not configured")
+
+    # Re-use existing Stripe customer if we have one
+    customer_kwargs = {}
+    if user.stripe_customer_id:
+        customer_kwargs["customer"] = user.stripe_customer_id
+    else:
+        customer_kwargs["customer_email"] = user.email
+
+    session = _stripe.checkout.Session.create(
+        mode="subscription",
+        line_items=[{"price": price_id, "quantity": 1}],
+        success_url=f"{_SITE_URL}/?stripe=success",
+        cancel_url=f"{_SITE_URL}/?stripe=cancelled",
+        metadata={"user_id": str(user.id)},
+        allow_promotion_codes=True,
+        **customer_kwargs,
+    )
+    return {"url": session.url}
+
+
+@app.post("/stripe/customer-portal")
+async def stripe_customer_portal(
+    user: User = Depends(current_user),
+):
+    """Return a Stripe Billing Portal URL so the user can manage / cancel."""
+    if not user.stripe_customer_id:
+        raise HTTPException(status_code=400, detail="No Stripe subscription found")
+    portal = _stripe.billing_portal.Session.create(
+        customer=user.stripe_customer_id,
+        return_url=_SITE_URL,
+    )
+    return {"url": portal.url}
+
+
+@app.post("/stripe/webhook")
+async def stripe_webhook(request: Request, db: DBSession = Depends(get_db)):
+    """Handle Stripe webhook events (signature-verified)."""
     payload = await request.body()
-
-    if secret:
-        sig      = request.headers.get("Payhip-Signature", "")
-        expected = _hmac.new(secret.encode(), payload, _hashlib.sha256).hexdigest()
-        if not _hmac.compare_digest(expected, sig):
-            raise HTTPException(status_code=400, detail="Invalid signature")
+    sig     = request.headers.get("stripe-signature", "")
 
     try:
-        data = json.loads(payload)
-    except Exception:
-        raise HTTPException(status_code=400, detail="Malformed payload")
+        event = _stripe.Webhook.construct_event(payload, sig, _STRIPE_WEBHOOK_SECRET)
+    except _stripe.error.SignatureVerificationError:
+        raise HTTPException(status_code=400, detail="Invalid Stripe signature")
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
 
-    event      = data.get("event", "")
-    buyer      = data.get("buyer", data)          # some versions nest under "buyer"
-    user_email = (buyer.get("email") or data.get("email") or "").strip().lower()
+    etype = event["type"]
+    obj   = event["data"]["object"]
 
-    ACTIVATE = {"payment_completed", "subscription_activated", "subscription_renewed"}
-    REVOKE   = {"refund_issued", "subscription_cancelled", "subscription_expired"}
+    if etype == "checkout.session.completed":
+        user_id     = int(obj.get("metadata", {}).get("user_id", 0) or 0)
+        customer_id = obj.get("customer")
+        if user_id:
+            u = db.query(User).filter(User.id == user_id).first()
+            if u:
+                u.is_pro = 1
+                if customer_id:
+                    u.stripe_customer_id = customer_id
+                db.commit()
+                logger.info("Stripe: Pro activated for user %d", user_id)
 
-    if not user_email:
-        logger.warning("Payhip webhook: no email in payload (event=%s)", event)
-        return {"received": True}
+    elif etype in ("customer.subscription.deleted", "customer.subscription.updated"):
+        customer_id = obj.get("customer")
+        status      = obj.get("status", "")
+        is_active   = status in ("active", "trialing")
+        if customer_id:
+            u = db.query(User).filter(User.stripe_customer_id == customer_id).first()
+            if u:
+                u.is_pro = 1 if is_active else 0
+                db.commit()
+                logger.info("Stripe: %s → is_pro=%d for customer %s", etype, u.is_pro, customer_id)
 
-    target = db.query(User).filter(User.email == user_email).first()
-    if not target:
-        logger.warning("Payhip webhook: no user found for %s (event=%s)", user_email, event)
-        return {"received": True, "warning": "user not found"}
-
-    if event in ACTIVATE:
-        target.is_pro = 1
-        db.commit()
-        logger.info("Payhip: Pro activated for user %d (%s)", target.id, event)
-    elif event in REVOKE:
-        target.is_pro = 0
-        db.commit()
-        logger.info("Payhip: Pro revoked for user %d (%s)", target.id, event)
+    elif etype == "invoice.payment_failed":
+        customer_id = obj.get("customer")
+        if customer_id:
+            u = db.query(User).filter(User.stripe_customer_id == customer_id).first()
+            if u:
+                logger.warning("Stripe: payment failed for user %d (%s)", u.id, customer_id)
+            # Do not revoke immediately — Stripe will retry and send subscription.deleted if truly lapsed
 
     return {"received": True}
 
