@@ -2331,11 +2331,14 @@ async def stripe_webhook(request: Request, db: DBSession = Depends(get_db)):
     except Exception as exc:
         raise HTTPException(status_code=400, detail=str(exc))
 
-    etype = event["type"]
-    obj   = event["data"]["object"]
+    # Convert to plain dict so .get() works across all Stripe SDK versions
+    event_dict = event.to_dict()
+    etype = event_dict["type"]
+    obj   = event_dict["data"]["object"]
 
     if etype == "checkout.session.completed":
-        user_id     = int(obj.get("metadata", {}).get("user_id", 0) or 0)
+        meta        = obj.get("metadata") or {}
+        user_id     = int(meta.get("user_id", 0) or 0)
         customer_id = obj.get("customer")
         if user_id:
             u = db.query(User).filter(User.id == user_id).first()
