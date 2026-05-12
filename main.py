@@ -2234,7 +2234,7 @@ async def _country_from_ip(ip: str) -> str:
     try:
         async with _httpx.AsyncClient(timeout=3.0) as client:
             r = await client.get(
-                f"https://ip-api.com/json/{ip}",
+                f"http://ip-api.com/json/{ip}",
                 params={"fields": "countryCode", "lang": "en"},
             )
             if r.status_code == 200:
