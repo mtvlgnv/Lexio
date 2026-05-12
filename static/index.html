@@ -1882,7 +1882,7 @@
         <div>
           <div class="lp-pro-col-label">Free</div>
           <div class="lp-pro-price">
-            <span class="lp-pro-amount">$0</span>
+            <span class="lp-pro-amount"><span class="lp-free-symbol">$</span>0</span>
             <span class="lp-pro-period">/month</span>
           </div>
         </div>
@@ -4322,6 +4322,10 @@ async function handleProCta() {
     const { symbol, amount } = await r.json();
     document.querySelectorAll('.lp-pro-amount-dynamic').forEach(el => {
       el.textContent = symbol + amount;
+    });
+    // Sync currency symbol on the free card too
+    document.querySelectorAll('.lp-free-symbol').forEach(el => {
+      el.textContent = symbol;
     });
   } catch {}
 })();
