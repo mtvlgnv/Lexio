@@ -1914,7 +1914,8 @@
           <li>Priority support</li>
         </ul>
         <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Get Pro →</button>
-        <p class="lp-pro-note">Instant activation · cancel any time</p>
+        <button class="lp-pro-cta" id="lp-manage-btn" onclick="handleManageSub()" style="display:none;background:var(--bg);color:var(--text);border:1.5px solid var(--border)">Manage subscription →</button>
+        <p class="lp-pro-note" id="lp-pro-note">Instant activation · cancel any time</p>
       </div>
     </div>
   </div>
@@ -4268,8 +4269,8 @@ initializeModelSelector();
 // Load usage on page start
 loadUsage();
 
-// Show success banner if returning from Lemon Squeezy checkout
-if (new URLSearchParams(location.search).get('pro') === 'success') {
+// Show success banner if returning from Stripe checkout
+if (new URLSearchParams(location.search).get('stripe') === 'success') {
   history.replaceState(null, '', '/');
   const banner = document.createElement('div');
   banner.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;background:oklch(93% 0.07 150);color:oklch(28% 0.1 150);border:1px solid oklch(80% 0.1 150);border-radius:10px;padding:12px 24px;font-size:0.88rem;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.12)';
@@ -4337,7 +4338,7 @@ function _lockProModels() {
     p.style.opacity = '0.4';
     p.style.cursor = 'not-allowed';
   });
-  if (currentModel !== 'haiku') setModel('haiku');
+  // Don't force-switch model here — wait for pro check to resolve first
 }
 function _unlockProModels() {
   document.querySelectorAll('.model-pill').forEach(p => {
@@ -4348,30 +4349,62 @@ function _unlockProModels() {
   });
 }
 
-// Lock immediately — unlock only if Pro is confirmed
+// Lock pills immediately — unlock only if Pro is confirmed
 _lockProModels();
 
 async function checkProStatus() {
   const token = localStorage.getItem('lexio_token');
-  if (!token) return; // stays locked
+  if (!token) {
+    // No auth — force haiku for free guests
+    if (currentModel !== 'haiku') setModel('haiku');
+    return;
+  }
   try {
     const r = await fetch('/api/pro-status', { headers: { 'Authorization': 'Bearer ' + token } });
-    if (!r.ok) return;
+    if (!r.ok) { if (currentModel !== 'haiku') setModel('haiku'); return; }
     const d = await r.json();
     _userIsPro = !!d.is_pro;
     const badge = document.getElementById('pro-header-badge');
     if (badge) badge.style.display = _userIsPro ? '' : 'none';
     if (_userIsPro) {
       _unlockProModels();
-      const lp = document.getElementById('lp-pro-btn');
-      if (lp) { lp.textContent = 'Already Pro ✓'; lp.disabled = true; }
+      // Show manage subscription, hide Get Pro button and note
+      const lpBtn = document.getElementById('lp-pro-btn');
+      const mgBtn = document.getElementById('lp-manage-btn');
+      const note  = document.getElementById('lp-pro-note');
+      if (lpBtn) lpBtn.style.display = 'none';
+      if (mgBtn) mgBtn.style.display = '';
+      if (note)  note.style.display  = 'none';
       const mp = document.getElementById('menu-pro-btn');
       if (mp) mp.style.display = 'none';
+    } else {
+      // Free user — lock to haiku
+      if (currentModel !== 'haiku') setModel('haiku');
     }
-    // free users stay locked (already locked above)
-  } catch {}
+  } catch {
+    if (currentModel !== 'haiku') setModel('haiku');
+  }
 }
 checkProStatus();
+
+async function handleManageSub() {
+  const token = localStorage.getItem('lexio_token');
+  if (!token) return;
+  const btn = document.getElementById('lp-manage-btn');
+  if (btn) { btn.textContent = 'Opening…'; btn.disabled = true; }
+  try {
+    const r = await fetch('/stripe/customer-portal', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+    });
+    if (!r.ok) throw new Error();
+    const { url } = await r.json();
+    window.location.href = url;
+  } catch {
+    alert('Could not open billing portal. Please try again.');
+    if (btn) { btn.textContent = 'Manage subscription →'; btn.disabled = false; }
+  }
+}
 
 // hero gradient initialized via module script below
 
