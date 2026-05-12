@@ -2210,9 +2210,7 @@ import httpx as _httpx
 
 _stripe.api_key          = os.getenv("STRIPE_SECRET_KEY", "")
 _STRIPE_WEBHOOK_SECRET   = os.getenv("STRIPE_WEBHOOK_SECRET", "")
-_STRIPE_PRICE_USD        = os.getenv("STRIPE_PRICE_USD", "")
-_STRIPE_PRICE_EUR        = os.getenv("STRIPE_PRICE_EUR", "")
-_STRIPE_PRICE_GBP        = os.getenv("STRIPE_PRICE_GBP", "")
+_STRIPE_PRICE_ID         = os.getenv("STRIPE_PRICE_ID", "")   # single multi-currency price
 _SITE_URL                = os.getenv("SITE_URL", "https://lexio.site")
 
 # Countries billed in GBP
@@ -2246,12 +2244,12 @@ async def _country_from_ip(ip: str) -> str:
     return ""
 
 def _price_for_country(country: str) -> tuple[str, str, str]:
-    """Return (stripe_price_id, currency_code, symbol)."""
+    """Return (currency_code, symbol, amount) for the visitor's country."""
     if country in _GBP_COUNTRIES:
-        return _STRIPE_PRICE_GBP, "GBP", "£"
+        return "GBP", "£", "2.99"
     if country in _EUR_COUNTRIES:
-        return _STRIPE_PRICE_EUR, "EUR", "€"
-    return _STRIPE_PRICE_USD, "USD", "$"
+        return "EUR", "€", "2.99"
+    return "USD", "$", "3.99"
 
 
 @app.get("/stripe/price-info")
@@ -2263,8 +2261,8 @@ async def stripe_price_info(request: Request):
     if forwarded:
         ip = forwarded.split(",")[0].strip()
     country = await _country_from_ip(ip)
-    _, currency, symbol = _price_for_country(country)
-    return {"currency": currency, "symbol": symbol, "amount": "2.99", "country": country}
+    currency, symbol, amount = _price_for_country(country)
+    return {"currency": currency, "symbol": symbol, "amount": amount, "country": country}
 
 
 @app.post("/stripe/create-checkout")
@@ -2281,9 +2279,9 @@ async def stripe_create_checkout(
     if forwarded:
         ip = forwarded.split(",")[0].strip()
     country = await _country_from_ip(ip)
-    price_id, _, _ = _price_for_country(country)
+    currency, _, _ = _price_for_country(country)
 
-    if not price_id:
+    if not _STRIPE_PRICE_ID:
         raise HTTPException(status_code=503, detail="Stripe price not configured")
 
     # Re-use existing Stripe customer if we have one
@@ -2295,7 +2293,8 @@ async def stripe_create_checkout(
 
     session = _stripe.checkout.Session.create(
         mode="subscription",
-        line_items=[{"price": price_id, "quantity": 1}],
+        line_items=[{"price": _STRIPE_PRICE_ID, "quantity": 1}],
+        currency=currency.lower(),
         success_url=f"{_SITE_URL}/?stripe=success",
         cancel_url=f"{_SITE_URL}/?stripe=cancelled",
         metadata={"user_id": str(user.id)},
