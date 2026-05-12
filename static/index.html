@@ -1572,7 +1572,11 @@
       <div class="menu-section">
         <button class="menu-item" id="menu-pro-btn" onclick="handleProCta();closeMenu()" style="color:var(--accent);font-weight:600">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          <span>Upgrade to Pro — $2.99/mo</span>
+          <span>Upgrade to Pro</span>
+        </button>
+        <button class="menu-item" id="menu-manage-btn" onclick="handleManageSub();closeMenu()" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          <span>Manage subscription</span>
         </button>
         <button class="menu-item" data-action="desktop" onclick="openDesktopModal();closeMenu()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -4369,14 +4373,18 @@ async function checkProStatus() {
     if (_userIsPro) {
       _unlockProModels();
       // Show manage subscription, hide Get Pro button and note
+      // Landing page Pro card
       const lpBtn = document.getElementById('lp-pro-btn');
       const mgBtn = document.getElementById('lp-manage-btn');
       const note  = document.getElementById('lp-pro-note');
       if (lpBtn) lpBtn.style.display = 'none';
       if (mgBtn) mgBtn.style.display = '';
       if (note)  note.style.display  = 'none';
-      const mp = document.getElementById('menu-pro-btn');
-      if (mp) mp.style.display = 'none';
+      // App header menu
+      const mp  = document.getElementById('menu-pro-btn');
+      const mmb = document.getElementById('menu-manage-btn');
+      if (mp)  mp.style.display  = 'none';
+      if (mmb) mmb.style.display = '';
     } else {
       // Free user — lock to haiku
       if (currentModel !== 'haiku') setModel('haiku');
