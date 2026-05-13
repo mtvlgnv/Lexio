@@ -837,79 +837,44 @@
     #landing { display: flex; flex-direction: column; }
     body.in-app #landing { display: none; }
 
-    /* Pitch-then-demo layout for anonymous visitors */
-    body:not(.in-app) #landing { order: 0; }
-    body:not(.in-app) main {
-      order: 1;
-      height: 560px;
-      min-height: 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* Demo intro section */
-    .lp-demo-intro {
-      padding: 72px 72px 32px;
-      text-align: center;
-    }
-    .lp-demo-eyebrow {
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
-    }
-    .lp-demo-instruction {
-      font-size: 1rem; color: var(--muted); margin-bottom: 0;
-    }
-
-    /* How it works — standalone section */
-    .lp-how {
-      padding: 72px 72px;
-      display: flex; flex-direction: column; align-items: center; gap: 48px;
-      background: var(--surface);
-    }
-    .lp-how-steps {
-      display: flex; gap: 48px; justify-content: center; flex-wrap: wrap;
-      max-width: 860px; width: 100%;
-    }
-    .lp-how-step {
-      display: flex; flex-direction: column; gap: 12px; flex: 1; min-width: 200px; max-width: 260px;
-    }
-    .lp-how-num {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: var(--accent); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.82rem; font-weight: 700; flex-shrink: 0;
-    }
-    .lp-how-step h3 { font-size: 0.97rem; font-weight: 600; }
-    .lp-how-step p  { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
-
-    /* Hero */
+    /* Hero + How it works combined row */
     .lp-hero {
-      padding: 100px 72px 80px;
-      display: flex; flex-direction: column; align-items: flex-start;
-      gap: 28px; background: var(--surface); border-top: none;
-      position: relative; overflow: hidden; min-height: 480px; justify-content: center;
+      padding: 64px 72px;
+      display: flex; flex-direction: row; align-items: center;
+      gap: 80px; background: var(--surface); border-top: none;
+      position: relative; overflow: hidden;
     }
     .lp-hero::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
       height: 120px; z-index: 2; pointer-events: none;
       background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+    }
+    .lp-hero-left {
+      flex: 1; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 1;
+    }
+    .lp-hero-right {
+      flex: 1; display: flex; flex-direction: column; gap: 28px; position: relative; z-index: 1;
+      background: color-mix(in oklch, var(--surface) 55%, transparent);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 28px 32px;
+      border-radius: 16px;
+      border: 1px solid color-mix(in oklch, var(--border) 45%, transparent);
     }
     .lp-hero-eyebrow {
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
       text-transform: uppercase; color: var(--accent);
     }
     .lp-hero h1 {
-      font-family: 'Lora', serif; font-size: clamp(2.4rem, 5vw, 3.6rem);
-      font-weight: 800; line-height: 1.12; color: var(--text);
-      max-width: 560px; position: relative; z-index: 1;
+      font-family: 'Lora', serif; font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 600; line-height: 1.2; color: var(--text);
+      max-width: 480px; position: relative;
     }
     .lp-hero h1 em { font-style: italic; color: var(--accent); }
-    .lp-hero .lp-hero-sub {
-      font-size: 1.05rem; color: var(--text-mid); max-width: 520px;
-      line-height: 1.65; position: relative; z-index: 1;
-    }
-    .lp-hero .lp-hero-cta {
-      position: relative; z-index: 1;
+    .lp-hero-sub {
+      font-size: 1rem; color: var(--text-mid); max-width: 440px;
+      line-height: 1.7;
     }
     .lp-hero-cta {
       display: flex; gap: 12px; flex-wrap: wrap;
@@ -1030,7 +995,7 @@
       .lp-trending-bar-wrap { display: none; }
     }
 
-    /* How it works — now standalone section */
+    /* How it works — now inside hero right column, section hidden */
     .lp-steps { display: none; }
     .lp-hero-steps-title {
       font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
@@ -1437,13 +1402,9 @@
     .lp-footer-brand { font-family: 'Lora', serif; font-weight: 600; font-size: 0.95rem; color: var(--text); }
 
     /* Landing responsive */
-    @media (max-width: 900px) {
-      .lp-demo-intro { padding: 48px 24px 24px; }
-      .lp-how { padding: 48px 24px; }
-      .lp-how-steps { gap: 32px; }
-    }
     @media (max-width: 760px) {
-      .lp-hero { padding: 48px 24px 40px; }
+      .lp-hero { padding: 48px 24px 40px; flex-direction: column; gap: 40px; }
+      .lp-hero-right { border-top: 1px solid var(--border); padding-top: 32px; }
       .lp-steps, .lp-features { padding: 40px 24px; }
       .lp-steps-grid, .lp-features-grid { grid-template-columns: 1fr; }
       .lp-footer { flex-direction: column; gap: 12px; text-align: center; }
@@ -1561,6 +1522,7 @@
   <nav class="lp-header-nav">
     <a class="lp-nav-link" href="#lp-features"      data-section="lp-features">Features</a>
     <a class="lp-nav-link" href="#lp-pro"           data-section="lp-pro">Pricing</a>
+    <a class="lp-nav-link" href="#lp-testimonials"  data-section="lp-testimonials">Reviews</a>
     <a class="lp-nav-link" href="#lp-faq"           data-section="lp-faq">FAQ</a>
     <a class="lp-nav-link" href="#lp-download"      data-section="lp-download">Download</a>
   </nav>
@@ -1875,7 +1837,7 @@
 <!-- ── Landing page ───────────────────────────────────────────── -->
 <div id="landing">
 
-  <!-- Hero -->
+  <!-- Hero + How it works -->
   <div class="lp-hero">
     <canvas id="hero-webgl" style="
       position:absolute;left:0;top:0;width:100%;height:100%;
@@ -1887,45 +1849,88 @@
       --gradient-color-3:#7a3b9e;
       --gradient-color-4:#f0b060;
     "></canvas>
-    <h1 data-i18n-html="heroH1" style="position:relative;z-index:1">Read deeper.<br>Understand <em>everything.</em></h1>
-    <p class="lp-hero-sub" data-i18n="heroSub" style="position:relative;z-index:1">Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.</p>
-    <div class="lp-hero-cta" style="position:relative;z-index:1">
-      <button class="lp-btn-primary" onclick="document.getElementById('lp-demo-anchor').scrollIntoView({behavior:'smooth'})">
-        Try it now
-      </button>
-      <button class="lp-btn-ghost" onclick="openDesktopModal()">Download for Mac</button>
+    <div class="lp-hero-left">
+      <h1 data-i18n-html="heroH1">Read deeper.<br>Understand <em>everything.</em></h1>
+      <p class="lp-hero-sub" data-i18n="heroSub">Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.</p>
+      <div class="lp-hero-cta">
+        <button class="lp-btn-primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          <span data-i18n="tryItNow">Try it now</span>
+        </button>
+        <a class="lp-btn-ghost" href="#landing" onclick="document.getElementById('landing').scrollIntoView({behavior:'smooth'});return false;" data-i18n="seeHow">See how it works</a>
+      </div>
     </div>
-  </div>
-
-  <!-- Demo intro -->
-  <div class="lp-demo-intro" id="lp-demo-anchor">
-    <p class="lp-demo-eyebrow">Try it</p>
-    <p class="lp-demo-instruction">Paste any text below, then click a word.</p>
-  </div>
-
-  <!-- How it works -->
-  <div class="lp-how" id="lp-how">
-    <h2 class="lp-section-title" data-i18n="howLabel">How it works</h2>
-    <div class="lp-how-steps">
-      <div class="lp-how-step">
-        <div class="lp-how-num">1</div>
-        <h3 data-i18n="step1Title">Paste any text</h3>
-        <p data-i18n="step1Desc">Drop in a paragraph from an article, book, email, or anything else — any language works.</p>
+    <div class="lp-hero-right">
+      <span class="lp-hero-steps-title" data-i18n="howLabel">How it works</span>
+      <div class="lp-step">
+        <div class="lp-step-num">1</div>
+        <div><h3 data-i18n="step1Title">Paste any text</h3><p data-i18n="step1Desc">Drop in a paragraph from an article, book, email, or anything else — any language works.</p></div>
       </div>
-      <div class="lp-how-step">
-        <div class="lp-how-num">2</div>
-        <h3 data-i18n="step2Title">Analyze it</h3>
-        <p data-i18n="step2Desc">Lexio reads the full context and prepares every word for instant lookup. Takes about a second.</p>
+      <div class="lp-step">
+        <div class="lp-step-num">2</div>
+        <div><h3 data-i18n="step2Title">Analyze it</h3><p data-i18n="step2Desc">Lexio reads the full context and prepares every word for instant lookup. Takes about a second.</p></div>
       </div>
-      <div class="lp-how-step">
-        <div class="lp-how-num">3</div>
-        <h3 data-i18n="step3Title">Click any word</h3>
-        <p data-i18n="step3Desc">Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.</p>
+      <div class="lp-step">
+        <div class="lp-step-num">3</div>
+        <div><h3 data-i18n="step3Title">Click any word</h3><p data-i18n="step3Desc">Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.</p></div>
       </div>
     </div>
   </div>
 
-  <!-- Features + Models twin section -->
+  <!-- Trending words -->
+  <!-- Features -->
+  <!-- Pro section -->
+  <div class="lp-pro" id="lp-pro">
+    <div class="lp-pro-badge">Lexio Pro</div>
+    <h2 class="lp-section-title lp-pro-title">Read without limits</h2>
+    <p class="lp-pro-sub">The free plan gets you started. Pro removes every cap and unlocks all three reading modes.</p>
+
+    <div class="lp-pro-grid">
+      <!-- Free -->
+      <div class="lp-pro-col">
+        <div>
+          <div class="lp-pro-col-label">Free</div>
+          <div class="lp-pro-price">
+            <span class="lp-pro-amount"><span class="lp-free-symbol">$</span>0</span>
+            <span class="lp-pro-period">/month</span>
+          </div>
+        </div>
+        <ul class="lp-pro-perks">
+          <li>30 word lookups / month</li>
+          <li>3 OCR scans / month</li>
+          <li>Fast mode</li>
+          <li>Re-request definition up to 5×</li>
+          <li class="muted-perk">Balanced &amp; Deep modes</li>
+          <li class="muted-perk">Word bank sync across devices</li>
+        </ul>
+        <a class="lp-pro-cta" href="#" style="background:var(--bg);color:var(--text);border:1.5px solid var(--border)" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Use for free</a>
+      </div>
+
+      <!-- Pro -->
+      <div class="lp-pro-col">
+        <div>
+          <div class="lp-pro-col-label">Pro</div>
+          <div class="lp-pro-price">
+            <span class="lp-pro-amount lp-pro-amount-dynamic">$2.99</span>
+            <span class="lp-pro-period">/month</span>
+          </div>
+        </div>
+        <ul class="lp-pro-perks">
+          <li>Unlimited word lookups</li>
+          <li>Unlimited OCR scans</li>
+          <li>Fast, Balanced &amp; Deep modes</li>
+          <li>Word bank sync across devices</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Get Pro →</button>
+        <button class="lp-pro-cta" id="lp-manage-btn" onclick="handleManageSub()" style="display:none;background:var(--bg);color:var(--text);border:1.5px solid var(--border)">Manage subscription →</button>
+        <p class="lp-pro-note" id="lp-pro-note">Instant activation · cancel any time</p>
+      </div>
+    </div>
+  </div>
+
+
+
   <div class="lp-twin" id="lp-features">
     <canvas id="twin-webgl" style="
       position:absolute;left:0;top:0;width:100%;height:100%;
@@ -2024,53 +2029,65 @@
   </div>
   </div><!-- end .lp-twin -->
 
-  <!-- Pro section -->
-  <div class="lp-pro" id="lp-pro">
-    <div class="lp-pro-badge">Lexio Pro</div>
-    <h2 class="lp-section-title lp-pro-title">Read without limits</h2>
-    <p class="lp-pro-sub">The free plan gets you started. Pro removes every cap and unlocks all three reading modes.</p>
+  <!-- Testimonials -->
+  <div class="lp-testimonials" id="lp-testimonials">
+    <h2 class="lp-section-title">What readers are saying</h2>
+    <div class="lp-testimonials-grid">
 
-    <div class="lp-pro-grid">
-      <!-- Free -->
-      <div class="lp-pro-col">
-        <div>
-          <div class="lp-pro-col-label">Free</div>
-          <div class="lp-pro-price">
-            <span class="lp-pro-amount"><span class="lp-free-symbol">$</span>0</span>
-            <span class="lp-pro-period">/month</span>
+      <div class="lp-testimonial">
+        <div class="lp-testimonial-stars">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="lp-testimonial-quote">"I read a lot of dense non-fiction and kept a dictionary tab open constantly. Lexio replaced that entirely — I just click the word and the meaning appears right in context. It actually understands what the author meant."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">A</div>
+          <div>
+            <div class="lp-testimonial-name">Alex R.</div>
+            <div class="lp-testimonial-role">PhD student, philosophy</div>
           </div>
         </div>
-        <ul class="lp-pro-perks">
-          <li>30 word lookups / month</li>
-          <li>3 OCR scans / month</li>
-          <li>Fast mode</li>
-          <li>Re-request definition up to 5×</li>
-          <li class="muted-perk">Balanced &amp; Deep modes</li>
-          <li class="muted-perk">Word bank sync across devices</li>
-        </ul>
-        <a class="lp-pro-cta" href="#" style="background:var(--bg);color:var(--text);border:1.5px solid var(--border)" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Use for free</a>
       </div>
 
-      <!-- Pro -->
-      <div class="lp-pro-col">
-        <div>
-          <div class="lp-pro-col-label">Pro</div>
-          <div class="lp-pro-price">
-            <span class="lp-pro-amount lp-pro-amount-dynamic">$2.99</span>
-            <span class="lp-pro-period">/month</span>
+      <div class="lp-testimonial">
+        <div class="lp-testimonial-stars">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="lp-testimonial-quote">"English is my third language and literary vocabulary was always a wall for me. Lexio doesn't just give me a definition — it tells me the tone and register of the word, which is exactly what I was missing."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">S</div>
+          <div>
+            <div class="lp-testimonial-name">Sofia M.</div>
+            <div class="lp-testimonial-role">Translator, Berlin</div>
           </div>
         </div>
-        <ul class="lp-pro-perks">
-          <li>Unlimited word lookups</li>
-          <li>Unlimited OCR scans</li>
-          <li>Fast, Balanced &amp; Deep modes</li>
-          <li>Word bank sync across devices</li>
-          <li>Priority support</li>
-        </ul>
-        <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Get Pro →</button>
-        <button class="lp-pro-cta" id="lp-manage-btn" onclick="handleManageSub()" style="display:none;background:var(--bg);color:var(--text);border:1.5px solid var(--border)">Manage subscription →</button>
-        <p class="lp-pro-note" id="lp-pro-note">Instant activation · cancel any time</p>
       </div>
+
+      <div class="lp-testimonial">
+        <div class="lp-testimonial-stars">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="lp-testimonial-quote">"Our book club uses Lexio to prep before meetings. Instead of everyone arriving with different interpretations of the same passage, we actually discuss the ideas. The etymology feature alone has sparked so many conversations."</p>
+        <div class="lp-testimonial-author">
+          <div class="lp-testimonial-avatar">J</div>
+          <div>
+            <div class="lp-testimonial-name">James O.</div>
+            <div class="lp-testimonial-role">Book club organiser, London</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -2130,8 +2147,20 @@
     </div>
   </div>
 
-  <!-- Apps CTA (merged) — Mac first, Chrome second -->
+  <!-- Apps CTA (merged) -->
   <div class="lp-apps" id="lp-download">
+    <div class="lp-app-card">
+      <span class="lp-ext-eyebrow" data-i18n="extEyebrow">Chrome Extension</span>
+      <h3 data-i18n-html="extH2">Look up words without leaving the page.</h3>
+      <p data-i18n="extP">Select any word or sentence on any website. Lexio appears instantly with the meaning in context — no copy-paste, no tab switching.</p>
+      <div class="lp-app-card-btns">
+        <button class="lp-ext-badge" onclick="openExtModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          <span data-i18n="extBtn">Add to Chrome</span>
+        </button>
+      </div>
+      <span class="lp-ext-note" data-i18n="extNote">Free · Works on any page · No account required</span>
+    </div>
     <div class="lp-app-card">
       <span class="lp-ext-eyebrow">Mac App</span>
       <h3 data-i18n-html="deskH2">Always at hand, wherever you read.</h3>
@@ -2144,18 +2173,23 @@
         <button class="lp-btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})" data-i18n="openBrowser">Open in browser</button>
       </div>
     </div>
-    <div class="lp-app-card">
-      <span class="lp-ext-eyebrow" data-i18n="extEyebrow">Chrome Extension</span>
-      <h3 data-i18n-html="extH2">Look up words without leaving the page.</h3>
-      <p data-i18n="extP">Select any word or sentence on any website. Lexio appears instantly with the meaning in context — no copy-paste, no tab switching.</p>
-      <div class="lp-app-card-btns">
-        <button class="lp-ext-badge" onclick="openExtModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          <span data-i18n="extBtn">Add to Chrome</span>
-        </button>
-      </div>
-      <span class="lp-ext-note">Requires manual installation · Chrome · No account required</span>
+  </div>
+
+  <!-- Trending (last section) -->
+  <div class="lp-trending">
+    <div class="lp-trending-header">
+      <span class="lp-trending-month" id="trending-month">This month</span>
+      <h2 class="lp-section-title" data-i18n-html="trendingTitle">What people are looking up</h2>
     </div>
+    <div class="lp-trending-skeleton" id="trending-skeleton">
+      <div class="skeleton-row"></div>
+      <div class="skeleton-row" style="opacity:.8"></div>
+      <div class="skeleton-row" style="opacity:.6"></div>
+      <div class="skeleton-row" style="opacity:.45"></div>
+      <div class="skeleton-row" style="opacity:.3"></div>
+    </div>
+    <div class="lp-trending-list hidden" id="trending-list"></div>
+    <p class="lp-trending-empty hidden" id="trending-empty" data-i18n="trendingEmpty">No searches recorded yet this month — be the first!</p>
   </div>
 
   <!-- Feedback -->
