@@ -200,9 +200,18 @@
     .acct-btn.signed-in { background:var(--accent); border-color:var(--accent); color:#fff; }
     .acct-btn.signed-in:hover { background:var(--accent-dk); border-color:var(--accent-dk); }
 
-    /* ── Auth modal ─────────────────────────────────────────── */
-    #auth-modal { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.18s ease; }
+    /* ── Auth modal — right-side slide panel ──────────────────── */
+    #auth-modal { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.5); display:flex; justify-content:flex-end; animation:fadeIn 0.18s ease; }
     #auth-modal.hidden { display:none; }
+    /* The panel itself — full height, slides in from right */
+    #auth-modal > .auth-inner {
+      max-width:360px; width:100%; height:100%; border-radius:0; border-right:none;
+      border-left:1px solid var(--border); border-top:none; border-bottom:none;
+      overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column;
+      animation:slideInRight 0.26s cubic-bezier(0.22,1,0.36,1);
+    }
+    @keyframes slideInRight { from { transform:translateX(100%); } to { transform:translateX(0); } }
+    /* Shared inner card style (forgot/reset password use this) */
     .auth-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:380px; border:1px solid var(--border); overflow:hidden; }
     .auth-tabs { display:flex; border-bottom:1px solid var(--border); }
     .auth-tab { flex:1; padding:14px; text-align:center; font-size:0.84rem; font-weight:500; color:var(--muted); cursor:pointer; background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-1px; font-family:inherit; transition:color 0.15s; }
@@ -219,14 +228,50 @@
     .auth-error.hidden { display:none; }
     .auth-info { font-size:0.78rem; color:var(--muted); line-height:1.5; }
     .auth-info a { color:var(--accent); cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
-    /* Signed-in state */
-    .auth-profile { padding:24px; display:flex; flex-direction:column; gap:16px; }
-    .auth-avatar { width:56px; height:56px; border-radius:50%; background:var(--accent); color:#fff; font-size:1.3rem; font-weight:700; display:flex; align-items:center; justify-content:center; font-family:inherit; }
-    .auth-profile-name { font-size:1rem; font-weight:600; color:var(--text); }
-    .auth-profile-email { font-size:0.8rem; color:var(--muted); }
-    .auth-sync-status { font-size:0.8rem; color:var(--text-mid); background:var(--accent-lt); border:1px solid var(--accent-mid); border-radius:var(--radius-sm); padding:8px 12px; }
-    .auth-logout { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:0.82rem; color:var(--text-mid); cursor:pointer; transition:background 0.15s; width:fit-content; }
-    .auth-logout:hover { background:var(--bg); color:var(--text); }
+    /* ── Account panel (signed-in) ──────────────────────────── */
+    .auth-avatar { width:52px; height:52px; border-radius:50%; background:var(--accent); color:#fff; font-size:1.25rem; font-weight:700; display:flex; align-items:center; justify-content:center; font-family:inherit; flex-shrink:0; }
+    .auth-logout { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:0.82rem; color:var(--text-mid); cursor:pointer; transition:background 0.15s,color 0.15s; }
+    .auth-logout:hover { background:var(--bg); color:var(--danger,#e44); border-color:var(--danger,#e44); }
+    /* Panel sections */
+    .ap-header { display:flex; align-items:center; justify-content:space-between; padding:18px 20px 16px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .ap-title { font-size:0.95rem; font-weight:600; color:var(--text); }
+    .ap-profile { display:flex; align-items:center; gap:14px; padding:20px; border-bottom:1px solid var(--border); flex-shrink:0; }
+    .ap-profile-info { display:flex; flex-direction:column; gap:3px; min-width:0; }
+    .auth-profile-name { font-size:0.95rem; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .auth-profile-email { font-size:0.75rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ap-sections { display:flex; flex-direction:column; gap:0; flex:1; }
+    .ap-section { padding:16px 20px; border-bottom:1px solid var(--border); }
+    .ap-section-label { font-size:0.68rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+    /* Plan card */
+    .ap-plan-card { border-radius:var(--radius-sm); border:1px solid var(--border); padding:14px 16px; display:flex; flex-direction:column; gap:10px; background:var(--bg); }
+    .ap-plan-badge { display:inline-flex; align-items:center; gap:6px; font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:3px 8px; border-radius:20px; width:fit-content; }
+    .ap-plan-badge.free { background:var(--surface); color:var(--text-mid); border:1px solid var(--border); }
+    .ap-plan-badge.trial { background:oklch(72% 0.16 75 / 0.15); color:oklch(72% 0.16 75); border:1px solid oklch(72% 0.16 75 / 0.3); }
+    .ap-plan-badge.pro { background:linear-gradient(135deg,oklch(72% 0.16 75 / 0.15),oklch(62% 0.18 50 / 0.15)); color:oklch(72% 0.16 75); border:1px solid oklch(72% 0.16 75 / 0.3); }
+    .ap-plan-desc { font-size:0.8rem; color:var(--text-mid); line-height:1.45; }
+    .ap-plan-action { padding:8px 14px; border-radius:var(--radius-sm); font-family:inherit; font-size:0.82rem; font-weight:600; cursor:pointer; transition:background 0.15s,opacity 0.15s; border:none; }
+    .ap-plan-action.upgrade { background:var(--accent); color:#fff; }
+    .ap-plan-action.upgrade:hover { background:var(--accent-dk); }
+    .ap-plan-action.manage { background:transparent; border:1px solid var(--border); color:var(--text-mid); }
+    .ap-plan-action.manage:hover { background:var(--bg); color:var(--text); }
+    /* Usage bars */
+    .ap-usage-row { display:flex; flex-direction:column; gap:5px; margin-bottom:10px; }
+    .ap-usage-row:last-child { margin-bottom:0; }
+    .ap-usage-meta { display:flex; justify-content:space-between; align-items:baseline; }
+    .ap-usage-name { font-size:0.8rem; color:var(--text-mid); }
+    .ap-usage-num { font-size:0.75rem; font-weight:600; color:var(--text); font-variant-numeric:tabular-nums; }
+    .ap-bar-track { height:4px; background:var(--border); border-radius:4px; overflow:hidden; }
+    .ap-bar-fill { height:100%; border-radius:4px; background:var(--accent); transition:width 0.4s cubic-bezier(0.22,1,0.36,1); }
+    .ap-bar-fill.danger { background:var(--danger,#e44); }
+    /* Stat rows */
+    .ap-stat-row { display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-bottom:1px solid var(--border); cursor:default; }
+    .ap-stat-row:last-child { border-bottom:none; }
+    .ap-stat-row.clickable { cursor:pointer; }
+    .ap-stat-row.clickable:hover .ap-stat-val { color:var(--accent); }
+    .ap-stat-name { font-size:0.82rem; color:var(--text-mid); }
+    .ap-stat-val { font-size:0.82rem; font-weight:500; color:var(--text); }
+    /* Footer */
+    .ap-footer { padding:16px 20px; margin-top:auto; border-top:1px solid var(--border); flex-shrink:0; }
     /* OAuth divider */
     .auth-divider { display:flex; align-items:center; gap:10px; font-size:0.74rem; color:var(--muted); }
     .auth-divider::before,.auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
@@ -2427,22 +2472,76 @@
       </div>
     </div>
 
-    <!-- Signed-in: profile -->
-    <div id="auth-signed-in" style="display:none">
-      <div class="wb-header">
-        <span class="wb-title">Account</span>
-        <div class="wb-header-spacer"></div>
+    <!-- Signed-in: account panel -->
+    <div id="auth-signed-in" style="display:none; flex-direction:column; flex:1; min-height:0;">
+
+      <!-- Header -->
+      <div class="ap-header">
+        <span class="ap-title">Account</span>
         <button class="wb-close-btn" onclick="closeAuthModal()">×</button>
       </div>
-      <div class="auth-profile">
+
+      <!-- Profile -->
+      <div class="ap-profile">
         <div class="auth-avatar" id="auth-avatar"></div>
-        <div>
+        <div class="ap-profile-info">
           <div class="auth-profile-name" id="auth-profile-name"></div>
           <div class="auth-profile-email" id="auth-profile-email"></div>
         </div>
-        <div class="auth-sync-status" id="auth-sync-status">Word bank syncs automatically.</div>
+      </div>
+
+      <!-- Scrollable sections -->
+      <div class="ap-sections" style="overflow-y:auto; flex:1;">
+
+        <!-- Plan -->
+        <div class="ap-section">
+          <div class="ap-section-label">Plan</div>
+          <div class="ap-plan-card" id="ap-plan-card">
+            <div class="ap-plan-badge free">Free</div>
+            <div class="ap-plan-desc" id="ap-plan-desc">100 lookups &amp; 3 OCR scans per month.</div>
+            <button class="ap-plan-action upgrade" id="ap-plan-btn" onclick="closeAuthModal();handleProCta()">Get Pro →</button>
+          </div>
+        </div>
+
+        <!-- Usage -->
+        <div class="ap-section" id="ap-usage-section">
+          <div class="ap-section-label">This month</div>
+          <div class="ap-usage-row">
+            <div class="ap-usage-meta">
+              <span class="ap-usage-name">Word lookups</span>
+              <span class="ap-usage-num" id="ap-lookup-num">— / 100</span>
+            </div>
+            <div class="ap-bar-track"><div class="ap-bar-fill" id="ap-lookup-bar" style="width:0%"></div></div>
+          </div>
+          <div class="ap-usage-row">
+            <div class="ap-usage-meta">
+              <span class="ap-usage-name">OCR scans</span>
+              <span class="ap-usage-num" id="ap-ocr-num">— / 3</span>
+            </div>
+            <div class="ap-bar-track"><div class="ap-bar-fill" id="ap-ocr-bar" style="width:0%"></div></div>
+          </div>
+        </div>
+
+        <!-- Library & settings -->
+        <div class="ap-section">
+          <div class="ap-section-label">Library</div>
+          <div class="ap-stat-row clickable" onclick="closeAuthModal();openWordBank()" title="Open word bank">
+            <span class="ap-stat-name">Word bank</span>
+            <span class="ap-stat-val" id="ap-wb-count">0 words →</span>
+          </div>
+          <div class="ap-stat-row">
+            <span class="ap-stat-name">Mode</span>
+            <span class="ap-stat-val" id="ap-mode-val">—</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="ap-footer">
         <button class="auth-logout" onclick="signOut()">Sign out</button>
       </div>
+
     </div>
 
   </div>
@@ -3856,15 +3955,88 @@ function openAuthModal(fromAnalyze) {
   if (prompt) prompt.style.display = fromAnalyze ? '' : 'none';
   if (authUser) {
     document.getElementById('auth-signed-out').style.display = 'none';
-    document.getElementById('auth-signed-in').style.display  = '';
-    document.getElementById('auth-avatar').textContent = (authUser.name || authUser.email)[0].toUpperCase();
-    document.getElementById('auth-profile-name').textContent  = authUser.name || '';
+    const si = document.getElementById('auth-signed-in');
+    si.style.display = 'flex';
+    document.getElementById('auth-avatar').textContent       = (authUser.name || authUser.email)[0].toUpperCase();
+    document.getElementById('auth-profile-name').textContent = authUser.name || '—';
     document.getElementById('auth-profile-email').textContent = authUser.email;
+    // Word bank count
+    const wbEl = document.getElementById('ap-wb-count');
+    if (wbEl) wbEl.textContent = wordBank.length ? `${wordBank.length} word${wordBank.length !== 1 ? 's' : ''} →` : 'Empty →';
+    // Current mode
+    const modeEl = document.getElementById('ap-mode-val');
+    if (modeEl) modeEl.textContent = currentModel ? (currentModel.charAt(0).toUpperCase() + currentModel.slice(1)) : '—';
+    // Fetch live plan + usage and populate
+    _populateAccountPanel();
   } else {
     document.getElementById('auth-signed-out').style.display = '';
     document.getElementById('auth-signed-in').style.display  = 'none';
     switchAuthTab(fromAnalyze ? 'register' : 'login');
   }
+}
+
+async function _populateAccountPanel() {
+  const token = localStorage.getItem('lexio_token');
+  if (!token) return;
+  const hdrs = { Authorization: 'Bearer ' + token };
+  try {
+    const [proRes, usageRes] = await Promise.all([
+      fetch('/api/pro-status', { headers: hdrs }),
+      fetch('/api/usage',      { headers: hdrs }),
+    ]);
+    if (!proRes.ok || !usageRes.ok) return;
+    const pro   = await proRes.json();
+    const usage = await usageRes.json();
+
+    // ── Plan card ────────────────────────────────────────────
+    const badge   = document.querySelector('#ap-plan-card .ap-plan-badge');
+    const desc    = document.getElementById('ap-plan-desc');
+    const btn     = document.getElementById('ap-plan-btn');
+    const usageSec = document.getElementById('ap-usage-section');
+
+    if (pro.is_pro && !pro.is_trial) {
+      // Paid Pro
+      badge.className = 'ap-plan-badge pro';
+      badge.textContent = '✦ Pro';
+      desc.textContent  = 'Unlimited lookups, all modes, word bank sync.';
+      btn.textContent   = 'Manage subscription →';
+      btn.className     = 'ap-plan-action manage';
+      btn.onclick       = () => { closeAuthModal(); handleManageSub(); };
+      if (usageSec) usageSec.style.display = 'none';
+    } else if (pro.is_trial) {
+      // Trial
+      const d = pro.trial_days_left;
+      badge.className   = 'ap-plan-badge trial';
+      badge.textContent = `⏳ Trial · ${d} day${d !== 1 ? 's' : ''} left`;
+      desc.textContent  = 'Enjoying full Pro access. Upgrade to keep it after the trial.';
+      btn.textContent   = 'Upgrade to Pro →';
+      btn.className     = 'ap-plan-action upgrade';
+      btn.onclick       = () => { closeAuthModal(); handleProCta(); };
+      if (usageSec) usageSec.style.display = 'none';
+    } else {
+      // Free
+      badge.className   = 'ap-plan-badge free';
+      badge.textContent = 'Free';
+      desc.textContent  = '100 lookups & 3 OCR scans per month.';
+      btn.textContent   = 'Get Pro →';
+      btn.className     = 'ap-plan-action upgrade';
+      btn.onclick       = () => { closeAuthModal(); handleProCta(); };
+      if (usageSec) usageSec.style.display = '';
+      // Usage bars
+      if (!usage.is_pro) {
+        const lu = usage.lookup.used, ll = usage.lookup.limit;
+        const ou = usage.ocr.used,   ol = usage.ocr.limit;
+        const lPct = Math.min(100, Math.round(lu / ll * 100));
+        const oPct = Math.min(100, Math.round(ou / ol * 100));
+        const lookupBar = document.getElementById('ap-lookup-bar');
+        const ocrBar    = document.getElementById('ap-ocr-bar');
+        document.getElementById('ap-lookup-num').textContent = `${lu} / ${ll}`;
+        document.getElementById('ap-ocr-num').textContent    = `${ou} / ${ol}`;
+        if (lookupBar) { lookupBar.style.width = lPct + '%'; lookupBar.classList.toggle('danger', lPct >= 80); }
+        if (ocrBar)    { ocrBar.style.width    = oPct + '%'; ocrBar.classList.toggle('danger',    oPct >= 80); }
+      }
+    }
+  } catch (_) { /* fail silently — panel still shows static info */ }
 }
 function closeAuthModal() {
   document.getElementById('auth-modal').classList.add('hidden');
@@ -4108,8 +4280,9 @@ async function syncWordBank() {
       });
       saveWordBank(); updateWBBadge();
     }
-    const statusEl = document.getElementById('auth-sync-status');
-    if (statusEl) statusEl.textContent = `Synced ${wordBank.length} word${wordBank.length !== 1 ? 's' : ''} ✓`;
+    // Refresh word bank count in account panel if open
+    const wbEl = document.getElementById('ap-wb-count');
+    if (wbEl) wbEl.textContent = wordBank.length ? `${wordBank.length} word${wordBank.length !== 1 ? 's' : ''} →` : 'Empty →';
   } catch {}
 }
 
