@@ -113,6 +113,7 @@ class User(Base):
     monthly_ocr      = Column(Integer, default=0, nullable=False)
     ocr_month        = Column(String, nullable=True)
     token_version    = Column(Integer, default=0, nullable=False)   # incremented on logout
+    trial_expires_at = Column(DateTime, nullable=True)              # 7-day pro trial
     created_at       = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):
@@ -223,6 +224,10 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
         conn.execute(_sa_text("ALTER TABLE users ADD COLUMN stripe_customer_id TEXT"))
         if "stripe_customer_id" not in _cols(conn, "users") else None
     )),
+    (10, "add trial_expires_at", lambda conn, _: (
+        conn.execute(_sa_text("ALTER TABLE users ADD COLUMN trial_expires_at TIMESTAMP"))
+        if "trial_expires_at" not in _cols(conn, "users") else None
+    )),
 ]
 
 def _run_migrations():
@@ -258,8 +263,24 @@ def _run_migrations():
 _run_migrations()
 
 # ── Usage limits ─────────────────────────────────────────────────────────────
-FREE_LOOKUP_LIMIT = 30
+FREE_LOOKUP_LIMIT = 100
 FREE_OCR_LIMIT    = 3
+TRIAL_DAYS        = 7
+
+def _is_effectively_pro(u: "User") -> bool:
+    """True if the user has a paid Pro plan OR an active trial."""
+    if u.is_pro:
+        return True
+    if u.trial_expires_at and u.trial_expires_at > datetime.datetime.utcnow():
+        return True
+    return False
+
+def _trial_days_left(u: "User") -> int:
+    """Days remaining in trial (0 if none/expired)."""
+    if u.trial_expires_at and u.trial_expires_at > datetime.datetime.utcnow():
+        delta = u.trial_expires_at - datetime.datetime.utcnow()
+        return delta.days + (1 if delta.seconds > 0 else 0)
+    return 0
 
 def _get_client_ip(request: Request) -> str:
     """Return the real client IP, respecting X-Real-IP from nginx."""
@@ -287,8 +308,8 @@ def _check_usage(
 
     if user:
         u = db.query(User).filter(User.id == user.id).first()
-        if u and u.is_pro:
-            return {"allowed": True, "used": 0, "limit": -1}   # unlimited
+        if u and _is_effectively_pro(u):
+            return {"allowed": True, "used": 0, "limit": -1}   # unlimited (paid or trial)
 
         if u:
             if kind == "lookup":
@@ -861,9 +882,10 @@ async def register(request: Request, body: RegisterRequest, db: DBSession = Depe
     if db.query(User).filter(User.email == body.email).first():
         raise HTTPException(status_code=409, detail="An account with this email already exists.")
     user = User(
-        email    = body.email,
-        name     = body.name or body.email.split("@")[0],
-        pwd_hash = hash_password(body.password),
+        email            = body.email,
+        name             = body.name or body.email.split("@")[0],
+        pwd_hash         = hash_password(body.password),
+        trial_expires_at = datetime.datetime.utcnow() + datetime.timedelta(days=TRIAL_DAYS),
     )
     db.add(user)
     db.commit()
@@ -1221,7 +1243,8 @@ async def google_auth(request: Request, body: GoogleAuthRequest, db: DBSession =
     # Find existing user by email or google_id
     user = db.query(User).filter(User.email == email).first()
     if not user:
-        user = User(email=email, name=name, google_id=google_sub, pwd_hash=None)
+        user = User(email=email, name=name, google_id=google_sub, pwd_hash=None,
+                    trial_expires_at=datetime.datetime.utcnow() + datetime.timedelta(days=TRIAL_DAYS))
         db.add(user)
         db.commit()
         db.refresh(user)
@@ -1304,7 +1327,8 @@ async def apple_auth(request: Request, body: AppleAuthRequest, db: DBSession = D
         or (db.query(User).filter(User.email == display_email).first() if display_email else None)
     )
     if not user:
-        user = User(email=display_email, name=name, google_id=f"apple:{apple_sub}", pwd_hash=None)
+        user = User(email=display_email, name=name, google_id=f"apple:{apple_sub}", pwd_hash=None,
+                    trial_expires_at=datetime.datetime.utcnow() + datetime.timedelta(days=TRIAL_DAYS))
         db.add(user)
         db.commit()
         db.refresh(user)
@@ -2188,7 +2212,7 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
 
     if user:
         u = db.query(User).filter(User.id == user.id).first()
-        if u and u.is_pro:
+        if u and _is_effectively_pro(u):
             return {"is_pro": True, "lookup": {"used": 0, "limit": -1}, "ocr": {"used": 0, "limit": -1}}
         lookups = u.monthly_lookups if u and u.lookup_month == now_month else 0
         ocr     = u.monthly_ocr     if u and u.ocr_month   == now_month else 0
@@ -2377,9 +2401,12 @@ async def stripe_webhook(request: Request, db: DBSession = Depends(get_db)):
 
 @app.get("/api/pro-status")
 async def pro_status(user: User = Depends(current_user), db: DBSession = Depends(get_db)):
-    """Return Pro status for the authenticated user (used by the /pro page)."""
+    """Return Pro/trial status for the authenticated user."""
     u = db.query(User).filter(User.id == user.id).first()
-    return {"is_pro": bool(u and u.is_pro)}
+    paid  = bool(u and u.is_pro)
+    trial = bool(u and not paid and u.trial_expires_at and u.trial_expires_at > datetime.datetime.utcnow())
+    days  = _trial_days_left(u) if u else 0
+    return {"is_pro": paid or trial, "is_trial": trial, "trial_days_left": days}
 
 
 # ── Named static page routes ─────────────────────────────────────────────────

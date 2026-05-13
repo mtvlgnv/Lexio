@@ -1515,7 +1515,8 @@
 <header>
   <img src="/favicon-32.png?v=2" width="22" height="22" alt="" style="border-radius:6px;flex-shrink:0;">
   <span class="brand">Le<em>x</em>io</span>
-  <span id="pro-header-badge" style="display:none;font-size:0.6rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-left:-6px;margin-top:2px;flex-shrink:0;">PRO</span>
+  <span id="pro-header-badge" style="display:none;font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-left:-6px;margin-top:2px;flex-shrink:0;">PRO</span>
+  <span id="trial-header-badge" style="display:none;font-size:0.55rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:oklch(72% 0.16 75);margin-left:-6px;margin-top:2px;flex-shrink:0;white-space:nowrap;">TRIAL</span>
   <span class="tagline" data-i18n="tagline">AI contextual definition solutions</span>
 
   <!-- Landing nav — hidden in app mode -->
@@ -1651,7 +1652,7 @@
         <button class="model-pill active" data-model="deep" onclick="onModelPillClick('deep')">Deep</button>
       </div>
       <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
-        <span id="usage-text">0 / 30</span>
+        <span id="usage-text">0 / 100</span>
         <span class="usage-bar"><span class="usage-fill" id="usage-fill" style="width:0%"></span></span>
       </span>
     </div>
@@ -1896,7 +1897,8 @@
           </div>
         </div>
         <ul class="lp-pro-perks">
-          <li>30 word lookups / month</li>
+          <li>7-day Pro trial included</li>
+          <li>100 word lookups / month</li>
           <li>3 OCR scans / month</li>
           <li>Fast mode</li>
           <li>Re-request definition up to 5×</li>
@@ -2101,7 +2103,7 @@
           Is Lexio free?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. The free plan gives you 30 word lookups and 3 image scans per month — no credit card required. Pro (from €2.99/month) removes all limits and unlocks Balanced and Deep modes.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. New users get a 7-day free trial with full Pro access — no credit card required. After the trial, the free plan gives you 100 word lookups and 3 image scans per month. Pro (from €2.99/month) removes all limits and unlocks Balanced and Deep modes.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -4364,23 +4366,37 @@ async function checkProStatus() {
     if (!r.ok) { if (currentModel !== 'fast') setModel('fast'); return; }
     const d = await r.json();
     _userIsPro = !!d.is_pro;
-    const badge = document.getElementById('pro-header-badge');
-    if (badge) badge.style.display = _userIsPro ? '' : 'none';
+    const isPaidPro = _userIsPro && !d.is_trial;
+    const isTrial   = !!d.is_trial;
+    const daysLeft  = d.trial_days_left || 0;
+
+    // Header badges
+    const proBadge   = document.getElementById('pro-header-badge');
+    const trialBadge = document.getElementById('trial-header-badge');
+    if (proBadge)   proBadge.style.display   = isPaidPro ? '' : 'none';
+    if (trialBadge) {
+      trialBadge.style.display = isTrial ? '' : 'none';
+      if (isTrial) trialBadge.textContent = daysLeft > 1 ? `TRIAL · ${daysLeft}d` : 'TRIAL · last day';
+    }
+
     if (_userIsPro) {
       _unlockProModels();
-      // Show manage subscription, hide Get Pro button and note
-      // Landing page Pro card
+      // Landing page Pro card — trial users still see "Get Pro", paid users see "Manage"
       const lpBtn = document.getElementById('lp-pro-btn');
       const mgBtn = document.getElementById('lp-manage-btn');
       const note  = document.getElementById('lp-pro-note');
-      if (lpBtn) lpBtn.style.display = 'none';
-      if (mgBtn) mgBtn.style.display = '';
-      if (note)  note.style.display  = 'none';
+      if (isPaidPro) {
+        if (lpBtn) lpBtn.style.display = 'none';
+        if (mgBtn) mgBtn.style.display = '';
+        if (note)  note.style.display  = 'none';
+      }
       // App header menu
       const mp  = document.getElementById('menu-pro-btn');
       const mmb = document.getElementById('menu-manage-btn');
-      if (mp)  mp.style.display  = 'none';
-      if (mmb) mmb.style.display = '';
+      if (isPaidPro) {
+        if (mp)  mp.style.display  = 'none';
+        if (mmb) mmb.style.display = '';
+      }
     } else {
       // Free user — lock to fast
       if (currentModel !== 'fast') setModel('fast');
@@ -4484,7 +4500,7 @@ new Gradient().initGradient('#twin-webgl');
     <button class="pro-modal-close" onclick="closeProModal()">✕</button>
     <div class="pro-modal-icon">⚡</div>
     <h2 class="pro-modal-title">You've hit your free limit</h2>
-    <p class="pro-modal-sub" id="pro-modal-sub">You've used all 30 free lookups this month.</p>
+    <p class="pro-modal-sub" id="pro-modal-sub">You've used all 100 free lookups this month.</p>
     <div class="pro-plan-card">
       <div class="pro-plan-header">
         <span class="pro-plan-name">Lexio Pro</span>
