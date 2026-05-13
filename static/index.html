@@ -1327,27 +1327,6 @@
     .lp-app-card-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
 
     /* Footer */
-    /* Feedback section */
-    .lp-feedback {
-      padding: 64px 48px;
-      background: var(--bg); border-top: 1px solid var(--border);
-      display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center;
-    }
-    .lp-feedback-eyebrow {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 4px;
-    }
-    .lp-feedback h2 { font-family: 'Lora', serif; font-size: 1.7rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-    .lp-feedback p { font-size: 0.88rem; color: var(--text-mid); max-width: 420px; line-height: 1.65; margin-bottom: 20px; }
-    .lp-feedback-contacts { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .lp-feedback-link {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 20px; border: 1px solid var(--border); border-radius: var(--radius-sm);
-      background: var(--surface); color: var(--text); text-decoration: none;
-      font-size: 0.84rem; font-weight: 500; transition: border-color 0.15s, color 0.15s;
-    }
-    .lp-feedback-link:hover { border-color: var(--accent-mid); color: var(--accent); }
-    @media (max-width: 760px) { .lp-feedback { padding: 48px 24px; } }
 
     /* ── Landing nav (inside header) ────────────────────────── */
     .lp-header-nav {
@@ -1363,41 +1342,6 @@
     .lp-nav-link.lp-nav-active { color: var(--accent); background: var(--accent-lt); }
     @media (max-width: 900px) { .lp-header-nav { display: none; } }
 
-    /* ── Testimonials ────────────────────────────────────────── */
-    .lp-testimonials {
-      padding: 72px 48px; background: var(--bg);
-      border-top: 1px solid var(--border);
-      display: flex; flex-direction: column; align-items: center; gap: 48px;
-    }
-    .lp-testimonials-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 20px; width: 100%; max-width: 1100px;
-    }
-    @media (max-width: 900px) { .lp-testimonials-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 760px) { .lp-testimonials { padding: 48px 24px; } }
-    .lp-testimonial {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px 24px;
-      display: flex; flex-direction: column; gap: 20px;
-      transition: border-color 0.15s;
-    }
-    .lp-testimonial:hover { border-color: var(--accent-mid); }
-    .lp-testimonial-stars { display: flex; gap: 3px; }
-    .lp-testimonial-stars svg { color: var(--accent); }
-    .lp-testimonial-quote {
-      font-family: 'Lora', serif; font-style: italic;
-      font-size: 0.94rem; color: var(--text); line-height: 1.7; flex: 1;
-    }
-    .lp-testimonial-author { display: flex; align-items: center; gap: 10px; }
-    .lp-testimonial-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--accent-lt); border: 1px solid var(--accent-mid);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Lora', serif; font-weight: 600; font-size: 0.88rem;
-      color: var(--accent); flex-shrink: 0;
-    }
-    .lp-testimonial-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
-    .lp-testimonial-role { font-size: 0.74rem; color: var(--muted); margin-top: 1px; }
 
     /* ── FAQ ─────────────────────────────────────────────────── */
     .lp-faq {
@@ -1568,7 +1512,6 @@
   <nav class="lp-header-nav">
     <a class="lp-nav-link" href="#lp-features"      data-section="lp-features">Features</a>
     <a class="lp-nav-link" href="#lp-pro"           data-section="lp-pro">Pricing</a>
-    <a class="lp-nav-link" href="#lp-testimonials"  data-section="lp-testimonials">Reviews</a>
     <a class="lp-nav-link" href="#lp-faq"           data-section="lp-faq">FAQ</a>
     <a class="lp-nav-link" href="#lp-download"      data-section="lp-download">Download</a>
   </nav>
@@ -2076,68 +2019,6 @@
   </div>
   </div><!-- end .lp-twin -->
 
-  <!-- Testimonials -->
-  <div class="lp-testimonials" id="lp-testimonials">
-    <h2 class="lp-section-title">What readers are saying</h2>
-    <div class="lp-testimonials-grid">
-
-      <div class="lp-testimonial">
-        <div class="lp-testimonial-stars">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="lp-testimonial-quote">"I read a lot of dense non-fiction and kept a dictionary tab open constantly. Lexio replaced that entirely — I just click the word and the meaning appears right in context. It actually understands what the author meant."</p>
-        <div class="lp-testimonial-author">
-          <div class="lp-testimonial-avatar">A</div>
-          <div>
-            <div class="lp-testimonial-name">Alex R.</div>
-            <div class="lp-testimonial-role">PhD student, philosophy</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="lp-testimonial">
-        <div class="lp-testimonial-stars">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="lp-testimonial-quote">"English is my third language and literary vocabulary was always a wall for me. Lexio doesn't just give me a definition — it tells me the tone and register of the word, which is exactly what I was missing."</p>
-        <div class="lp-testimonial-author">
-          <div class="lp-testimonial-avatar">S</div>
-          <div>
-            <div class="lp-testimonial-name">Sofia M.</div>
-            <div class="lp-testimonial-role">Translator, Berlin</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="lp-testimonial">
-        <div class="lp-testimonial-stars">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        </div>
-        <p class="lp-testimonial-quote">"Our book club uses Lexio to prep before meetings. Instead of everyone arriving with different interpretations of the same passage, we actually discuss the ideas. The etymology feature alone has sparked so many conversations."</p>
-        <div class="lp-testimonial-author">
-          <div class="lp-testimonial-avatar">J</div>
-          <div>
-            <div class="lp-testimonial-name">James O.</div>
-            <div class="lp-testimonial-role">Book club organiser, London</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
   <!-- FAQ -->
   <div class="lp-faq" id="lp-faq">
     <h2 class="lp-section-title">Frequently asked questions</h2>
@@ -2240,22 +2121,6 @@
   </div>
 
   <!-- Feedback -->
-  <div class="lp-feedback">
-    <div class="lp-feedback-eyebrow">Feedback</div>
-    <h2>We'd love to hear from you.</h2>
-    <p>Have a suggestion, found a bug, or just want to say hi? Reach out directly — we read everything.</p>
-    <div class="lp-feedback-contacts">
-      <a class="lp-feedback-link" href="mailto:matveylgnv2021@gmail.com">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-        matveylgnv2021@gmail.com
-      </a>
-      <a class="lp-feedback-link" href="https://wa.me/31651251748" target="_blank">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
-        +31 651 251 748
-      </a>
-    </div>
-  </div>
-
   <!-- Footer -->
   <footer class="lp-footer">
     <span class="lp-footer-brand">Le<em style="font-style:italic;color:var(--accent)">x</em>io</span>
