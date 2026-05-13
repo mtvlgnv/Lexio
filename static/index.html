@@ -4269,14 +4269,9 @@ initializeModelSelector();
 // Load usage on page start
 loadUsage();
 
-// Show success banner if returning from Stripe checkout
+// Clean up URL if returning from Stripe checkout
 if (new URLSearchParams(location.search).get('stripe') === 'success') {
   try { history.replaceState(null, '', '/'); } catch {}
-  const banner = document.createElement('div');
-  banner.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:9999;background:oklch(93% 0.07 150);color:oklch(28% 0.1 150);border:1px solid oklch(80% 0.1 150);border-radius:10px;padding:12px 24px;font-size:0.88rem;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.12)';
-  banner.textContent = '🎉 You\'re now Lexio Pro! Your account has been upgraded.';
-  document.body.appendChild(banner);
-  setTimeout(() => banner.remove(), 6000);
   checkProStatus();
 }
 
