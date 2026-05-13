@@ -1076,10 +1076,10 @@
       .lp-twin .lp-models-sub { text-align: center; }
     }
     .lp-models-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr);
+      display: grid; grid-template-columns: repeat(3, 1fr);
       gap: 10px; width: 100%;
     }
-    @media (max-width: 520px) { .lp-models-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .lp-models-grid { grid-template-columns: 1fr; } }
     .lp-model-card {
       padding: 18px 16px; background: var(--surface); border: 1px solid var(--border);
       border-radius: var(--radius); display: flex; flex-direction: column; gap: 8px;
@@ -1638,12 +1638,11 @@
     </div>
 
     <div class="model-selector-row" id="model-selector-row">
-      <span class="model-selector-label">Model</span>
+      <span class="model-selector-label">Mode</span>
       <div class="model-pills" id="model-pills">
-        <button class="model-pill" data-model="haiku" onclick="onModelPillClick('haiku')">Haiku</button>
-        <button class="model-pill" data-model="gpt-4-mini" onclick="onModelPillClick('gpt-4-mini')"><span class="pill-full">GPT-4o Mini</span><span class="pill-short">GPT-4o</span></button>
-        <button class="model-pill" data-model="gemini" onclick="onModelPillClick('gemini')">Gemini</button>
-        <button class="model-pill active" data-model="sonnet" onclick="onModelPillClick('sonnet')"><span class="pill-full">Sonnet 4.5</span><span class="pill-short">Sonnet</span></button>
+        <button class="model-pill" data-model="fast" onclick="onModelPillClick('fast')">Fast</button>
+        <button class="model-pill" data-model="balanced" onclick="onModelPillClick('balanced')">Balanced</button>
+        <button class="model-pill active" data-model="deep" onclick="onModelPillClick('deep')">Deep</button>
       </div>
       <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
         <span id="usage-text">0 / 30</span>
@@ -1879,7 +1878,7 @@
   <div class="lp-pro" id="lp-pro">
     <div class="lp-pro-badge">Lexio Pro</div>
     <h2 class="lp-section-title lp-pro-title">Read without <em>limits</em></h2>
-    <p class="lp-pro-sub">The free plan gets you started. Pro removes every cap and unlocks all four AI models.</p>
+    <p class="lp-pro-sub">The free plan gets you started. Pro removes every cap and unlocks all three reading modes.</p>
 
     <div class="lp-pro-grid">
       <!-- Free -->
@@ -1894,9 +1893,9 @@
         <ul class="lp-pro-perks">
           <li>30 word lookups / month</li>
           <li>3 OCR scans / month</li>
-          <li>Claude Haiku model</li>
+          <li>Fast mode</li>
           <li>Re-request definition up to 5×</li>
-          <li class="muted-perk">GPT-4o Mini, Gemini, Sonnet</li>
+          <li class="muted-perk">Balanced &amp; Deep modes</li>
           <li class="muted-perk">Word bank sync across devices</li>
         </ul>
         <a class="lp-pro-cta" href="#" style="background:var(--bg);color:var(--text);border:1.5px solid var(--border)" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Use for free</a>
@@ -1914,7 +1913,7 @@
         <ul class="lp-pro-perks">
           <li>Unlimited word lookups</li>
           <li>Unlimited OCR scans</li>
-          <li>All 4 AI models</li>
+          <li>Fast, Balanced &amp; Deep modes</li>
           <li>Word bank sync across devices</li>
           <li>Priority support</li>
         </ul>
@@ -1984,8 +1983,8 @@
         <div class="lp-feature-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
         </div>
-        <h3 data-i18n="feat6Title">4 AI models</h3>
-        <p data-i18n="feat6Desc">Switch between Claude Haiku, GPT-4o Mini, Gemini 2.5 Flash, and Claude Sonnet 4.5 — each brings a different depth of analysis.</p>
+        <h3 data-i18n="feat6Title">3 reading modes</h3>
+        <p data-i18n="feat6Desc">Switch between Fast, Balanced, and Deep — powered by OpenAI, Google, and Anthropic — each tuned to a different depth of analysis.</p>
       </div>
 
     </div>
@@ -1993,41 +1992,33 @@
 
   <!-- AI Models comparison -->
   <div class="lp-models" id="lp-models" style="position:relative;z-index:1;">
-    <h2 class="lp-section-title">Four models. One <em>seamless</em> switch.</h2>
+    <h2 class="lp-section-title">Three modes. One <em>seamless</em> switch.</h2>
 
     <div class="lp-models-grid">
-      <div class="lp-model-card lp-model-card-featured">
-        <div class="lp-model-header">
-          <span class="lp-model-badge lp-model-badge-anthropic">Anthropic</span>
-          <span class="lp-model-speed">Fastest</span>
-        </div>
-        <h3>Claude Haiku</h3>
-        <p>Near-instant lookups. Concise and accurate — best for high-frequency reading.</p>
-        <span class="lp-model-default-tag">Default model</span>
-      </div>
       <div class="lp-model-card">
         <div class="lp-model-header">
           <span class="lp-model-badge lp-model-badge-openai">OpenAI</span>
-          <span class="lp-model-speed">Balanced</span>
+          <span class="lp-model-speed">GPT-4o Mini</span>
         </div>
-        <h3>GPT-4o Mini</h3>
-        <p>Sharp contextual reasoning with reliable multilingual accuracy.</p>
+        <h3>Fast</h3>
+        <p>Near-instant lookups. Concise and accurate — best for high-frequency reading when you don't want to break flow.</p>
       </div>
-      <div class="lp-model-card">
+      <div class="lp-model-card lp-model-card-featured">
         <div class="lp-model-header">
           <span class="lp-model-badge lp-model-badge-google">Google</span>
-          <span class="lp-model-speed">Multilingual</span>
+          <span class="lp-model-speed">Gemini 2.5 Flash</span>
         </div>
-        <h3>Gemini 2.5 Flash</h3>
-        <p>Widest language coverage and rich cultural context across definitions.</p>
+        <h3>Balanced</h3>
+        <p>Smart and thorough — wide language coverage, strong contextual reasoning, and rich cultural nuance.</p>
+        <span class="lp-model-default-tag">Recommended</span>
       </div>
       <div class="lp-model-card">
         <div class="lp-model-header">
           <span class="lp-model-badge lp-model-badge-anthropic">Anthropic</span>
-          <span class="lp-model-speed">Most thorough</span>
+          <span class="lp-model-speed">Claude Sonnet 4.5</span>
         </div>
-        <h3>Claude Sonnet 4.5</h3>
-        <p>Deepest analysis — richer etymologies, literary-grade register, and precise "why this word" explanations.</p>
+        <h3>Deep</h3>
+        <p>Maximum depth — richer etymologies, literary-grade register, and the most precise "why this word" explanations.</p>
       </div>
     </div>
   </div>
@@ -2105,7 +2096,7 @@
           Is Lexio free?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. The free plan gives you 30 word lookups and 3 image scans per month — no credit card required. Pro ($2.99/month) removes all limits and unlocks every AI model.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. The free plan gives you 30 word lookups and 3 image scans per month — no credit card required. Pro (from €2.99/month) removes all limits and unlocks Balanced and Deep modes.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -2126,10 +2117,10 @@
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Which AI model should I use?
+          Which reading mode should I use?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Claude Haiku is the free default — fast and accurate for everyday reading. If you're on Pro and reading literature, legal texts, or academic prose, Claude Sonnet 4.5 gives the deepest analysis. GPT-4o Mini and Gemini are great middle options.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Fast mode is available on the free plan — quick and accurate for everyday reading. Pro unlocks Balanced (Gemini 2.5 Flash) and Deep (Claude Sonnet 4.5). For literature, legal texts, or academic prose, Deep gives the richest analysis.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -2637,11 +2628,13 @@ function setTheme(t) {
 }
 
 /* ── Model selection ───────────────────────────────────────── */
-let currentModel = 'sonnet';
+let currentModel = 'deep';
 let _pendingSwitchModel = null;   // model the user wants to switch to
 
 const MODEL_LABELS = {
-  haiku: 'Haiku', 'gpt-4-mini': 'GPT-4o Mini', gemini: 'Gemini', sonnet: 'Sonnet 4.5'
+  fast: 'Fast', balanced: 'Balanced', deep: 'Deep',
+  // legacy aliases
+  haiku: 'Fast', 'gpt-4-mini': 'Fast', gemini: 'Balanced', sonnet: 'Deep'
 };
 
 function setModel(model) {
@@ -2733,8 +2726,10 @@ function switchResultModel(model) {
 }
 
 async function initializeModelSelector() {
-  // Load saved preference (default: sonnet)
-  const saved = localStorage.getItem('lexio_model') || 'sonnet';
+  // Load saved preference (default: deep). Migrate old names.
+  const _legacyMap = {haiku:'fast','gpt-4-mini':'fast','gpt-4o-mini':'fast',gemini:'balanced',sonnet:'deep'};
+  const _raw = localStorage.getItem('lexio_model') || 'deep';
+  const saved = _legacyMap[_raw] || _raw;
   currentModel = saved;
 
   // If authenticated, prefer server-side preference
@@ -4337,7 +4332,7 @@ async function handleProCta() {
 })();
 
 function _lockProModels() {
-  document.querySelectorAll('.model-pill:not([data-model="haiku"])').forEach(p => {
+  document.querySelectorAll('.model-pill:not([data-model="fast"])').forEach(p => {
     p.disabled = true;
     p.title = 'Upgrade to Pro to unlock';
     p.style.opacity = '0.4';
@@ -4360,13 +4355,13 @@ _lockProModels();
 async function checkProStatus() {
   const token = localStorage.getItem('lexio_token');
   if (!token) {
-    // No auth — force haiku for free guests
-    if (currentModel !== 'haiku') setModel('haiku');
+    // No auth — force fast for free guests
+    if (currentModel !== 'fast') setModel('fast');
     return;
   }
   try {
     const r = await fetch('/api/pro-status', { headers: { 'Authorization': 'Bearer ' + token } });
-    if (!r.ok) { if (currentModel !== 'haiku') setModel('haiku'); return; }
+    if (!r.ok) { if (currentModel !== 'fast') setModel('fast'); return; }
     const d = await r.json();
     _userIsPro = !!d.is_pro;
     const badge = document.getElementById('pro-header-badge');
@@ -4387,11 +4382,11 @@ async function checkProStatus() {
       if (mp)  mp.style.display  = 'none';
       if (mmb) mmb.style.display = '';
     } else {
-      // Free user — lock to haiku
-      if (currentModel !== 'haiku') setModel('haiku');
+      // Free user — lock to fast
+      if (currentModel !== 'fast') setModel('fast');
     }
   } catch {
-    if (currentModel !== 'haiku') setModel('haiku');
+    if (currentModel !== 'fast') setModel('fast');
   }
 }
 checkProStatus();
@@ -4498,7 +4493,7 @@ new Gradient().initGradient('#twin-webgl');
       <ul class="pro-plan-perks">
         <li>✓ Unlimited word lookups</li>
         <li>✓ Unlimited OCR scans</li>
-        <li>✓ All 4 AI models</li>
+        <li>✓ Fast, Balanced &amp; Deep modes</li>
         <li>✓ Word bank sync across devices</li>
         <li>✓ Priority support</li>
       </ul>

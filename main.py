@@ -629,28 +629,30 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         required_keys = ("pos", "contextual")
 
     # Determine which model to use
-    model_choice = (req.model or "sonnet").lower().strip()
+    model_choice = (req.model or "deep").lower().strip()
 
-    # Map user-friendly names to internal names
+    # Map tier names to internal keys (also accept old names for backwards compat)
     model_map = {
-        "haiku": "haiku",
-        "gemini": "gemini",
-        "gpt-4-mini": "gpt-4-mini",
-        "gpt-4o-mini": "gpt-4-mini",  # alias
-        "sonnet": "sonnet",
+        "fast":      "fast",
+        "balanced":  "balanced",
+        "deep":      "deep",
+        # legacy aliases
+        "haiku":     "fast",
+        "gpt-4-mini":"fast",
+        "gpt-4o-mini":"fast",
+        "gemini":    "balanced",
+        "sonnet":    "deep",
     }
-    actual_model = model_map.get(model_choice, "sonnet")  # default to sonnet
+    actual_model = model_map.get(model_choice, "deep")
 
     try:
         # Call the appropriate API
-        if actual_model == "gemini":
-            text = _call_google(prompt)
-        elif actual_model in ("gpt-4-mini",):
-            text = _call_openai(prompt)
-        elif actual_model == "sonnet":
+        if actual_model == "fast":
+            text = _call_openai(prompt)          # GPT-4o Mini
+        elif actual_model == "balanced":
+            text = _call_google(prompt)          # Gemini 2.5 Flash
+        else:  # deep
             text = _call_anthropic(prompt, "claude-sonnet-4-5-20250929")
-        else:  # haiku (default)
-            text = _call_anthropic(prompt, "claude-haiku-4-5-20251001")
 
         # Clean up markdown code blocks if present
         if text.startswith("```"):
@@ -1049,32 +1051,28 @@ async def get_models():
     return {
         "models": [
             {
-                "id": "haiku",
-                "name": "Claude Haiku 4.5",
-                "provider": "Anthropic",
-                "available": True,  # Always available
-                "description": "Fast and compact model"
-            },
-            {
-                "id": "gpt-4-mini",
-                "name": "GPT-4o Mini",
+                "id": "fast",
+                "name": "Fast",
                 "provider": "OpenAI",
+                "model": "GPT-4o Mini",
                 "available": bool(os.getenv("OPENAI_API_KEY")),
-                "description": "Efficient and capable model"
+                "description": "Quick answers, instant lookups"
             },
             {
-                "id": "gemini",
-                "name": "Gemini 2.5 Flash",
+                "id": "balanced",
+                "name": "Balanced",
                 "provider": "Google",
+                "model": "Gemini 2.5 Flash",
                 "available": bool(os.getenv("GOOGLE_API_KEY")),
-                "description": "Fast multimodal model"
+                "description": "Smart and thorough, without the wait"
             },
             {
-                "id": "sonnet",
-                "name": "Claude Sonnet 4.5",
+                "id": "deep",
+                "name": "Deep",
                 "provider": "Anthropic",
+                "model": "Claude Sonnet 4.5",
                 "available": True,
-                "description": "Advanced reasoning model"
+                "description": "Maximum depth and accuracy"
             }
         ]
     }
@@ -1087,9 +1085,13 @@ async def get_user_model(
 ):
     """Get the user's preferred model."""
     if not user:
-        return {"model": "sonnet"}
+        return {"model": "deep"}
     user_record = db.query(User).filter(User.id == user.id).first()
-    return {"model": (user_record.preferred_model if user_record else None) or "sonnet"}
+    raw = (user_record.preferred_model if user_record else None) or "deep"
+    # Migrate legacy model names to new tiers
+    legacy = {"haiku": "fast", "gpt-4-mini": "fast", "gpt-4o-mini": "fast",
+               "gemini": "balanced", "sonnet": "deep"}
+    return {"model": legacy.get(raw, raw)}
 
 
 class ModelUpdateRequest(BaseModel):
@@ -1099,7 +1101,7 @@ class ModelUpdateRequest(BaseModel):
 @app.post("/api/user-model")
 async def update_user_model(req: ModelUpdateRequest, user: User = Depends(current_user), db: DBSession = Depends(get_db)):
     """Update the user's preferred model."""
-    valid_models = {"haiku", "gpt-4-mini", "gemini", "sonnet"}
+    valid_models = {"fast", "balanced", "deep"}
     if req.model not in valid_models:
         raise HTTPException(status_code=400, detail=f"Invalid model: {req.model}")
 
