@@ -1231,20 +1231,22 @@
     [data-theme="dark"] .lp-model-badge-openai { background: oklch(24% 0.04 145); color: oklch(70% 0.12 145); border-color: oklch(34% 0.06 145); }
     [data-theme="dark"] .lp-model-badge-google  { background: oklch(22% 0.04 240); color: oklch(68% 0.12 240); border-color: oklch(32% 0.06 240); }
 
-    /* Dark-mode transparent cards & pills */
+    /* Dark-mode transparent cards & pills — match the "How it works" panel */
     [data-theme="dark"] .model-pills {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.12);
+      background: color-mix(in oklch, var(--surface) 55%, transparent);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-color: color-mix(in oklch, var(--border) 45%, transparent);
     }
     [data-theme="dark"] .lp-feature,
     [data-theme="dark"] .lp-model-card,
     [data-theme="dark"] .lp-trending-compact .lp-trending-item {
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.1);
+      background: color-mix(in oklch, var(--surface) 55%, transparent);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-color: color-mix(in oklch, var(--border) 45%, transparent);
     }
     [data-theme="dark"] .lp-model-card-featured {
-      background: rgba(255,180,110,0.12);
-      border-color: rgba(255,180,110,0.28);
+      background: color-mix(in oklch, var(--accent-lt) 75%, transparent);
+      border-color: color-mix(in oklch, var(--accent-mid) 70%, transparent);
     }
     .lp-model-speed { font-size: 0.67rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
     .lp-model-card h3 { font-size: 0.98rem; font-weight: 600; color: var(--text); }
