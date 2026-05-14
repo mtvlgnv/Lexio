@@ -1061,6 +1061,53 @@
       .lp-trending-bar-wrap { display: none; }
     }
 
+    /* Compact trending — sits inside the modes column */
+    .lp-trending-compact {
+      width: 100%;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .lp-trending-compact-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 12px; width: 100%;
+    }
+    .lp-trending-compact-header .lp-hero-steps-title {
+      margin: 0;
+    }
+    .lp-trending-compact-header .lp-trending-month {
+      font-size: 0.68rem; color: var(--muted); font-weight: 500;
+      letter-spacing: 0.04em; text-transform: none;
+    }
+    .lp-trending-compact .lp-trending-list,
+    .lp-trending-compact .lp-trending-skeleton {
+      max-width: none; gap: 6px;
+    }
+    .lp-trending-compact .lp-trending-item {
+      padding: 8px 12px; gap: 10px;
+      background: var(--surface);
+    }
+    .lp-trending-compact .lp-trending-item:hover {
+      transform: none;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .lp-trending-compact .lp-trending-rank {
+      width: 20px; height: 20px; font-size: 0.65rem;
+    }
+    .lp-trending-compact .lp-trending-word {
+      font-size: 0.88rem;
+    }
+    .lp-trending-compact .lp-trending-count {
+      font-size: 0.65rem; padding: 1px 8px;
+    }
+    .lp-trending-compact .skeleton-row {
+      height: 36px;
+    }
+    .lp-trending-compact .lp-trending-empty {
+      font-size: 0.82rem;
+    }
+
     /* How it works — now inside hero right column, section hidden */
     .lp-steps { display: none; }
     .lp-hero-steps-title {
@@ -2038,6 +2085,21 @@
         <p>Maximum depth — richer etymologies, literary-grade register, and the most precise "why this word" explanations.</p>
       </div>
     </div>
+
+    <!-- Trending words (compact, inside modes column) -->
+    <div class="lp-trending-compact">
+      <div class="lp-trending-compact-header">
+        <p class="lp-hero-steps-title">What people are looking up</p>
+        <span class="lp-trending-month" id="trending-month">This month</span>
+      </div>
+      <div class="lp-trending-skeleton" id="trending-skeleton">
+        <div class="skeleton-row"></div>
+        <div class="skeleton-row" style="opacity:.7"></div>
+        <div class="skeleton-row" style="opacity:.45"></div>
+      </div>
+      <div class="lp-trending-list hidden" id="trending-list"></div>
+      <p class="lp-trending-empty hidden" id="trending-empty" data-i18n="trendingEmpty">No searches recorded yet this month — be the first!</p>
+    </div>
   </div>
   </div><!-- end .lp-twin -->
 
@@ -2123,23 +2185,6 @@
         <button class="lp-btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})" data-i18n="openBrowser">Open in browser</button>
       </div>
     </div>
-  </div>
-
-  <!-- Trending (last section) -->
-  <div class="lp-trending">
-    <div class="lp-trending-header">
-      <span class="lp-trending-month" id="trending-month">This month</span>
-      <h2 class="lp-section-title" data-i18n-html="trendingTitle">What people are looking up</h2>
-    </div>
-    <div class="lp-trending-skeleton" id="trending-skeleton">
-      <div class="skeleton-row"></div>
-      <div class="skeleton-row" style="opacity:.8"></div>
-      <div class="skeleton-row" style="opacity:.6"></div>
-      <div class="skeleton-row" style="opacity:.45"></div>
-      <div class="skeleton-row" style="opacity:.3"></div>
-    </div>
-    <div class="lp-trending-list hidden" id="trending-list"></div>
-    <p class="lp-trending-empty hidden" id="trending-empty" data-i18n="trendingEmpty">No searches recorded yet this month — be the first!</p>
   </div>
 
   <!-- Footer -->
@@ -4215,8 +4260,9 @@ async function syncWordBank() {
       return;
     }
 
-    const maxCount = data.words[0].count || 1;
-    list.innerHTML = data.words.map((w, i) => `
+    const topWords = data.words.slice(0, 5);
+    const maxCount = topWords[0].count || 1;
+    list.innerHTML = topWords.map((w, i) => `
       <div class="lp-trending-item" onclick="prefillWord(${JSON.stringify(w.word)})">
         <div class="lp-trending-rank">${i + 1}</div>
         <div class="lp-trending-word">${escHtml(w.word)}</div>
