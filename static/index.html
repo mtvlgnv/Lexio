@@ -476,8 +476,19 @@
       .composer-bar .usage-pill { order:99; width:100%; justify-content:center; margin:0; }
     }
     .char-count { font-size:0.75rem; color:var(--muted); font-variant-numeric:tabular-nums; }
-    .btn-sample { background:none; border:none; padding:4px 0; font-family:inherit; font-size:0.78rem; color:var(--accent); cursor:pointer; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:2px; transition:color 0.15s; }
-    .btn-sample:hover { color:var(--accent-dk); }
+    .btn-sample {
+      display:inline-flex; align-items:center; gap:6px;
+      height:32px; padding:0 12px;
+      background:transparent; border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
+      color:var(--text-mid); cursor:pointer;
+      transition:background 0.15s, border-color 0.15s, color 0.15s;
+      text-decoration:none; flex-shrink:0;
+    }
+    .btn-sample:hover { background:var(--accent-lt); border-color:var(--accent-mid); color:var(--accent); }
+    .btn-sample-icon { font-size:0.85rem; line-height:1; opacity:0.7; }
+    .btn-sample:hover .btn-sample-icon { opacity:1; }
     .lang-btn {
       display:flex; align-items:center; gap:7px;
       background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
@@ -542,6 +553,69 @@
       .pill-full { display: none; }
       .pill-short { display: inline; }
       .model-pill { padding:5px 9px; font-size:0.68rem; }
+    }
+
+    /* ── Mode dropdown (Claude-style model picker) ───────────── */
+    .mode-dropdown { position:relative; flex-shrink:0; }
+    .mode-trigger {
+      display:inline-flex; align-items:center; gap:6px;
+      height:32px; padding:0 10px 0 12px;
+      background:transparent; border:1px solid var(--border);
+      border-radius:var(--radius-sm);
+      font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
+      color:var(--text); cursor:pointer;
+      transition:background 0.15s, border-color 0.15s, color 0.15s;
+      white-space:nowrap;
+    }
+    .mode-trigger:hover { background:var(--accent-lt); border-color:var(--accent-mid); }
+    .mode-trigger-label { font-weight:600; }
+    .mode-trigger-chev { opacity:0.55; transition:transform 0.15s, opacity 0.15s; }
+    .mode-trigger:hover .mode-trigger-chev { opacity:0.85; }
+    .mode-dropdown.open .mode-trigger-chev { transform:rotate(180deg); }
+    .mode-dropdown.open .mode-trigger {
+      background:var(--accent-lt); border-color:var(--accent-mid); color:var(--accent);
+    }
+    .mode-menu {
+      position:absolute; bottom:calc(100% + 8px); right:0;
+      min-width:280px;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:0 12px 32px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.06);
+      padding:6px; display:flex; flex-direction:column; gap:2px;
+      z-index:50; max-height:60vh; overflow:auto;
+      animation:mode-menu-in 0.12s ease-out;
+    }
+    .mode-menu.hidden { display:none; }
+    @keyframes mode-menu-in {
+      from { opacity:0; transform:translateY(4px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .mode-menu-item {
+      display:flex !important; flex-direction:column; align-items:flex-start; gap:3px;
+      width:100%; padding:9px 12px;
+      background:transparent; border:none; border-radius:var(--radius-sm);
+      text-align:left; cursor:pointer;
+      transition:background 0.15s;
+      white-space:normal; line-height:1.35;
+    }
+    .mode-menu-item:hover:not(:disabled) { background:var(--token-hover); }
+    .mode-menu-item.active {
+      background:var(--accent-lt) !important;
+      box-shadow:none !important;
+    }
+    .mode-menu-name {
+      font-family:'DM Sans',inherit;
+      font-size:0.88rem; font-weight:600; color:var(--text);
+    }
+    .mode-menu-item.active .mode-menu-name { color:var(--accent); }
+    .mode-menu-desc {
+      font-size:0.72rem; color:var(--muted); font-weight:400;
+    }
+    .mode-menu-item:disabled {
+      opacity:0.5 !important; cursor:not-allowed;
+    }
+    @media (max-width: 520px) {
+      .mode-menu { right:auto; left:0; min-width:240px; }
     }
 
     /* ── Model-switch confirmation bar ─────────────────────── */
@@ -1780,15 +1854,30 @@
       <button class="composer-icon-btn" onclick="triggerOCR()" title="Scan text from a photo" aria-label="Scan image">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
       </button>
-      <button class="btn-sample" id="sample-btn" onclick="cycleSample()" data-i18n="trySample">Try a sample</button>
+      <button class="btn-sample" id="sample-btn" onclick="cycleSample()" type="button"><span class="btn-sample-icon">✦</span><span data-i18n="trySample">Try a sample</span></button>
       <span class="char-count" id="char-count"></span>
 
       <div class="footer-spacer"></div>
 
-      <div class="model-pills" id="model-pills">
-        <button class="model-pill" data-model="fast" onclick="onModelPillClick('fast')">Fast</button>
-        <button class="model-pill" data-model="balanced" onclick="onModelPillClick('balanced')">Balanced</button>
-        <button class="model-pill active" data-model="deep" onclick="onModelPillClick('deep')">Deep</button>
+      <div class="mode-dropdown" id="mode-dropdown">
+        <button class="mode-trigger" id="mode-trigger" onclick="toggleModeDropdown(event)" type="button" aria-haspopup="menu" aria-expanded="false">
+          <span class="mode-trigger-label" id="mode-trigger-label">Deep</span>
+          <svg class="mode-trigger-chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="mode-menu hidden" id="mode-menu" role="menu">
+          <button class="model-pill mode-menu-item" data-model="fast" onclick="_selectMode('fast')" type="button" role="menuitem">
+            <span class="mode-menu-name">Fast</span>
+            <span class="mode-menu-desc">Near-instant lookups · GPT-4o Mini</span>
+          </button>
+          <button class="model-pill mode-menu-item" data-model="balanced" onclick="_selectMode('balanced')" type="button" role="menuitem">
+            <span class="mode-menu-name">Balanced</span>
+            <span class="mode-menu-desc">Smart and thorough · Gemini 2.5 Flash</span>
+          </button>
+          <button class="model-pill mode-menu-item active" data-model="deep" onclick="_selectMode('deep')" type="button" role="menuitem">
+            <span class="mode-menu-name">Deep</span>
+            <span class="mode-menu-desc">Maximum depth · Claude Sonnet 4.5</span>
+          </button>
+        </div>
       </div>
       <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
         <span id="usage-text">0 / 100</span>
@@ -2751,6 +2840,10 @@ function setModel(model) {
     b.classList.toggle('active', b.dataset.model === model)
   );
 
+  // Sync mode-dropdown trigger label
+  const trigLabel = document.getElementById('mode-trigger-label');
+  if (trigLabel) trigLabel.textContent = MODEL_LABELS[model] || model;
+
   // Update user preference if authenticated
   if (authToken) {
     fetch('/api/user-model', {
@@ -2760,6 +2853,40 @@ function setModel(model) {
     }).catch(() => {});
   }
 }
+
+/* ── Mode dropdown open/close ─────────────────────────────── */
+function toggleModeDropdown(e) {
+  if (e) e.stopPropagation();
+  const dd = document.getElementById('mode-dropdown');
+  const menu = document.getElementById('mode-menu');
+  const trig = document.getElementById('mode-trigger');
+  if (!dd || !menu || !trig) return;
+  const willOpen = menu.classList.contains('hidden');
+  menu.classList.toggle('hidden', !willOpen);
+  dd.classList.toggle('open', willOpen);
+  trig.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+}
+function _closeModeDropdown() {
+  const dd = document.getElementById('mode-dropdown');
+  const menu = document.getElementById('mode-menu');
+  const trig = document.getElementById('mode-trigger');
+  if (!menu) return;
+  menu.classList.add('hidden');
+  dd?.classList.remove('open');
+  trig?.setAttribute('aria-expanded', 'false');
+}
+function _selectMode(model) {
+  _closeModeDropdown();
+  onModelPillClick(model);
+}
+// Close on outside click & on Escape
+document.addEventListener('click', (e) => {
+  const dd = document.getElementById('mode-dropdown');
+  if (dd && !dd.contains(e.target)) _closeModeDropdown();
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') _closeModeDropdown();
+});
 
 /* Smart pill click: if a result is shown, offer comparison; otherwise just switch */
 function onModelPillClick(model) {
@@ -2854,6 +2981,10 @@ async function initializeModelSelector() {
   document.querySelectorAll('.model-pill').forEach(b =>
     b.classList.toggle('active', b.dataset.model === currentModel)
   );
+
+  // Sync mode-dropdown trigger label
+  const trigLabel = document.getElementById('mode-trigger-label');
+  if (trigLabel) trigLabel.textContent = MODEL_LABELS[currentModel] || currentModel;
 }
 
 /* ── Pro modal ─────────────────────────────────────────── */
