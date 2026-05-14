@@ -903,12 +903,6 @@
     #landing { display: flex; flex-direction: column; }
     body.in-app #landing { display: none; }
 
-    /* Marketing layout: hero first, demo (main) second, for non-logged-in users.
-       Logged-in users keep main on top (and don't see #landing anyway).        */
-    body:not(.in-app) #landing      { order: 1; }
-    body:not(.in-app) main          { order: 2; }
-    body:not(.in-app) #scroll-nudge { display: none; }
-
     /* Hero + How it works combined row */
     .lp-hero {
       padding: 64px 72px;
@@ -1921,11 +1915,11 @@
       <h1 data-i18n-html="heroH1">Read deeper.<br>Understand <em>everything.</em></h1>
       <p class="lp-hero-sub" data-i18n="heroSub">Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.</p>
       <div class="lp-hero-cta">
-        <button class="lp-btn-primary" onclick="document.querySelector('main').scrollIntoView({behavior:'smooth'})">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <button class="lp-btn-primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
           <span data-i18n="tryItNow">Try it now</span>
         </button>
-        <a class="lp-btn-ghost" href="#lp-features" onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'});return false;" data-i18n="seeHow">See how it works</a>
+        <a class="lp-btn-ghost" href="#landing" onclick="document.getElementById('landing').scrollIntoView({behavior:'smooth'});return false;" data-i18n="seeHow">See how it works</a>
       </div>
     </div>
     <div class="lp-hero-right">
