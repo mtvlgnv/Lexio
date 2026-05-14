@@ -1088,7 +1088,9 @@
     }
     .lp-trending-compact .lp-trending-item {
       padding: 8px 12px; gap: 10px;
-      background: var(--surface);
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border-color: rgba(255,255,255,0.6);
     }
     .lp-trending-compact .lp-trending-item:hover {
       transform: none;
@@ -1165,9 +1167,12 @@
       gap: 10px; width: 100%; max-width: 900px;
     }
     .lp-feature {
-      padding: 18px 16px; background: var(--surface); border: 1px solid var(--border);
+      padding: 18px 16px;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.6);
       border-radius: var(--radius); display: flex; flex-direction: column; gap: 8px;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s, background 0.15s;
     }
     .lp-feature:hover { border-color: var(--accent-mid); }
     .lp-feature-icon {
@@ -1202,14 +1207,18 @@
     }
     @media (max-width: 640px) { .lp-models-grid { grid-template-columns: 1fr; } }
     .lp-model-card {
-      padding: 18px 16px; background: var(--surface); border: 1px solid var(--border);
+      padding: 18px 16px;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.6);
       border-radius: var(--radius); display: flex; flex-direction: column; gap: 8px;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
     }
     .lp-model-card:hover { border-color: var(--accent-mid); box-shadow: 0 2px 14px rgba(0,0,0,0.06); }
     .lp-model-card-featured {
-      border-color: var(--accent-mid); background: var(--accent-lt);
-      box-shadow: 0 2px 18px rgba(0,0,0,0.25);
+      border-color: rgba(255,210,160,0.7);
+      background: rgba(255,235,205,0.55);
+      box-shadow: 0 2px 18px rgba(0,0,0,0.18);
     }
     .lp-model-header { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
     .lp-model-badge {
