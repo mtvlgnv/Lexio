@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credits — Lexio</title>
+  <meta name="description" content="The people, providers, and open-source tools that power Lexio.">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent: #c35500;
+      --text:   #1a1612;
+      --muted:  #7a7269;
+      --border: #e4ddd4;
+      --bg:     #faf8f5;
+      --surface:#fff;
+    }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 0 24px;
+    }
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 0 96px;
+    }
+    .back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; color: var(--muted);
+      text-decoration: none; margin-bottom: 48px;
+      transition: color 0.15s;
+    }
+    .back:hover { color: var(--accent); }
+    .logo {
+      font-family: 'Lora', serif;
+      font-size: 1.4rem; font-weight: 600;
+      color: var(--accent);
+      display: block; margin-bottom: 8px;
+    }
+    .logo em { font-style: italic; }
+    h1 {
+      font-family: 'Lora', serif;
+      font-size: 2rem; font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-size: 0.95rem; color: var(--muted);
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    h2 {
+      font-size: 1.05rem; font-weight: 600;
+      margin: 40px 0 12px;
+    }
+    p { font-size: 0.93rem; color: #2e2a25; margin-bottom: 14px; }
+    ul { padding-left: 20px; margin-bottom: 14px; }
+    li { font-size: 0.93rem; color: #2e2a25; margin-bottom: 6px; }
+    a { color: var(--accent); }
+
+    /* Founder card */
+    .founder {
+      display: flex; align-items: center; gap: 18px;
+      padding: 20px 22px; margin-bottom: 32px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .founder-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .founder-name {
+      font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 600;
+      color: var(--text); margin-bottom: 2px;
+    }
+    .founder-meta {
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .founder-meta a { color: var(--accent); text-decoration: none; }
+    .founder-meta a:hover { text-decoration: underline; }
+
+    /* Credit rows */
+    .credit {
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; gap: 16px;
+      align-items: baseline;
+    }
+    .credit:last-child { border-bottom: none; }
+    .credit-name { font-weight: 600; color: var(--text); font-size: 0.93rem; }
+    .credit-desc { font-size: 0.85rem; color: var(--muted); text-align: right; flex: 1; }
+    .credit-desc a { color: var(--accent); text-decoration: none; }
+    .credit-desc a:hover { text-decoration: underline; }
+
+    .closing {
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem; color: var(--muted);
+      text-align: center;
+    }
+    .closing em { font-style: italic; color: var(--accent); }
+
+    @media (max-width: 560px) {
+      .credit { flex-direction: column; align-items: flex-start; gap: 2px; }
+      .credit-desc { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Lexio
+  </a>
+
+  <span class="logo">Le<em>x</em>io</span>
+  <h1>Credits</h1>
+  <p class="subtitle">The people, providers, and open-source tools that power Lexio.</p>
+
+  <!-- ── Founder ─────────────────────────────────────────── -->
+  <h2>Built by</h2>
+  <div class="founder">
+    <div class="founder-avatar">M</div>
+    <div>
+      <div class="founder-name">Matvey</div>
+      <div class="founder-meta">
+        Amsterdam · Netherlands ·
+        <a href="mailto:matveylgnv2021@gmail.com">matveylgnv2021@gmail.com</a> ·
+        <a href="https://github.com/mtvlgnv" target="_blank" rel="noopener">@mtvlgnv</a>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    Lexio is a one-person operation, registered as a sole proprietorship in the Netherlands.
+    No investors, no team — just a tool I built because I read a lot and got tired of leaving the page to look up words.
+    If something's broken or you have an idea, write to me directly. I read every message.
+  </p>
+
+  <!-- ── AI models ───────────────────────────────────────── -->
+  <h2>AI models</h2>
+  <p>Lexio routes your queries to one of three providers depending on the mode you pick:</p>
+  <div class="credit">
+    <span class="credit-name">OpenAI</span>
+    <span class="credit-desc">GPT-4o Mini powers <strong>Fast</strong> mode · <a href="https://openai.com" target="_blank" rel="noopener">openai.com</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">Google</span>
+    <span class="credit-desc">Gemini 2.5 Flash powers <strong>Balanced</strong> mode · <a href="https://ai.google.dev" target="_blank" rel="noopener">ai.google.dev</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">Anthropic</span>
+    <span class="credit-desc">Claude Sonnet 4.5 powers <strong>Deep</strong> mode · <a href="https://anthropic.com" target="_blank" rel="noopener">anthropic.com</a></span>
+  </div>
+
+  <!-- ── Open-source ─────────────────────────────────────── -->
+  <h2>Open-source libraries</h2>
+  <div class="credit">
+    <span class="credit-name">FastAPI</span>
+    <span class="credit-desc">Python web framework · <a href="https://fastapi.tiangolo.com" target="_blank" rel="noopener">fastapi.tiangolo.com</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">SQLAlchemy</span>
+    <span class="credit-desc">Database toolkit · <a href="https://sqlalchemy.org" target="_blank" rel="noopener">sqlalchemy.org</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">Pydantic</span>
+    <span class="credit-desc">Data validation · <a href="https://pydantic.dev" target="_blank" rel="noopener">pydantic.dev</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">slowapi</span>
+    <span class="credit-desc">Rate limiting · <a href="https://github.com/laurents/slowapi" target="_blank" rel="noopener">github.com/laurents/slowapi</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">passlib + python-jose</span>
+    <span class="credit-desc">Password hashing &amp; JWT auth</span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">html2canvas</span>
+    <span class="credit-desc">Screenshot rendering · <a href="https://html2canvas.hertzen.com" target="_blank" rel="noopener">html2canvas.hertzen.com</a></span>
+  </div>
+
+  <!-- ── Typography ──────────────────────────────────────── -->
+  <h2>Typography</h2>
+  <div class="credit">
+    <span class="credit-name">Lora</span>
+    <span class="credit-desc">Headings &amp; wordmark · designed by Cyreal · <a href="https://fonts.google.com/specimen/Lora" target="_blank" rel="noopener">Google Fonts</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">DM Sans</span>
+    <span class="credit-desc">Body text · designed by Colophon Foundry · <a href="https://fonts.google.com/specimen/DM+Sans" target="_blank" rel="noopener">Google Fonts</a></span>
+  </div>
+
+  <!-- ── Infrastructure ──────────────────────────────────── -->
+  <h2>Infrastructure</h2>
+  <div class="credit">
+    <span class="credit-name">Hetzner Cloud</span>
+    <span class="credit-desc">Hosting · <a href="https://hetzner.com" target="_blank" rel="noopener">hetzner.com</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">nginx</span>
+    <span class="credit-desc">Web server &amp; reverse proxy</span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">Let's Encrypt</span>
+    <span class="credit-desc">SSL certificates · <a href="https://letsencrypt.org" target="_blank" rel="noopener">letsencrypt.org</a></span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">Stripe</span>
+    <span class="credit-desc">Payment processing · <a href="https://stripe.com" target="_blank" rel="noopener">stripe.com</a></span>
+  </div>
+
+  <!-- ── Authentication ──────────────────────────────────── -->
+  <h2>Sign-in providers</h2>
+  <div class="credit">
+    <span class="credit-name">Google Identity Services</span>
+    <span class="credit-desc">Sign in with Google</span>
+  </div>
+  <div class="credit">
+    <span class="credit-name">Sign in with Apple</span>
+    <span class="credit-desc">Sign in with Apple ID</span>
+  </div>
+
+  <!-- ── Thanks ──────────────────────────────────────────── -->
+  <h2>Thanks</h2>
+  <p>
+    To everyone who has tried Lexio, reported a bug, suggested a feature, or just told a friend about it —
+    thank you. A one-person project lives or dies on word of mouth.
+  </p>
+
+  <p class="closing">
+    <em>Read deeper. Understand everything.</em><br>
+    © 2026 Lexio · <a href="/privacy.html">Privacy</a>
+  </p>
+
+</div>
+</body>
+</html>
