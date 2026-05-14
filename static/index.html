@@ -124,8 +124,12 @@
     header {
       height: var(--header-h); background: var(--surface);
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: baseline; padding: 0 28px; gap: 14px;
+      display: flex; align-items: center; padding: 0 28px; gap: 14px;
       flex-shrink: 0; transition: background 0.3s, border-color 0.3s;
+    }
+    .brand-group {
+      display: inline-flex; align-items: baseline; gap: 6px;
+      flex-shrink: 0;
     }
     .brand { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
     .brand em { font-style:italic; color:var(--accent); }
@@ -1606,9 +1610,11 @@
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header>
   <img src="/favicon-32.png?v=2" width="22" height="22" alt="" style="border-radius:6px;flex-shrink:0;">
-  <span class="brand">Le<em>x</em>io</span>
-  <span id="pro-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-left:-8px;flex-shrink:0;">PRO</span>
-  <span id="trial-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:oklch(72% 0.16 75);margin-left:-8px;flex-shrink:0;white-space:nowrap;">TRIAL</span>
+  <span class="brand-group">
+    <span class="brand">Le<em>x</em>io</span>
+    <span id="pro-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;">PRO</span>
+    <span id="trial-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:oklch(72% 0.16 75);flex-shrink:0;white-space:nowrap;">TRIAL</span>
+  </span>
   <span class="tagline" data-i18n="tagline">AI contextual definition solutions</span>
 
   <!-- Landing nav — hidden in app mode -->
