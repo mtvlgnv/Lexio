@@ -1,0 +1,16 @@
+# Lexio — https://lexio.site
+# Crawlers welcome on the public site; keep them off auth/api/admin paths.
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /stats/
+Disallow: /auth/
+Disallow: /stripe/
+Disallow: /ocr/
+Disallow: /wordbank/
+Disallow: /define
+Disallow: /fetch-text
+
+Sitemap: https://lexio.site/sitemap.xml

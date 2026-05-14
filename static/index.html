@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="darkreader-lock">
   <meta name="color-scheme" content="light dark">
@@ -904,6 +903,12 @@
     #landing { display: flex; flex-direction: column; }
     body.in-app #landing { display: none; }
 
+    /* Marketing layout: hero first, demo (main) second, for non-logged-in users.
+       Logged-in users keep main on top (and don't see #landing anyway).        */
+    body:not(.in-app) #landing      { order: 1; }
+    body:not(.in-app) main          { order: 2; }
+    body:not(.in-app) #scroll-nudge { display: none; }
+
     /* Hero + How it works combined row */
     .lp-hero {
       padding: 64px 72px;
@@ -1402,6 +1407,58 @@
     }
     .lp-faq-a a { color: var(--accent); }
 
+    /* ── Founder section ─────────────────────────────────────── */
+    .lp-founder {
+      padding: 72px 48px; background: var(--bg);
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; gap: 28px;
+    }
+    .lp-founder-card {
+      max-width: 560px; width: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 18px; text-align: center;
+    }
+    .lp-founder-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lp-founder-name {
+      font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600;
+      color: var(--text);
+    }
+    .lp-founder-loc {
+      font-size: 0.78rem; color: var(--muted);
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-top: -10px;
+    }
+    .lp-founder-body {
+      font-size: 0.95rem; color: var(--text-mid);
+      line-height: 1.7; max-width: 480px;
+    }
+    .lp-founder-body em {
+      font-style: italic; color: var(--accent);
+    }
+    .lp-founder-links {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      margin-top: 4px;
+    }
+    .lp-founder-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 16px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); background: var(--surface);
+      color: var(--text); text-decoration: none;
+      font-size: 0.84rem; font-weight: 500;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .lp-founder-link:hover { border-color: var(--accent-mid); color: var(--accent); }
+    .lp-founder-trust {
+      font-size: 0.72rem; color: var(--muted); margin-top: 4px;
+      letter-spacing: 0.03em;
+    }
+    @media (max-width: 760px) { .lp-founder { padding: 48px 24px; } }
+
     .lp-footer {
       padding: 28px 48px;
       background: var(--surface); border-top: 1px solid var(--border);
@@ -1864,11 +1921,11 @@
       <h1 data-i18n-html="heroH1">Read deeper.<br>Understand <em>everything.</em></h1>
       <p class="lp-hero-sub" data-i18n="heroSub">Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.</p>
       <div class="lp-hero-cta">
-        <button class="lp-btn-primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+        <button class="lp-btn-primary" onclick="document.querySelector('main').scrollIntoView({behavior:'smooth'})">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           <span data-i18n="tryItNow">Try it now</span>
         </button>
-        <a class="lp-btn-ghost" href="#landing" onclick="document.getElementById('landing').scrollIntoView({behavior:'smooth'});return false;" data-i18n="seeHow">See how it works</a>
+        <a class="lp-btn-ghost" href="#lp-features" onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'});return false;" data-i18n="seeHow">See how it works</a>
       </div>
     </div>
     <div class="lp-hero-right">
@@ -2142,7 +2199,33 @@
     <p class="lp-trending-empty hidden" id="trending-empty" data-i18n="trendingEmpty">No searches recorded yet this month — be the first!</p>
   </div>
 
-  <!-- Feedback -->
+  <!-- Founder -->
+  <div class="lp-founder">
+    <div class="lp-founder-card">
+      <div class="lp-founder-avatar">M</div>
+      <div>
+        <div class="lp-founder-name">Built by Matvey</div>
+        <div class="lp-founder-loc">Amsterdam · Netherlands</div>
+      </div>
+      <p class="lp-founder-body">
+        I read a lot, and I got tired of leaving the page to look up words — so I built the tool I wanted.
+        Lexio is a one-person operation, registered as a sole proprietorship in the Netherlands.
+        If something's broken or you have an idea — <em>write to me directly</em>. I read every message.
+      </p>
+      <div class="lp-founder-links">
+        <a class="lp-founder-link" href="mailto:matveylgnv2021@gmail.com">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          matveylgnv2021@gmail.com
+        </a>
+        <a class="lp-founder-link" href="https://github.com/mtvlgnv" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.604-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+          @mtvlgnv
+        </a>
+      </div>
+      <p class="lp-founder-trust">Independent · self-funded · no investors</p>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="lp-footer">
     <span class="lp-footer-brand">Le<em style="font-style:italic;color:var(--accent)">x</em>io</span>
