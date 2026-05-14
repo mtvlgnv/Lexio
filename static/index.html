@@ -1194,6 +1194,10 @@
       letter-spacing: 0; text-transform: none;
       white-space: nowrap;
     }
+    .lp-trending-tagline {
+      font-size: 0.85rem; color: var(--text-mid);
+      line-height: 1.5; margin: -4px 0 4px;
+    }
     .lp-trending-compact .lp-trending-list,
     .lp-trending-compact .lp-trending-skeleton {
       max-width: none; gap: 6px;
@@ -1433,6 +1437,17 @@
       font-family: 'Lora', serif; font-size: 2.4rem; font-weight: 600;
     }
     .lp-pro-period { font-size: 0.82rem; color: var(--muted); }
+    .lp-pro-headline {
+      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600;
+      color: var(--accent); margin: 6px 0 2px; line-height: 1.3;
+    }
+    .lp-pro-subhead {
+      font-size: 0.78rem; color: var(--muted); margin-bottom: 12px;
+    }
+    .lp-pro-anchor {
+      font-family: 'Lora', serif; font-style: italic; font-size: 0.88rem;
+      color: var(--text-mid); margin-top: 8px; line-height: 1.4;
+    }
     .lp-pro-perks { list-style: none; display: flex; flex-direction: column; gap: 9px; }
     .lp-pro-perks li {
       font-size: 0.85rem; color: var(--text-mid);
@@ -1516,6 +1531,33 @@
     .ext-footer-note { font-size:0.76rem; color:var(--muted); text-align:center; line-height:1.5; }
 
     /* Merged apps CTA */
+    /* Founder byline */
+    .lp-founder {
+      display: flex; align-items: center; gap: 18px;
+      max-width: 680px; margin: 0 auto;
+      padding: 36px 48px;
+      border-top: 1px solid var(--border);
+    }
+    .lp-founder-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .lp-founder-text h4 {
+      font-family: 'Lora', serif; font-size: 1rem; font-weight: 600;
+      color: var(--text); margin: 0 0 4px;
+    }
+    .lp-founder-text p {
+      font-size: 0.85rem; color: var(--text-mid); line-height: 1.55; margin: 0;
+    }
+    .lp-founder-text a { color: var(--accent); }
+    @media (max-width: 600px) {
+      .lp-founder { padding: 28px 24px; gap: 14px; }
+      .lp-founder-avatar { width: 44px; height: 44px; font-size: 1.2rem; }
+    }
+
     .lp-apps {
       display: grid; grid-template-columns: 1fr 1fr;
       border-top: 1px solid var(--border);
@@ -2067,9 +2109,9 @@
       <h1 data-i18n-html="heroH1">Read deeper.<br>Understand <em>everything.</em></h1>
       <p class="lp-hero-sub" data-i18n="heroSub">Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.</p>
       <div class="lp-hero-cta">
-        <button class="lp-btn-primary" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <button class="lp-btn-primary" onclick="tryHeroSample()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-          <span data-i18n="tryItNow">Try it now</span>
+          <span>Analyze a sample text</span>
         </button>
         <a class="lp-btn-ghost" href="#landing" onclick="document.getElementById('landing').scrollIntoView({behavior:'smooth'});return false;" data-i18n="seeHow">See how it works</a>
       </div>
@@ -2104,13 +2146,14 @@
       <div class="lp-pro-col">
         <div>
           <div class="lp-pro-col-label">Free</div>
+          <div class="lp-pro-headline">7 days free, full Pro access</div>
+          <div class="lp-pro-subhead">then free plan continues — no credit card</div>
           <div class="lp-pro-price">
             <span class="lp-pro-amount"><span class="lp-free-symbol">$</span>0</span>
-            <span class="lp-pro-period">/month</span>
+            <span class="lp-pro-period">/month after trial</span>
           </div>
         </div>
         <ul class="lp-pro-perks">
-          <li>7-day Pro trial included</li>
           <li>100 word lookups / month</li>
           <li>3 OCR scans / month</li>
           <li>Fast mode</li>
@@ -2129,6 +2172,7 @@
             <span class="lp-pro-amount lp-pro-amount-dynamic">$2.99</span>
             <span class="lp-pro-period">/month</span>
           </div>
+          <p class="lp-pro-anchor">Less than one paperback a month — and you'll actually finish them.</p>
         </div>
         <ul class="lp-pro-perks">
           <li>Unlimited word lookups</li>
@@ -2137,9 +2181,9 @@
           <li>Word bank sync across devices</li>
           <li>Priority support</li>
         </ul>
-        <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Get Pro →</button>
+        <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Start 7-day Pro trial</button>
         <button class="lp-pro-cta" id="lp-manage-btn" onclick="handleManageSub()" style="display:none;background:var(--bg);color:var(--text);border:1.5px solid var(--border)">Manage subscription →</button>
-        <p class="lp-pro-note" id="lp-pro-note">Instant activation · cancel any time</p>
+        <p class="lp-pro-note" id="lp-pro-note">No credit card · cancel any time</p>
       </div>
     </div>
   </div>
@@ -2248,6 +2292,7 @@
         <h2 class="lp-section-title">What people are looking up</h2>
         <span class="lp-trending-month" id="trending-month">This month</span>
       </div>
+      <p class="lp-trending-tagline">Real readers, real words — pulled from live lookups. What's stumping you today?</p>
       <div class="lp-trending-skeleton" id="trending-skeleton">
         <div class="skeleton-row"></div>
         <div class="skeleton-row" style="opacity:.7"></div>
@@ -2269,7 +2314,7 @@
           Is Lexio free?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. New users get a 7-day free trial with full Pro access — no credit card required. After the trial, the free plan gives you 100 word lookups and 3 image scans per month. Pro (from €2.99/month) removes all limits and unlocks Balanced and Deep modes.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. New users get a 7-day free trial with full Pro access — no credit card required. After the trial, the free plan gives you 100 word lookups and 3 image scans per month. Pro (from <span class="lp-pro-amount-dynamic">$2.99</span>/month) removes all limits and unlocks Balanced and Deep modes.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -2315,6 +2360,15 @@
     </div>
   </div>
 
+  <!-- Founder byline (trust signal) -->
+  <div class="lp-founder" id="lp-founder">
+    <div class="lp-founder-avatar">M</div>
+    <div class="lp-founder-text">
+      <h4>Built by Matvei in Eindhoven</h4>
+      <p>Lexio is a one-person project — no investors, no team. If something breaks or you have an idea, write to me directly at <a href="mailto:matveylgnv2021@gmail.com">matveylgnv2021@gmail.com</a>. I read every message.</p>
+    </div>
+  </div>
+
   <!-- Apps CTA (merged) -->
   <div class="lp-apps" id="lp-download">
     <div class="lp-app-card">
@@ -2331,8 +2385,8 @@
     </div>
     <div class="lp-app-card">
       <span class="lp-ext-eyebrow">Mac App</span>
-      <h3 data-i18n-html="deskH2">Always at hand, wherever you read.</h3>
-      <p data-i18n="deskP">The Lexio Mac app lives in your menu bar or dock, so you can look up words without switching to your browser.</p>
+      <h3 data-i18n-html="deskH2">Always at hand on your Mac.</h3>
+      <p data-i18n="deskP">The Lexio Mac app lives in your menu bar or dock — look up words without switching tabs. <span style="opacity:0.7">Mac &amp; Chrome for now; iOS, Windows, and Linux are on the roadmap.</span></p>
       <div class="lp-app-card-btns">
         <button class="lp-ext-badge" onclick="openDesktopModal()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
@@ -2475,7 +2529,7 @@
             <div class="desktop-step"><div class="desktop-step-num">1</div><div class="desktop-step-text">Download the <strong>.dmg</strong> and drag Lexio to Applications</div></div>
             <div class="desktop-step"><div class="desktop-step-num">2</div><div class="desktop-step-text">First launch: right-click → <strong>Open</strong> to approve Gatekeeper</div></div>
           </div>
-          <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/download/v1.0.0-app/Lexio-App-1.0.0-arm64.dmg" download>
+          <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/latest/download/Lexio-App-arm64.dmg" download>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download for Mac
             <span class="desktop-dl-sub">Apple Silicon · macOS 12+</span>
@@ -2498,7 +2552,7 @@
             <div class="desktop-step"><div class="desktop-step-num">2</div><div class="desktop-step-text"><strong>Lx</strong> appears in your menu bar — click to open from any app</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/download/v1.0.0-desktop/Lexio-Mini-1.0.0-arm64.dmg" download>
+            <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/latest/download/Lexio-Mini-arm64.dmg" download>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download Mini
               <span class="desktop-dl-sub">Apple Silicon · macOS 12+</span>
@@ -3190,6 +3244,22 @@ function cycleSample() {
   ta.focus();
   document.getElementById('sample-btn').textContent =
     `↻ Next (${SAMPLES[(currentSample + 1) % SAMPLES.length].label})`;
+}
+
+/* Hero CTA — pre-fill a Literature sample and immediately analyze
+   so the first interaction is the product working, not a scroll. */
+function tryHeroSample() {
+  // Pick the Literature sample (index 3) — best vocab payoff for readers
+  const litIdx = SAMPLES.findIndex(s => s.label === 'Literature');
+  currentSample = litIdx >= 0 ? litIdx : 0;
+  const ta = document.getElementById('input-text');
+  ta.value = SAMPLES[currentSample].text;
+  updateCharCount();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Wait for scroll to settle, then trigger analysis
+  setTimeout(() => {
+    if (typeof analyze === 'function') analyze();
+  }, 320);
 }
 
 /* ── Char count & URL detection ─────────────────────────────── */
@@ -4139,7 +4209,7 @@ async function _populateAccountPanel() {
       badge.className   = 'ap-plan-badge trial';
       badge.textContent = `⏳ Trial · ${d} day${d !== 1 ? 's' : ''} left`;
       desc.textContent  = 'Enjoying full Pro access. Upgrade to keep it after the trial.';
-      btn.textContent   = 'Upgrade to Pro →';
+      btn.textContent   = 'Upgrade to keep Pro →';
       btn.className     = 'ap-plan-action upgrade';
       btn.onclick       = () => { closeAuthModal(); handleProCta(); };
       if (usageSec) usageSec.style.display = 'none';
@@ -4610,7 +4680,7 @@ async function handleProCta() {
     if (!r.ok) {
       const e = await r.json().catch(() => ({}));
       alert(e.detail || 'Could not start checkout. Please try again.');
-      if (btn) { btn.textContent = 'Get Pro →'; btn.disabled = false; }
+      if (btn) { btn.textContent = 'Start 7-day Pro trial'; btn.disabled = false; }
       return;
     }
     const { url } = await r.json();
@@ -4685,7 +4755,8 @@ async function checkProStatus() {
 
     if (_userIsPro) {
       _unlockProModels();
-      // Landing page Pro card — trial users still see "Get Pro", paid users see "Manage"
+      // Landing page Pro card — trial users see "Upgrade to keep Pro",
+      // paid users see "Manage subscription"
       const lpBtn = document.getElementById('lp-pro-btn');
       const mgBtn = document.getElementById('lp-manage-btn');
       const note  = document.getElementById('lp-pro-note');
@@ -4693,6 +4764,11 @@ async function checkProStatus() {
         if (lpBtn) lpBtn.style.display = 'none';
         if (mgBtn) mgBtn.style.display = '';
         if (note)  note.style.display  = 'none';
+      } else if (isTrial) {
+        if (lpBtn) lpBtn.textContent = 'Upgrade to keep Pro →';
+        if (note)  note.textContent = daysLeft > 1
+          ? `${daysLeft} days of trial left · no card on file`
+          : 'Last trial day · no card on file';
       }
       // App header menu
       const mp  = document.getElementById('menu-pro-btn');
