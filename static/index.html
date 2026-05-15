@@ -17,16 +17,16 @@
   <meta property="og:title" content="Lexio — Read deeper. Understand everything.">
   <meta property="og:description" content="Click any word in any text — get its precise meaning in context, not a generic dictionary entry. AI-powered contextual definitions for serious readers.">
   <meta property="og:url" content="https://lexio.site/">
-  <meta property="og:image" content="https://lexio.site/icon512.png?v=2">
-  <meta property="og:image:width" content="512">
-  <meta property="og:image:height" content="512">
+  <meta property="og:image" content="https://lexio.site/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:locale" content="en_US">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Lexio — Read deeper. Understand everything.">
   <meta name="twitter:description" content="Click any word in any text — get its precise meaning in context, not a generic dictionary entry. AI-powered contextual definitions for serious readers.">
-  <meta name="twitter:image" content="https://lexio.site/icon512.png?v=2">
+  <meta name="twitter:image" content="https://lexio.site/og-image.png">
 
   <link rel="icon" type="image/png" sizes="16x16"  href="/favicon-16.png?v=2">
   <link rel="icon" type="image/png" sizes="32x32"  href="/favicon-32.png?v=2">
@@ -1250,6 +1250,105 @@
       font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--accent);
     }
+
+    /* ── Hero animated demo ──────────────────────────────────────────────── */
+    .lp-hero-demo .lp-demo-stage {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 22px 26px;
+      min-height: 200px;
+    }
+    .lp-demo-text {
+      font-family: 'Lora', serif;
+      font-size: 1.02rem; line-height: 1.65;
+      color: var(--text);
+    }
+    .lp-demo-word {
+      position: relative;
+      padding: 1px 3px; border-radius: 3px;
+      background-image: linear-gradient(transparent 62%, transparent 62%);
+      transition: background-image 0.25s;
+      animation: lpDemoWord 7s ease-in-out infinite;
+    }
+    @keyframes lpDemoWord {
+      0%, 28%   { background-image: linear-gradient(transparent 62%, transparent 62%); color: var(--text); }
+      35%, 85%  { background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 35%, transparent) 62%); color: var(--accent); }
+      92%, 100% { background-image: linear-gradient(transparent 62%, transparent 62%); color: var(--text); }
+    }
+    .lp-demo-popup {
+      position: absolute;
+      bottom: -22px; right: 14px;
+      width: min(280px, 92%);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px 14px;
+      box-shadow: 0 14px 36px rgba(20,15,10,0.10);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 0.82rem; line-height: 1.5;
+      color: var(--text);
+      opacity: 0; transform: translateY(10px) scale(0.96);
+      animation: lpDemoPopup 7s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 4;
+    }
+    @keyframes lpDemoPopup {
+      0%, 35%    { opacity: 0; transform: translateY(10px) scale(0.96); }
+      42%, 85%   { opacity: 1; transform: translateY(0)    scale(1); }
+      92%, 100%  { opacity: 0; transform: translateY(10px) scale(0.96); }
+    }
+    .lp-demo-popup-top {
+      display: flex; align-items: baseline; gap: 8px;
+      padding-bottom: 8px; margin-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .lp-demo-popup-word {
+      font-family: 'Lora', serif; font-size: 1rem;
+      font-weight: 600; color: var(--accent);
+    }
+    .lp-demo-popup-pos {
+      font-size: 0.72rem; color: var(--text-mid); font-style: italic;
+    }
+    .lp-demo-popup-label {
+      display: block;
+      font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--accent); font-weight: 700; margin-top: 6px;
+    }
+    .lp-demo-popup-line {
+      font-size: 0.8rem; color: var(--text-mid); margin-top: 2px;
+    }
+    .lp-demo-caption {
+      font-size: 0.85rem; color: var(--text-mid); line-height: 1.55;
+    }
+    .lp-demo-caption em {
+      color: var(--accent); font-style: italic;
+    }
+    /* Stop animation when user prefers reduced motion (show static end state) */
+    @media (prefers-reduced-motion: reduce) {
+      .lp-demo-word, .lp-demo-popup { animation: none; }
+      .lp-demo-word {
+        background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 35%, transparent) 62%);
+        color: var(--accent);
+      }
+      .lp-demo-popup { opacity: 1; transform: none; }
+    }
+    /* On mobile the popup stacks below the text for readability */
+    @media (max-width: 760px) {
+      .lp-demo-popup {
+        position: static; width: 100%; margin-top: 18px;
+        opacity: 1; transform: none; animation: none;
+        box-shadow: 0 6px 16px rgba(20,15,10,0.06);
+      }
+      .lp-demo-word { animation: none;
+        background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 35%, transparent) 62%);
+        color: var(--accent);
+      }
+    }
+
+    /* Chrome extension CTA button accent */
+    .lp-btn-chrome svg { color: var(--accent); flex-shrink: 0; }
     .lp-section-title {
       font-family: 'Lora', serif; font-size: 1.8rem; font-weight: 600;
       color: var(--text); text-align: center;
@@ -1767,6 +1866,12 @@
     .usage-pill.danger { color: #e55; }
     .usage-pill.danger .usage-fill { background: #e55; }
   </style>
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
 </head>
 <body data-theme="dark">
 
@@ -2134,25 +2239,37 @@
       <div class="lp-hero-cta">
         <button class="lp-btn-primary" onclick="tryHeroSample()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-          <span>Analyze a sample text</span>
+          <span>Try it now — free</span>
         </button>
-        <a class="lp-btn-ghost" href="#landing" onclick="document.getElementById('landing').scrollIntoView({behavior:'smooth'});return false;" data-i18n="seeHow">See how it works</a>
+        <a class="lp-btn-ghost lp-btn-chrome" href="#lp-download" onclick="document.getElementById('lp-download').scrollIntoView({behavior:'smooth'});return false;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.5 3.5a8.5 8.5 0 0 1 11.5 8.5"/>
+            <path d="M3.5 8a8.5 8.5 0 0 1 9.5-4.5"/>
+            <path d="M21 12a8.5 8.5 0 0 1-11.5 8"/>
+            <circle cx="12" cy="12" r="3.2"/>
+          </svg>
+          <span>Add to Chrome — free</span>
+        </a>
       </div>
     </div>
-    <div class="lp-hero-right">
-      <span class="lp-hero-steps-title" data-i18n="howLabel">How it works</span>
-      <div class="lp-step">
-        <div class="lp-step-num">1</div>
-        <div><h3 data-i18n="step1Title">Paste any text</h3><p data-i18n="step1Desc">Drop in a paragraph from an article, book, email, or anything else — any language works.</p></div>
+    <div class="lp-hero-right lp-hero-demo">
+      <span class="lp-hero-steps-title">See it in action</span>
+      <div class="lp-demo-stage" aria-hidden="true">
+        <div class="lp-demo-text">
+          The novel's <span class="lp-demo-word">labyrinthine</span> plot left readers spellbound — twists weaving with deliberate ambiguity.
+        </div>
+        <div class="lp-demo-popup">
+          <div class="lp-demo-popup-top">
+            <span class="lp-demo-popup-word">labyrinthine</span>
+            <span class="lp-demo-popup-pos">adjective</span>
+          </div>
+          <span class="lp-demo-popup-label">In this context</span>
+          <div class="lp-demo-popup-line">Intricate and twisting — the plot has so many turns it feels like a maze.</div>
+          <span class="lp-demo-popup-label">Why this word</span>
+          <div class="lp-demo-popup-line">Stronger than "complex" — implies deliberate, almost architectural intricacy.</div>
+        </div>
       </div>
-      <div class="lp-step">
-        <div class="lp-step-num">2</div>
-        <div><h3 data-i18n="step2Title">Analyze it</h3><p data-i18n="step2Desc">Lexio reads the full context and prepares every word for instant lookup. Takes about a second.</p></div>
-      </div>
-      <div class="lp-step">
-        <div class="lp-step-num">3</div>
-        <div><h3 data-i18n="step3Title">Click any word</h3><p data-i18n="step3Desc">Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.</p></div>
-      </div>
+      <p class="lp-demo-caption">Click any word. Get its exact meaning in <em>this</em> sentence — not a generic dictionary entry.</p>
     </div>
   </div>
 
@@ -2560,7 +2677,7 @@
             <div class="desktop-step"><div class="desktop-step-num">1</div><div class="desktop-step-text">Download the <strong>.dmg</strong> and drag Lexio to Applications</div></div>
             <div class="desktop-step"><div class="desktop-step-num">2</div><div class="desktop-step-text">First launch: right-click → <strong>Open</strong> to approve Gatekeeper</div></div>
           </div>
-          <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/latest/download/Lexio-App-arm64.dmg" download>
+          <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/download/v1.0.0-app/Lexio-App-1.0.0-arm64.dmg" download>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Download for Mac
             <span class="desktop-dl-sub">Apple Silicon · macOS 12+</span>
@@ -2583,7 +2700,7 @@
             <div class="desktop-step"><div class="desktop-step-num">2</div><div class="desktop-step-text"><strong>Lx</strong> appears in your menu bar — click to open from any app</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/latest/download/Lexio-Mini-arm64.dmg" download>
+            <a class="desktop-dl-btn" href="https://github.com/mtvlgnv/Lexio/releases/download/v1.0.0-desktop/Lexio-Mini-1.0.0-arm64.dmg" download>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download Mini
               <span class="desktop-dl-sub">Apple Silicon · macOS 12+</span>
@@ -3191,7 +3308,9 @@ async function handleOCRFile(input) {
   formData.append('file', file);
 
   try {
-    const res = await fetch('/ocr', { method: 'POST', body: formData });
+    const _tok = localStorage.getItem('lexio_token');
+    const _hdrs = _tok ? { 'Authorization': 'Bearer ' + _tok } : {};
+    const res = await fetch('/ocr', { method: 'POST', headers: _hdrs, body: formData });
     if (!res.ok) {
       if (res.status === 402) {
         const err = await res.json().catch(() => ({}));
@@ -3598,8 +3717,22 @@ async function fetchDefinition(word, context, modelOverride, bypassCache=false) 
   }
   showLoading(word);
   try {
-    const resp = await fetch('/define', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({word,context,lang:currentLang,model}) });
+    const _tok = localStorage.getItem('lexio_token');
+    const _hdrs = { 'Content-Type': 'application/json' };
+    if (_tok) _hdrs['Authorization'] = 'Bearer ' + _tok;
+    const resp = await fetch('/define', { method:'POST', headers:_hdrs, body:JSON.stringify({word,context,lang:currentLang,model}) });
     if (!resp.ok) {
+      if (resp.status === 403) {
+        const err = await resp.json().catch(() => ({}));
+        const d = err.detail || {};
+        clearHighlights(); activeToken = null;
+        showPlaceholder();
+        if (d.code === 'pro_required') {
+          showProModal('model', 0, 0);
+          throw new Error(d.message || 'This mode requires a Pro plan.');
+        }
+        throw new Error(d.message || 'Not allowed.');
+      }
       if (resp.status === 429) {
         const err = await resp.json().catch(() => ({}));
         const d = err.detail || {};
@@ -4998,7 +5131,7 @@ new Gradient().initGradient('#twin-webgl');
         <li>✓ Word bank sync across devices</li>
         <li>✓ Priority support</li>
       </ul>
-      <a class="pro-plan-btn" href="/pro" onclick="closeProModal()">
+      <a class="pro-plan-btn" href="/#lp-pro" onclick="closeProModal()">
         See Pro plans →
       </a>
       <p class="pro-plan-note">Instant activation · cancel any time</p>

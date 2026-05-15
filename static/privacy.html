@@ -71,6 +71,12 @@
     }
     .contact-box strong { color: var(--text); }
   </style>
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
 </head>
 <body>
 <div class="wrap">
@@ -108,7 +114,7 @@
   <ul>
     <li>We do not track your browsing history or the URLs of pages you visit.</li>
     <li>We do not collect your IP address beyond what is technically required to serve responses and apply usage limits.</li>
-    <li>We do not use advertising trackers, pixels, or third-party analytics.</li>
+    <li>We do not use advertising trackers, pixels, or behavioural analytics.</li>
     <li>We do not sell your data to anyone.</li>
     <li>We do not store the full text you paste — only the word and context window sent per lookup request, for the duration of that request.</li>
     <li>We do not store images you upload for OCR after the request completes.</li>
@@ -118,7 +124,7 @@
   <ul>
     <li>To generate contextual word definitions via Anthropic, OpenAI, or Google AI APIs (per your chosen model).</li>
     <li>To extract text from uploaded images via Google's Gemini API.</li>
-    <li>To enforce monthly free-tier usage limits (30 lookups, 3 OCR scans per month).</li>
+    <li>To enforce monthly free-tier usage limits (100 lookups, 3 OCR scans per month).</li>
     <li>To sync your word bank across devices when you are signed in.</li>
     <li>To display trending words on the homepage (anonymised, word only).</li>
     <li>To authenticate you when you sign in.</li>
@@ -135,10 +141,13 @@
 
   <h2>5. Google Sign-In &amp; Apple Sign-In</h2>
   <p>If you use Google or Apple Sign-In, authentication is handled by the respective provider. We receive only your name, email address, and a unique identifier. We do not receive your password from these providers.</p>
-  <p>We do not use Google Analytics, Facebook Pixel, or any other third-party tracking service.</p>
+
+  <h2>5a. Analytics</h2>
+  <p>We use <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">Plausible Analytics</a> — a privacy-friendly, cookie-free analytics service — to count aggregate page views and understand which features are used. Plausible does not use cookies, does not collect personal data, does not fingerprint visitors, and is fully GDPR / PECR / CCPA compliant. No data is shared with third parties or used for advertising.</p>
+  <p>We do not use Google Analytics, Facebook Pixel, or any other behavioural / advertising tracker.</p>
 
   <h2>6. Free tier &amp; Pro plan</h2>
-  <p>Free accounts are subject to usage limits (currently 30 AI lookups and 3 OCR scans per calendar month). Usage is tracked per account for signed-in users, or by IP address for anonymous users. Pro accounts have no usage limits. Usage counters reset on the 1st of each month.</p>
+  <p>Free accounts are subject to usage limits (currently 100 AI lookups and 3 OCR scans per calendar month, all on the Fast model). Usage is tracked per account for signed-in users, or by IP address for anonymous users. Pro accounts unlock all three models (Fast, Balanced, Deep) and have no monthly lookup limit, subject to fair-use hourly and monthly credit ceilings to prevent abuse. Usage counters reset on the 1st of each month.</p>
 
   <h2>7. Data retention</h2>
   <p>Account data and word banks are retained until you delete your account. Anonymous search logs are retained for up to 12 months. Anonymous IP-based usage records are overwritten each calendar month (only the current month's count is kept). You can request deletion of your data at any time by contacting us.</p>

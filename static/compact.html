@@ -572,9 +572,12 @@ async function fetchDef(word) {
 
   showLoading(word);
   try {
+    const tok = localStorage.getItem('lexio_token');
+    const hdrs = { 'Content-Type': 'application/json' };
+    if (tok) hdrs['Authorization'] = 'Bearer ' + tok;
     const resp = await fetch('/define', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: hdrs,
       body: JSON.stringify({ word, context, lang: 'auto', model }),
     });
     if (!resp.ok) {

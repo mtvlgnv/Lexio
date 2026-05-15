@@ -309,23 +309,15 @@ PRO_OCR_MONTHLY_CAP = 500
 
 def _check_hourly_limit(db: DBSession, user: Optional["User"], model: str) -> dict:
     """
-    Check (and on success, increment) the user's hourly weighted lookup budget
-    AND, for Pro accounts, the monthly credit ceiling.
+    Check whether the user has room in their hourly weighted budget (and, for
+    Pro accounts, the monthly credit ceiling) without consuming credits.
 
-    Anonymous users are not subject to either — slowapi handles burst rate and
-    the monthly free-tier lookup count handles volume.
+    Rolls expired hourly / monthly windows (writes those rolls to the DB) but
+    NEVER debits credits — call _consume_hourly_credits() after a successful
+    AI response to do that.
 
-    Returns:
-        {
-            "allowed":      bool,
-            "weight":       int,    # credits this lookup would cost
-            "used":         int,    # credits used this hour (after a successful call)
-            "limit":        int,    # hourly budget
-            "reset_in":     int,    # seconds until the hourly window resets
-            "month_used":   int,    # credits used this month (Pro only; 0 otherwise)
-            "month_limit":  int,    # monthly credit cap (Pro only; -1 otherwise)
-            "kind":         str,    # only set on denial: "hourly" or "monthly"
-        }
+    Anonymous users are not subject to either limit — slowapi handles burst
+    rate and the monthly free-tier lookup count handles volume.
     """
     weight = MODEL_WEIGHTS.get(model, 1)
 
@@ -345,60 +337,98 @@ def _check_hourly_limit(db: DBSession, user: Optional["User"], model: str) -> di
     now_month = now.strftime("%Y-%m")
 
     # ── Hourly window roll ────────────────────────────────────────────────
+    rolled = False
     if u.hourly_window_start is None or (now - u.hourly_window_start).total_seconds() >= 3600:
         u.hourly_window_start = now
         u.hourly_weight_used  = 0
+        rolled = True
 
-    # ── Monthly credit window roll (Pro only matters; Free is already capped
-    # by lookup count) ────────────────────────────────────────────────────
+    # ── Monthly credit window roll (Pro only matters) ─────────────────────
     if u.monthly_credit_month != now_month:
         u.monthly_credit_month = now_month
         u.monthly_credit_used  = 0
+        rolled = True
 
-    hourly_used_before = u.hourly_weight_used
-    month_used_before  = u.monthly_credit_used or 0
+    if rolled:
+        db.commit()
+
+    hourly_used = u.hourly_weight_used or 0
+    month_used  = u.monthly_credit_used or 0
 
     # Check hourly first (smaller window, more often hit)
-    if hourly_used_before + weight > limit:
+    if hourly_used + weight > limit:
         elapsed  = (now - u.hourly_window_start).total_seconds()
         reset_in = max(0, int(3600 - elapsed))
-        db.commit()
         return {
             "allowed":     False,
             "kind":        "hourly",
             "weight":      weight,
-            "used":        hourly_used_before,
+            "used":        hourly_used,
             "limit":       limit,
             "reset_in":    reset_in,
-            "month_used":  month_used_before,
+            "month_used":  month_used,
             "month_limit": MONTHLY_CREDIT_CAP_PRO if is_pro else -1,
         }
 
-    # Monthly credit cap (Pro only). Free users have a separate
-    # lookup-count cap enforced in _check_usage.
-    if is_pro and month_used_before + weight > MONTHLY_CREDIT_CAP_PRO:
-        db.commit()
+    # Monthly credit cap (Pro only). Free users are already bounded by the
+    # lookup-count cap in _check_usage.
+    if is_pro and month_used + weight > MONTHLY_CREDIT_CAP_PRO:
         return {
             "allowed":     False,
             "kind":        "monthly",
             "weight":      weight,
-            "used":        hourly_used_before,
+            "used":        hourly_used,
             "limit":       limit,
             "reset_in":    0,
-            "month_used":  month_used_before,
+            "month_used":  month_used,
             "month_limit": MONTHLY_CREDIT_CAP_PRO,
         }
 
-    u.hourly_weight_used  = hourly_used_before + weight
-    if is_pro:
-        u.monthly_credit_used = month_used_before + weight
-    db.commit()
     return {
         "allowed":     True,
         "weight":      weight,
-        "used":        u.hourly_weight_used,
+        "used":        hourly_used,
         "limit":       limit,
         "reset_in":    max(0, int(3600 - (now - u.hourly_window_start).total_seconds())),
+        "month_used":  month_used,
+        "month_limit": MONTHLY_CREDIT_CAP_PRO if is_pro else -1,
+    }
+
+
+def _consume_hourly_credits(db: DBSession, user: Optional["User"], model: str) -> dict:
+    """
+    Debit the user's hourly + monthly credit counters.  Call ONLY after a
+    successful AI response is in hand (so failed requests don't cost credits).
+
+    Returns the post-debit values so the caller can echo them in the response.
+    """
+    weight = MODEL_WEIGHTS.get(model, 1)
+    if user is None:
+        return {"used": 0, "limit": -1, "weight": weight,
+                "month_used": 0, "month_limit": -1, "reset_in": 0}
+
+    u = db.query(User).filter(User.id == user.id).first()
+    if u is None:
+        return {"used": 0, "limit": -1, "weight": weight,
+                "month_used": 0, "month_limit": -1, "reset_in": 0}
+
+    is_pro = _is_effectively_pro(u)
+    limit  = HOURLY_LIMIT_PRO if is_pro else HOURLY_LIMIT_FREE
+    now    = datetime.datetime.utcnow()
+
+    u.hourly_weight_used = (u.hourly_weight_used or 0) + weight
+    if is_pro:
+        u.monthly_credit_used = (u.monthly_credit_used or 0) + weight
+    db.commit()
+
+    reset_in = max(0, int(3600 - (now - u.hourly_window_start).total_seconds())) \
+               if u.hourly_window_start else 0
+
+    return {
+        "used":        u.hourly_weight_used,
+        "limit":       limit,
+        "weight":      weight,
+        "reset_in":    reset_in,
         "month_used":  u.monthly_credit_used if is_pro else 0,
         "month_limit": MONTHLY_CREDIT_CAP_PRO if is_pro else -1,
     }
@@ -474,7 +504,10 @@ def _check_usage(
     kind: str,   # "lookup" | "ocr"
 ) -> dict:
     """
-    Check and (if allowed) increment the usage counter.
+    Check whether the user has remaining monthly-count quota WITHOUT debiting.
+    Rolls expired month windows (and commits those rolls) but never debits.
+    Call _consume_usage() after a successful response to debit.
+
     Returns {"allowed": bool, "used": int, "limit": int}.
     """
     now_month = datetime.datetime.utcnow().strftime("%Y-%m")
@@ -484,36 +517,32 @@ def _check_usage(
         u = db.query(User).filter(User.id == user.id).first()
         is_pro = bool(u and _is_effectively_pro(u))
 
-        # Pro lookups are unlimited at the monthly-count level (hourly/monthly
-        # credit caps cover them). Pro OCR is capped at PRO_OCR_MONTHLY_CAP to
-        # prevent vision-API abuse.
+        # Pro lookups are unbounded at the monthly-count level (hourly/monthly
+        # credit caps cover abuse). Pro OCR is capped at PRO_OCR_MONTHLY_CAP.
         if is_pro and kind == "lookup":
             return {"allowed": True, "used": 0, "limit": -1}
 
         if u:
+            rolled = False
             if kind == "lookup":
                 if u.lookup_month != now_month:
                     u.monthly_lookups = 0
                     u.lookup_month    = now_month
+                    rolled = True
                 used  = u.monthly_lookups
                 limit = free_limit
-                if used >= limit:
-                    db.commit()
-                    return {"allowed": False, "used": used, "limit": limit}
-                u.monthly_lookups += 1
             else:
-                # OCR: Pro gets PRO_OCR_MONTHLY_CAP, Free gets FREE_OCR_LIMIT
                 if u.ocr_month != now_month:
                     u.monthly_ocr = 0
                     u.ocr_month   = now_month
+                    rolled = True
                 used  = u.monthly_ocr
                 limit = PRO_OCR_MONTHLY_CAP if is_pro else free_limit
-                if used >= limit:
-                    db.commit()
-                    return {"allowed": False, "used": used, "limit": limit}
-                u.monthly_ocr += 1
-            db.commit()
-            return {"allowed": True, "used": used + 1, "limit": limit}
+            if rolled:
+                db.commit()
+            if used >= limit:
+                return {"allowed": False, "used": used, "limit": limit}
+            return {"allowed": True, "used": used, "limit": limit}
 
     # Anonymous — track by IP (always free limits)
     row = db.query(AnonUsage).filter(
@@ -524,23 +553,79 @@ def _check_usage(
         row = AnonUsage(ip=ip, month=now_month, lookups=0, ocr=0)
         db.add(row)
         db.flush()
+        db.commit()
 
     limit = free_limit
-    if kind == "lookup":
-        used = row.lookups
-        if used >= limit:
-            db.commit()
-            return {"allowed": False, "used": used, "limit": limit}
-        row.lookups += 1
-    else:
-        used = row.ocr
-        if used >= limit:
-            db.commit()
-            return {"allowed": False, "used": used, "limit": limit}
-        row.ocr += 1
+    used  = row.lookups if kind == "lookup" else row.ocr
+    if used >= limit:
+        return {"allowed": False, "used": used, "limit": limit}
+    return {"allowed": True, "used": used, "limit": limit}
 
+
+def _consume_usage(
+    db: DBSession,
+    user: Optional["User"],
+    ip: str,
+    kind: str,
+) -> dict:
+    """
+    Debit the monthly lookup/OCR counter.  Call ONLY after a successful
+    response is in hand.  Returns the post-debit {used, limit}.
+    """
+    now_month = datetime.datetime.utcnow().strftime("%Y-%m")
+    free_limit = FREE_LOOKUP_LIMIT if kind == "lookup" else FREE_OCR_LIMIT
+
+    if user:
+        u = db.query(User).filter(User.id == user.id).first()
+        is_pro = bool(u and _is_effectively_pro(u))
+
+        if u:
+            # Pro lookups are unbounded at the monthly-count level
+            if is_pro and kind == "lookup":
+                return {"used": 0, "limit": -1}
+
+            if kind == "lookup":
+                if u.lookup_month != now_month:
+                    u.monthly_lookups = 0
+                    u.lookup_month    = now_month
+                u.monthly_lookups = (u.monthly_lookups or 0) + 1
+                used  = u.monthly_lookups
+                limit = free_limit
+            else:
+                if u.ocr_month != now_month:
+                    u.monthly_ocr = 0
+                    u.ocr_month   = now_month
+                u.monthly_ocr = (u.monthly_ocr or 0) + 1
+                used  = u.monthly_ocr
+                limit = PRO_OCR_MONTHLY_CAP if is_pro else free_limit
+            db.commit()
+            return {"used": used, "limit": limit}
+
+    row = db.query(AnonUsage).filter(
+        AnonUsage.ip    == ip,
+        AnonUsage.month == now_month,
+    ).first()
+    if not row:
+        row = AnonUsage(ip=ip, month=now_month, lookups=0, ocr=0)
+        db.add(row)
+        db.flush()
+
+    if kind == "lookup":
+        row.lookups += 1
+        used = row.lookups
+    else:
+        row.ocr += 1
+        used = row.ocr
     db.commit()
-    return {"allowed": True, "used": used + 1, "limit": limit}
+    return {"used": used, "limit": free_limit}
+
+
+def _has_pro_access(db: DBSession, user: Optional["User"]) -> bool:
+    """True if a request from `user` is allowed Pro-only models (Balanced/Deep)."""
+    if user is None:
+        return False
+    u = db.query(User).filter(User.id == user.id).first()
+    return bool(u and _is_effectively_pro(u))
 
 
 # ── In-memory cache for top-words (refreshed every hour) ─────────────────────
@@ -783,14 +868,28 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         "haiku": "fast", "gpt-4-mini": "fast", "gpt-4o-mini": "fast",
         "gemini": "balanced", "sonnet": "deep",
     }
-    actual_model = _model_map.get((req.model or "deep").lower().strip(), "deep")
+    actual_model = _model_map.get((req.model or "fast").lower().strip(), "fast")
 
+    # ── Server-side model gate ──────────────────────────────────────────────
+    # Balanced and Deep are Pro/trial only. Anonymous and free users get Fast,
+    # regardless of what the frontend sends.
+    if actual_model in ("balanced", "deep") and not _has_pro_access(db, user):
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "code":     "pro_required",
+                "model":    actual_model,
+                "message":  f"{actual_model.title()} mode requires a Pro plan. Upgrade to unlock all three models, or use Fast (free).",
+            },
+        )
+
+    # ── Pre-flight checks (no debit yet) ────────────────────────────────────
     # Hourly + monthly weighted rate limit (per-user; anonymous skipped).
     hourly = _check_hourly_limit(db, user, actual_model)
     if not hourly["allowed"]:
         if hourly.get("kind") == "monthly":
-            # Pro monthly credit ceiling — return 402 so the existing limit
-            # modal handles it; user has to wait for next billing cycle.
+            # Pro monthly credit ceiling — 402 so the existing limit modal
+            # handles it; user has to wait for next billing cycle.
             raise HTTPException(
                 status_code=402,
                 detail={
@@ -872,8 +971,8 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         )
         required_keys = ("pos", "contextual")
 
+    # ── AI call (no debit until we have a valid response) ──────────────────
     try:
-        # Call the appropriate API
         if actual_model == "fast":
             text = _call_openai(prompt)          # GPT-4o Mini
         elif actual_model == "balanced":
@@ -890,34 +989,6 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         for key in required_keys:
             if key not in result:
                 raise ValueError(f"Missing key: {key}")
-
-        # Save user's model preference if authenticated
-        if user:
-            try:
-                user_record = db.query(User).filter(User.id == user.id).first()
-                if user_record and user_record.preferred_model != actual_model:
-                    user_record.preferred_model = actual_model
-                    db.commit()
-            except Exception:
-                db.rollback()
-
-        # Log anonymously (always) and per-user (when authenticated)
-        bg.add_task(_log_search, req.word)
-        if user:
-            bg.add_task(_log_user_search, user.id, req.word)
-        return {
-            **result,
-            "_usage":  {"used": usage["used"], "limit": usage["limit"]},
-            "_hourly": {
-                "used":        hourly["used"],
-                "limit":       hourly["limit"],
-                "weight":      hourly["weight"],
-                "reset_in":    hourly["reset_in"],
-                "month_used":  hourly["month_used"],
-                "month_limit": hourly["month_limit"],
-            },
-        }
-
     except json.JSONDecodeError as exc:
         logger.error("/define JSON parse error: %s", exc)
         raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
@@ -927,9 +998,42 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
     except anthropic.APIError as exc:
         logger.error("/define Anthropic error: %s", exc)
         raise HTTPException(status_code=502, detail="AI provider error. Please try again.")
+    except HTTPException:
+        raise
     except Exception as exc:
         logger.error("/define unexpected error: %s", exc, exc_info=True)
         raise HTTPException(status_code=502, detail="An unexpected error occurred. Please try again.")
+
+    # ── Debit only after a valid response is in hand ────────────────────────
+    hourly_post = _consume_hourly_credits(db, user, actual_model)
+    usage_post  = _consume_usage(db, user, ip, "lookup")
+
+    # Save user's model preference if authenticated
+    if user:
+        try:
+            user_record = db.query(User).filter(User.id == user.id).first()
+            if user_record and user_record.preferred_model != actual_model:
+                user_record.preferred_model = actual_model
+                db.commit()
+        except Exception:
+            db.rollback()
+
+    # Log anonymously (always) and per-user (when authenticated)
+    bg.add_task(_log_search, req.word)
+    if user:
+        bg.add_task(_log_user_search, user.id, req.word)
+    return {
+        **result,
+        "_usage":  {"used": usage_post["used"], "limit": usage_post["limit"]},
+        "_hourly": {
+            "used":        hourly_post["used"],
+            "limit":       hourly_post["limit"],
+            "weight":      hourly_post["weight"],
+            "reset_in":    hourly_post["reset_in"],
+            "month_used":  hourly_post["month_used"],
+            "month_limit": hourly_post["month_limit"],
+        },
+    }
 
 
 def _ip_is_safe(addr: str) -> bool:
@@ -2359,6 +2463,8 @@ async def ocr_image(request: Request, file: UploadFile = File(...),
         raise HTTPException(status_code=422, detail="Image must be smaller than 10 MB.")
 
     ip    = _get_client_ip(request)
+
+    # Pre-flight check (no debit yet)
     usage = _check_usage(db, user, ip, "ocr")
     if not usage["allowed"]:
         raise HTTPException(
@@ -2414,6 +2520,9 @@ async def ocr_image(request: Request, file: UploadFile = File(...),
 
     if not text:
         raise HTTPException(status_code=422, detail="No text found in the image.")
+
+    # Debit only after we have valid extracted text
+    _consume_usage(db, user, ip, "ocr")
 
     return {"text": text}
 
@@ -2690,10 +2799,10 @@ async def pro_status(user: User = Depends(current_user), db: DBSession = Depends
 
 # ── Named static page routes ─────────────────────────────────────────────────
 
-@app.get("/pro", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/pro", include_in_schema=False)
 async def pro_page():
-    with open("static/pro/index.html", encoding="utf-8") as f:
-        return HTMLResponse(f.read())
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/#lp-pro", status_code=301)
 
 @app.get("/privacy", response_class=HTMLResponse, include_in_schema=False)
 async def privacy_page():
