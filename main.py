@@ -113,7 +113,7 @@ class User(Base):
     monthly_ocr      = Column(Integer, default=0, nullable=False)
     ocr_month        = Column(String, nullable=True)
     token_version    = Column(Integer, default=0, nullable=False)   # incremented on logout
-    trial_expires_at = Column(DateTime, nullable=True)              # 7-day pro trial
+    trial_expires_at = Column(DateTime, nullable=True)              # Stripe trial end
     hourly_weight_used  = Column(Integer, default=0, nullable=False)
     hourly_window_start = Column(DateTime, nullable=True)
     monthly_credit_used  = Column(Integer, default=0, nullable=False)

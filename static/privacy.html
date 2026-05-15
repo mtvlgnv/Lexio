@@ -90,7 +90,7 @@
 
   <p><strong>Text you submit.</strong> When you look up a word or phrase, the word and the surrounding context text you provide are sent to our server and forwarded to one of our AI providers (Anthropic, OpenAI, or Google — depending on the model you select) to generate the definition. We do not store the full text you paste beyond the duration of the request.</p>
 
-  <p><strong>Images you upload (OCR).</strong> If you use the "Scan image" feature, the image you upload is sent to our server and forwarded to Google's Gemini API for text extraction. The image is not stored on our servers after the request completes.</p>
+  <p><strong>Images you upload (OCR).</strong> If you use the "Scan image" feature, the image you upload is sent to our server and forwarded to Google's Gemini API for text extraction (with OpenAI's GPT-4o vision as a fallback). The image is not stored on our servers after the request completes.</p>
 
   <p><strong>Anonymous search logs.</strong> We record the searched word only (not the surrounding context) to generate trending word statistics shown on the homepage. These logs contain no user identifiers.</p>
 
@@ -125,11 +125,11 @@
   </ul>
 
   <h2>4. AI model providers</h2>
-  <p>Lexio routes your lookup requests to one of four AI models. The text you submit for lookup (the selected word and context) is sent to the corresponding provider:</p>
+  <p>Lexio routes your lookup requests to one of three AI providers depending on the reading mode you pick. The selected word and surrounding context are sent to the corresponding provider:</p>
   <ul>
-    <li><strong>Anthropic</strong> (Claude Haiku, Claude Sonnet) — <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Anthropic Privacy Policy</a></li>
-    <li><strong>OpenAI</strong> (GPT-4o Mini) — <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">OpenAI Privacy Policy</a></li>
-    <li><strong>Google</strong> (Gemini 2.5 Flash, also used for OCR) — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+    <li><strong>OpenAI</strong> (GPT-4o Mini — Fast mode; GPT-4o is also used as an OCR fallback when the Google API is unavailable) — <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">OpenAI Privacy Policy</a></li>
+    <li><strong>Google</strong> (Gemini 2.5 Flash — Balanced mode and primary OCR) — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+    <li><strong>Anthropic</strong> (Claude Sonnet 4.5 — Deep mode) — <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Anthropic Privacy Policy</a></li>
   </ul>
   <p>Text you submit for lookup or images you upload for OCR are subject to the privacy policy of the provider whose model processes your request. You can switch models at any time in the app.</p>
 
