@@ -283,7 +283,7 @@ _run_migrations()
 # ── Usage limits ─────────────────────────────────────────────────────────────
 FREE_LOOKUP_LIMIT = 100
 FREE_OCR_LIMIT    = 3
-TRIAL_DAYS        = 7
+TRIAL_DAYS        = 3
 
 # ── Hourly weighted rate limit ───────────────────────────────────────────────
 # Every lookup costs "credits" based on the model used. The weights reflect
@@ -1099,10 +1099,10 @@ async def register(request: Request, body: RegisterRequest, db: DBSession = Depe
     if db.query(User).filter(User.email == body.email).first():
         raise HTTPException(status_code=409, detail="An account with this email already exists.")
     user = User(
-        email            = body.email,
-        name             = body.name or body.email.split("@")[0],
-        pwd_hash         = hash_password(body.password),
-        trial_expires_at = datetime.datetime.utcnow() + datetime.timedelta(days=TRIAL_DAYS),
+        email    = body.email,
+        name     = body.name or body.email.split("@")[0],
+        pwd_hash = hash_password(body.password),
+        # No auto-trial: Pro trial is granted by Stripe Checkout (requires card).
     )
     db.add(user)
     db.commit()
@@ -1460,8 +1460,8 @@ async def google_auth(request: Request, body: GoogleAuthRequest, db: DBSession =
     # Find existing user by email or google_id
     user = db.query(User).filter(User.email == email).first()
     if not user:
-        user = User(email=email, name=name, google_id=google_sub, pwd_hash=None,
-                    trial_expires_at=datetime.datetime.utcnow() + datetime.timedelta(days=TRIAL_DAYS))
+        # No auto-trial: Pro trial is granted by Stripe Checkout (requires card).
+        user = User(email=email, name=name, google_id=google_sub, pwd_hash=None)
         db.add(user)
         db.commit()
         db.refresh(user)
@@ -1544,8 +1544,8 @@ async def apple_auth(request: Request, body: AppleAuthRequest, db: DBSession = D
         or (db.query(User).filter(User.email == display_email).first() if display_email else None)
     )
     if not user:
-        user = User(email=display_email, name=name, google_id=f"apple:{apple_sub}", pwd_hash=None,
-                    trial_expires_at=datetime.datetime.utcnow() + datetime.timedelta(days=TRIAL_DAYS))
+        # No auto-trial: Pro trial is granted by Stripe Checkout (requires card).
+        user = User(email=display_email, name=name, google_id=f"apple:{apple_sub}", pwd_hash=None)
         db.add(user)
         db.commit()
         db.refresh(user)
@@ -2544,13 +2544,35 @@ async def stripe_create_checkout(
     else:
         customer_kwargs["customer_email"] = user.email
 
+    # Trial eligibility: users who have never had a Stripe customer record
+    # (i.e. never paid and never trialed via Stripe) get TRIAL_DAYS free,
+    # but must add a payment method up-front. Stripe charges automatically
+    # when the trial ends. Users who've already been Stripe customers
+    # (cancelled before, or trial already consumed) check out without a
+    # trial. Legacy app-state trialers (trial_expires_at set but no
+    # stripe_customer_id) get their NEW 3-day Stripe trial on top — fair,
+    # since they would have lost Pro access otherwise.
+    is_trial_eligible = not user.stripe_customer_id and not user.is_pro
+    subscription_data = {
+        "metadata": {"user_id": str(user.id)},
+    }
+    if is_trial_eligible:
+        subscription_data["trial_period_days"] = TRIAL_DAYS
+        # If the user removes their payment method mid-trial, cancel
+        # automatically — never let a trial roll over without a card.
+        subscription_data["trial_settings"] = {
+            "end_behavior": {"missing_payment_method": "cancel"},
+        }
+
     session = _stripe.checkout.Session.create(
         mode="subscription",
         line_items=[{"price": _STRIPE_PRICE_ID, "quantity": 1}],
         currency=currency.lower(),
         success_url=f"{_SITE_URL}/?stripe=success",
         cancel_url=f"{_SITE_URL}/?stripe=cancelled",
-        metadata={"user_id": str(user.id)},
+        metadata={"user_id": str(user.id), "trial": "1" if is_trial_eligible else "0"},
+        subscription_data=subscription_data,
+        payment_method_collection="always",   # require card even on trial
         allow_promotion_codes=True,
         **customer_kwargs,
     )
@@ -2602,16 +2624,43 @@ async def stripe_webhook(request: Request, db: DBSession = Depends(get_db)):
                 db.commit()
                 logger.info("Stripe: Pro activated for user %d", user_id)
 
-    elif etype in ("customer.subscription.deleted", "customer.subscription.updated"):
+    elif etype in (
+        "customer.subscription.created",
+        "customer.subscription.updated",
+        "customer.subscription.deleted",
+    ):
         customer_id = obj.get("customer")
         status      = obj.get("status", "")
         is_active   = status in ("active", "trialing")
+        # `trial_end` is a Unix timestamp (or None) when the subscription is trialing
+        trial_end   = obj.get("trial_end")
         if customer_id:
             u = db.query(User).filter(User.stripe_customer_id == customer_id).first()
+            # Trials created via Checkout: customer may not yet be linked to a
+            # local user. Use subscription metadata.user_id as a fallback.
+            if u is None:
+                meta_uid = (obj.get("metadata") or {}).get("user_id")
+                if meta_uid:
+                    try:
+                        u = db.query(User).filter(User.id == int(meta_uid)).first()
+                        if u and not u.stripe_customer_id:
+                            u.stripe_customer_id = customer_id
+                    except (TypeError, ValueError):
+                        u = None
             if u:
                 u.is_pro = 1 if is_active else 0
+                # Persist trial_end so the UI can show "X days left" without
+                # round-tripping to Stripe on every page load.
+                if status == "trialing" and trial_end:
+                    u.trial_expires_at = datetime.datetime.utcfromtimestamp(int(trial_end))
+                elif status in ("active",) and u.trial_expires_at and u.trial_expires_at < datetime.datetime.utcnow():
+                    # Trial → paid transition: clear stale trial_expires_at
+                    u.trial_expires_at = None
                 db.commit()
-                logger.info("Stripe: %s → is_pro=%d for customer %s", etype, u.is_pro, customer_id)
+                logger.info(
+                    "Stripe: %s status=%s → is_pro=%d trial_end=%s for user %d",
+                    etype, status, u.is_pro, trial_end, u.id,
+                )
 
     elif etype == "invoice.payment_failed":
         customer_id = obj.get("customer")
@@ -2630,8 +2679,11 @@ async def stripe_webhook(request: Request, db: DBSession = Depends(get_db)):
 async def pro_status(user: User = Depends(current_user), db: DBSession = Depends(get_db)):
     """Return Pro/trial status for the authenticated user."""
     u = db.query(User).filter(User.id == user.id).first()
-    paid  = bool(u and u.is_pro)
-    trial = bool(u and not paid and u.trial_expires_at and u.trial_expires_at > datetime.datetime.utcnow())
+    # A user is "on trial" if they have a future trial_expires_at — regardless
+    # of is_pro, because Stripe-trial users have is_pro=1 set by the
+    # subscription webhook.
+    trial = bool(u and u.trial_expires_at and u.trial_expires_at > datetime.datetime.utcnow())
+    paid  = bool(u and u.is_pro and not trial)
     days  = _trial_days_left(u) if u else 0
     return {"is_pro": paid or trial, "is_trial": trial, "trial_days_left": days}
 

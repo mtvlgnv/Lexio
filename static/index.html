@@ -2169,8 +2169,8 @@
       <div class="lp-pro-col">
         <div>
           <div class="lp-pro-col-label">Free</div>
-          <div class="lp-pro-headline">7 days free, full Pro access</div>
-          <div class="lp-pro-subhead">then free plan continues — no credit card</div>
+          <div class="lp-pro-headline">3 days free, full Pro access</div>
+          <div class="lp-pro-subhead">card required to start · cancel anytime</div>
           <div class="lp-pro-price">
             <span class="lp-pro-amount"><span class="lp-free-symbol">$</span>0</span>
             <span class="lp-pro-period">/month after trial</span>
@@ -2204,9 +2204,9 @@
           <li>Word bank sync across devices</li>
           <li>Priority support</li>
         </ul>
-        <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Start 7-day Pro trial</button>
+        <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Start 3-day free trial</button>
         <button class="lp-pro-cta" id="lp-manage-btn" onclick="handleManageSub()" style="display:none;background:var(--bg);color:var(--text);border:1.5px solid var(--border)">Manage subscription →</button>
-        <p class="lp-pro-note" id="lp-pro-note">No credit card · cancel any time</p>
+        <p class="lp-pro-note" id="lp-pro-note">Card required · cancel any time before day 3</p>
       </div>
     </div>
   </div>
@@ -2337,7 +2337,7 @@
           Is Lexio free?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. New users get a 7-day free trial with full Pro access — no credit card required. After the trial, the free plan gives you 100 word lookups and 3 image scans per month. Pro (from <span class="lp-pro-amount-dynamic">$2.99</span>/month) removes all limits and unlocks Balanced and Deep modes.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. The free plan gives you 100 word lookups and 3 image scans per month, in Fast mode. If you want to try Pro, you can start a <strong>3-day free trial</strong> — a card is required up-front, you can cancel any time before day 3, and you won't be charged. After the trial, Pro is <span class="lp-pro-amount-dynamic">$2.99</span>/month and removes all limits and unlocks Balanced and Deep modes.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -4306,10 +4306,10 @@ async function _populateAccountPanel() {
       const d = pro.trial_days_left;
       badge.className   = 'ap-plan-badge trial';
       badge.textContent = `⏳ Trial · ${d} day${d !== 1 ? 's' : ''} left`;
-      desc.textContent  = 'Enjoying full Pro access. Upgrade to keep it after the trial.';
-      btn.textContent   = 'Upgrade to keep Pro →';
-      btn.className     = 'ap-plan-action upgrade';
-      btn.onclick       = () => { closeAuthModal(); handleProCta(); };
+      desc.textContent  = 'Enjoying full Pro access. Card on file — will charge after the trial. Manage anytime.';
+      btn.textContent   = 'Manage subscription →';
+      btn.className     = 'ap-plan-action manage';
+      btn.onclick       = () => { closeAuthModal(); handleManageSub(); };
       if (usageSec) usageSec.style.display = 'none';
     } else {
       // Free
@@ -4778,7 +4778,7 @@ async function handleProCta() {
     if (!r.ok) {
       const e = await r.json().catch(() => ({}));
       alert(e.detail || 'Could not start checkout. Please try again.');
-      if (btn) { btn.textContent = 'Start 7-day Pro trial'; btn.disabled = false; }
+      if (btn) { btn.textContent = 'Start 3-day free trial'; btn.disabled = false; }
       return;
     }
     const { url } = await r.json();
@@ -4863,10 +4863,11 @@ async function checkProStatus() {
         if (mgBtn) mgBtn.style.display = '';
         if (note)  note.style.display  = 'none';
       } else if (isTrial) {
-        if (lpBtn) lpBtn.textContent = 'Upgrade to keep Pro →';
+        if (lpBtn) lpBtn.textContent = 'Manage subscription →';
+        if (lpBtn) lpBtn.onclick = () => handleManageSub();
         if (note)  note.textContent = daysLeft > 1
-          ? `${daysLeft} days of trial left · no card on file`
-          : 'Last trial day · no card on file';
+          ? `${daysLeft} days of trial left · card on file`
+          : 'Last trial day · card on file';
       }
       // App header menu
       const mp  = document.getElementById('menu-pro-btn');
@@ -4895,6 +4896,12 @@ async function handleManageSub() {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token },
     });
+    if (r.status === 400) {
+      // No Stripe customer yet (legacy trial user without card on file).
+      // Route them through Checkout so they can add a card.
+      handleProCta();
+      return;
+    }
     if (!r.ok) throw new Error();
     const { url } = await r.json();
     window.location.href = url;
