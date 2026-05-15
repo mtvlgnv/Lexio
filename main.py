@@ -114,6 +114,8 @@ class User(Base):
     ocr_month        = Column(String, nullable=True)
     token_version    = Column(Integer, default=0, nullable=False)   # incremented on logout
     trial_expires_at = Column(DateTime, nullable=True)              # 7-day pro trial
+    hourly_weight_used  = Column(Integer, default=0, nullable=False)
+    hourly_window_start = Column(DateTime, nullable=True)
     created_at       = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):
@@ -228,6 +230,13 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
         conn.execute(_sa_text("ALTER TABLE users ADD COLUMN trial_expires_at TIMESTAMP"))
         if "trial_expires_at" not in _cols(conn, "users") else None
     )),
+    (11, "add hourly rate-limit counters", lambda conn, _: [
+        conn.execute(_sa_text(ddl))
+        for col, ddl in [
+            ("hourly_weight_used",  "ALTER TABLE users ADD COLUMN hourly_weight_used INTEGER NOT NULL DEFAULT 0"),
+            ("hourly_window_start", "ALTER TABLE users ADD COLUMN hourly_window_start TIMESTAMP"),
+        ] if col not in _cols(conn, "users")
+    ]),
 ]
 
 def _run_migrations():
@@ -266,6 +275,93 @@ _run_migrations()
 FREE_LOOKUP_LIMIT = 100
 FREE_OCR_LIMIT    = 3
 TRIAL_DAYS        = 7
+
+# ── Hourly weighted rate limit ───────────────────────────────────────────────
+# Every lookup costs "credits" based on the model used. The weights reflect
+# relative compute cost so the limit can't be gamed by spamming Deep mode.
+MODEL_WEIGHTS = {"fast": 1, "balanced": 2, "deep": 3}
+
+# Per-hour credit budgets. Pro gets a generous budget that supports very heavy
+# reading (≈ 40 Deep / 60 Balanced / 120 Fast lookups per hour) while still
+# protecting the service from automated abuse. Free is tighter so a single
+# burst can't drain the entire monthly allowance.
+HOURLY_LIMIT_PRO  = 120
+HOURLY_LIMIT_FREE = 20
+
+def _check_hourly_limit(db: DBSession, user: Optional["User"], model: str) -> dict:
+    """
+    Check (and on success, increment) the user's hourly weighted lookup budget.
+    Anonymous users are not subject to this check — slowapi handles their burst
+    rate and the monthly free-tier cap handles volume.
+
+    Returns:
+        {
+            "allowed": bool,
+            "weight":  int,    # credits this lookup would cost
+            "used":    int,    # credits already used this hour (before the call)
+            "limit":   int,    # total hourly budget
+            "reset_in": int,   # seconds until the current window resets
+        }
+    """
+    weight = MODEL_WEIGHTS.get(model, 1)
+
+    # Anonymous: no per-user hourly limit (slowapi at 20/min already guards bursts)
+    if user is None:
+        return {"allowed": True, "weight": weight, "used": 0, "limit": -1, "reset_in": 0}
+
+    u = db.query(User).filter(User.id == user.id).first()
+    if u is None:
+        return {"allowed": True, "weight": weight, "used": 0, "limit": -1, "reset_in": 0}
+
+    limit = HOURLY_LIMIT_PRO if _is_effectively_pro(u) else HOURLY_LIMIT_FREE
+    now   = datetime.datetime.utcnow()
+
+    # Roll the window if it's never been opened, or it's older than 1 hour.
+    if u.hourly_window_start is None or (now - u.hourly_window_start).total_seconds() >= 3600:
+        u.hourly_window_start = now
+        u.hourly_weight_used  = 0
+
+    used_before = u.hourly_weight_used
+    if used_before + weight > limit:
+        elapsed   = (now - u.hourly_window_start).total_seconds()
+        reset_in  = max(0, int(3600 - elapsed))
+        db.commit()   # persist the (possibly new) window start so reset_in is stable
+        return {
+            "allowed":  False,
+            "weight":   weight,
+            "used":     used_before,
+            "limit":    limit,
+            "reset_in": reset_in,
+        }
+
+    u.hourly_weight_used = used_before + weight
+    db.commit()
+    return {
+        "allowed":  True,
+        "weight":   weight,
+        "used":     u.hourly_weight_used,
+        "limit":    limit,
+        "reset_in": max(0, int(3600 - (now - u.hourly_window_start).total_seconds())),
+    }
+
+def _read_hourly_status(db: DBSession, user: Optional["User"]) -> dict:
+    """Read-only view of the user's current hourly budget (no increment)."""
+    if user is None:
+        return {"used": 0, "limit": -1, "reset_in": 0,
+                "weights": MODEL_WEIGHTS}
+    u = db.query(User).filter(User.id == user.id).first()
+    if u is None:
+        return {"used": 0, "limit": -1, "reset_in": 0,
+                "weights": MODEL_WEIGHTS}
+    limit = HOURLY_LIMIT_PRO if _is_effectively_pro(u) else HOURLY_LIMIT_FREE
+    now   = datetime.datetime.utcnow()
+    if u.hourly_window_start is None or (now - u.hourly_window_start).total_seconds() >= 3600:
+        used = 0
+        reset_in = 0
+    else:
+        used = u.hourly_weight_used or 0
+        reset_in = max(0, int(3600 - (now - u.hourly_window_start).total_seconds()))
+    return {"used": used, "limit": limit, "reset_in": reset_in, "weights": MODEL_WEIGHTS}
 
 def _is_effectively_pro(u: "User") -> bool:
     """True if the user has a paid Pro plan OR an active trial."""
@@ -592,7 +688,32 @@ LANG_NAMES = {
 async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
                       user: Optional[User] = Depends(optional_user),
                       db: DBSession = Depends(get_db)):
-    ip    = _get_client_ip(request)
+    ip = _get_client_ip(request)
+
+    # Resolve the requested mode up-front so we can weight the hourly check.
+    _model_map = {
+        "fast": "fast", "balanced": "balanced", "deep": "deep",
+        "haiku": "fast", "gpt-4-mini": "fast", "gpt-4o-mini": "fast",
+        "gemini": "balanced", "sonnet": "deep",
+    }
+    actual_model = _model_map.get((req.model or "deep").lower().strip(), "deep")
+
+    # Hourly weighted rate limit (per-user; anonymous skipped — slowapi covers them).
+    hourly = _check_hourly_limit(db, user, actual_model)
+    if not hourly["allowed"]:
+        raise HTTPException(
+            status_code=429,
+            detail={
+                "code":     "hourly_limit",
+                "weight":   hourly["weight"],
+                "used":     hourly["used"],
+                "limit":    hourly["limit"],
+                "reset_in": hourly["reset_in"],
+                "model":    actual_model,
+            },
+            headers={"Retry-After": str(hourly["reset_in"])},
+        )
+
     usage = _check_usage(db, user, ip, "lookup")
     if not usage["allowed"]:
         raise HTTPException(
@@ -649,23 +770,6 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         )
         required_keys = ("pos", "contextual")
 
-    # Determine which model to use
-    model_choice = (req.model or "deep").lower().strip()
-
-    # Map tier names to internal keys (also accept old names for backwards compat)
-    model_map = {
-        "fast":      "fast",
-        "balanced":  "balanced",
-        "deep":      "deep",
-        # legacy aliases
-        "haiku":     "fast",
-        "gpt-4-mini":"fast",
-        "gpt-4o-mini":"fast",
-        "gemini":    "balanced",
-        "sonnet":    "deep",
-    }
-    actual_model = model_map.get(model_choice, "deep")
-
     try:
         # Call the appropriate API
         if actual_model == "fast":
@@ -699,7 +803,16 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         bg.add_task(_log_search, req.word)
         if user:
             bg.add_task(_log_user_search, user.id, req.word)
-        return {**result, "_usage": {"used": usage["used"], "limit": usage["limit"]}}
+        return {
+            **result,
+            "_usage":  {"used": usage["used"], "limit": usage["limit"]},
+            "_hourly": {
+                "used":     hourly["used"],
+                "limit":    hourly["limit"],
+                "weight":   hourly["weight"],
+                "reset_in": hourly["reset_in"],
+            },
+        }
 
     except json.JSONDecodeError as exc:
         logger.error("/define JSON parse error: %s", exc)
@@ -2210,16 +2323,24 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
     now_month = datetime.datetime.utcnow().strftime("%Y-%m")
     ip = _get_client_ip(request)
 
+    hourly_status = _read_hourly_status(db, user)
+
     if user:
         u = db.query(User).filter(User.id == user.id).first()
         if u and _is_effectively_pro(u):
-            return {"is_pro": True, "lookup": {"used": 0, "limit": -1}, "ocr": {"used": 0, "limit": -1}}
+            return {
+                "is_pro": True,
+                "lookup": {"used": 0, "limit": -1},
+                "ocr":    {"used": 0, "limit": -1},
+                "hourly": hourly_status,
+            }
         lookups = u.monthly_lookups if u and u.lookup_month == now_month else 0
         ocr     = u.monthly_ocr     if u and u.ocr_month   == now_month else 0
         return {
             "is_pro": False,
             "lookup": {"used": lookups, "limit": FREE_LOOKUP_LIMIT},
             "ocr":    {"used": ocr,     "limit": FREE_OCR_LIMIT},
+            "hourly": hourly_status,
         }
 
     row = db.query(AnonUsage).filter(AnonUsage.ip == ip, AnonUsage.month == now_month).first()
@@ -2227,6 +2348,7 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
         "is_pro": False,
         "lookup": {"used": row.lookups if row else 0, "limit": FREE_LOOKUP_LIMIT},
         "ocr":    {"used": row.ocr     if row else 0, "limit": FREE_OCR_LIMIT},
+        "hourly": hourly_status,
     }
 
 

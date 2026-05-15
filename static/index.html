@@ -606,10 +606,26 @@
     .mode-menu-name {
       font-family:'DM Sans',inherit;
       font-size:0.88rem; font-weight:600; color:var(--text);
+      display:flex; align-items:center; gap:8px; width:100%;
+    }
+    .mode-menu-credit {
+      margin-left:auto;
+      font-size:0.65rem; font-weight:600;
+      padding:1px 7px; border-radius:10px;
+      background:var(--token-hover); color:var(--muted);
+      letter-spacing:0.02em;
     }
     .mode-menu-item.active .mode-menu-name { color:var(--accent); }
+    .mode-menu-item.active .mode-menu-credit {
+      background:var(--accent); color:#fff;
+    }
     .mode-menu-desc {
       font-size:0.72rem; color:var(--muted); font-weight:400;
+    }
+    .mode-menu-footer {
+      margin-top:4px; padding:8px 12px 4px;
+      border-top:1px solid var(--border-light);
+      font-size:0.7rem; color:var(--muted); line-height:1.5;
     }
     .mode-menu-item:disabled {
       opacity:0.5 !important; cursor:not-allowed;
@@ -1908,22 +1924,29 @@
         </button>
         <div class="mode-menu hidden" id="mode-menu" role="menu">
           <button class="model-pill mode-menu-item" data-model="fast" onclick="_selectMode('fast')" type="button" role="menuitem">
-            <span class="mode-menu-name">Fast</span>
+            <span class="mode-menu-name">Fast <span class="mode-menu-credit">1 credit</span></span>
             <span class="mode-menu-desc">Near-instant lookups · GPT-4o Mini</span>
           </button>
           <button class="model-pill mode-menu-item" data-model="balanced" onclick="_selectMode('balanced')" type="button" role="menuitem">
-            <span class="mode-menu-name">Balanced</span>
+            <span class="mode-menu-name">Balanced <span class="mode-menu-credit">2 credits</span></span>
             <span class="mode-menu-desc">Smart and thorough · Gemini 2.5 Flash</span>
           </button>
           <button class="model-pill mode-menu-item active" data-model="deep" onclick="_selectMode('deep')" type="button" role="menuitem">
-            <span class="mode-menu-name">Deep</span>
+            <span class="mode-menu-name">Deep <span class="mode-menu-credit">3 credits</span></span>
             <span class="mode-menu-desc">Maximum depth · Claude Sonnet 4.5</span>
           </button>
+          <div class="mode-menu-footer">
+            Pro budget · <strong>120 credits / hour</strong> · resets automatically.
+          </div>
         </div>
       </div>
       <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
         <span id="usage-text">0 / 100</span>
         <span class="usage-bar"><span class="usage-fill" id="usage-fill" style="width:0%"></span></span>
+      </span>
+      <span class="usage-pill hourly-pill" id="hourly-pill" title="Hourly credits — Fast=1, Balanced=2, Deep=3. Resets every hour." style="display:none">
+        <span id="hourly-text">0 / 120</span>
+        <span class="usage-bar"><span class="usage-fill" id="hourly-fill" style="width:0%"></span></span>
       </span>
       <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()" data-i18n="edit">← Edit</button>
       <button id="analyze-btn" class="btn-primary" onclick="analyze()" data-i18n="analyzeText">Analyze text</button>
@@ -2347,6 +2370,14 @@
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
         <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>You can paste text in any language — English, Spanish, French, German, Dutch, Russian, Japanese, Chinese, Arabic, Portuguese, and Italian. Definitions can be returned in any of those languages too.</p></div></div>
+      </div>
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          Are there hourly limits even on Pro?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — to keep the service fast and prevent abuse, every account has a per-hour credit budget. Each lookup costs <strong>1 credit</strong> in Fast, <strong>2 credits</strong> in Balanced, and <strong>3 credits</strong> in Deep, reflecting the relative compute cost. Pro users get <strong>120 credits per hour</strong> (≈ 40 Deep, 60 Balanced, or 120 Fast lookups), which comfortably covers even very heavy reading. Free users get 20 credits per hour. The budget resets every hour, automatically.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -3056,7 +3087,7 @@ function closeProModal() {
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProModal(); });
 
-/* ── Usage pill ────────────────────────────────────────── */
+/* ── Usage pill (monthly lookups, free tier only) ─────────── */
 function updateUsagePill(used, limit) {
   const pill  = document.getElementById('usage-pill');
   const text  = document.getElementById('usage-text');
@@ -3067,6 +3098,27 @@ function updateUsagePill(used, limit) {
   fill.style.width = pct + '%';
   pill.classList.toggle('danger', pct >= 80);
   if (pct >= 80) pill.title = `${limit - used} lookups left this month`;
+}
+
+/* ── Hourly pill (credit budget for everyone, anonymous skipped) ── */
+function updateHourlyPill(used, limit) {
+  const pill = document.getElementById('hourly-pill');
+  const text = document.getElementById('hourly-text');
+  const fill = document.getElementById('hourly-fill');
+  if (!pill) return;
+  // Anonymous users have no per-user hourly limit on the server — hide pill.
+  if (typeof limit !== 'number' || limit < 0) {
+    pill.style.display = 'none';
+    return;
+  }
+  pill.style.display = '';
+  const pct = Math.min(100, Math.round(used / limit * 100));
+  text.textContent = `${used} / ${limit}`;
+  fill.style.width = pct + '%';
+  pill.classList.toggle('danger', pct >= 80);
+  pill.title = pct >= 80
+    ? `${limit - used} credits left this hour (Fast=1, Balanced=2, Deep=3)`
+    : 'Hourly credits — Fast=1, Balanced=2, Deep=3. Resets every hour.';
 }
 
 async function loadUsage() {
@@ -3082,6 +3134,8 @@ async function loadUsage() {
     } else {
       updateUsagePill(data.lookup.used, data.lookup.limit);
     }
+    // Hourly pill applies to both free and pro (anonymous gets limit:-1 → hidden).
+    if (data.hourly) updateHourlyPill(data.hourly.used, data.hourly.limit);
   } catch (_) {}
 }
 
@@ -3519,7 +3573,23 @@ async function fetchDefinition(word, context, modelOverride, bypassCache=false) 
   try {
     const resp = await fetch('/define', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({word,context,lang:currentLang,model}) });
     if (!resp.ok) {
-      if (resp.status===429) throw new Error('⏱ Too many requests — wait a moment and try again.');
+      if (resp.status === 429) {
+        const err = await resp.json().catch(() => ({}));
+        const d = err.detail || {};
+        clearHighlights(); activeToken = null;
+        showPlaceholder();
+        if (d.code === 'hourly_limit') {
+          const mins = Math.max(1, Math.ceil((d.reset_in || 0) / 60));
+          const modeLabel = (MODEL_LABELS[d.model] || d.model || 'this mode');
+          const weight = d.weight || 1;
+          throw new Error(
+            `⏱ Hourly limit reached — you've used ${d.used}/${d.limit} credits this hour. ` +
+            `${modeLabel} costs ${weight} credit${weight !== 1 ? 's' : ''} per lookup. ` +
+            `Try again in ${mins} minute${mins !== 1 ? 's' : ''}, or switch to a lighter mode.`
+          );
+        }
+        throw new Error('⏱ Too many requests — wait a moment and try again.');
+      }
       if (resp.status === 402) {
         const err = await resp.json().catch(() => ({}));
         const d = err.detail || {};
@@ -3532,7 +3602,8 @@ async function fetchDefinition(word, context, modelOverride, bypassCache=false) 
       throw new Error(err.detail||`HTTP ${resp.status}`);
     }
     const data = await resp.json();
-    if (data._usage) updateUsagePill(data._usage.used, data._usage.limit);
+    if (data._usage)  updateUsagePill(data._usage.used, data._usage.limit);
+    if (data._hourly) updateHourlyPill(data._hourly.used, data._hourly.limit);
     defCache.set(key, data);
     modelResults[model] = data;
     addToHistory(word, data);
