@@ -116,6 +116,8 @@ class User(Base):
     trial_expires_at = Column(DateTime, nullable=True)              # 7-day pro trial
     hourly_weight_used  = Column(Integer, default=0, nullable=False)
     hourly_window_start = Column(DateTime, nullable=True)
+    monthly_credit_used  = Column(Integer, default=0, nullable=False)
+    monthly_credit_month = Column(String, nullable=True)            # "2025-04"
     created_at       = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):
@@ -237,6 +239,13 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
             ("hourly_window_start", "ALTER TABLE users ADD COLUMN hourly_window_start TIMESTAMP"),
         ] if col not in _cols(conn, "users")
     ]),
+    (12, "add monthly Pro credit cap counters", lambda conn, _: [
+        conn.execute(_sa_text(ddl))
+        for col, ddl in [
+            ("monthly_credit_used",  "ALTER TABLE users ADD COLUMN monthly_credit_used INTEGER NOT NULL DEFAULT 0"),
+            ("monthly_credit_month", "ALTER TABLE users ADD COLUMN monthly_credit_month TEXT"),
+        ] if col not in _cols(conn, "users")
+    ]),
 ]
 
 def _run_migrations():
@@ -288,80 +297,149 @@ MODEL_WEIGHTS = {"fast": 1, "balanced": 2, "deep": 3}
 HOURLY_LIMIT_PRO  = 120
 HOURLY_LIMIT_FREE = 20
 
+# Per-month credit ceiling for Pro accounts. Caps absolute exposure to a single
+# abusing account at ~$33/month in Anthropic costs while remaining ~5× more
+# than any real reader could ever consume. Free users are already bounded by
+# FREE_LOOKUP_LIMIT (100 lookups, fast-only = 100 credits/month).
+MONTHLY_CREDIT_CAP_PRO = 20000
+
+# Hard monthly OCR cap for Pro. Realistic heavy use is <100/month; this leaves
+# 5× headroom and prevents OCR-spam abuse with GPT-4o vision (~$0.03/scan).
+PRO_OCR_MONTHLY_CAP = 500
+
 def _check_hourly_limit(db: DBSession, user: Optional["User"], model: str) -> dict:
     """
-    Check (and on success, increment) the user's hourly weighted lookup budget.
-    Anonymous users are not subject to this check — slowapi handles their burst
-    rate and the monthly free-tier cap handles volume.
+    Check (and on success, increment) the user's hourly weighted lookup budget
+    AND, for Pro accounts, the monthly credit ceiling.
+
+    Anonymous users are not subject to either — slowapi handles burst rate and
+    the monthly free-tier lookup count handles volume.
 
     Returns:
         {
-            "allowed": bool,
-            "weight":  int,    # credits this lookup would cost
-            "used":    int,    # credits already used this hour (before the call)
-            "limit":   int,    # total hourly budget
-            "reset_in": int,   # seconds until the current window resets
+            "allowed":      bool,
+            "weight":       int,    # credits this lookup would cost
+            "used":         int,    # credits used this hour (after a successful call)
+            "limit":        int,    # hourly budget
+            "reset_in":     int,    # seconds until the hourly window resets
+            "month_used":   int,    # credits used this month (Pro only; 0 otherwise)
+            "month_limit":  int,    # monthly credit cap (Pro only; -1 otherwise)
+            "kind":         str,    # only set on denial: "hourly" or "monthly"
         }
     """
     weight = MODEL_WEIGHTS.get(model, 1)
 
-    # Anonymous: no per-user hourly limit (slowapi at 20/min already guards bursts)
+    # Anonymous: no per-user limit (slowapi at 20/min already guards bursts)
     if user is None:
-        return {"allowed": True, "weight": weight, "used": 0, "limit": -1, "reset_in": 0}
+        return {"allowed": True, "weight": weight, "used": 0, "limit": -1,
+                "reset_in": 0, "month_used": 0, "month_limit": -1}
 
     u = db.query(User).filter(User.id == user.id).first()
     if u is None:
-        return {"allowed": True, "weight": weight, "used": 0, "limit": -1, "reset_in": 0}
+        return {"allowed": True, "weight": weight, "used": 0, "limit": -1,
+                "reset_in": 0, "month_used": 0, "month_limit": -1}
 
-    limit = HOURLY_LIMIT_PRO if _is_effectively_pro(u) else HOURLY_LIMIT_FREE
-    now   = datetime.datetime.utcnow()
+    is_pro    = _is_effectively_pro(u)
+    limit     = HOURLY_LIMIT_PRO if is_pro else HOURLY_LIMIT_FREE
+    now       = datetime.datetime.utcnow()
+    now_month = now.strftime("%Y-%m")
 
-    # Roll the window if it's never been opened, or it's older than 1 hour.
+    # ── Hourly window roll ────────────────────────────────────────────────
     if u.hourly_window_start is None or (now - u.hourly_window_start).total_seconds() >= 3600:
         u.hourly_window_start = now
         u.hourly_weight_used  = 0
 
-    used_before = u.hourly_weight_used
-    if used_before + weight > limit:
-        elapsed   = (now - u.hourly_window_start).total_seconds()
-        reset_in  = max(0, int(3600 - elapsed))
-        db.commit()   # persist the (possibly new) window start so reset_in is stable
+    # ── Monthly credit window roll (Pro only matters; Free is already capped
+    # by lookup count) ────────────────────────────────────────────────────
+    if u.monthly_credit_month != now_month:
+        u.monthly_credit_month = now_month
+        u.monthly_credit_used  = 0
+
+    hourly_used_before = u.hourly_weight_used
+    month_used_before  = u.monthly_credit_used or 0
+
+    # Check hourly first (smaller window, more often hit)
+    if hourly_used_before + weight > limit:
+        elapsed  = (now - u.hourly_window_start).total_seconds()
+        reset_in = max(0, int(3600 - elapsed))
+        db.commit()
         return {
-            "allowed":  False,
-            "weight":   weight,
-            "used":     used_before,
-            "limit":    limit,
-            "reset_in": reset_in,
+            "allowed":     False,
+            "kind":        "hourly",
+            "weight":      weight,
+            "used":        hourly_used_before,
+            "limit":       limit,
+            "reset_in":    reset_in,
+            "month_used":  month_used_before,
+            "month_limit": MONTHLY_CREDIT_CAP_PRO if is_pro else -1,
         }
 
-    u.hourly_weight_used = used_before + weight
+    # Monthly credit cap (Pro only). Free users have a separate
+    # lookup-count cap enforced in _check_usage.
+    if is_pro and month_used_before + weight > MONTHLY_CREDIT_CAP_PRO:
+        db.commit()
+        return {
+            "allowed":     False,
+            "kind":        "monthly",
+            "weight":      weight,
+            "used":        hourly_used_before,
+            "limit":       limit,
+            "reset_in":    0,
+            "month_used":  month_used_before,
+            "month_limit": MONTHLY_CREDIT_CAP_PRO,
+        }
+
+    u.hourly_weight_used  = hourly_used_before + weight
+    if is_pro:
+        u.monthly_credit_used = month_used_before + weight
     db.commit()
     return {
-        "allowed":  True,
-        "weight":   weight,
-        "used":     u.hourly_weight_used,
-        "limit":    limit,
-        "reset_in": max(0, int(3600 - (now - u.hourly_window_start).total_seconds())),
+        "allowed":     True,
+        "weight":      weight,
+        "used":        u.hourly_weight_used,
+        "limit":       limit,
+        "reset_in":    max(0, int(3600 - (now - u.hourly_window_start).total_seconds())),
+        "month_used":  u.monthly_credit_used if is_pro else 0,
+        "month_limit": MONTHLY_CREDIT_CAP_PRO if is_pro else -1,
     }
 
 def _read_hourly_status(db: DBSession, user: Optional["User"]) -> dict:
-    """Read-only view of the user's current hourly budget (no increment)."""
+    """Read-only view of the user's current hourly + monthly credit state."""
     if user is None:
         return {"used": 0, "limit": -1, "reset_in": 0,
+                "month_used": 0, "month_limit": -1,
                 "weights": MODEL_WEIGHTS}
     u = db.query(User).filter(User.id == user.id).first()
     if u is None:
         return {"used": 0, "limit": -1, "reset_in": 0,
+                "month_used": 0, "month_limit": -1,
                 "weights": MODEL_WEIGHTS}
-    limit = HOURLY_LIMIT_PRO if _is_effectively_pro(u) else HOURLY_LIMIT_FREE
-    now   = datetime.datetime.utcnow()
+
+    is_pro    = _is_effectively_pro(u)
+    limit     = HOURLY_LIMIT_PRO if is_pro else HOURLY_LIMIT_FREE
+    now       = datetime.datetime.utcnow()
+    now_month = now.strftime("%Y-%m")
+
     if u.hourly_window_start is None or (now - u.hourly_window_start).total_seconds() >= 3600:
         used = 0
         reset_in = 0
     else:
         used = u.hourly_weight_used or 0
         reset_in = max(0, int(3600 - (now - u.hourly_window_start).total_seconds()))
-    return {"used": used, "limit": limit, "reset_in": reset_in, "weights": MODEL_WEIGHTS}
+
+    if is_pro and u.monthly_credit_month == now_month:
+        month_used = u.monthly_credit_used or 0
+    else:
+        month_used = 0
+
+    return {
+        "used":        used,
+        "limit":       limit,
+        "reset_in":    reset_in,
+        "month_used":  month_used,
+        "month_limit": MONTHLY_CREDIT_CAP_PRO if is_pro else -1,
+        "weights":     MODEL_WEIGHTS,
+    }
 
 def _is_effectively_pro(u: "User") -> bool:
     """True if the user has a paid Pro plan OR an active trial."""
@@ -400,28 +478,36 @@ def _check_usage(
     Returns {"allowed": bool, "used": int, "limit": int}.
     """
     now_month = datetime.datetime.utcnow().strftime("%Y-%m")
-    limit = FREE_LOOKUP_LIMIT if kind == "lookup" else FREE_OCR_LIMIT
+    free_limit = FREE_LOOKUP_LIMIT if kind == "lookup" else FREE_OCR_LIMIT
 
     if user:
         u = db.query(User).filter(User.id == user.id).first()
-        if u and _is_effectively_pro(u):
-            return {"allowed": True, "used": 0, "limit": -1}   # unlimited (paid or trial)
+        is_pro = bool(u and _is_effectively_pro(u))
+
+        # Pro lookups are unlimited at the monthly-count level (hourly/monthly
+        # credit caps cover them). Pro OCR is capped at PRO_OCR_MONTHLY_CAP to
+        # prevent vision-API abuse.
+        if is_pro and kind == "lookup":
+            return {"allowed": True, "used": 0, "limit": -1}
 
         if u:
             if kind == "lookup":
                 if u.lookup_month != now_month:
                     u.monthly_lookups = 0
                     u.lookup_month    = now_month
-                used = u.monthly_lookups
+                used  = u.monthly_lookups
+                limit = free_limit
                 if used >= limit:
                     db.commit()
                     return {"allowed": False, "used": used, "limit": limit}
                 u.monthly_lookups += 1
             else:
+                # OCR: Pro gets PRO_OCR_MONTHLY_CAP, Free gets FREE_OCR_LIMIT
                 if u.ocr_month != now_month:
                     u.monthly_ocr = 0
                     u.ocr_month   = now_month
-                used = u.monthly_ocr
+                used  = u.monthly_ocr
+                limit = PRO_OCR_MONTHLY_CAP if is_pro else free_limit
                 if used >= limit:
                     db.commit()
                     return {"allowed": False, "used": used, "limit": limit}
@@ -429,7 +515,7 @@ def _check_usage(
             db.commit()
             return {"allowed": True, "used": used + 1, "limit": limit}
 
-    # Anonymous — track by IP
+    # Anonymous — track by IP (always free limits)
     row = db.query(AnonUsage).filter(
         AnonUsage.ip    == ip,
         AnonUsage.month == now_month,
@@ -439,6 +525,7 @@ def _check_usage(
         db.add(row)
         db.flush()
 
+    limit = free_limit
     if kind == "lookup":
         used = row.lookups
         if used >= limit:
@@ -698,9 +785,24 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
     }
     actual_model = _model_map.get((req.model or "deep").lower().strip(), "deep")
 
-    # Hourly weighted rate limit (per-user; anonymous skipped — slowapi covers them).
+    # Hourly + monthly weighted rate limit (per-user; anonymous skipped).
     hourly = _check_hourly_limit(db, user, actual_model)
     if not hourly["allowed"]:
+        if hourly.get("kind") == "monthly":
+            # Pro monthly credit ceiling — return 402 so the existing limit
+            # modal handles it; user has to wait for next billing cycle.
+            raise HTTPException(
+                status_code=402,
+                detail={
+                    "code":        "limit_exceeded",
+                    "kind":        "monthly_credit",
+                    "used":        hourly["month_used"],
+                    "limit":       hourly["month_limit"],
+                    "weight":      hourly["weight"],
+                    "model":       actual_model,
+                },
+            )
+        # Hourly: 429 with Retry-After so clients can back off
         raise HTTPException(
             status_code=429,
             detail={
@@ -807,10 +909,12 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
             **result,
             "_usage":  {"used": usage["used"], "limit": usage["limit"]},
             "_hourly": {
-                "used":     hourly["used"],
-                "limit":    hourly["limit"],
-                "weight":   hourly["weight"],
-                "reset_in": hourly["reset_in"],
+                "used":        hourly["used"],
+                "limit":       hourly["limit"],
+                "weight":      hourly["weight"],
+                "reset_in":    hourly["reset_in"],
+                "month_used":  hourly["month_used"],
+                "month_limit": hourly["month_limit"],
             },
         }
 
@@ -2328,10 +2432,11 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
     if user:
         u = db.query(User).filter(User.id == user.id).first()
         if u and _is_effectively_pro(u):
+            pro_ocr = u.monthly_ocr if u.ocr_month == now_month else 0
             return {
                 "is_pro": True,
-                "lookup": {"used": 0, "limit": -1},
-                "ocr":    {"used": 0, "limit": -1},
+                "lookup": {"used": 0,       "limit": -1},
+                "ocr":    {"used": pro_ocr, "limit": PRO_OCR_MONTHLY_CAP},
                 "hourly": hourly_status,
             }
         lookups = u.monthly_lookups if u and u.lookup_month == now_month else 0

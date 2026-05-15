@@ -2377,7 +2377,7 @@
           Are there hourly limits even on Pro?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — to keep the service fast and prevent abuse, every account has a per-hour credit budget. Each lookup costs <strong>1 credit</strong> in Fast, <strong>2 credits</strong> in Balanced, and <strong>3 credits</strong> in Deep, reflecting the relative compute cost. Pro users get <strong>120 credits per hour</strong> (≈ 40 Deep, 60 Balanced, or 120 Fast lookups), which comfortably covers even very heavy reading. Free users get 20 credits per hour. The budget resets every hour, automatically.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — to keep the service fast and prevent abuse, every account has a per-hour credit budget. Each lookup costs <strong>1 credit</strong> in Fast, <strong>2 credits</strong> in Balanced, and <strong>3 credits</strong> in Deep, reflecting the relative compute cost. Pro users get <strong>120 credits per hour</strong> (≈ 40 Deep, 60 Balanced, or 120 Fast lookups), which comfortably covers even very heavy reading. Free users get 20 credits per hour. The budget resets every hour, automatically.</p><p>Pro also has a generous monthly safety ceiling — <strong>20,000 credits</strong> (≈ 6,600 Deep lookups) and <strong>500 OCR scans</strong> per month. Real readers don't come close to these; they exist to prevent automated abuse. If you ever need more, write to me directly.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -3074,9 +3074,36 @@ async function initializeModelSelector() {
 
 /* ── Pro modal ─────────────────────────────────────────── */
 function showProModal(kind, used, limit) {
-  const sub = document.getElementById('pro-modal-sub');
+  const sub        = document.getElementById('pro-modal-sub');
+  const title      = document.querySelector('#pro-modal .pro-modal-title');
+  const planCard   = document.querySelector('#pro-modal .pro-plan-card');
+  const resetNote  = document.querySelector('#pro-modal .pro-modal-reset');
+
+  // Heuristic: limits above the free tier mean the user is on Pro and hit
+  // the Pro cap (500 OCR / 20,000 credits / month).
+  const isProCap = (kind === 'ocr' && limit > 10) || (kind === 'monthly_credit');
+
+  if (isProCap) {
+    if (title) title.textContent = "You've hit your Pro monthly cap";
+    if (planCard)  planCard.style.display  = 'none';
+    if (resetNote) resetNote.textContent =
+      'Your Pro quota resets on the 1st of next month. If you need more, write to ' +
+      'matveylgnv2021@gmail.com — I read every message.';
+  } else {
+    if (title) title.textContent = "You've hit your free limit";
+    if (planCard)  planCard.style.display  = '';
+    if (resetNote) resetNote.textContent =
+      'Your free quota resets on the 1st of each month.';
+  }
+
   if (kind === 'ocr') {
-    sub.textContent = `You've used all ${limit} free OCR scans this month.`;
+    sub.textContent = isProCap
+      ? `You've used all ${limit} Pro OCR scans this month.`
+      : `You've used all ${limit} free OCR scans this month.`;
+  } else if (kind === 'monthly_credit') {
+    sub.textContent =
+      `You've used all ${limit.toLocaleString()} Pro credits this month. ` +
+      `Fast = 1 credit, Balanced = 2, Deep = 3.`;
   } else {
     sub.textContent = `You've used all ${limit} free lookups this month.`;
   }
