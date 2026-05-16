@@ -1062,7 +1062,11 @@
     .lp-hero h1 {
       font-family: 'Lora', serif; font-size: clamp(1.8rem, 3vw, 2.8rem);
       font-weight: 600; line-height: 1.2; color: var(--text);
-      max-width: 480px; position: relative;
+      /* No max-width: the rotating em changes width on every cycle, so
+         constraining the headline causes "Understand X." to drop onto a
+         new line for longer words. Let the heading size to its content. */
+      white-space: nowrap;
+      position: relative;
     }
     .lp-hero h1 em { font-style: italic; color: var(--accent); }
     .lp-hero-sub {
