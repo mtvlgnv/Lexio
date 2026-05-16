@@ -19,12 +19,49 @@
       </svg>
       <span class="logo-name">Lexio</span>
     </div>
-    <label class="toggle" title="Enable / disable">
+    <label class="toggle" title="Enable / disable extension">
       <input type="checkbox" id="enabled-toggle" checked>
       <span class="slider"></span>
     </label>
   </div>
 
+  <!-- Behavior settings -->
+  <div class="section">
+    <div class="section-label">Behavior</div>
+    <label class="row-toggle">
+      <div class="row-toggle-text">
+        <span class="row-toggle-title">Auto-popup on selection</span>
+        <span class="row-toggle-sub">Show definition when you highlight a word. Off → use right-click "Define with Lexio".</span>
+      </div>
+      <span class="toggle" title="Auto-popup on selection">
+        <input type="checkbox" id="auto-popup-toggle" checked>
+        <span class="slider"></span>
+      </span>
+    </label>
+  </div>
+
+  <!-- AI Mode selector -->
+  <div class="section">
+    <div class="section-label">AI Mode</div>
+    <div class="model-grid" id="model-grid">
+      <button class="model-btn" data-model="fast" id="model-btn-fast">
+        <span class="model-btn-name">Fast</span>
+        <span class="model-btn-sub">GPT-4o Mini</span>
+      </button>
+      <button class="model-btn" data-model="balanced" id="model-btn-balanced">
+        <span class="model-btn-name">Balanced</span>
+        <span class="model-btn-sub">Gemini 2.5</span>
+        <span class="model-pro-tag" id="tag-balanced">PRO</span>
+      </button>
+      <button class="model-btn" data-model="deep" id="model-btn-deep">
+        <span class="model-btn-name">Deep</span>
+        <span class="model-btn-sub">Claude</span>
+        <span class="model-pro-tag" id="tag-deep">PRO</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Language -->
   <div class="section">
     <div class="section-label">Language</div>
     <select id="lang-select" class="select">
@@ -51,10 +88,10 @@
   <!-- Signed-out -->
   <div id="signed-out" class="section auth-section">
     <div class="section-label">Account</div>
-    <p class="auth-hint">Sign in to sync your word bank across devices.</p>
+    <p class="auth-hint">Sign in to sync your word bank and unlock Pro models.</p>
     <div class="auth-fields" id="auth-fields">
       <input id="auth-email"    type="email"    placeholder="you@example.com" class="input" autocomplete="email">
-      <input id="auth-password" type="password" placeholder="••••••••" class="input" autocomplete="current-password">
+      <input id="auth-password" type="password" placeholder="••••••••"        class="input" autocomplete="current-password">
       <div class="auth-error hidden" id="auth-error"></div>
       <button class="btn-primary" id="auth-submit">Sign in</button>
       <a class="auth-link" href="https://lexio.site" target="_blank">Create account on lexio.site ↗</a>
@@ -66,23 +103,28 @@
     <div class="section-label">Account</div>
     <div class="user-row">
       <div class="user-avatar" id="user-avatar"></div>
-      <div>
-        <div class="user-name"  id="user-name"></div>
+      <div class="user-info">
+        <div class="user-name-row">
+          <span class="user-name" id="user-name"></span>
+          <span class="pro-badge hidden" id="pro-badge">PRO</span>
+          <span class="trial-badge hidden" id="trial-badge">TRIAL</span>
+        </div>
         <div class="user-email" id="user-email"></div>
       </div>
       <button class="btn-ghost" id="signout-btn">Sign out</button>
     </div>
+    <a class="upgrade-link hidden" id="upgrade-link" href="https://lexio.site/#lp-pro" target="_blank">
+      ✦ Upgrade to Pro — unlock Balanced &amp; Deep
+    </a>
   </div>
 
-  <div class="section wordbank-section">
-    <div class="wordbank-header">
-      <div>
-        <div class="section-label">Word Bank</div>
-        <span class="wb-count" id="wb-count">No words collected yet</span>
-      </div>
-      <a class="btn-ghost" href="https://lexio.site" target="_blank">Open ↗</a>
+  <!-- Word bank -->
+  <div class="section wordbank-row">
+    <div>
+      <div class="section-label">Word Bank</div>
+      <span class="wb-count" id="wb-count">0 words saved</span>
     </div>
-    <div class="wb-list" id="wb-list"></div>
+    <a class="btn-ghost" href="https://lexio.site" target="_blank">Open ↗</a>
   </div>
 
   <div class="footer">

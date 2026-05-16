@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Lexio",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "AI-powered contextual definitions. Select any word to see exactly what it means in that sentence.",
 
   "permissions": ["storage", "contextMenus"],
@@ -21,7 +21,7 @@
     {
       "matches": ["https://lexio.site/*"],
       "js": ["site-bridge.js"],
-      "run_at": "document_idle"
+      "run_at": "document_start"
     }
   ],
 
