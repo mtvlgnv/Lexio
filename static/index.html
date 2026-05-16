@@ -1244,8 +1244,12 @@
       font-size: 0.82rem;
     }
 
-    /* How it works — now inside hero right column, section hidden */
-    .lp-steps { display: none; }
+    /* How it works — standalone section below hero */
+    .lp-steps {
+      padding: 48px 48px;
+      background: transparent; border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; gap: 20px;
+    }
     .lp-hero-steps-title {
       font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
       text-transform: uppercase; color: var(--accent);
@@ -2272,6 +2276,34 @@
       <p class="lp-demo-caption">Click any word. Get its exact meaning in <em>this</em> sentence — not a generic dictionary entry.</p>
     </div>
   </div>
+
+  <!-- How it works -->
+  <section class="lp-steps">
+    <h2 class="lp-section-title" data-i18n="howLabel">How it works</h2>
+    <div class="lp-steps-grid">
+      <div class="lp-step">
+        <div class="lp-step-num">1</div>
+        <div>
+          <h3 data-i18n="step1Title">Paste any text</h3>
+          <p data-i18n="step1Desc">Drop in a paragraph from an article, book, email, or anything else — any language works.</p>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">2</div>
+        <div>
+          <h3 data-i18n="step2Title">Analyze it</h3>
+          <p data-i18n="step2Desc">Lexio reads the full context and prepares every word for instant lookup. Takes about a second.</p>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-num">3</div>
+        <div>
+          <h3 data-i18n="step3Title">Click any word</h3>
+          <p data-i18n="step3Desc">Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Trending words -->
   <!-- Features -->
