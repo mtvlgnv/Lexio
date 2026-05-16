@@ -1869,6 +1869,65 @@
     }
     .usage-pill.danger { color: #e55; }
     .usage-pill.danger .usage-fill { background: #e55; }
+
+    /* ── Scroll-triggered reveal animations ───────────────────────────── */
+    .lp-reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .lp-reveal.is-visible { opacity: 1; transform: none; }
+    .lp-reveal-stagger > * {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lp-reveal-stagger.is-visible > * { opacity: 1; transform: none; }
+    .lp-reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms;   }
+    .lp-reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 90ms;  }
+    .lp-reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 180ms; }
+    .lp-reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 270ms; }
+    .lp-reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 360ms; }
+    .lp-reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 450ms; }
+
+    /* ── Breathing hero gradient (warm radial glows that pulse softly) ─ */
+    .lp-hero::after {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 60% 70% at 28% 55%, color-mix(in oklch, var(--accent) 14%, transparent), transparent 60%),
+        radial-gradient(ellipse 55% 65% at 78% 35%, color-mix(in oklch, var(--accent) 10%, transparent), transparent 60%);
+      animation: lpHeroBreathe 9s ease-in-out infinite;
+      opacity: 0.85;
+    }
+    @keyframes lpHeroBreathe {
+      0%, 100% { opacity: 0.55; transform: scale(1);    }
+      50%      { opacity: 1;    transform: scale(1.06); }
+    }
+
+    /* ── Hero word swap (italic accent in headline) ───────────────────── */
+    .lp-hero h1 em {
+      display: inline-block;
+      transition: opacity 380ms ease, transform 380ms ease;
+      will-change: opacity, transform;
+    }
+
+    /* ── Primary CTA idle pulse (paused during hover via btn-glow) ────── */
+    .lp-btn-primary:not(.btn-glow) {
+      animation: lpBtnPulse 2.6s ease-in-out infinite;
+    }
+    @keyframes lpBtnPulse {
+      0%, 100% { box-shadow: 0 0 0 0  color-mix(in oklch, var(--accent) 32%, transparent); }
+      50%      { box-shadow: 0 0 0 10px color-mix(in oklch, var(--accent) 0%,  transparent); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lp-reveal, .lp-reveal-stagger > * { opacity: 1; transform: none; transition: none; }
+      .lp-hero::after { animation: none; opacity: 0.7; }
+      .lp-btn-primary { animation: none; }
+      .lp-hero h1 em { transition: none; }
+    }
   </style>
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
@@ -5132,6 +5191,150 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
       e.preventDefault();
       const target = document.getElementById(l.dataset.section);
       if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+})();
+
+// ── Scroll-triggered reveal animations ───────────────────────────
+(function() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const REVEAL_SELECTORS = [
+    '.lp-steps', '.lp-features', '.lp-pro', '.lp-trending',
+    '.lp-twin', '.lp-faq', '.lp-modes', '.lp-ext',
+    '.lp-desktop', '.lp-download', '.lp-trending-compact'
+  ];
+  document.querySelectorAll(REVEAL_SELECTORS.join(','))
+    .forEach(el => el.classList.add('lp-reveal'));
+  document.querySelectorAll('.lp-steps-grid, .lp-features-grid, .lp-pro-grid')
+    .forEach(el => el.classList.add('lp-reveal-stagger'));
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    document.querySelectorAll('.lp-reveal, .lp-reveal-stagger')
+      .forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const io = new IntersectionObserver(function(entries) {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.lp-reveal, .lp-reveal-stagger')
+    .forEach(el => io.observe(el));
+})();
+
+// ── Hero word swap: cycle the italic accent in the headline ──────
+(function() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  setTimeout(function() {
+    const em = document.querySelector('.lp-hero h1 em');
+    if (!em) return;
+    const words = ['everything.', 'Tolstoy.', 'philosophy.', 'Kafka.', 'poetry.', 'law.', 'Dostoevsky.'];
+    // "everything." anchors the headline, so it gets a longer hold than the
+    // rotating alternatives.
+    const HOLD_DEFAULT = 5200;
+    const HOLD_ROTATE  = 2800;
+    let i = 0;
+    function scheduleNext() {
+      const hold = (words[i] === 'everything.') ? HOLD_DEFAULT : HOLD_ROTATE;
+      setTimeout(function() {
+        em.style.opacity = '0';
+        em.style.transform = 'translateY(-6px)';
+        setTimeout(function() {
+          i = (i + 1) % words.length;
+          em.textContent = words[i];
+          em.style.transform = 'translateY(6px)';
+          void em.offsetWidth; // force reflow so the transition restarts
+          em.style.opacity = '1';
+          em.style.transform = 'translateY(0)';
+          scheduleNext();
+        }, 400);
+      }, hold);
+    }
+    scheduleNext();
+  }, 250);
+})();
+
+// ── Cycling demo words in hero preview ──────────────────────────
+(function() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  const stage = document.querySelector('.lp-demo-stage');
+  if (!stage) return;
+  const txt       = stage.querySelector('.lp-demo-text');
+  const word      = stage.querySelector('.lp-demo-word');
+  const popupWord = stage.querySelector('.lp-demo-popup-word');
+  const popupPos  = stage.querySelector('.lp-demo-popup-pos');
+  const lines     = stage.querySelectorAll('.lp-demo-popup-line');
+  if (!txt || !word || !popupWord || lines.length < 2) return;
+
+  const states = [
+    { before: "The novel's ", word: 'labyrinthine', after: ' plot left readers spellbound — twists weaving with deliberate ambiguity.',
+      pos: 'adjective', inContext: 'Intricate and twisting — the plot has so many turns it feels like a maze.',
+      whyWord: 'Stronger than "complex" — implies deliberate, almost architectural intricacy.' },
+    { before: "The senator's ", word: 'mendacious', after: ' testimony unraveled under cross-examination.',
+      pos: 'adjective', inContext: 'Knowingly false — not just wrong, but deliberately lying.',
+      whyWord: 'Sharper than "false" — carries an accusation of bad faith.' },
+    { before: 'Her ', word: 'sanguine', after: ' outlook persisted through every setback.',
+      pos: 'adjective', inContext: 'Cheerfully optimistic, especially under difficult circumstances.',
+      whyWord: 'Older and more literary than "hopeful" — implies steadiness, not naivety.' },
+    { before: 'His arguments were ', word: 'specious', after: ', persuasive at first glance but hollow underneath.',
+      pos: 'adjective', inContext: 'Plausible on the surface but actually wrong or misleading.',
+      whyWord: 'Sharper than "weak" — implies dressed-up deception.' }
+  ];
+
+  function applyState(s) {
+    const nodes = txt.childNodes;
+    for (let n = 0; n < nodes.length; n++) {
+      if (nodes[n] === word) {
+        if (n > 0                  && nodes[n - 1].nodeType === 3) nodes[n - 1].nodeValue = s.before;
+        if (n < nodes.length - 1   && nodes[n + 1].nodeType === 3) nodes[n + 1].nodeValue = s.after;
+        break;
+      }
+    }
+    word.textContent      = s.word;
+    popupWord.textContent = s.word;
+    popupPos.textContent  = s.pos;
+    lines[0].textContent  = s.inContext;
+    lines[1].textContent  = s.whyWord;
+  }
+
+  // CSS animation is a 7s loop. Swap content at ~6.7s (popup invisible)
+  // so the next loop starts already showing the new word.
+  let i = 0;
+  setTimeout(function tick() {
+    i = (i + 1) % states.length;
+    applyState(states[i]);
+    setTimeout(tick, 7000);
+  }, 6700);
+})();
+
+// ── Magnetic pull for primary CTAs ──────────────────────────────
+(function() {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  const SELECTOR = '.lp-btn-primary, .lp-hero-cta .lp-btn-ghost';
+  const STRENGTH = 0.18;   // fraction of cursor offset from center
+  const MAX_PX   = 7;      // clamp so it stays subtle
+
+  document.querySelectorAll(SELECTOR).forEach(function(btn) {
+    if (btn.dataset.magnetic === '1') return;
+    btn.dataset.magnetic = '1';
+    btn.style.transition = (btn.style.transition || '') + ', transform 220ms cubic-bezier(.2,.7,.2,1)';
+
+    btn.addEventListener('pointermove', function(e) {
+      const r  = btn.getBoundingClientRect();
+      let   dx = (e.clientX - (r.left + r.width  / 2)) * STRENGTH;
+      let   dy = (e.clientY - (r.top  + r.height / 2)) * STRENGTH;
+      if (dx >  MAX_PX) dx =  MAX_PX; if (dx < -MAX_PX) dx = -MAX_PX;
+      if (dy >  MAX_PX) dy =  MAX_PX; if (dy < -MAX_PX) dy = -MAX_PX;
+      btn.style.transform = 'translate(' + dx.toFixed(1) + 'px, ' + dy.toFixed(1) + 'px)';
+    });
+    btn.addEventListener('pointerleave', function() {
+      btn.style.transform = '';
     });
   });
 })();
