@@ -1605,6 +1605,506 @@ truth, representation, and the relationship between writer and reader.
 The least interesting uses it as a trick.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "picaresque-novel",
+        "term": "picaresque novel",
+        "context": "literary genre",
+        "title": "What \"Picaresque Novel\" Means as a Genre",
+        "meta_description": "The picaresque novel is more than a road-trip story. Here's its 16th-century Spanish origin, its defining features, and its modern descendants from Twain to Bolaño.",
+        "h1": "What \"picaresque novel\" means as a genre",
+        "updated": "2026-05-19",
+        "related": ["epistolary-novel", "bildungsroman-genre", "unreliable-narrator"],
+        "body_html": """
+<p>The <strong>picaresque novel</strong> is one of the oldest novelistic
+genres in European literature — and one of the most flexible. The name
+comes from the Spanish <em>pícaro</em>, a low-born rogue or trickster.
+A picaresque novel is, at root, the story of a pícaro's adventures: a
+series of loosely connected episodes in which a poor, witty,
+disreputable protagonist survives by their wits in a corrupt world.</p>
+
+<h2>The 16th-century origin</h2>
+
+<p>The genre is conventionally dated to <em>Lazarillo de Tormes</em>
+(1554), an anonymous Spanish novella in which a poor boy moves through
+a series of cruel and hypocritical masters. The book was a sensation
+across Europe and established the genre's defining moves.</p>
+
+<p>Cervantes's <em>Don Quixote</em> (1605/1615) is sometimes called a
+picaresque, but strictly it isn't — Quixote is a gentleman, not a
+pícaro. The genre proper continued in Spain with works like Mateo
+Alemán's <em>Guzmán de Alfarache</em> (1599, 1604) and Quevedo's
+<em>El Buscón</em> (1626).</p>
+
+<h2>The defining features</h2>
+
+<ol>
+  <li><strong>A first-person rogue narrator.</strong> The pícaro tells
+      their own story, usually retrospectively. The voice is colloquial,
+      irreverent, and often manipulative.</li>
+  <li><strong>Low birth.</strong> The pícaro is poor — usually an
+      orphan, an outcast, or a servant. This is structural: the genre
+      uses the bottom of society as a vantage point on the top.</li>
+  <li><strong>Episodic structure.</strong> The novel is a string of
+      episodes, often each centered on a different master, place, or
+      scheme. Plot is loose; the connecting thread is the protagonist.</li>
+  <li><strong>Social satire.</strong> The pícaro moves through every
+      class and profession, exposing the hypocrisies of each.</li>
+  <li><strong>Survival, not transformation.</strong> Unlike the
+      bildungsroman, the pícaro doesn't usually grow into a stable adult
+      identity. They keep moving.</li>
+</ol>
+
+<h2>The English line</h2>
+
+<p>The genre crossed the Channel in the 18th century:</p>
+
+<ul>
+  <li>Defoe's <em>Moll Flanders</em> (1722) — a female pícaro.</li>
+  <li>Fielding's <em>Tom Jones</em> (1749) — picaresque structure,
+      though with a higher-born hero.</li>
+  <li>Smollett's <em>Roderick Random</em> (1748) and
+      <em>Humphry Clinker</em> (1771).</li>
+</ul>
+
+<h2>Modern descendants</h2>
+
+<ul>
+  <li><strong>The Adventures of Huckleberry Finn</strong> — Twain's
+      novel inherits the picaresque structure (episodic river journey,
+      low-status narrator, satirical sweep) while complicating it.</li>
+  <li><strong>The Adventures of Augie March</strong> (Bellow, 1953) —
+      a self-consciously picaresque mid-century American novel.</li>
+  <li><strong>The Savage Detectives</strong> (Bolaño, 1998) — a
+      polyphonic picaresque sprawling across continents.</li>
+  <li><strong>The Sympathizer</strong> (Viet Thanh Nguyen, 2015) —
+      uses the rogue-narrator frame to handle Vietnam, espionage, and
+      diaspora.</li>
+</ul>
+
+<h2>Picaresque vs. bildungsroman</h2>
+
+<p>The two genres overlap but lean different directions. (See our
+<a href="/glossary/bildungsroman-genre">entry on the
+bildungsroman</a>.) A bildungsroman is about formation — the
+protagonist ends as a different person, integrated into society. A
+picaresque is about survival — the protagonist ends, more or less, the
+same person, having moved through society without being absorbed by
+it.</p>
+
+<h2>How to read it</h2>
+
+<p>When a critic invokes the picaresque, they are signalling a
+particular shape: episodic, satirical, voice-driven, viewed from below.
+Ask whether the novel's loose structure is a flaw or the form. In a
+properly picaresque book, the lack of a tight plot is the point —
+society itself, not the hero, is what's being put on display.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "epistolary-novel",
+        "term": "epistolary novel",
+        "context": "literary genre",
+        "title": "What an \"Epistolary Novel\" Is — The Letter-Novel Genre",
+        "meta_description": "An epistolary novel tells its story through letters, diaries, or documents. Here's the form's 18th-century history, its modern descendants, and why writers still use it.",
+        "h1": "What an \"epistolary novel\" is",
+        "updated": "2026-05-19",
+        "related": ["picaresque-novel", "unreliable-narrator", "gothic-fiction"],
+        "body_html": """
+<p>An <strong>epistolary novel</strong> is a novel told through
+documents — most often letters, but also diary entries, telegrams,
+emails, transcripts, or any other piece of in-world writing. The form
+is older than the realist novel and has had a strange afterlife: it
+keeps coming back in new technological clothes.</p>
+
+<h2>The 18th-century heyday</h2>
+
+<p>The epistolary novel was the dominant form of the 18th century.
+Three classics defined it:</p>
+
+<ul>
+  <li><strong>Samuel Richardson, <em>Pamela</em> (1740) and
+      <em>Clarissa</em> (1748).</strong> Richardson invented many of the
+      genre's moves; <em>Clarissa</em> is over a million words of
+      letters.</li>
+  <li><strong>Pierre Choderlos de Laclos, <em>Les Liaisons
+      dangereuses</em> (1782).</strong> A novel of seduction conducted
+      entirely through letters between conspirators.</li>
+  <li><strong>Goethe, <em>The Sorrows of Young Werther</em> (1774).</strong>
+      Letters from one obsessive young man, with brief framing
+      narrative.</li>
+</ul>
+
+<h2>Why writers chose letters</h2>
+
+<ol>
+  <li><strong>Intimacy.</strong> A letter is a window into a private
+      voice writing to a specific reader. The novel reader becomes a
+      kind of eavesdropper.</li>
+  <li><strong>Multiple perspectives.</strong> Different correspondents
+      give different accounts of the same events. The truth becomes a
+      construction.</li>
+  <li><strong>Real-time tension.</strong> Letters are written before the
+      outcome is known. The writer can hope, fear, lie — and be wrong.
+      The reader sees the gap.</li>
+  <li><strong>Authenticity.</strong> Early novels often presented
+      themselves as "found" letters, claiming a documentary truth that
+      narrated fiction couldn't.</li>
+</ol>
+
+<h2>The 19th-century shift</h2>
+
+<p>By the 19th century, the omniscient narrator had taken over. But the
+epistolary form survived in mixed-mode novels:</p>
+
+<ul>
+  <li><strong>Frankenstein</strong> (1818) is framed by Walton's letters
+      to his sister; inside that frame are Victor's narrative and the
+      creature's.</li>
+  <li><strong>Dracula</strong> (1897) is a patchwork of journals,
+      letters, newspaper clippings, and phonograph transcripts.</li>
+  <li><strong>The Color Purple</strong> (1982) returns to the pure
+      letter-novel form, with letters to God and to Celie's sister.</li>
+</ul>
+
+<h2>Modern technological variants</h2>
+
+<p>The genre has updated with each new medium of personal writing:</p>
+
+<ul>
+  <li><strong>e-mail novels</strong> like <em>e</em> (Matt Beaumont,
+      2000).</li>
+  <li><strong>Text-message and chat novels</strong> in the 2010s.</li>
+  <li><strong>Found-footage and document novels</strong> like Mark Z.
+      Danielewski's <em>House of Leaves</em>.</li>
+  <li><strong>Twitter and blog novels</strong> as experiments in
+      real-time fiction.</li>
+</ul>
+
+<h2>Strengths and limits</h2>
+
+<p>What the form gains in intimacy and polyphony, it loses in scope.
+Letters can describe only what their writers know and chose to write
+about. The result is built-in unreliability: every account is partial.
+(See our <a href="/glossary/unreliable-narrator">entry on the
+unreliable narrator</a>.) Skilled epistolary writers use that limit as
+a structural feature — the missing letter, the contradictory account,
+the silence between correspondents.</p>
+
+<h2>How to read it</h2>
+
+<p>When you read an epistolary novel, ask: who is writing, to whom,
+when, and why? A letter is performative — the writer is shaping
+themselves for a specific reader. The genre's pleasure is in those
+many performances, and in the gaps between them.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "gothic-fiction",
+        "term": "Gothic fiction",
+        "context": "literary genre",
+        "title": "What \"Gothic Fiction\" Means as a Genre",
+        "meta_description": "Gothic fiction is more than haunted castles. Here's the genre's 18th-century origin, its defining features, and how it evolved from Walpole to Shirley Jackson.",
+        "h1": "What \"Gothic fiction\" means as a genre",
+        "updated": "2026-05-19",
+        "related": ["sublime-in-romanticism", "uncanny-literature", "epistolary-novel"],
+        "body_html": """
+<p><strong>Gothic fiction</strong> is the literary genre concerned with
+dread, ruin, the supernatural, and the leak between the past and the
+present. It is one of the longest-running modes in English literature,
+and almost everything we now call horror or psychological-suspense
+fiction descends from it.</p>
+
+<h2>The 18th-century origin</h2>
+
+<p>The genre is conventionally dated to Horace Walpole's <em>The
+Castle of Otranto</em> (1764). Walpole called his book a "Gothic story"
+to signal its medieval setting — "Gothic" then meant medieval,
+antique, the period before classical revival. The label stuck and
+broadened.</p>
+
+<p>Walpole's novel established the formula: a crumbling castle, a
+buried family secret, supernatural events, a persecuted heroine, a
+tyrannical patriarch. Within twenty years, Ann Radcliffe (<em>The
+Mysteries of Udolpho</em>, 1794) and Matthew Lewis (<em>The Monk</em>,
+1796) had refined it into a popular form.</p>
+
+<h2>The defining features</h2>
+
+<ul>
+  <li><strong>An old, decaying setting.</strong> Castle, abbey, manor,
+      crypt, ancestral house. The architecture is older than the
+      characters and remembers things they don't.</li>
+  <li><strong>The intrusion of the past.</strong> A secret, a crime, a
+      legacy, a hereditary curse — something from generations ago
+      breaks into the present.</li>
+  <li><strong>Supernatural or ambiguously supernatural events.</strong>
+      Sometimes literal ghosts; sometimes events that may or may not be
+      psychological.</li>
+  <li><strong>Atmosphere over plot.</strong> Mood — fog, dusk, storm,
+      hallucination — is doing as much work as event.</li>
+  <li><strong>Threatened innocence.</strong> Often a young woman in
+      peril from a powerful, older male figure.</li>
+  <li><strong>The sublime.</strong> Gothic landscapes — alps, ruins,
+      precipices — invoke the Burkean sublime. (See our
+      <a href="/glossary/sublime-in-romanticism">entry on the
+      sublime</a>.)</li>
+</ul>
+
+<h2>The 19th-century mutations</h2>
+
+<ul>
+  <li><strong>Frankenstein (1818).</strong> The Gothic absorbs early
+      science fiction.</li>
+  <li><strong>Wuthering Heights (1847).</strong> The Gothic absorbs the
+      domestic novel.</li>
+  <li><strong>The Strange Case of Dr Jekyll and Mr Hyde (1886).</strong>
+      The Gothic moves into the city and into the divided self.</li>
+  <li><strong>Dracula (1897).</strong> The Gothic absorbs xenophobia,
+      sexology, and the new technologies of the typewriter and
+      phonograph.</li>
+</ul>
+
+<h2>American and Southern variants</h2>
+
+<p>The genre crossed the Atlantic and found new material:</p>
+
+<ul>
+  <li><strong>Poe</strong> compressed the Gothic into the short story.</li>
+  <li><strong>Hawthorne</strong> applied it to Puritan New England.</li>
+  <li><strong>Faulkner</strong> applied it to the American South — slavery,
+      decaying plantation houses, family curses. The Southern Gothic was
+      born.</li>
+  <li><strong>Shirley Jackson, Toni Morrison, Cormac McCarthy</strong> —
+      each carries the Gothic into the 20th and 21st centuries.</li>
+</ul>
+
+<h2>Why the genre keeps coming back</h2>
+
+<p>The Gothic offers a structure for talking about what a culture
+otherwise refuses to discuss: hereditary trauma, sexual violence,
+colonial guilt, the violence inside the family. The "supernatural" is
+often the literal staging of repressed historical fact. The haunted
+house is always a house haunted by something specific.</p>
+
+<h2>How to read it</h2>
+
+<p>When you read a Gothic novel, ask: <em>what is the past trying to
+say to the present</em>, and what does the present not want to hear?
+The genre's power is in its symptom-language. The castle, the ghost,
+the locked room — these are almost never just decoration. They are
+where the story has put the thing it cannot say plainly.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "magical-realism",
+        "term": "magical realism",
+        "context": "literary genre",
+        "title": "What \"Magical Realism\" Means in Literature",
+        "meta_description": "Magical realism isn't fantasy. Here's the precise definition — from its origin in Latin American literature to García Márquez, Allende, and Rushdie.",
+        "h1": "What \"magical realism\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["metafiction", "verisimilitude-in-literature", "allegory-vs-symbol"],
+        "body_html": """
+<p><strong>Magical realism</strong> is a literary mode in which magical
+events occur inside an otherwise realistic world, and the narrative
+treats them as ordinary. It is one of the most influential modes of
+the 20th century, and one of the most commonly misused. Not every story
+with magic in it is magical realism.</p>
+
+<h2>The origin of the term</h2>
+
+<p>The phrase <em>magischer Realismus</em> was coined in 1925 by the
+German art critic Franz Roh to describe a school of post-Expressionist
+painting. It crossed into Latin American literary criticism in the 1940s
+and 1950s through writers like Alejo Carpentier (who preferred
+<em>lo real maravilloso</em>, "the marvelous real") and Arturo Uslar
+Pietri.</p>
+
+<p>The mode reached its full form in the 1960s with the so-called
+"Boom" generation of Latin American writers — above all Gabriel García
+Márquez, whose <em>One Hundred Years of Solitude</em> (1967) became its
+canonical text.</p>
+
+<h2>The defining features</h2>
+
+<ol>
+  <li><strong>A realistic frame.</strong> The setting is recognizable
+      — specific place, history, social texture, food, weather. Magical
+      realism is not set in a fantasy kingdom.</li>
+  <li><strong>Magical events.</strong> Things happen that cannot happen
+      in our world: a character ascends to heaven while hanging laundry,
+      another lives 200 years, a rain of yellow flowers covers a town.</li>
+  <li><strong>Matter-of-fact tone.</strong> The narrator describes these
+      events without surprise. The magical is treated as part of the
+      texture of reality, not as a breach of it.</li>
+  <li><strong>The reader's unease.</strong> The reader is the only one
+      who experiences the magical as strange. The characters and
+      narrator do not.</li>
+</ol>
+
+<h2>What it isn't</h2>
+
+<ul>
+  <li><strong>Fantasy</strong> builds a second world with its own rules
+      and treats magic as a known system. Magical realism keeps our
+      world and lets the impossible into it.</li>
+  <li><strong>Surrealism</strong> distorts reality through dream-logic
+      and the unconscious. Magical realism preserves the daytime
+      reality the magic intrudes on.</li>
+  <li><strong>Allegory</strong> uses one thing to mean another. Magical
+      realism's marvels can be allegorical, but they are first of all
+      themselves. (See our
+      <a href="/glossary/allegory-vs-symbol">entry on allegory vs.
+      symbol</a>.)</li>
+</ul>
+
+<h2>The canonical writers</h2>
+
+<ul>
+  <li><strong>Gabriel García Márquez</strong> — <em>One Hundred Years
+      of Solitude</em> (1967), <em>Love in the Time of Cholera</em>
+      (1985).</li>
+  <li><strong>Jorge Luis Borges</strong> — closer to fantastic than
+      magical realism strictly, but a major influence.</li>
+  <li><strong>Isabel Allende</strong> — <em>The House of the
+      Spirits</em> (1982).</li>
+  <li><strong>Salman Rushdie</strong> — <em>Midnight's Children</em>
+      (1981) ports the mode to the Indian subcontinent.</li>
+  <li><strong>Toni Morrison</strong> — <em>Beloved</em> (1987) ports
+      it to the history of American slavery; the ghost is real and is
+      a person.</li>
+  <li><strong>Murakami</strong> — a Japanese version, often with
+      modernist and pop-cultural layers.</li>
+</ul>
+
+<h2>Why writers use the mode</h2>
+
+<p>Magical realism is often the form chosen for histories that
+realism cannot quite hold. Colonial trauma, dictatorship, slavery,
+genocide — when the historical truth is, in itself, more violent and
+strange than realism can frame, magical realism gives writers a
+language adequate to it. The dead can speak. Time can compress. A
+massacre can be remembered as a rain of flowers.</p>
+
+<h2>How to read it</h2>
+
+<p>When you read magical realism, do not ask "is this real?" — that's
+the wrong question. Ask <em>what historical or emotional truth is the
+magical event making visible</em>? The mode is a kind of strategic
+literalism: feelings, histories, and political situations are
+materialized into events the reader cannot ignore.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "kunstlerroman",
+        "term": "Künstlerroman",
+        "context": "literary genre",
+        "title": "What \"Künstlerroman\" Means — The Artist-Novel Genre",
+        "meta_description": "A Künstlerroman is a novel about an artist's formation. Here's how the genre differs from the bildungsroman and its canonical examples from Goethe to Joyce.",
+        "h1": "What \"Künstlerroman\" means",
+        "updated": "2026-05-19",
+        "related": ["bildungsroman-genre", "epiphany-joyce", "stream-of-consciousness"],
+        "body_html": """
+<p><strong>Künstlerroman</strong> — German for "artist novel" — is a
+sub-genre of the bildungsroman. It is the story of the formation not
+of a person in general but specifically of an <em>artist</em>: how an
+artistic consciousness comes into being, and at what cost.</p>
+
+<h2>The basic shape</h2>
+
+<p>A Künstlerroman follows the same overall structure as a
+bildungsroman — a young protagonist undergoes trials and arrives at
+adulthood. (See our
+<a href="/glossary/bildungsroman-genre">entry on the
+bildungsroman</a>.) But the arrival is not into ordinary social
+integration. The arrival is into the recognition that the protagonist
+is, must be, an artist — and that this identity will often require
+withdrawing from the ordinary social compact rather than joining it.</p>
+
+<h2>Defining features</h2>
+
+<ul>
+  <li><strong>Early aesthetic sensitivity.</strong> The young
+      protagonist is unusually responsive to color, sound, language,
+      or image. The novel marks this from childhood.</li>
+  <li><strong>Conflict with family.</strong> The artistic vocation is
+      typically opposed by parents, school, church, or class
+      expectations.</li>
+  <li><strong>A vocational crisis.</strong> The protagonist must choose
+      between the safe path society offers and the riskier path of
+      art.</li>
+  <li><strong>A moment of dedication.</strong> A scene — often near
+      the novel's end — in which the protagonist commits to being an
+      artist. (In Joyce, this is the wading-girl scene in
+      <em>Portrait</em>.)</li>
+  <li><strong>The text itself as implicit answer.</strong> The artist's
+      formation produces the work we are reading. The novel performs
+      its own justification.</li>
+</ul>
+
+<h2>The canonical examples</h2>
+
+<ul>
+  <li><strong>Goethe, <em>Wilhelm Meister's Apprenticeship</em>
+      (1795–96).</strong> The template — though Wilhelm's path to
+      artistic vocation is more ambiguous than later artist-novels.</li>
+  <li><strong>James Joyce, <em>A Portrait of the Artist as a Young
+      Man</em> (1916).</strong> The classical Künstlerroman in English.
+      The very title names the form.</li>
+  <li><strong>D. H. Lawrence, <em>Sons and Lovers</em> (1913).</strong>
+      Paul Morel's formation as artist and the price paid by his
+      relationships.</li>
+  <li><strong>Marcel Proust, <em>In Search of Lost Time</em>
+      (1913–27).</strong> The vast Künstlerroman of modernism — the
+      narrator finally realizes, in the last volume, that he must write
+      the book we have just finished reading.</li>
+  <li><strong>Virginia Woolf, <em>To the Lighthouse</em> (1927).</strong>
+      Lily Briscoe's formation as painter, alongside the Ramsay
+      family's domestic plot.</li>
+  <li><strong>Elena Ferrante, the Neapolitan Quartet (2011–14).</strong>
+      A double Künstlerroman of two girlhood friends, only one of whom
+      becomes the writer.</li>
+</ul>
+
+<h2>Why the form keeps mattering</h2>
+
+<p>The Künstlerroman is the form in which modern literature most
+directly thinks about its own conditions: what does it cost to make
+art? What must be sacrificed? What must be betrayed — family, country,
+religion, romantic love? The genre is, structurally, a writer's way of
+asking those questions while making the answer (the book itself).</p>
+
+<h2>Künstlerroman vs. bildungsroman</h2>
+
+<ul>
+  <li>A bildungsroman ends in integration. A Künstlerroman often ends
+      in productive isolation.</li>
+  <li>A bildungsroman is about becoming a competent adult. A
+      Künstlerroman is about becoming a specific kind of seer.</li>
+  <li>Every Künstlerroman is a bildungsroman. Not every bildungsroman
+      is a Künstlerroman.</li>
+</ul>
+
+<h2>How to read it</h2>
+
+<p>When a critic invokes the Künstlerroman, the question to ask is:
+<em>what kind of artist is being formed, and what is being lost in the
+forming</em>? The genre's central drama is rarely just "will the
+protagonist make it" — it is "what will making it require them to
+leave behind." Read the novel for what the artist gains <em>and</em>
+what they cost others. The form expects both.</p>
+""",
+    },
 ]
 
 
