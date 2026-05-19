@@ -1597,6 +1597,56 @@
     .lp-pro-cta:hover { background: var(--accent-dk); transform: translateY(-1px); }
     .lp-pro-note { font-size: 0.72rem; color: var(--muted); text-align: center; }
 
+    /* ── Pricing toggle (Monthly / Yearly) ───────────────────────── */
+    .lp-pro-toggle {
+      display: inline-flex; align-items: center; gap: 0;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      padding: 4px;
+      margin: 0 auto 32px;
+      position: relative;
+    }
+    .lp-pro-toggle-btn {
+      appearance: none; border: 0; background: transparent;
+      font: inherit; cursor: pointer;
+      padding: 9px 22px;
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--text-mid);
+      border-radius: 999px;
+      transition: color .18s, background .18s;
+      display: inline-flex; align-items: center; gap: 8px;
+      position: relative;
+    }
+    .lp-pro-toggle-btn[aria-pressed="true"] {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 14px -6px color-mix(in oklch, var(--accent) 60%, transparent);
+    }
+    .lp-pro-toggle-btn[aria-pressed="false"]:hover { color: var(--text); }
+    .lp-pro-toggle-save {
+      display: inline-block;
+      font-size: 0.66rem; font-weight: 700; letter-spacing: .04em;
+      padding: 2px 8px; border-radius: 999px;
+      background: color-mix(in oklch, var(--gold, oklch(78% 0.16 80)) 22%, transparent);
+      color: var(--gold, oklch(60% 0.16 75));
+      text-transform: uppercase;
+    }
+    .lp-pro-toggle-btn[aria-pressed="true"] .lp-pro-toggle-save {
+      background: rgba(255,255,255,.22);
+      color: #fff;
+    }
+    /* Period text needs to wrap multiple lines smoothly when switching cycles */
+    .lp-pro-period-eq {
+      display: block; font-size: 0.72rem; color: var(--muted);
+      margin-top: 4px; line-height: 1.3;
+    }
+    .lp-pro-period-eq[hidden] { display: none; }
+    .lp-pro-refund {
+      font-size: 0.72rem; color: var(--muted); text-align: center;
+      margin-top: 6px; line-height: 1.5;
+    }
+    .lp-pro-refund strong { color: var(--text-mid); font-weight: 600; }
+
     /* ── Pro section — "thanks" state for current subscribers ─────── */
     .lp-pro-thanks {
       background: color-mix(in oklch, var(--accent-lt) 55%, var(--surface));
@@ -2431,6 +2481,19 @@
       <button class="lp-pro-cta lp-pro-thanks-cta" onclick="handleManageSub()">Manage subscription →</button>
     </div>
 
+    <!-- Billing-cycle toggle — affects only the Pro column -->
+    <div class="lp-pro-toggle" id="lp-pro-toggle" role="tablist" aria-label="Billing period">
+      <button type="button" class="lp-pro-toggle-btn" role="tab"
+              data-plan="monthly" aria-pressed="true" onclick="setProPlan('monthly')">
+        Monthly
+      </button>
+      <button type="button" class="lp-pro-toggle-btn" role="tab"
+              data-plan="yearly" aria-pressed="false" onclick="setProPlan('yearly')">
+        Yearly
+        <span class="lp-pro-toggle-save" id="lp-pro-save-pct">save 33%</span>
+      </button>
+    </div>
+
     <div class="lp-pro-grid" id="lp-pro-grid">
       <!-- Free -->
       <div class="lp-pro-col">
@@ -2459,10 +2522,11 @@
         <div>
           <div class="lp-pro-col-label">Pro</div>
           <div class="lp-pro-price">
-            <span class="lp-pro-amount lp-pro-amount-dynamic">$2.99</span>
-            <span class="lp-pro-period">/month</span>
+            <span class="lp-pro-amount lp-pro-amount-dynamic" id="lp-pro-amount">$2.99</span>
+            <span class="lp-pro-period" id="lp-pro-period">/month</span>
           </div>
-          <p class="lp-pro-anchor">Less than one paperback a month — and you'll actually finish them.</p>
+          <span class="lp-pro-period-eq" id="lp-pro-period-eq" hidden></span>
+          <p class="lp-pro-anchor" id="lp-pro-anchor">Less than one paperback a month — and you'll actually finish them.</p>
         </div>
         <ul class="lp-pro-perks">
           <li>Unlimited word lookups</li>
@@ -2476,6 +2540,9 @@
         <p class="lp-pro-note" id="lp-pro-note">Card required · cancel any time before day 3</p>
       </div>
     </div>
+    <p class="lp-pro-refund">
+      <strong>14-day refund window</strong> — change your mind any time in the first 14 days for a full refund. After that, cancel any time and you'll keep Pro until the end of your billing period.
+    </p>
   </div>
 
 
@@ -2653,6 +2720,22 @@
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
         <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes, cancel any time from your account settings. You keep Pro access until the end of the billing period, then automatically move to the free tier.</p></div></div>
+      </div>
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          Monthly or yearly — which should I pick?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>If you're trying Lexio for the first time, go monthly — same features, cancel any time. If reading is already a habit and Lexio fits how you read, yearly saves around a third versus paying monthly. Both plans have a <strong>14-day refund window</strong>, so the yearly choice is reversible if it turns out not to fit.</p></div></div>
+      </div>
+
+      <div class="lp-faq-item">
+        <button class="lp-faq-q">
+          Can I get a refund?
+          <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — there's a <strong>14-day refund window</strong> on every Pro purchase, monthly or yearly. Just email <a href="mailto:matveylgnv2021@gmail.com">matveylgnv2021@gmail.com</a> and I'll process it. After 14 days, you can still cancel any time — you'll keep Pro until the end of your billing period and won't be charged again.</p></div></div>
       </div>
 
     </div>
@@ -2986,6 +3069,109 @@
 
   </div>
 </div>
+
+<!-- ── Email verification modal (Gap 4) ───────────────────────── -->
+<div id="verify-email-modal" class="hidden" role="dialog" aria-modal="true" aria-labelledby="verify-email-title">
+  <div class="vem-backdrop" onclick="closeVerifyEmailModal()"></div>
+  <div class="vem-card">
+    <button class="vem-close" type="button" onclick="closeVerifyEmailModal()" aria-label="Close">×</button>
+    <div class="vem-icon" aria-hidden="true">✉️</div>
+    <h3 id="verify-email-title" class="vem-title">Verify your email</h3>
+    <p class="vem-sub" id="verify-email-sub">We've sent a 6-digit code to your inbox. Enter it below to confirm your address.</p>
+    <p class="vem-target" id="verify-email-target"></p>
+    <form id="verify-email-form" onsubmit="return submitVerifyEmail(event)">
+      <input type="text" inputmode="numeric" autocomplete="one-time-code"
+             pattern="[0-9]{6}" maxlength="6" minlength="6" required
+             id="verify-email-code" class="vem-input"
+             placeholder="123456" aria-label="6-digit code">
+      <div class="vem-error" id="verify-email-error" style="display:none"></div>
+      <button type="submit" class="vem-submit" id="verify-email-submit">Verify email</button>
+    </form>
+    <button type="button" class="vem-resend" id="verify-email-resend" onclick="resendVerifyEmail()">
+      Didn't get a code? Send a new one
+    </button>
+  </div>
+</div>
+
+<style>
+  #verify-email-modal {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  #verify-email-modal.hidden { display: none; }
+  .vem-backdrop {
+    position: absolute; inset: 0;
+    background: color-mix(in oklch, #000 55%, transparent);
+    backdrop-filter: blur(4px);
+  }
+  .vem-card {
+    position: relative;
+    background: var(--surface, #fff);
+    border: 1px solid var(--border, #e5e5e5);
+    border-radius: 16px;
+    max-width: 380px; width: 100%;
+    padding: 32px 28px 24px;
+    text-align: center;
+    box-shadow: 0 24px 64px -16px rgba(0,0,0,0.25);
+  }
+  .vem-close {
+    position: absolute; top: 12px; right: 14px;
+    appearance: none; border: 0; background: transparent;
+    font-size: 1.4rem; line-height: 1; cursor: pointer;
+    color: var(--muted, #999);
+  }
+  .vem-close:hover { color: var(--text, #222); }
+  .vem-icon { font-size: 2rem; margin-bottom: 10px; }
+  .vem-title {
+    font-family: 'Lora', serif; font-size: 1.35rem; font-weight: 600;
+    margin-bottom: 8px; color: var(--text, #222);
+  }
+  .vem-sub {
+    font-size: 0.88rem; color: var(--text-mid, #555);
+    line-height: 1.55; margin-bottom: 6px;
+  }
+  .vem-target {
+    font-size: 0.84rem; color: var(--text, #222);
+    font-weight: 600; margin-bottom: 18px;
+    word-break: break-all;
+  }
+  .vem-input {
+    appearance: none; -webkit-appearance: none;
+    width: 100%;
+    font: inherit; font-size: 1.4rem; letter-spacing: 0.35em;
+    text-align: center;
+    padding: 14px 16px;
+    border: 1.5px solid var(--border, #ddd); border-radius: 10px;
+    background: var(--bg, #fafafa); color: var(--text, #222);
+    margin-bottom: 12px;
+  }
+  .vem-input:focus {
+    outline: none; border-color: var(--accent, #c2541e);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent, #c2541e) 22%, transparent);
+  }
+  .vem-error {
+    font-size: 0.8rem; color: #c43; margin: 6px 0 10px;
+    line-height: 1.4;
+  }
+  .vem-submit {
+    appearance: none; border: 0; cursor: pointer;
+    width: 100%; padding: 13px 18px;
+    background: var(--accent, #c2541e); color: #fff;
+    font: inherit; font-size: 0.92rem; font-weight: 600;
+    border-radius: 10px;
+    transition: background .15s;
+  }
+  .vem-submit:hover { background: var(--accent-dk, #a04416); }
+  .vem-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .vem-resend {
+    appearance: none; border: 0; background: transparent;
+    cursor: pointer; margin-top: 14px;
+    font: inherit; font-size: 0.8rem; color: var(--accent, #c2541e);
+    text-decoration: underline;
+  }
+  .vem-resend:disabled { opacity: 0.5; cursor: not-allowed; text-decoration: none; }
+</style>
 
 <!-- ── Word bank overlay ────────────────────────────────────── -->
 <div id="wb-overlay" class="hidden">
@@ -5003,7 +5189,7 @@ inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key===
 document.addEventListener('keydown', e => {
   const tag = document.activeElement?.tagName;
   if (tag==='TEXTAREA'||tag==='INPUT') return;
-  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeExtModal(); closeAuthModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeExtModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
   if (e.key==='?')  toggleShortcuts();
   if (e.key==='b'||e.key==='B') openWordBank();
 });
@@ -5040,6 +5226,171 @@ if (new URLSearchParams(location.search).get('stripe') === 'success') {
 /* ── Pro section CTA ────────────────────────────────────── */
 let _userIsPro = false;
 
+// ── Email verification modal (Gap 4) ─────────────────────────────
+//
+// Opened when /stripe/create-checkout returns 403 with
+// {error: "email_not_verified"}. After successful verification, optionally
+// re-runs a callback (typically: resume the checkout flow).
+let _verifyAfterCallback = null;
+let _verifyResendCooldown = 0;
+
+function openVerifyEmailModal(opts) {
+  opts = opts || {};
+  _verifyAfterCallback = typeof opts.afterVerify === 'function' ? opts.afterVerify : null;
+
+  const modal   = document.getElementById('verify-email-modal');
+  const subEl   = document.getElementById('verify-email-sub');
+  const tgtEl   = document.getElementById('verify-email-target');
+  const errEl   = document.getElementById('verify-email-error');
+  const codeEl  = document.getElementById('verify-email-code');
+  if (!modal) return;
+  if (opts.message && subEl) subEl.textContent = opts.message;
+  // Show which email we're verifying
+  try {
+    const user = JSON.parse(localStorage.getItem('lexio_user') || 'null');
+    if (tgtEl) tgtEl.textContent = user && user.email ? user.email : '';
+  } catch { /* ignore */ }
+  if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+  if (codeEl) codeEl.value = '';
+  modal.classList.remove('hidden');
+  // Auto-trigger initial send so the user has a code waiting
+  resendVerifyEmail({ silent: true });
+  // Focus the input after the modal renders
+  setTimeout(() => { codeEl && codeEl.focus(); }, 50);
+}
+
+function closeVerifyEmailModal() {
+  const modal = document.getElementById('verify-email-modal');
+  if (modal) modal.classList.add('hidden');
+  _verifyAfterCallback = null;
+}
+
+async function resendVerifyEmail(opts) {
+  opts = opts || {};
+  const token = localStorage.getItem('lexio_token');
+  if (!token) return;
+  const btn = document.getElementById('verify-email-resend');
+  // Soft client-side cooldown to keep users from spamming the resend
+  const now = Date.now();
+  if (now < _verifyResendCooldown) {
+    if (btn) btn.textContent = 'Wait a moment before resending…';
+    return;
+  }
+  _verifyResendCooldown = now + 25 * 1000;
+  if (btn && !opts.silent) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  try {
+    const r = await fetch('/auth/send-verification', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+    });
+    if (btn && !opts.silent) {
+      if (r.ok) { btn.textContent = 'Code sent — check your inbox'; }
+      else      { btn.textContent = "Couldn't send — try again in a minute"; }
+    }
+  } catch {
+    if (btn && !opts.silent) btn.textContent = 'Network error — try again';
+  } finally {
+    // Re-enable after a short pause regardless of outcome
+    setTimeout(() => {
+      const b = document.getElementById('verify-email-resend');
+      if (b) { b.disabled = false; b.textContent = "Didn't get a code? Send a new one"; }
+    }, 25 * 1000);
+  }
+}
+
+async function submitVerifyEmail(ev) {
+  ev.preventDefault();
+  const codeEl = document.getElementById('verify-email-code');
+  const errEl  = document.getElementById('verify-email-error');
+  const submitBtn = document.getElementById('verify-email-submit');
+  const token = localStorage.getItem('lexio_token');
+  if (!token) { closeVerifyEmailModal(); return false; }
+  const code = (codeEl.value || '').trim();
+  if (!/^\d{4,10}$/.test(code)) {
+    if (errEl) { errEl.textContent = 'Enter the 6-digit code from your email.'; errEl.style.display = 'block'; }
+    return false;
+  }
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Verifying…'; }
+  if (errEl) { errEl.style.display = 'none'; errEl.textContent = ''; }
+  try {
+    const r = await fetch('/auth/verify-email', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type':  'application/json',
+      },
+      body: JSON.stringify({ code }),
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      if (errEl) {
+        errEl.textContent = (e && e.detail) || 'Verification failed. Please try again.';
+        errEl.style.display = 'block';
+      }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Verify email'; }
+      return false;
+    }
+    // Success — update cached user, close modal, run optional callback
+    try {
+      const u = JSON.parse(localStorage.getItem('lexio_user') || 'null');
+      if (u) { u.email_verified = true; localStorage.setItem('lexio_user', JSON.stringify(u)); }
+    } catch { /* ignore */ }
+    const cb = _verifyAfterCallback;
+    closeVerifyEmailModal();
+    if (cb) setTimeout(cb, 60);
+  } catch {
+    if (errEl) { errEl.textContent = 'Network error — please try again.'; errEl.style.display = 'block'; }
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Verify email'; }
+  }
+  return false;
+}
+
+// ── Billing-cycle toggle (Monthly / Yearly) ──────────────────────
+//
+// _proPriceInfo is populated by the geo-localised price-info loader below
+// and re-read by setProPlan() and handleProCta(). _proPlan is the user's
+// current selection (defaults to monthly). The toggle only swaps the
+// price display + period text — it doesn't trigger checkout.
+let _proPlan = 'monthly';
+let _proPriceInfo = null;   // { symbol, monthly_amount, yearly_amount, yearly_monthly_equiv, yearly_savings_pct, yearly_available }
+
+function _renderProPrice() {
+  if (!_proPriceInfo) return;
+  const amtEl    = document.getElementById('lp-pro-amount');
+  const periodEl = document.getElementById('lp-pro-period');
+  const eqEl     = document.getElementById('lp-pro-period-eq');
+  const anchorEl = document.getElementById('lp-pro-anchor');
+  const sym = _proPriceInfo.symbol || '$';
+  if (_proPlan === 'yearly' && _proPriceInfo.yearly_amount) {
+    if (amtEl)    amtEl.textContent    = sym + _proPriceInfo.yearly_amount;
+    if (periodEl) periodEl.textContent = '/year';
+    if (eqEl) {
+      const eq = _proPriceInfo.yearly_monthly_equiv;
+      eqEl.textContent = eq ? `≈ ${sym}${eq}/month — billed once a year` : '';
+      eqEl.hidden = !eq;
+    }
+    if (anchorEl) anchorEl.textContent = 'Two paperbacks a year — and you’ll actually finish them.';
+  } else {
+    if (amtEl)    amtEl.textContent    = sym + (_proPriceInfo.monthly_amount || _proPriceInfo.amount || '');
+    if (periodEl) periodEl.textContent = '/month';
+    if (eqEl) { eqEl.textContent = ''; eqEl.hidden = true; }
+    if (anchorEl) anchorEl.textContent = 'Less than one paperback a month — and you’ll actually finish them.';
+  }
+  // Mirror the (non-toggleable) FAQ price to whichever cycle is selected
+  document.querySelectorAll('.lp-pro-amount-dynamic').forEach(el => {
+    if (el.id === 'lp-pro-amount') return;   // header price handled above
+    el.textContent = sym + (_proPriceInfo.monthly_amount || _proPriceInfo.amount || '');
+  });
+}
+
+function setProPlan(plan) {
+  _proPlan = (plan === 'yearly') ? 'yearly' : 'monthly';
+  document.querySelectorAll('#lp-pro-toggle .lp-pro-toggle-btn').forEach(btn => {
+    btn.setAttribute('aria-pressed', btn.dataset.plan === _proPlan ? 'true' : 'false');
+  });
+  _renderProPrice();
+}
+
 async function handleProCta() {
   const token = localStorage.getItem('lexio_token');
   if (!token) { openAuthModal?.(); return; }
@@ -5051,40 +5402,65 @@ async function handleProCta() {
   }
 
   const btn = document.getElementById('lp-pro-btn');
+  const origLabel = btn ? btn.textContent : '';
   if (btn) { btn.textContent = 'Redirecting…'; btn.disabled = true; }
 
   try {
-    const r = await fetch('/stripe/create-checkout', {
+    const r = await fetch('/stripe/create-checkout?plan=' + encodeURIComponent(_proPlan), {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token },
     });
     if (!r.ok) {
       const e = await r.json().catch(() => ({}));
-      alert(e.detail || 'Could not start checkout. Please try again.');
-      if (btn) { btn.textContent = 'Start 3-day free trial'; btn.disabled = false; }
+      // Gap 4: handle email-not-verified by opening the verification modal
+      // instead of just bubbling the message in an alert.
+      const detail = e && e.detail;
+      const errCode = detail && typeof detail === 'object' ? detail.error : null;
+      if (r.status === 403 && errCode === 'email_not_verified') {
+        if (btn) { btn.textContent = origLabel; btn.disabled = false; }
+        openVerifyEmailModal({
+          afterVerify: () => handleProCta(),
+          message: (detail && detail.message) || 'Please verify your email before subscribing.',
+        });
+        return;
+      }
+      const msg = (typeof detail === 'string') ? detail
+               : (detail && detail.message) || 'Could not start checkout. Please try again.';
+      alert(msg);
+      if (btn) { btn.textContent = origLabel || 'Start 3-day free trial'; btn.disabled = false; }
       return;
     }
     const { url } = await r.json();
     window.location.href = url;
   } catch {
     alert('Network error — please try again.');
-    if (btn) { btn.textContent = 'Get Pro →'; btn.disabled = false; }
+    if (btn) { btn.textContent = origLabel || 'Get Pro →'; btn.disabled = false; }
   }
 }
 
-// ── Geo-localised Pro price ────────────────────────────────────
+// ── Geo-localised Pro price (monthly + yearly) ───────────────────
 (async function() {
   try {
     const r = await fetch('/stripe/price-info');
     if (!r.ok) return;
-    const { symbol, amount } = await r.json();
-    document.querySelectorAll('.lp-pro-amount-dynamic').forEach(el => {
-      el.textContent = symbol + amount;
-    });
-    // Sync currency symbol on the free card too
+    const info = await r.json();
+    _proPriceInfo = info;
+    // Sync currency symbol on the free card
     document.querySelectorAll('.lp-free-symbol').forEach(el => {
-      el.textContent = symbol;
+      el.textContent = info.symbol || '$';
     });
+    // Hide yearly toggle if the server hasn't been configured with a
+    // yearly price yet (dev/preview boxes without STRIPE_PRICE_ID_YEARLY).
+    const yearlyBtn = document.querySelector('#lp-pro-toggle .lp-pro-toggle-btn[data-plan="yearly"]');
+    if (yearlyBtn && info.yearly_available === false) {
+      yearlyBtn.style.display = 'none';
+    }
+    // Update savings badge from the server-computed percentage
+    const savePct = document.getElementById('lp-pro-save-pct');
+    if (savePct && info.yearly_savings_pct) {
+      savePct.textContent = 'save ' + info.yearly_savings_pct + '%';
+    }
+    _renderProPrice();
   } catch {}
 })();
 

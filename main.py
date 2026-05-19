@@ -118,6 +118,17 @@ class User(Base):
     hourly_window_start = Column(DateTime, nullable=True)
     monthly_credit_used  = Column(Integer, default=0, nullable=False)
     monthly_credit_month = Column(String, nullable=True)            # "2025-04"
+    # Email verification (Gap 4) — OAuth users auto-verified, password
+    # registrations require a 6-digit code if SMTP is configured.
+    email_verified           = Column(Integer, default=1, nullable=False)   # 1=verified
+    email_verify_code        = Column(String, nullable=True)
+    email_verify_expires_at  = Column(DateTime, nullable=True)
+    # Active JWT session tracking (Gap 1) — JSON list of dicts:
+    #   [{"jti": "...", "iat": "ISO timestamp", "ua": "User-Agent label"}, …]
+    # Capped at MAX_SESSIONS_PER_USER, oldest pruned on new login.
+    active_jtis      = Column(Text, default="[]", nullable=False)
+    last_login_at    = Column(DateTime, nullable=True)
+    last_login_ua    = Column(String, nullable=True)
     created_at       = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):
@@ -244,6 +255,27 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
         for col, ddl in [
             ("monthly_credit_used",  "ALTER TABLE users ADD COLUMN monthly_credit_used INTEGER NOT NULL DEFAULT 0"),
             ("monthly_credit_month", "ALTER TABLE users ADD COLUMN monthly_credit_month TEXT"),
+        ] if col not in _cols(conn, "users")
+    ]),
+    # Email verification: existing accounts are grandfathered to verified=1
+    # so we don't lock anyone out of their existing Pro subscription.
+    (13, "add email verification columns", lambda conn, _: [
+        conn.execute(_sa_text(ddl))
+        for col, ddl in [
+            ("email_verified",          "ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 1"),
+            ("email_verify_code",       "ALTER TABLE users ADD COLUMN email_verify_code TEXT"),
+            ("email_verify_expires_at", "ALTER TABLE users ADD COLUMN email_verify_expires_at TIMESTAMP"),
+        ] if col not in _cols(conn, "users")
+    ]),
+    # Active sessions: JSON list of recent jtis, capped at 5 per user
+    # (Gap 1 — concurrent device limit). Legacy tokens (no jti) keep working
+    # until natural expiration; new tokens are session-bound.
+    (14, "add active_jtis + last_login columns", lambda conn, _: [
+        conn.execute(_sa_text(ddl))
+        for col, ddl in [
+            ("active_jtis",   "ALTER TABLE users ADD COLUMN active_jtis TEXT NOT NULL DEFAULT '[]'"),
+            ("last_login_at", "ALTER TABLE users ADD COLUMN last_login_at TIMESTAMP"),
+            ("last_login_ua", "ALTER TABLE users ADD COLUMN last_login_ua TEXT"),
         ] if col not in _cols(conn, "users")
     ]),
 ]
@@ -661,13 +693,105 @@ def hash_password(plain: str) -> str:
 def verify_password(plain: str, hashed: str) -> bool:
     return pwd_ctx.verify(plain, hashed)
 
-def create_token(user_id: int, token_version: int = 0) -> str:
+def create_token(user_id: int, token_version: int = 0, jti: Optional[str] = None) -> str:
     payload = {
         "sub": str(user_id),
         "ver": token_version,
         "exp": datetime.datetime.utcnow() + TOKEN_TTL,
     }
+    if jti:
+        payload["jti"] = jti
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+
+# ── Concurrent session management (Gap 1) ────────────────────────────────────
+# Cap concurrent active JWTs per user. Friendly enough for real users
+# (laptop + phone + work + spare = 4); tight enough to make casual account
+# sharing noticeable. The hourly + monthly credit caps remain the real cost
+# defenses — this is mostly a visibility/UX win and minor abuse friction.
+MAX_SESSIONS_PER_USER = 5
+
+def _device_label_from_ua(ua: Optional[str]) -> str:
+    """Compact, human-friendly device summary from a User-Agent string."""
+    if not ua:
+        return "Unknown device"
+    ua = ua[:300]  # safety cap
+    lo = ua.lower()
+    # Browser
+    if "edg/" in lo:
+        browser = "Edge"
+    elif "chrome/" in lo and "chromium" not in lo:
+        browser = "Chrome"
+    elif "firefox/" in lo:
+        browser = "Firefox"
+    elif "safari/" in lo and "chrome" not in lo:
+        browser = "Safari"
+    else:
+        browser = "Browser"
+    # OS
+    if "iphone" in lo:
+        os_label = "iPhone"
+    elif "ipad" in lo:
+        os_label = "iPad"
+    elif "android" in lo:
+        os_label = "Android"
+    elif "mac os x" in lo or "macintosh" in lo:
+        os_label = "macOS"
+    elif "windows" in lo:
+        os_label = "Windows"
+    elif "linux" in lo:
+        os_label = "Linux"
+    else:
+        os_label = "Device"
+    return f"{browser} on {os_label}"
+
+
+def _register_session(db: DBSession, user: "User", ua: Optional[str]) -> str:
+    """Generate a new jti, append to the user's active session list, prune
+    to MAX_SESSIONS_PER_USER (oldest dropped first). Returns the jti."""
+    jti = secrets.token_urlsafe(12)
+    try:
+        sessions = json.loads(user.active_jtis or "[]")
+        if not isinstance(sessions, list):
+            sessions = []
+    except (json.JSONDecodeError, TypeError):
+        sessions = []
+    entry = {
+        "jti": jti,
+        "iat": datetime.datetime.utcnow().isoformat(timespec="seconds"),
+        "ua":  _device_label_from_ua(ua),
+    }
+    # Newest first, oldest dropped
+    sessions = [entry] + [s for s in sessions if isinstance(s, dict) and s.get("jti")]
+    sessions = sessions[:MAX_SESSIONS_PER_USER]
+    user.active_jtis = json.dumps(sessions)
+    user.last_login_at = datetime.datetime.utcnow()
+    user.last_login_ua = entry["ua"]
+    db.commit()
+    return jti
+
+
+def _revoke_session(db: DBSession, user: "User", jti: Optional[str]) -> None:
+    """Remove a specific jti from the user's active session list. No-op if
+    jti is None (legacy tokens) or not present."""
+    if not jti:
+        return
+    try:
+        sessions = json.loads(user.active_jtis or "[]")
+        if not isinstance(sessions, list):
+            sessions = []
+    except (json.JSONDecodeError, TypeError):
+        sessions = []
+    sessions = [s for s in sessions if isinstance(s, dict) and s.get("jti") != jti]
+    user.active_jtis = json.dumps(sessions)
+    db.commit()
+
+
+def _issue_session_token(db: DBSession, user: "User", request: Request) -> str:
+    """Convenience: register a new session and return its signed JWT."""
+    ua  = request.headers.get("user-agent") if request else None
+    jti = _register_session(db, user, ua)
+    return create_token(user.id, user.token_version or 0, jti=jti)
 
 def _decode_token_payload(token: str) -> dict:
     """Decode JWT and return the raw payload dict."""
@@ -675,6 +799,20 @@ def _decode_token_payload(token: str) -> dict:
         return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     except (JWTError, KeyError, ValueError):
         raise HTTPException(status_code=401, detail="Invalid or expired token")
+
+def _jti_is_active(user: "User", jti: Optional[str]) -> bool:
+    """Return True if `jti` is in the user's active session list, OR the
+    token is legacy (no jti) — legacy tokens stay valid until they expire."""
+    if not jti:
+        return True   # legacy tokens grandfathered (will expire in 30d max)
+    try:
+        sessions = json.loads(user.active_jtis or "[]")
+        if not isinstance(sessions, list):
+            return False
+    except (json.JSONDecodeError, TypeError):
+        return False
+    return any(isinstance(s, dict) and s.get("jti") == jti for s in sessions)
+
 
 def current_user(
     authorization: Optional[str] = Header(default=None),
@@ -688,11 +826,14 @@ def current_user(
         ver = int(payload.get("ver", 0))
     except (KeyError, ValueError):
         raise HTTPException(status_code=401, detail="Invalid token")
+    jti = payload.get("jti")  # may be None for legacy tokens issued pre-session
     user = db.query(User).filter(User.id == uid).first()
     if not user:
         raise HTTPException(status_code=401, detail="User not found")
     if ver != (user.token_version or 0):
         raise HTTPException(status_code=401, detail="Token has been revoked — please sign in again")
+    if not _jti_is_active(user, jti):
+        raise HTTPException(status_code=401, detail="Session ended on this device — please sign in again")
     return user
 
 def optional_user(
@@ -705,8 +846,9 @@ def optional_user(
         payload = _decode_token_payload(authorization.split(" ", 1)[1])
         uid = int(payload["sub"])
         ver = int(payload.get("ver", 0))
+        jti = payload.get("jti")
         user = db.query(User).filter(User.id == uid).first()
-        if user and ver == (user.token_version or 0):
+        if user and ver == (user.token_version or 0) and _jti_is_active(user, jti):
             return user
         return None
     except HTTPException:
@@ -1202,16 +1344,33 @@ async def top_words(db: DBSession = Depends(get_db)):
 async def register(request: Request, body: RegisterRequest, db: DBSession = Depends(get_db)):
     if db.query(User).filter(User.email == body.email).first():
         raise HTTPException(status_code=409, detail="An account with this email already exists.")
+    # Password registrations are unverified by default IF SMTP is configured
+    # (we can actually send the code). Otherwise, gracefully fall back to
+    # verified=1 so the user isn't locked out of checkout on dev/preview boxes.
+    initial_verified = 0 if (SMTP_USER and SMTP_PASS) else 1
     user = User(
-        email    = body.email,
-        name     = body.name or body.email.split("@")[0],
-        pwd_hash = hash_password(body.password),
+        email          = body.email,
+        name           = body.name or body.email.split("@")[0],
+        pwd_hash       = hash_password(body.password),
+        email_verified = initial_verified,
         # No auto-trial: Pro trial is granted by Stripe Checkout (requires card).
     )
     db.add(user)
     db.commit()
     db.refresh(user)
-    return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
+    # Send verification code immediately if needed (best-effort, non-blocking
+    # failures don't break the signup flow — user can resend later).
+    if not initial_verified:
+        try:
+            _issue_email_verification_code(db, user)
+        except Exception as exc:
+            logger.warning("Failed to send initial verification code: %s", exc)
+    token = _issue_session_token(db, user, request)
+    return {
+        "token": token,
+        "user": {"id": user.id, "email": user.email, "name": user.name,
+                 "email_verified": bool(user.email_verified)},
+    }
 
 
 # ── /auth/login ───────────────────────────────────────────────────────────────
@@ -1226,26 +1385,92 @@ async def login(request: Request, body: LoginRequest, db: DBSession = Depends(ge
         raise HTTPException(status_code=401, detail="This account uses Google sign-in. Please click 'Continue with Google'.")
     if not verify_password(body.password, user.pwd_hash):
         raise HTTPException(status_code=401, detail="Incorrect email or password.")
-    return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
+    token = _issue_session_token(db, user, request)
+    return {
+        "token": token,
+        "user": {"id": user.id, "email": user.email, "name": user.name,
+                 "email_verified": bool(user.email_verified)},
+    }
 
 
 # ── /auth/me ──────────────────────────────────────────────────────────────────
 
 @app.get("/auth/me")
 async def me(user: User = Depends(current_user)):
-    return {"id": user.id, "email": user.email, "name": user.name}
+    return {
+        "id": user.id,
+        "email": user.email,
+        "name": user.name,
+        "email_verified": bool(user.email_verified),
+    }
 
 
 # ── /auth/logout ──────────────────────────────────────────────────────────────
 
 @app.post("/auth/logout")
-async def logout(user: User = Depends(current_user), db: DBSession = Depends(get_db)):
-    """Invalidate all existing tokens for this user by bumping token_version."""
-    db.query(User).filter(User.id == user.id).update(
-        {User.token_version: (user.token_version or 0) + 1}
-    )
-    db.commit()
-    return {"ok": True}
+async def logout(
+    authorization: Optional[str] = Header(default=None),
+    everywhere: bool = False,
+    user: User = Depends(current_user),
+    db: DBSession = Depends(get_db),
+):
+    """Sign the user out.
+
+    - Default (`everywhere=false`): only the current device's JWT is
+      revoked. Other signed-in devices keep working.
+    - `everywhere=true`: bumps token_version, killing every JWT ever
+      issued to this account.
+    """
+    if everywhere:
+        db.query(User).filter(User.id == user.id).update({
+            User.token_version: (user.token_version or 0) + 1,
+            User.active_jtis:   "[]",
+        })
+        db.commit()
+        return {"ok": True, "scope": "everywhere"}
+
+    # Single-device logout: pluck just this jti out of active_jtis
+    try:
+        payload = _decode_token_payload((authorization or "").split(" ", 1)[1])
+        jti     = payload.get("jti")
+    except Exception:
+        jti = None
+    _revoke_session(db, user, jti)
+    return {"ok": True, "scope": "this_device"}
+
+
+# ── /auth/sessions (list active devices) ──────────────────────────────────────
+
+@app.get("/auth/sessions")
+async def list_sessions(
+    authorization: Optional[str] = Header(default=None),
+    user: User = Depends(current_user),
+    db:   DBSession = Depends(get_db),
+):
+    """Return the user's active sessions (devices currently signed in).
+    Marks which entry corresponds to the caller's current token."""
+    try:
+        payload = _decode_token_payload((authorization or "").split(" ", 1)[1])
+        current_jti = payload.get("jti")
+    except Exception:
+        current_jti = None
+    try:
+        sessions = json.loads(user.active_jtis or "[]")
+        if not isinstance(sessions, list):
+            sessions = []
+    except (json.JSONDecodeError, TypeError):
+        sessions = []
+    return {
+        "max":      MAX_SESSIONS_PER_USER,
+        "sessions": [
+            {
+                "iat":     s.get("iat"),
+                "device":  s.get("ua"),
+                "current": s.get("jti") == current_jti,
+            }
+            for s in sessions if isinstance(s, dict)
+        ],
+    }
 
 
 # ── /auth/change-password ─────────────────────────────────────────────────────
@@ -1268,13 +1493,18 @@ async def change_password(
     if not verify_password(body.current_password, user.pwd_hash):
         raise HTTPException(status_code=401, detail="Current password is incorrect.")
     new_version = (user.token_version or 0) + 1
+    # Reset all active sessions and bump token_version — every previously
+    # issued JWT becomes invalid. We then issue a fresh single-session
+    # token for the caller so they stay signed in on THIS device.
     db.query(User).filter(User.id == user.id).update({
         User.pwd_hash:      hash_password(body.new_password),
         User.token_version: new_version,
+        User.active_jtis:   "[]",
     })
     db.commit()
-    # Return a fresh token so the caller stays logged in
-    return {"ok": True, "token": create_token(user.id, new_version)}
+    db.refresh(user)
+    token = _issue_session_token(db, user, request)
+    return {"ok": True, "token": token}
 
 
 # ── /auth/forgot-password & /auth/reset-password ─────────────────────────────
@@ -1313,6 +1543,58 @@ If you didn't request this, you can safely ignore this email.
             s.sendmail(SMTP_USER, [to_email], msg.as_string())
     except Exception as exc:
         logger.error("Failed to send reset email to %s: %s", to_email, exc)
+
+
+# ── Email verification (Gap 4) ───────────────────────────────────────────────
+# 6-digit codes, 30-minute TTL. Required for password registrations before
+# they can subscribe to Pro. OAuth signups are already provider-verified.
+EMAIL_VERIFY_TTL = datetime.timedelta(minutes=30)
+
+def _send_verification_email(to_email: str, code: str) -> bool:
+    """Send a 6-digit verification code. Returns True on success, False if
+    SMTP isn't configured or the send fails."""
+    if not SMTP_USER or not SMTP_PASS:
+        logger.warning("SMTP not configured — skipping verification email")
+        return False
+    body = f"""Hi,
+
+Your Lexio verification code is:
+
+  {code}
+
+The code is valid for 30 minutes. If you didn't sign up for Lexio, you
+can safely ignore this email.
+
+— The Lexio team
+"""
+    msg = MIMEText(body)
+    msg["Subject"] = f"Lexio verification code: {code}"
+    msg["From"]    = f"Lexio <{SMTP_USER}>"
+    msg["To"]      = to_email
+    try:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as s:
+            s.starttls()
+            s.login(SMTP_USER, SMTP_PASS)
+            s.sendmail(SMTP_USER, [to_email], msg.as_string())
+        return True
+    except Exception as exc:
+        logger.error("Failed to send verification email to %s: %s", to_email, exc)
+        return False
+
+
+def _issue_email_verification_code(db: DBSession, user: "User") -> str:
+    """Generate a new 6-digit code, persist it, and email it. Returns the
+    code so callers can log it in dev. Raises if SMTP isn't configured."""
+    code = f"{secrets.randbelow(900000) + 100000:06d}"
+    user.email_verify_code       = code
+    user.email_verify_expires_at = datetime.datetime.utcnow() + EMAIL_VERIFY_TTL
+    db.commit()
+    if not _send_verification_email(user.email, code):
+        # In environments without SMTP we already mark new users as verified
+        # at registration time, so this should never happen on production —
+        # but guard anyway to keep the flow non-fatal.
+        raise RuntimeError("SMTP not configured")
+    return code
 
 class ForgotPasswordRequest(BaseModel):
     email: EmailStr
@@ -1362,12 +1644,70 @@ async def reset_password(
         raise HTTPException(status_code=400, detail="User not found.")
     new_version = (user.token_version or 0) + 1
     db.query(User).filter(User.id == user.id).update({
-        User.pwd_hash:      hash_password(body.password),
-        User.token_version: new_version,
+        User.pwd_hash:       hash_password(body.password),
+        User.token_version:  new_version,
+        User.active_jtis:    "[]",
+        # Completing a password reset proves the user owns this email
+        # (they received the reset link there) — auto-verify them.
+        User.email_verified: 1,
     })
     rec.used = 1
     db.commit()
-    return {"ok": True, "token": create_token(user.id, new_version)}
+    db.refresh(user)
+    token = _issue_session_token(db, user, request)
+    return {"ok": True, "token": token}
+
+
+# ── /auth/verify-email & /auth/send-verification ─────────────────────────────
+
+class VerifyEmailRequest(BaseModel):
+    code: str = Field(..., min_length=4, max_length=10)
+
+@app.post("/auth/send-verification")
+@limiter.limit("3/minute")
+async def send_verification(
+    request: Request,
+    user: User = Depends(current_user),
+    db:   DBSession = Depends(get_db),
+):
+    """(Re)send a 6-digit email verification code to the caller's address."""
+    if user.email_verified:
+        return {"ok": True, "already_verified": True}
+    if not (SMTP_USER and SMTP_PASS):
+        # SMTP not configured — auto-verify the user. This shouldn't happen
+        # on production (registration would have already set verified=1),
+        # but is a safety net for dev/preview boxes.
+        user.email_verified = 1
+        db.commit()
+        return {"ok": True, "auto_verified": True}
+    try:
+        _issue_email_verification_code(db, user)
+    except RuntimeError:
+        # _issue_… already logged; surface a generic error
+        raise HTTPException(status_code=503, detail="Could not send verification email — please try again later.")
+    return {"ok": True, "sent": True}
+
+@app.post("/auth/verify-email")
+@limiter.limit("10/minute")
+async def verify_email(
+    request: Request,
+    body: VerifyEmailRequest,
+    user: User = Depends(current_user),
+    db:   DBSession = Depends(get_db),
+):
+    """Verify the caller's email address using the 6-digit code sent earlier."""
+    if user.email_verified:
+        return {"ok": True, "already_verified": True}
+    code = (body.code or "").strip()
+    if not user.email_verify_code or user.email_verify_code != code:
+        raise HTTPException(status_code=400, detail="That code doesn't match. Double-check it or request a new one.")
+    if user.email_verify_expires_at and user.email_verify_expires_at < datetime.datetime.utcnow():
+        raise HTTPException(status_code=400, detail="This code has expired. Request a new one.")
+    user.email_verified           = 1
+    user.email_verify_code        = None
+    user.email_verify_expires_at  = None
+    db.commit()
+    return {"ok": True}
 
 
 # ── /auth/account (DELETE) ────────────────────────────────────────────────────
@@ -1564,17 +1904,33 @@ async def google_auth(request: Request, body: GoogleAuthRequest, db: DBSession =
     # Find existing user by email or google_id
     user = db.query(User).filter(User.email == email).first()
     if not user:
-        # No auto-trial: Pro trial is granted by Stripe Checkout (requires card).
-        user = User(email=email, name=name, google_id=google_sub, pwd_hash=None)
+        # OAuth signups are verified-by-provider — no need for our own
+        # email verification step. No auto-trial: Pro trial is granted
+        # by Stripe Checkout (requires card).
+        user = User(email=email, name=name, google_id=google_sub,
+                    pwd_hash=None, email_verified=1)
         db.add(user)
         db.commit()
         db.refresh(user)
     else:
+        # Existing account — make sure google_id is set and ensure the
+        # account is marked verified (Google has verified the email).
+        changed = False
         if not user.google_id:
             user.google_id = google_sub
+            changed = True
+        if not user.email_verified:
+            user.email_verified = 1
+            changed = True
+        if changed:
             db.commit()
 
-    return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
+    token = _issue_session_token(db, user, request)
+    return {
+        "token": token,
+        "user": {"id": user.id, "email": user.email, "name": user.name,
+                 "email_verified": bool(user.email_verified)},
+    }
 
 
 # ── /auth/apple ───────────────────────────────────────────────────────────────
@@ -1648,17 +2004,31 @@ async def apple_auth(request: Request, body: AppleAuthRequest, db: DBSession = D
         or (db.query(User).filter(User.email == display_email).first() if display_email else None)
     )
     if not user:
-        # No auto-trial: Pro trial is granted by Stripe Checkout (requires card).
-        user = User(email=display_email, name=name, google_id=f"apple:{apple_sub}", pwd_hash=None)
+        # Apple OAuth — provider-verified email. No auto-trial: Pro trial
+        # is granted by Stripe Checkout (requires card).
+        user = User(email=display_email, name=name,
+                    google_id=f"apple:{apple_sub}", pwd_hash=None,
+                    email_verified=1)
         db.add(user)
         db.commit()
         db.refresh(user)
     else:
+        changed = False
         if not user.google_id:
             user.google_id = f"apple:{apple_sub}"
+            changed = True
+        if not user.email_verified:
+            user.email_verified = 1
+            changed = True
+        if changed:
             db.commit()
 
-    return {"token": create_token(user.id, user.token_version or 0), "user": {"id": user.id, "email": user.email, "name": user.name}}
+    token = _issue_session_token(db, user, request)
+    return {
+        "token": token,
+        "user": {"id": user.id, "email": user.email, "name": user.name,
+                 "email_verified": bool(user.email_verified)},
+    }
 
 
 # ── /wordbank/sync ────────────────────────────────────────────────────────────
@@ -2572,8 +2942,17 @@ import httpx as _httpx
 
 _stripe.api_key          = os.getenv("STRIPE_SECRET_KEY", "")
 _STRIPE_WEBHOOK_SECRET   = os.getenv("STRIPE_WEBHOOK_SECRET", "")
-_STRIPE_PRICE_ID         = os.getenv("STRIPE_PRICE_ID", "")   # single multi-currency price
+_STRIPE_PRICE_ID         = os.getenv("STRIPE_PRICE_ID", "")           # monthly, multi-currency
+_STRIPE_PRICE_ID_YEARLY  = os.getenv("STRIPE_PRICE_ID_YEARLY", "")    # annual, multi-currency
 _SITE_URL                = os.getenv("SITE_URL", "https://lexio.site")
+
+# Statement descriptor (Gap 3) — what appears on the customer's credit card
+# statement and Stripe invoices. The full statement descriptor is set on
+# the Stripe account itself (Settings → Public details → Statement descriptor),
+# but Stripe also lets us tag each invoice with a description that shows up
+# in receipts and the customer portal. This makes chargebacks much rarer
+# because the charge is unambiguously recognizable as Lexio Pro.
+_STRIPE_STATEMENT_DESCRIPTOR_SUFFIX = os.getenv("STRIPE_STATEMENT_DESCRIPTOR_SUFFIX", "PRO")[:22]
 
 # Countries billed in GBP
 _GBP_COUNTRIES = {"GB"}
@@ -2606,7 +2985,7 @@ async def _country_from_ip(ip: str) -> str:
     return ""
 
 def _price_for_country(country: str) -> tuple[str, str, str]:
-    """Return (currency_code, symbol, amount) for the visitor's country."""
+    """Return (currency_code, symbol, monthly_amount) for the visitor's country."""
     if country in _GBP_COUNTRIES:
         return "GBP", "£", "2.99"
     if country in _EUR_COUNTRIES:
@@ -2614,27 +2993,109 @@ def _price_for_country(country: str) -> tuple[str, str, str]:
     return "USD", "$", "3.99"
 
 
+def _yearly_price_for_country(country: str) -> str:
+    """Return yearly amount string for the visitor's country.
+
+    Sized for ~33–37% savings vs 12× monthly — the SaaS-standard 'roughly
+    2 months free + a touch' that converts well without feeling desperate.
+    Below break-even with the existing MONTHLY_CREDIT_CAP_PRO ($33/mo
+    absolute worst-case AI cost), so the downside per user is bounded.
+    """
+    if country in _GBP_COUNTRIES:
+        return "23.99"   # £2.00 effective / month
+    if country in _EUR_COUNTRIES:
+        return "23.99"   # €2.00 effective / month
+    return "29.99"       # $2.50 effective / month
+
+
+def _format_amount(amount: str, symbol: str) -> str:
+    """Render an amount in the locale-appropriate format (EUR uses comma)."""
+    if symbol == "€":
+        return amount.replace(".", ",")
+    return amount
+
+
+def _savings_percent(monthly_amount: str, yearly_amount: str) -> int:
+    """Compute the integer percentage saved on yearly vs 12× monthly."""
+    try:
+        m = float(monthly_amount.replace(",", "."))
+        y = float(yearly_amount.replace(",", "."))
+        if m <= 0:
+            return 0
+        return int(round((1 - (y / (m * 12))) * 100))
+    except (TypeError, ValueError):
+        return 0
+
+
 @app.get("/stripe/price-info")
 async def stripe_price_info(request: Request):
-    """Return currency symbol & amount for the visitor's location (no auth needed)."""
+    """Return both monthly + yearly prices localised to the visitor's
+    country. No auth required — this is purely a marketing endpoint."""
     ip = request.client.host
     # Prefer X-Forwarded-For when behind a proxy
     forwarded = request.headers.get("X-Forwarded-For", "")
     if forwarded:
         ip = forwarded.split(",")[0].strip()
     country = await _country_from_ip(ip)
-    currency, symbol, amount = _price_for_country(country)
-    return {"currency": currency, "symbol": symbol, "amount": amount, "country": country}
+    currency, symbol, monthly_amount = _price_for_country(country)
+    yearly_amount = _yearly_price_for_country(country)
+    # Localised display strings ("2,99" vs "2.99" in EUR)
+    monthly_display = _format_amount(monthly_amount, symbol)
+    yearly_display  = _format_amount(yearly_amount,  symbol)
+    return {
+        "currency":              currency,
+        "symbol":                symbol,
+        # Legacy field — preserved for old cached frontends still in the wild
+        "amount":                monthly_display,
+        "monthly_amount":        monthly_display,
+        "yearly_amount":         yearly_display,
+        # Effective monthly cost when paying annually, for display
+        "yearly_monthly_equiv":  _format_amount(
+            f"{float(yearly_amount.replace(',', '.')) / 12:.2f}", symbol
+        ),
+        "yearly_savings_pct":    _savings_percent(monthly_amount, yearly_amount),
+        "yearly_available":      bool(_STRIPE_PRICE_ID_YEARLY),
+        "country":               country,
+    }
 
 
 @app.post("/stripe/create-checkout")
 async def stripe_create_checkout(
     request: Request,
+    plan: str = "monthly",
     user: User = Depends(current_user),
 ):
-    """Create a Stripe Checkout session and return its URL."""
+    """Create a Stripe Checkout session and return its URL.
+
+    Query params:
+      plan: "monthly" (default) or "yearly".
+    """
     if not _stripe.api_key:
         raise HTTPException(status_code=503, detail="Payments not configured")
+
+    # ── Gap 4: Email verification gate ────────────────────────────────────
+    # Subscribers must own the email on file. Without this, abusive users
+    # could sign up with a fake email + pay with a real card, then dispute
+    # the charge or share the account anonymously. The frontend handles
+    # this response code by showing a "verify your email" modal.
+    if not user.email_verified:
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "error":   "email_not_verified",
+                "message": "Please verify your email before subscribing. We'll send you a 6-digit code.",
+            },
+        )
+
+    # Plan selection — yearly is opt-in, monthly is the default. Anything
+    # outside the two known values falls back to monthly rather than 400ing.
+    plan = "yearly" if plan == "yearly" else "monthly"
+    price_id = _STRIPE_PRICE_ID_YEARLY if plan == "yearly" else _STRIPE_PRICE_ID
+    if not price_id:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Stripe {plan} price not configured",
+        )
 
     ip = request.client.host
     forwarded = request.headers.get("X-Forwarded-For", "")
@@ -2642,9 +3103,6 @@ async def stripe_create_checkout(
         ip = forwarded.split(",")[0].strip()
     country = await _country_from_ip(ip)
     currency, _, _ = _price_for_country(country)
-
-    if not _STRIPE_PRICE_ID:
-        raise HTTPException(status_code=503, detail="Stripe price not configured")
 
     # Re-use existing Stripe customer if we have one
     customer_kwargs = {}
@@ -2662,8 +3120,13 @@ async def stripe_create_checkout(
     # stripe_customer_id) get their NEW 3-day Stripe trial on top — fair,
     # since they would have lost Pro access otherwise.
     is_trial_eligible = not user.stripe_customer_id and not user.is_pro
+    plan_label = "annual" if plan == "yearly" else "monthly"
     subscription_data = {
-        "metadata": {"user_id": str(user.id)},
+        "metadata":    {"user_id": str(user.id), "plan": plan},
+        # Invoice descriptor — what shows on the customer's receipts and
+        # in the Stripe customer portal. Clear, recognizable wording cuts
+        # accidental chargebacks (Gap 3).
+        "description": f"Lexio Pro · {plan_label} subscription",
     }
     if is_trial_eligible:
         subscription_data["trial_period_days"] = TRIAL_DAYS
@@ -2675,17 +3138,21 @@ async def stripe_create_checkout(
 
     session = _stripe.checkout.Session.create(
         mode="subscription",
-        line_items=[{"price": _STRIPE_PRICE_ID, "quantity": 1}],
+        line_items=[{"price": price_id, "quantity": 1}],
         currency=currency.lower(),
-        success_url=f"{_SITE_URL}/?stripe=success",
+        success_url=f"{_SITE_URL}/?stripe=success&plan={plan}",
         cancel_url=f"{_SITE_URL}/?stripe=cancelled",
-        metadata={"user_id": str(user.id), "trial": "1" if is_trial_eligible else "0"},
+        metadata={
+            "user_id": str(user.id),
+            "plan":    plan,
+            "trial":   "1" if is_trial_eligible else "0",
+        },
         subscription_data=subscription_data,
         payment_method_collection="always",   # require card even on trial
         allow_promotion_codes=True,
         **customer_kwargs,
     )
-    return {"url": session.url}
+    return {"url": session.url, "plan": plan}
 
 
 @app.post("/stripe/customer-portal")
