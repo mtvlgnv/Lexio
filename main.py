@@ -3277,5 +3277,21 @@ async def privacy_page():
         return HTMLResponse(f.read())
 
 
+# ── Glossary (SEO long-tail content) ────────────────────────────────────────
+import glossary as _glossary
+
+@app.get("/glossary", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/glossary/", response_class=HTMLResponse, include_in_schema=False)
+async def glossary_index():
+    return HTMLResponse(_glossary.render_index())
+
+@app.get("/glossary/{slug}", response_class=HTMLResponse, include_in_schema=False)
+async def glossary_entry(slug: str):
+    entry = _glossary.get(slug)
+    if not entry:
+        return RedirectResponse(url="/glossary", status_code=302)
+    return HTMLResponse(_glossary.render_entry(entry))
+
+
 # ── Static frontend ───────────────────────────────────────────────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
