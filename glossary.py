@@ -1149,6 +1149,462 @@ invites the device — the late Shakespearean god from the machine is
 doing different work than a thriller's last-minute coincidence.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "in-medias-res",
+        "term": "in medias res",
+        "context": "narrative technique",
+        "title": "What \"In Medias Res\" Means in Literature",
+        "meta_description": "In medias res — Latin for \"into the middle of things\" — is a narrative technique used by Homer, Virgil, and modern thrillers. Here's how it actually works.",
+        "h1": "What \"in medias res\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["deus-ex-machina", "unreliable-narrator", "epistolary-novel"],
+        "body_html": """
+<p><strong>In medias res</strong> — Latin for "into the middle of things"
+— names a narrative technique that's older than the novel and somehow
+still feels modern. The phrase comes from Horace's <em>Ars Poetica</em>,
+where it describes Homer's habit of starting his epics not at the
+beginning of the story but mid-action.</p>
+
+<h2>The technique</h2>
+
+<p>An <em>in medias res</em> opening drops the reader into the middle of
+an ongoing action with no exposition. The earlier events — how we got
+here, who the characters are, why any of this matters — are filled in
+later through dialogue, flashback, or memory.</p>
+
+<p>The opposite is <em>ab ovo</em>, "from the egg" — starting at the
+chronological beginning and proceeding in order. Most fairy tales work
+ab ovo. Most thrillers don't.</p>
+
+<h2>Why writers use it</h2>
+
+<ol>
+  <li><strong>It produces immediate stakes.</strong> The reader is in a
+      situation that already matters before they know why. Curiosity does
+      the work that exposition would otherwise have to do.</li>
+  <li><strong>It compresses time.</strong> A long, slow setup can be
+      delivered in flashback after the reader is already invested,
+      avoiding the deadly opening chapter of background.</li>
+  <li><strong>It frames the story thematically.</strong> The "middle"
+      the writer chooses to start in is rarely random — it usually
+      contains the story's central image or question.</li>
+</ol>
+
+<h2>Canonical examples</h2>
+
+<ul>
+  <li><strong>The Iliad</strong> begins in the ninth year of the Trojan
+      War, with Achilles already in his tent refusing to fight.</li>
+  <li><strong>The Odyssey</strong> opens with Odysseus stuck on Calypso's
+      island, ten years into his journey home.</li>
+  <li><strong>The Aeneid</strong> begins with Aeneas already at sea, the
+      fall of Troy delivered later as a long flashback to Dido.</li>
+  <li><strong>Paradise Lost</strong> opens with Satan already in Hell —
+      the rebellion in Heaven is recounted in later books.</li>
+  <li><strong>Beloved</strong> by Toni Morrison opens at 124, the haunted
+      house, with no explanation of who Sethe is or what she did. The
+      novel pieces itself back together slowly.</li>
+</ul>
+
+<h2>In medias res vs. flashback</h2>
+
+<p>The two often get confused. A flashback is a single backward jump
+from the present action. <em>In medias res</em> describes the entire
+structural choice — the story <em>begins</em> in the middle. A flashback
+is a tool you can use inside any structure; in medias res is a structure
+in itself.</p>
+
+<h2>Modern variants</h2>
+
+<ul>
+  <li><strong>The cold open.</strong> TV's version of in medias res: a
+      scene of intense action plays before the credits, often the climax
+      itself; the rest of the episode catches up to it.</li>
+  <li><strong>The framed prologue.</strong> A character recounts events
+      from after they happened — the whole story is delivered as
+      retrospect, with the "now" of the telling as the entry point.</li>
+  <li><strong>The unraveling murder mystery.</strong> The body is in the
+      first chapter. Everything before the murder must be reconstructed.</li>
+</ul>
+
+<h2>How to read it</h2>
+
+<p>When a critic identifies an in medias res opening, the question to
+ask is: <em>why this particular middle</em>? The point where the writer
+drops you in is usually the thematic core. Notice what you don't know;
+the writer has chosen that ignorance deliberately. The slow revealing
+of backstory is not a delay — it is the form the story is taking.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "unreliable-narrator",
+        "term": "unreliable narrator",
+        "context": "fiction and narratology",
+        "title": "What an \"Unreliable Narrator\" Is in Literature",
+        "meta_description": "An unreliable narrator is more than a liar. Here's the precise narratological definition, the four classic types, and how to read fiction that uses one.",
+        "h1": "What an \"unreliable narrator\" is in literature",
+        "updated": "2026-05-19",
+        "related": ["dramatic-irony", "free-indirect-discourse", "metafiction"],
+        "body_html": """
+<p>An <strong>unreliable narrator</strong> is a narrator whose account
+of events the reader cannot fully trust. That much is the popular
+definition, and it's roughly correct — but it misses the precision the
+literary term actually has. Unreliability is a structural feature, not
+a moral one, and the best fiction uses it in ways more subtle than "the
+narrator is lying."</p>
+
+<h2>The narratological definition</h2>
+
+<p>The term was coined by Wayne Booth in <em>The Rhetoric of Fiction</em>
+(1961). A narrator is unreliable, Booth wrote, when their account
+diverges from the values and judgments of the <em>implied author</em> —
+the figure the reader reconstructs as the consciousness shaping the
+whole work.</p>
+
+<p>So unreliability is relational. It exists in the gap between the
+narrator's perspective and the perspective the reader is invited to
+hold. The story is "really" something different from what the narrator
+thinks it is, and the reader must piece the truer story together by
+reading against the grain of the telling.</p>
+
+<h2>The four classic types</h2>
+
+<ol>
+  <li><strong>The deliberate liar.</strong> The narrator knowingly
+      distorts. Humbert Humbert in <em>Lolita</em> is the canonical
+      example — articulate, charming, and a child abuser, and he knows
+      the reader is meant to be seduced past the truth.</li>
+  <li><strong>The naive narrator.</strong> The narrator tells the truth
+      as they understand it, but they don't understand it. Huck Finn,
+      Scout in <em>To Kill a Mockingbird</em>, the child in <em>Room</em>
+      — they report what they see without grasping its full meaning.</li>
+  <li><strong>The mad narrator.</strong> The narrator's grip on reality
+      is broken. Poe's narrators are the classical case ("True! —
+      nervous — very, very dreadfully nervous I had been"); the
+      narrator of <em>The Yellow Wallpaper</em> is a later variant.</li>
+  <li><strong>The mistaken narrator.</strong> The narrator is sincere
+      but wrong about a key fact. Detective fiction often runs on this —
+      think of Agatha Christie's <em>The Murder of Roger Ackroyd</em>.</li>
+</ol>
+
+<h2>Signals to look for</h2>
+
+<ul>
+  <li><strong>Internal contradictions.</strong> The narrator says one
+      thing on page 50 and another on page 200.</li>
+  <li><strong>Defensive over-explanation.</strong> The narrator argues
+      for their own version harder than the story warrants.</li>
+  <li><strong>Mismatch with other characters.</strong> Other characters
+      respond as if the situation were different from what the narrator
+      is describing.</li>
+  <li><strong>Stylistic tells.</strong> A flat, child-like voice when
+      an adult is supposedly speaking; a manic register; an obsessive
+      vocabulary.</li>
+</ul>
+
+<h2>Why writers use unreliability</h2>
+
+<ul>
+  <li><strong>Moral demonstration.</strong> The reader is forced to
+      construct ethical judgment <em>against</em> the narrator — a more
+      active engagement than passive judgment.</li>
+  <li><strong>Mystery.</strong> The truth becomes the puzzle.</li>
+  <li><strong>Psychological realism.</strong> Real human minds are
+      partial, biased, self-deceiving. An unreliable narrator is often
+      more faithful to consciousness than a reliable one.</li>
+</ul>
+
+<h2>How to read it</h2>
+
+<p>When you suspect unreliability, the move is to read <em>twice</em>:
+once for the story the narrator wants to tell, and once for the story
+showing through despite them. The richer the gap, the better the
+fiction. Unreliability is not a flaw — it is a deliberate distance the
+writer has built between you and the voice on the page, and learning to
+hear both at once is half the pleasure.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "stream-of-consciousness",
+        "term": "stream of consciousness",
+        "context": "modernist fiction",
+        "title": "What \"Stream of Consciousness\" Means in Literature",
+        "meta_description": "Stream of consciousness isn't just interior monologue. Here's the precise definition, its origin in William James, and how Woolf and Joyce actually use it.",
+        "h1": "What \"stream of consciousness\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["free-indirect-discourse", "unreliable-narrator", "epiphany-joyce"],
+        "body_html": """
+<p><strong>Stream of consciousness</strong> is one of the most casually
+used and most regularly misunderstood terms in modern literary
+vocabulary. The phrase is often applied to any interior monologue or
+loose, associative prose. Strictly, it names a specific technique
+developed in early 20th-century modernist fiction to render the
+unstructured flow of consciousness on the page.</p>
+
+<h2>The origin of the phrase</h2>
+
+<p>The term was coined not by a critic but by the psychologist William
+James in <em>The Principles of Psychology</em> (1890). James argued
+that consciousness is not a chain of discrete thoughts but a
+continuous, flowing process — a "stream." Sensations, memories,
+half-formed ideas, and language fragments overlap and shift without
+clean boundaries.</p>
+
+<p>Modernist writers, especially in the 1910s and '20s, took up the
+challenge of representing this flow in prose. The result was a set of
+techniques collectively called <em>stream of consciousness</em>.</p>
+
+<h2>The technical features</h2>
+
+<ul>
+  <li><strong>Looseness of syntax.</strong> Sentences fragment, run on,
+      or skip grammar. Punctuation thins or disappears.</li>
+  <li><strong>Free associative leaps.</strong> A sound triggers a memory
+      triggers an emotion triggers another sound — without explicit
+      transitions.</li>
+  <li><strong>Mixed registers.</strong> Sensory perception, snatches of
+      overheard talk, advertising slogans, snippets of poetry, all
+      braided together at the surface of the mind.</li>
+  <li><strong>No filtering by an external narrator.</strong> The
+      consciousness is rendered directly, without a tidy narrator
+      stepping in to interpret.</li>
+</ul>
+
+<h2>The canonical examples</h2>
+
+<ul>
+  <li><strong>James Joyce, <em>Ulysses</em></strong> — Molly Bloom's
+      closing soliloquy is the most famous stream-of-consciousness
+      passage in English, a single uninterrupted flow of thought across
+      40+ pages.</li>
+  <li><strong>Virginia Woolf, <em>Mrs Dalloway</em></strong> and
+      <em>To the Lighthouse</em> — Woolf's version moves between
+      consciousnesses, often in a single paragraph, with extraordinary
+      delicacy.</li>
+  <li><strong>William Faulkner, <em>The Sound and the Fury</em></strong>
+      — the opening section is the consciousness of Benjy, time and
+      event tumbling together.</li>
+  <li><strong>Dorothy Richardson, <em>Pilgrimage</em></strong> — often
+      named as the first sustained stream-of-consciousness novel in
+      English.</li>
+</ul>
+
+<h2>What it isn't</h2>
+
+<ul>
+  <li><strong>Interior monologue</strong> is any rendering of a
+      character's thoughts. Most novels do this. Stream of consciousness
+      is a specific, formally radical subset of interior monologue.</li>
+  <li><strong>Free indirect discourse</strong> blends a narrator's voice
+      with a character's perspective. It can sound stream-like but is
+      grammatically tighter and uses third-person. (See our
+      <a href="/glossary/free-indirect-discourse">entry on free indirect
+      discourse</a>.)</li>
+</ul>
+
+<h2>How to read it</h2>
+
+<p>When you meet "stream of consciousness" in an essay, the writer is
+naming a technique, not a vibe. Ask: how loose is the syntax? Are there
+free associations? Is there a narrator interpreting, or are we inside a
+mind directly? The looser and less mediated the rendering, the closer
+to the strict sense. Reading stream-of-consciousness prose well means
+letting your own attention float at the same rate as the consciousness
+you're inside — not trying to "follow" it the way you would a plot.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "free-indirect-discourse",
+        "term": "free indirect discourse",
+        "context": "narrative technique",
+        "title": "What \"Free Indirect Discourse\" Means in Literature",
+        "meta_description": "Free indirect discourse is the narrative technique that lets a third-person novel slip inside a character's head. Here's how it works in Austen, Flaubert, and Woolf.",
+        "h1": "What \"free indirect discourse\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["stream-of-consciousness", "unreliable-narrator", "verisimilitude-in-literature"],
+        "body_html": """
+<p><strong>Free indirect discourse</strong> (often abbreviated FID, and
+sometimes called <em>free indirect style</em>) is the narrative
+technique most responsible for the psychological depth of the modern
+novel. It is also one of the easiest to recognize once you know what to
+look for — and one of the easiest to miss when you don't.</p>
+
+<h2>The three ways a novel can report a thought</h2>
+
+<ul>
+  <li><strong>Direct discourse:</strong> She thought, "I will never see
+      him again."</li>
+  <li><strong>Indirect discourse:</strong> She thought that she would
+      never see him again.</li>
+  <li><strong>Free indirect discourse:</strong> She would never see him
+      again.</li>
+</ul>
+
+<p>The third form removes the framing tag ("she thought") and yet
+preserves the third-person, past-tense grammar of narration. The
+sentence belongs both to the narrator (third person, past tense) and to
+the character (the wording, the emotional pulse, the conviction). Two
+voices share one sentence.</p>
+
+<h2>The signals</h2>
+
+<ul>
+  <li>Third person and past tense (the narrator's grammar).</li>
+  <li>Wording, idiom, or value-judgments that belong to the character.</li>
+  <li>An absence of "he thought" / "she felt" framing tags.</li>
+  <li>Often, exclamation, rhetorical questions, or italicized emphasis
+      — features of speech that have leaked into the narration.</li>
+</ul>
+
+<h2>The history</h2>
+
+<p>Jane Austen pioneered it. She uses FID to render Emma Woodhouse's
+self-deception in a way that lets the reader simultaneously inhabit and
+judge it. Flaubert refined it in French; <em>Madame Bovary</em> is the
+classical case in continental literature. Woolf, Joyce, Coetzee, and
+Sebald all built their later innovations on it.</p>
+
+<h2>Why writers use it</h2>
+
+<ol>
+  <li><strong>Intimacy without first-person limitation.</strong> The
+      novelist gets the inside of a character's head without committing
+      to that character as narrator for the whole book.</li>
+  <li><strong>Ironic distance.</strong> Because the narrator's grammar
+      remains, the narrator can quietly judge the character's words
+      even while voicing them. Austen's irony lives in this seam.</li>
+  <li><strong>Quick switching between minds.</strong> A paragraph can
+      pass through several characters' interiorities without quotation
+      marks or attribution slowing it down.</li>
+</ol>
+
+<h2>FID and unreliability</h2>
+
+<p>FID is the engine of many an unreliable narration in third person.
+The reader gets the character's view, framed by a narrator who knows
+better. The gap is unreliability without first person. (See our
+<a href="/glossary/unreliable-narrator">entry on unreliable
+narrators</a>.)</p>
+
+<h2>How to read it</h2>
+
+<p>When you meet FID in a passage, ask two questions. <em>Whose values
+are these?</em> If the wording feels too vivid, too particular, or too
+biased for a neutral narrator, you're probably inside a character's
+mind. And <em>where is the narrator hiding?</em> The third-person
+grammar usually keeps a thin margin of distance — the narrator's silent
+judgment is in that margin. Learning to feel that margin is one of the
+fundamental skills of reading the modern novel.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "metafiction",
+        "term": "metafiction",
+        "context": "postmodern literature",
+        "title": "What \"Metafiction\" Means in Literature",
+        "meta_description": "Metafiction is fiction that knows it's fiction. Here's the precise definition, its history from Cervantes to Calvino, and the techniques metafictional writers use.",
+        "h1": "What \"metafiction\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["unreliable-narrator", "magical-realism", "verisimilitude-in-literature"],
+        "body_html": """
+<p><strong>Metafiction</strong> is fiction that knows it's fiction —
+fiction that draws attention to its own status as a constructed text
+and makes that self-awareness part of the work. The word was popularized
+by the critic William H. Gass in 1970, but the technique is much older.
+The first European novel, <em>Don Quixote</em>, is partly a piece of
+metafiction.</p>
+
+<h2>The defining move</h2>
+
+<p>A metafictional work foregrounds at least one of these:</p>
+
+<ul>
+  <li><strong>The author writing.</strong> The narrator mentions writing
+      the book, struggling with a sentence, choosing between endings.</li>
+  <li><strong>The reader reading.</strong> The text addresses the reader
+      directly, or comments on what the reader is doing.</li>
+  <li><strong>The fictionality of the world.</strong> Characters discuss
+      the book they are in, meet their author, or escape the page.</li>
+  <li><strong>The conventions of the form.</strong> The text comments on
+      the rules of the genre it inhabits — what novels are supposed to
+      do, what readers are supposed to expect.</li>
+</ul>
+
+<h2>The long history</h2>
+
+<ul>
+  <li><strong>Don Quixote (1605, 1615).</strong> In Part Two, Don Quixote
+      discovers that someone has written Part One; he is now a character
+      who has read his own book.</li>
+  <li><strong>Tristram Shandy (1759–67).</strong> Sterne's novel is
+      constantly interrupting itself, complaining about its own
+      digressions, and including blank pages.</li>
+  <li><strong>If on a winter's night a traveler (1979).</strong> Italo
+      Calvino's novel is addressed to "you, the reader," who keeps
+      starting different novels and failing to finish them.</li>
+  <li><strong>Pale Fire (1962).</strong> Nabokov's novel is a 999-line
+      poem with a commentary that gradually reveals the commentator's
+      delusions.</li>
+  <li><strong>House of Leaves (2000).</strong> Mark Z. Danielewski's
+      novel uses typography, footnotes, and missing pages as
+      metafictional architecture.</li>
+</ul>
+
+<h2>Why writers use it</h2>
+
+<ol>
+  <li><strong>To break realism's illusion.</strong> Realist fiction
+      pretends to be a transparent window onto a world. Metafiction
+      reminds you the window is glass — manufactured, framed, chosen.</li>
+  <li><strong>To make form into content.</strong> The novel's structure
+      becomes part of its meaning. A book about the impossibility of
+      finishing a book is doing something realist fiction cannot.</li>
+  <li><strong>To implicate the reader.</strong> When the text speaks to
+      the reader, the reader's act of reading becomes part of the
+      story.</li>
+</ol>
+
+<h2>Postmodernism's signature</h2>
+
+<p>Metafiction became central to postmodern literature in the late 20th
+century. Writers like John Barth, Donald Barthelme, Robert Coover, and
+Kathy Acker used it to argue, in fiction itself, that fiction's
+relationship to reality was more complicated than the realist tradition
+admitted.</p>
+
+<h2>Metafiction vs. its neighbors</h2>
+
+<ul>
+  <li><strong>Magical realism</strong> bends physical reality but rarely
+      points at the fictional frame itself. (See our
+      <a href="/glossary/magical-realism">entry on magical realism</a>.)</li>
+  <li><strong>The unreliable narrator</strong> destabilizes the truth
+      <em>within</em> the fiction; metafiction destabilizes the fiction
+      itself.</li>
+  <li><strong>Breaking the fourth wall</strong> (in drama and film) is
+      metafiction's stagecraft cousin.</li>
+</ul>
+
+<h2>How to read it</h2>
+
+<p>When you encounter metafiction, do not look for the "story behind
+the story." The story <em>is</em> the layering. Ask what the
+self-awareness is doing — playful? Mournful? Philosophical? The most
+interesting metafiction uses the device to ask serious questions about
+truth, representation, and the relationship between writer and reader.
+The least interesting uses it as a trick.</p>
+""",
+    },
 ]
 
 
