@@ -738,6 +738,417 @@ always self-conscious. The device only becomes a "fallacy" in Ruskin's sense
 when the writer hasn't noticed they're doing it.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "catharsis-greek-tragedy",
+        "term": "catharsis",
+        "context": "Greek tragedy and Aristotelian theory",
+        "title": "What \"Catharsis\" Means in Greek Tragedy",
+        "meta_description": "Aristotle's catharsis isn't just \"emotional release.\" Here's what he actually meant in the Poetics — and why scholars are still arguing about it.",
+        "h1": "What \"catharsis\" means in Greek tragedy",
+        "updated": "2026-05-19",
+        "related": ["anagnorisis", "peripeteia", "dramatic-irony"],
+        "body_html": """
+<p>When a student today writes that a film provides "great catharsis," they
+usually mean a satisfying emotional release. In Aristotle's <em>Poetics</em>
+— the text that gave us the word — it meant something far more specific
+and far more contested. Scholars have been arguing about what Aristotle
+actually meant for 2,400 years.</p>
+
+<h2>The word in the Poetics</h2>
+
+<p>Aristotle uses <em>katharsis</em> only once in the <em>Poetics</em>, in
+his definition of tragedy. Tragedy, he says, imitates a serious action and,
+through pity and fear, accomplishes the <em>katharsis</em> of such
+emotions. That sentence is the entire textual basis for the concept.
+Everything else is interpretation.</p>
+
+<h2>The three main readings</h2>
+
+<p>Three competing readings have dominated the conversation:</p>
+
+<ol>
+  <li><strong>Purgation.</strong> The medical reading. Catharsis is the
+      discharge of harmful emotional excess — pity and fear are flushed
+      out of the spectator's system the way black bile might be purged from
+      the body. This was the dominant reading from the Renaissance through
+      the 19th century.</li>
+  <li><strong>Purification.</strong> The ethical reading. Catharsis doesn't
+      eliminate pity and fear; it refines them, teaches them their proper
+      objects. We leave a tragedy with our emotions <em>better
+      calibrated</em>, not emptied.</li>
+  <li><strong>Clarification.</strong> The cognitive reading, championed by
+      modern scholars like Martha Nussbaum. Catharsis is an intellectual
+      event — the play <em>clarifies</em> what pity and fear are, what
+      they're for, when they are warranted. We leave knowing something we
+      didn't know before.</li>
+</ol>
+
+<p>All three readings have textual support; none has been definitively
+proven. Most contemporary classicists treat catharsis as a deliberately
+multi-layered term doing several kinds of work at once.</p>
+
+<h2>What it isn't</h2>
+
+<ul>
+  <li><strong>Catharsis as venting.</strong> "I needed a good cry — it was
+      cathartic." This is the popular-psychology sense, in which catharsis
+      means expressing a pent-up feeling. Aristotle's catharsis is not about
+      the spectator <em>expressing</em> anything; it's about what the play
+      <em>does</em> to them.</li>
+  <li><strong>Catharsis as resolution.</strong> "The film's third act
+      provides catharsis." Here it just means a satisfying ending. But
+      Aristotelian catharsis can occur in tragedies that resolve
+      <em>badly</em> — Oedipus does not end happily, and that is the
+      point.</li>
+</ul>
+
+<h2>How to read the word in criticism</h2>
+
+<p>When a critic invokes catharsis, ask which reading they're working
+from. A psychoanalytic critic usually means purgation. An ethicist often
+means purification. A modern classicist usually means clarification. The
+word is genuinely a contested term of art — it carries 2,400 years of
+argument, and treating it as a synonym for "emotional release" flattens
+that history beyond recognition.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "anagnorisis",
+        "term": "anagnorisis",
+        "context": "Greek tragedy and narrative theory",
+        "title": "What \"Anagnorisis\" Means in Tragedy",
+        "meta_description": "Anagnorisis is Aristotle's term for the moment a character moves from ignorance to knowledge. Here's how to spot it in tragedy — and why it still matters.",
+        "h1": "What \"anagnorisis\" means in tragedy",
+        "updated": "2026-05-19",
+        "related": ["catharsis-greek-tragedy", "peripeteia", "dramatic-irony"],
+        "body_html": """
+<p><strong>Anagnorisis</strong> is the Greek for "recognition" — and in
+Aristotle's <em>Poetics</em> it names the precise moment in a tragedy when
+a character moves from ignorance to knowledge about something that matters.
+It is one of the two engines of tragic plot, and learning to spot it
+changes the way you read drama.</p>
+
+<h2>What Aristotle meant</h2>
+
+<p>For Aristotle, anagnorisis is not just any insight. It is a structural
+event: a shift from <em>not knowing</em> to <em>knowing</em>, with
+consequences. The most powerful anagnorisis involves discovering the
+identity of a person — a parent, a child, a killer — but it can also be
+recognition of a fact (one's own crime, one's true situation).</p>
+
+<p>The clearest example is <em>Oedipus Rex</em>. The play's entire arc is
+the slow movement of Oedipus from <em>thinking he is the savior of
+Thebes</em> to <em>knowing he is its polluter</em>. The moment the
+shepherd's testimony confirms his identity, that is anagnorisis. The
+audience has known for a while; Oedipus has not. The play exists in the
+gap between those two knowings.</p>
+
+<h2>Anagnorisis and peripeteia together</h2>
+
+<p>Aristotle pairs anagnorisis with <em>peripeteia</em> — reversal. The
+finest tragedies, he says, fold the two together: the moment of
+recognition <em>is</em> the moment fortune turns. (See our
+<a href="/glossary/peripeteia">entry on peripeteia</a>.) Oedipus is again
+the model. The recognition of his identity <em>is</em> the reversal from
+king to outcast. Recognition and reversal share a single line.</p>
+
+<h2>Types of recognition</h2>
+
+<ul>
+  <li><strong>Recognition by tokens</strong> — birthmarks, scars, heirlooms.
+      Aristotle considered this the weakest kind: it depends on an external
+      accident, not on the character's situation. The scar on Odysseus's
+      thigh is a famous example.</li>
+  <li><strong>Recognition by reasoning</strong> — the character deduces the
+      truth from circumstantial evidence. Often a detective-story effect.</li>
+  <li><strong>Recognition through events</strong> — Aristotle's favorite.
+      The plot itself, working out its own logic, forces the truth into
+      the open. This is what happens in <em>Oedipus</em>: the investigation
+      Oedipus himself launches is what reveals him to himself.</li>
+</ul>
+
+<h2>Beyond Greek tragedy</h2>
+
+<ul>
+  <li>Hamlet's recognition, in the gravedigger scene, that Yorick's skull
+      is the same flesh that once entertained him.</li>
+  <li>Elizabeth Bennet rereading Darcy's letter and seeing she has
+      misjudged him.</li>
+  <li>The narrator's recognition at the end of Joyce's "The Dead" that
+      his wife once loved someone else more than him.</li>
+  <li>Almost every "twist ending" in modern film — though most twists are
+      recognition without reversal, which Aristotle rated as the weaker
+      form.</li>
+</ul>
+
+<h2>How to read it</h2>
+
+<p>When you meet "anagnorisis" in an essay, the writer is naming a
+<strong>structural moment</strong>, not just a feeling. Ask: who
+recognizes what, and what changes as a result? If the recognition does
+not change the situation, it is decorative. The genuinely tragic
+anagnorisis closes a door — the character cannot un-know what they have
+learned, and the world reshapes itself around the new knowledge.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "peripeteia",
+        "term": "peripeteia",
+        "context": "Greek tragedy and dramatic theory",
+        "title": "What \"Peripeteia\" Means in Tragedy",
+        "meta_description": "Peripeteia is Aristotle's word for the reversal — the moment a tragedy's plot turns. Here's how it works and why the best tragedies fuse it with recognition.",
+        "h1": "What \"peripeteia\" means in tragedy",
+        "updated": "2026-05-19",
+        "related": ["anagnorisis", "catharsis-greek-tragedy", "deus-ex-machina"],
+        "body_html": """
+<p><strong>Peripeteia</strong> — Greek for "reversal" — is Aristotle's
+name for the moment a tragedy's fortunes turn. It is the structural hinge
+on which a tragic plot pivots, and Aristotle considered it, together with
+anagnorisis (recognition), the defining element of a properly constructed
+tragedy.</p>
+
+<h2>The definition in the Poetics</h2>
+
+<p>Aristotle defines peripeteia as a change in the direction of the action
+<em>into its opposite</em>. This is more specific than "things go badly."
+Peripeteia is the moment when the very effort the hero makes to achieve a
+goal produces the <strong>reverse</strong> of that goal.</p>
+
+<p>The textbook example is again <em>Oedipus Rex</em>. The messenger
+arrives intending to <em>cheer Oedipus up</em> by revealing that Polybus,
+the king he believed was his father, is not his father. The news is meant
+to dissolve the prophecy. Instead, it sets in motion the chain of
+revelations that destroys Oedipus. The messenger's intention and his
+effect are exact opposites. That is peripeteia in its purest form.</p>
+
+<h2>Peripeteia and anagnorisis together</h2>
+
+<p>Aristotle considered the finest tragic structure one in which
+<strong>reversal and recognition coincide</strong>. The moment the
+character recognizes the truth (anagnorisis) <em>is</em> the moment their
+fortune turns (peripeteia). The two events share a single beat. This is
+why <em>Oedipus Rex</em> is, for Aristotle, the template — the shepherd
+scene performs both functions in one line. (See our
+<a href="/glossary/anagnorisis">entry on anagnorisis</a>.)</p>
+
+<h2>Peripeteia vs. ordinary plot turns</h2>
+
+<p>Not every twist is a peripeteia. The distinguishing features:</p>
+
+<ul>
+  <li><strong>It reverses an intention.</strong> The character is trying
+      to do A; the action accomplishes the opposite of A.</li>
+  <li><strong>It is internal to the plot.</strong> A peripeteia rises from
+      the plot's own logic, not from an outside intervention. When an
+      outside force resolves the situation, that's a
+      <a href="/glossary/deus-ex-machina">deus ex machina</a> — which
+      Aristotle considered a fault.</li>
+  <li><strong>It is necessary or probable.</strong> Once it happens, the
+      audience should feel "of course." Peripeteia is the structural
+      payoff, not a surprise for surprise's sake.</li>
+</ul>
+
+<h2>Famous examples beyond Greek tragedy</h2>
+
+<ul>
+  <li><strong>Macbeth.</strong> Macbeth murders Duncan to secure the
+      throne and his own peace. The murder produces only further bloodshed
+      and unrest — the reverse of his intention.</li>
+  <li><strong>Crime and Punishment.</strong> Raskolnikov commits the
+      murder to prove he is above ordinary morality. The act proves the
+      opposite.</li>
+  <li><strong>The Great Gatsby.</strong> Gatsby builds an empire to win
+      Daisy. The empire is exactly what makes him unworthy in the eyes of
+      her class.</li>
+</ul>
+
+<h2>How to read it</h2>
+
+<p>When a critic identifies a peripeteia, they are pointing at a moment
+of <strong>intentional irony in the plot's structure</strong> — the
+hero's action curving back on itself. Ask: what was the character trying
+to do? What did the action accomplish? When the two are mirror opposites,
+you have peripeteia. The deeper the inversion, the closer the play comes
+to Aristotle's ideal.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "dramatic-irony",
+        "term": "dramatic irony",
+        "context": "drama and narrative",
+        "title": "What \"Dramatic Irony\" Means in Literature",
+        "meta_description": "Dramatic irony isn't sarcasm. It's the specific structural device where the audience knows something the character doesn't. Here's how it works in tragedy and comedy.",
+        "h1": "What \"dramatic irony\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["anagnorisis", "peripeteia", "unreliable-narrator"],
+        "body_html": """
+<p><strong>Dramatic irony</strong> is one of those phrases that gets used
+loosely to mean "anything ironic in a story." Its actual literary
+definition is much tighter — and once you have the tight definition, the
+device becomes one of the most powerful tools you can recognize in
+fiction and drama.</p>
+
+<h2>The strict definition</h2>
+
+<p>Dramatic irony exists when <strong>the audience knows something a
+character does not</strong>, and the character's words or actions take on
+a meaning the character cannot perceive but the audience can. The gap
+between what the character thinks they are saying or doing and what the
+audience sees them saying or doing is the irony.</p>
+
+<p>Crucially, it is not the character being sarcastic and the audience
+not getting it. It is the opposite — the audience getting it, the
+character not.</p>
+
+<h2>How it works in tragedy</h2>
+
+<p>In tragedy, dramatic irony usually deepens dread. Oedipus declares he
+will hunt down the killer of Laius and curse him with the worst fate
+imaginable. The audience knows Oedipus is cursing himself. Every line he
+speaks about the search is a hammer-stroke. The horror is not in what he
+says but in what he <em>cannot hear himself saying</em>.</p>
+
+<p>This is why dramatic irony tightens the audience's emotional
+investment. The audience becomes a co-conspirator with the play, holding
+the secret the character is about to discover. Anticipation becomes
+unbearable.</p>
+
+<h2>How it works in comedy</h2>
+
+<p>In comedy, the same device flips into pleasure. <em>Twelfth Night</em>
+runs on dramatic irony: Viola is dressed as a man; Olivia falls in love
+with her thinking she's a man; we know Olivia is wrong. Every misdirected
+line is funny precisely because we hold the key. Restoration comedy,
+Wodehouse, and most sitcom misunderstandings work the same way.</p>
+
+<h2>Three relatives often confused with it</h2>
+
+<ul>
+  <li><strong>Verbal irony</strong> is sarcasm — saying the opposite of
+      what one means. The speaker is in on the joke. ("Nice weather we're
+      having," in a thunderstorm.)</li>
+  <li><strong>Situational irony</strong> is the gap between expected and
+      actual outcomes. A fire station burning down. Nobody needs to be in
+      the dark.</li>
+  <li><strong>Dramatic irony</strong> requires the specific asymmetry
+      between audience knowledge and character knowledge.</li>
+</ul>
+
+<p>Modern usage often blurs these into "irony" generally; in literary
+analysis you should keep them separate.</p>
+
+<h2>How writers create it</h2>
+
+<ol>
+  <li><strong>A confession by another character.</strong> The audience
+      overhears a soliloquy or aside that the protagonist does not.</li>
+  <li><strong>An out-of-order plot.</strong> A flash-forward shows a
+      death; the rest of the story plays out with the audience watching
+      the character walk toward it.</li>
+  <li><strong>Genre knowledge.</strong> The audience knows what kind of
+      story they are in — a horror film teaches us to fear the basement
+      long before the character does.</li>
+</ol>
+
+<h2>How to read it</h2>
+
+<p>When a critic identifies dramatic irony, look for the asymmetry. Who
+knows what? When did each party learn it? What does the character say
+that the audience hears double? The closer you get to that gap, the
+closer you get to what the device is doing emotionally — generating
+either dread (tragedy) or recognition-comedy (humor), but always at the
+expense of a character who cannot hear themselves clearly.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "deus-ex-machina",
+        "term": "deus ex machina",
+        "context": "drama and narrative",
+        "title": "What \"Deus Ex Machina\" Means in Literature",
+        "meta_description": "Deus ex machina — literally \"god from the machine\" — names a specific kind of plot resolution. Here's its origin in Greek theater and why critics often see it as a fault.",
+        "h1": "What \"deus ex machina\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["peripeteia", "anagnorisis", "verisimilitude-in-literature"],
+        "body_html": """
+<p><strong>Deus ex machina</strong> — Latin for "god from the machine" —
+is one of the oldest pieces of literary jargon still in active use. The
+phrase began as a literal description of stagecraft and ended as critical
+shorthand for a specific kind of bad ending. Both senses are worth
+knowing.</p>
+
+<h2>The literal origin</h2>
+
+<p>In Greek tragedy, the playwright sometimes needed a god to descend and
+resolve the plot. To stage this, theaters used a crane-like device — the
+<em>mēchanē</em> — to lower an actor playing the god onto the stage from
+above. The Latin translation, <em>deus ex machina</em>, just describes
+the mechanism: the god, from the machine.</p>
+
+<p>Euripides was famous for using it. At the end of <em>Medea</em>, Medea
+escapes on a chariot drawn by dragons sent by Helios. At the end of
+<em>Iphigenia in Tauris</em>, Athena appears to settle the dispute. The
+audience would have seen the actor literally lowered from above.</p>
+
+<h2>How it became an insult</h2>
+
+<p>Aristotle, in the <em>Poetics</em>, gave the device its lasting
+reputation. The unraveling of the plot, he argued, should arise from
+within the plot itself — from the characters' actions and the necessary
+consequences. When the resolution is imposed from outside, the plot has
+not fulfilled its own logic; the playwright has cheated.</p>
+
+<p>So "deus ex machina" became critical shorthand for any
+<strong>external, unmotivated solution</strong> that rescues a story its
+writer couldn't otherwise resolve:</p>
+
+<ul>
+  <li>A long-lost rich uncle dies and leaves the protagonist money at
+      exactly the moment they need it.</li>
+  <li>An undiagnosed illness is cured by a coincidental meeting.</li>
+  <li>A villain is killed by an unrelated falling tree.</li>
+  <li>The hero wakes up and discovers it was all a dream.</li>
+</ul>
+
+<p>Whether a literal god descends or not, the structural pattern is the
+same: the resolution comes from outside the world the plot has been
+building.</p>
+
+<h2>When it isn't a fault</h2>
+
+<ol>
+  <li><strong>When the genre asks for it.</strong> Comedies, fairy tales,
+      and religious dramas often want a heightened, providential ending.
+      Shakespeare's late romances (<em>The Winter's Tale</em>,
+      <em>Cymbeline</em>) lean into deus ex machina deliberately.</li>
+  <li><strong>When it is the point.</strong> Brecht's
+      <em>The Threepenny Opera</em> ends with a mounted messenger
+      pardoning the protagonist; the absurdity is deliberate.</li>
+  <li><strong>When the "god" was seeded.</strong> If a powerful figure
+      has been established earlier in the story, their late intervention
+      is not unmotivated — it is the payoff of setup.</li>
+</ol>
+
+<h2>How to read it</h2>
+
+<p>When a critic complains of a deus ex machina, they are accusing the
+writer of failing to make the plot resolve itself. Ask: does the
+resolution arise from the characters' choices and the situation they
+have built, or from something external the writer has imported? The
+sharper the gap, the more accurate the charge. And ask whether the genre
+invites the device — the late Shakespearean god from the machine is
+doing different work than a thriller's last-minute coincidence.</p>
+""",
+    },
 ]
 
 
