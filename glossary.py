@@ -3575,6 +3575,124 @@ a body, a building, a feeling, a social arrangement. The strangeness
 is the work the writer is doing on your habituated eye.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "hamartia",
+        "term": "hamartia",
+        "context": "Greek tragedy and Aristotelian criticism",
+        "title": "What \"Hamartia\" Means — The Tragic Flaw Explained",
+        "meta_description": "Hamartia is Aristotle's term for the fatal error or character flaw that brings a tragic hero down. Here's what it really means — and why it's not just 'a character flaw.'",
+        "h1": "What \"hamartia\" means in tragedy",
+        "updated": "2026-05-20",
+        "related": ["catharsis-greek-tragedy", "anagnorisis", "peripeteia"],
+        "body_html": """
+<p>In Aristotle's <em>Poetics</em>, <strong>hamartia</strong> (ἁμαρτία)
+names the single error, flaw, or misjudgment that sets a tragic hero
+on the path to ruin. The word is often translated as "tragic flaw,"
+but that phrase smuggles in a moralizing idea Aristotle didn't quite
+intend. A hamartia is not simply a character's worst trait. It is
+more precisely a <em>fatal mistake</em> — an action or disposition
+that, in this particular situation, with this particular person, leads
+inevitably to catastrophe.</p>
+
+<h2>The Greek word</h2>
+
+<p>In everyday ancient Greek, <em>hamartia</em> meant a mistake, a
+miss, an error of aim — the kind a hunter makes when the arrow
+goes wide. The verb <em>hamartanein</em> means to miss the mark.
+The moral weight came later. In the New Testament the same word
+is translated as "sin," which is how "tragic flaw" picked up its
+modern, moralistic flavor. Aristotle, writing in the fourth century
+BCE, used it in a more clinical sense: an error in judgment or
+understanding, not necessarily a moral failing.</p>
+
+<h2>What Aristotle actually says</h2>
+
+<p>In <em>Poetics</em> Chapter 13, Aristotle argues that the best tragic
+hero is a person who is neither perfectly virtuous nor completely
+wicked, but somewhere in between — a person "of great reputation
+and prosperity" whose downfall comes "not through wickedness or
+depravity, but through some great error." That last phrase is
+<em>di' hamartian</em>: through an error. The protagonist must be
+good enough that we can identify with them, and the disaster must
+arise from something in them — not from outside bad luck — so that
+the plot feels necessary rather than arbitrary.</p>
+
+<p>This is crucial: Aristotle's tragedy is not about being punished
+for being bad. It is about how a good person, in a particular
+configuration of circumstances, makes the kind of mistake that good
+people can make — and how that mistake unravels everything.</p>
+
+<h2>Two versions of hamartia</h2>
+
+<p>Critics distinguish two types:</p>
+
+<ul>
+  <li><strong>Hamartia as moral flaw</strong> — a stable character
+      trait: Othello's jealousy, Macbeth's ambition, Lear's pride.
+      This reading treats hamartia as something close to a fatal
+      character defect, a quality the hero carries into every scene.</li>
+  <li><strong>Hamartia as error of judgment</strong> — a specific
+      mistake made in a specific moment: Oedipus' decision to pursue
+      the truth despite every warning, Hamlet's delay at the crucial
+      instant. On this reading, the hamartia is an act, not a
+      disposition; it could in principle have been avoided.</li>
+</ul>
+
+<p>Most real tragedies involve both. Oedipus' relentless need to
+<em>know</em> is a character trait; but the hamartia is the series
+of specific decisions that trait produces. The flaw and the error
+are not the same thing — the flaw is what makes the error possible.</p>
+
+<h2>Classic examples</h2>
+
+<p><strong>Oedipus</strong> — In Sophocles' <em>Oedipus Rex</em>,
+the hamartia is often cited as hubris, but it is more precisely
+an epistemological flaw: Oedipus's conviction that he can and should
+know everything. His relentless investigation of his own origins is
+what triggers the catastrophe. He solves the riddle that destroys him.</p>
+
+<p><strong>Macbeth</strong> — Shakespeare gives Macbeth unchecked
+ambition as his hamartia, but the precise error is the murder of
+Duncan — the point of no return. Before that act, Macbeth hesitates;
+after it, all subsequent evil flows necessarily.</p>
+
+<p><strong>Hamlet</strong> — The Prince's hamartia is the subject
+of centuries of argument. His delay, his excessive reflection, his
+inability to act without absolute certainty — these are the
+traditional answers. Each of them is a kind of error that makes
+the tragic outcome inevitable.</p>
+
+<h2>Why the term matters</h2>
+
+<p>Hamartia gives students and critics a precise way to ask one of
+the central questions of tragedy: <em>why did this person fall?</em>
+The answer must be internal — not just external bad luck — and it
+must be specific. "Macbeth was too ambitious" is the beginning of
+an answer; the hamartia is the exact shape of that ambition, the
+precise moment it becomes irreversible. Identifying the hamartia
+forces close reading: you have to find the act or disposition in
+the text, not impose it from outside.</p>
+
+<p>It also clarifies what distinguishes tragedy from mere misfortune.
+In tragedy, the fall arises from inside the hero. In melodrama or
+disaster narrative, it comes from outside. That inwardness — the
+sense that the protagonist is somehow the author of their own
+destruction — is what gives tragedy its particular grip.</p>
+
+<h2>Hamartia vs. hubris</h2>
+
+<p>The two are often confused. <strong>Hubris</strong> in Greek culture
+was a specific offense: the violent humiliation of another person for
+one's own gratification, a contempt for the gods. Modern usage has
+softened it to "excessive pride," which is close to one type of
+hamartia. But hubris is only one variety of tragic error. Not every
+hamartia is hubris. Hamlet's problem is not pride but paralysis;
+Oedipus's problem is not pride but the drive to know. Hubris is a
+subset; hamartia is the wider category.</p>
+""",
+    },
 ]
 
 
