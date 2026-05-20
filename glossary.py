@@ -5088,6 +5088,111 @@ at the limits of ordinary language — and that strain is itself
 meaningful.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "modernism",
+        "term": "modernism",
+        "context": "literary history, roughly 1890–1940",
+        "title": "What \"Modernism\" Means in Literature — The Movement Explained",
+        "meta_description": "Literary modernism (roughly 1890–1940) broke with Victorian conventions of plot, character, and voice. Here's what the movement actually changed and who its key figures were.",
+        "h1": "What \"modernism\" means in literature",
+        "updated": "2026-05-20",
+        "related": ["stream-of-consciousness", "free-indirect-discourse", "postmodernism"],
+        "body_html": """
+<p><strong>Literary modernism</strong> names the cluster of
+experimental movements in fiction, poetry, and drama that
+dominated the first half of the twentieth century — roughly
+1890 to 1940, with the heaviest concentration in the 1910s
+and 1920s. Its writers include Joyce, Woolf, Eliot, Pound,
+Yeats, Lawrence, Kafka, Proust, Rilke, Faulkner, and Beckett.
+It is not a single school or manifesto but a shared diagnosis
+of cultural crisis and a shared commitment to formal
+experimentation as the response.</p>
+
+<h2>What modernism was reacting against</h2>
+
+<p>The Victorian novel had an implicit contract with its reader:
+plot moves forward in chronological time; characters have
+coherent and knowable inner lives; the narrator can be trusted
+to interpret events reliably; language is transparent, pointing
+beyond itself to the world it describes. By the end of the
+nineteenth century, this contract felt dishonest to a growing
+number of writers.</p>
+
+<p>Several pressures combined: Darwin had destabilized the
+theological frame that gave Victorian narrative its sense of
+providential purpose. Freud had suggested that human motivation
+is largely unconscious, opaque even to the self. Nietzsche had
+attacked the foundations of Western moral certainty. The First
+World War made optimistic linear progress feel obscene. Urban
+modernity — the crowd, the department store, the newspaper,
+the machine — had fragmented the experience of time and
+attention. If reality had become this, the old forms could not
+honestly represent it.</p>
+
+<h2>Key formal innovations</h2>
+
+<p><strong>Stream of consciousness.</strong> Woolf, Joyce, and
+Faulkner developed techniques for rendering the continuous flow
+of mental experience — associations, memories, half-formed
+thoughts — rather than cleaned-up dialogue and action. The
+sentence becomes a recording device for consciousness, not
+a report on events.</p>
+
+<p><strong>Fragmentation.</strong> Eliot's <em>The Waste Land</em>
+is built from fragments of literary quotation, mythological
+reference, and urban scene that refuse to cohere into a
+continuous narrative. The fragmentation is the form of the
+poem's argument about cultural disintegration.</p>
+
+<p><strong>Disrupted chronology.</strong> Rather than following
+events in order, modernist fiction routinely jumps between
+time frames — Faulkner's <em>The Sound and the Fury</em> is
+famously structured around multiple narrators and non-sequential
+time. Memory becomes as real as action; the past haunts and
+conditions the present.</p>
+
+<p><strong>Impersonality and irony.</strong> Eliot's critical
+doctrine — articulated in "Tradition and the Individual Talent"
+(1919) — called for poetry that was not autobiographical
+self-expression but an "escape from personality." The artist
+is a catalyst, not a confessant. This generated a poetry of
+masks, personae, and dramatic monologue.</p>
+
+<p><strong>Myth and symbol.</strong> Eliot and Joyce both used
+mythological frameworks — the Fisher King legend in <em>The
+Waste Land</em>, the Odyssey in <em>Ulysses</em> — as
+structural scaffolding and ironic commentary on the modern
+world. The contrast between mythological grandeur and
+contemporary squalor is itself the meaning.</p>
+
+<h2>Key texts</h2>
+
+<ul>
+  <li>T. S. Eliot, <em>The Waste Land</em> (1922)</li>
+  <li>James Joyce, <em>Ulysses</em> (1922) and <em>Dubliners</em> (1914)</li>
+  <li>Virginia Woolf, <em>Mrs Dalloway</em> (1925), <em>To the Lighthouse</em> (1927)</li>
+  <li>William Faulkner, <em>The Sound and the Fury</em> (1929)</li>
+  <li>Marcel Proust, <em>In Search of Lost Time</em> (1913–1927)</li>
+  <li>Franz Kafka, <em>The Trial</em> (1925), <em>The Metamorphosis</em> (1915)</li>
+</ul>
+
+<h2>Modernism and postmodernism</h2>
+
+<p>Modernism and postmodernism are often confused. Modernism
+reacted against Victorian convention but remained committed
+to the idea that serious art could still make meaning —
+could still find or create order against the chaos. Even
+<em>The Waste Land</em>'s fragmentary surface is shaped by
+the myth of the Grail quest; even <em>Ulysses</em> has a
+rigorous underlying structure. <strong>Postmodernism</strong>
+goes further and abandons the aspiration to meaning itself,
+treating the collapse of grand narratives not as tragedy
+but as liberation — or at least as a condition to be played
+with rather than mourned.</p>
+""",
+    },
 ]
 
 
