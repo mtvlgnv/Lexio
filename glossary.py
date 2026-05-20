@@ -7637,15 +7637,54 @@ blockquote {
   height: 100%;
 }
 .entry-card:hover { border-color: rgba(255,122,24,0.4); transform: translateY(-1px); }
+.entry-card-head {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 4px;
+}
 .entry-card-term {
   font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600;
-  color: var(--text); margin-bottom: 4px;
+  color: var(--text);
+}
+.entry-card-new {
+  display: inline-flex; align-items: center;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px; border-radius: 999px;
+  background: rgba(255,122,24,0.15); color: var(--accent2);
+  border: 1px solid rgba(255,122,24,0.35);
 }
 .entry-card-context { font-size: 0.85rem; color: var(--muted); font-style: italic; margin-bottom: 10px; }
 .entry-card-desc {
   font-size: 0.9rem; color: var(--text-mid); line-height: 1.55;
   display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Search */
+.entry-search-wrap {
+  position: relative; margin-bottom: 28px;
+}
+.entry-search-icon {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%); color: var(--muted);
+  pointer-events: none;
+}
+#entry-search {
+  width: 100%; padding: 12px 16px 12px 40px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: inherit; font-size: 0.95rem; color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+#entry-search:focus {
+  border-color: rgba(255,122,24,0.45);
+  background: var(--surface);
+}
+#entry-search::placeholder { color: var(--muted); }
+.entry-empty {
+  text-align: center; padding: 40px 20px;
+  color: var(--muted); font-size: 0.9rem;
 }
 
 .closing {
@@ -7824,6 +7863,23 @@ def render_index() -> str:
     )
 
     import json as _json
+    import re
+    from datetime import date, timedelta
+
+    # Sort entries alphabetically by term (case-insensitive, ignoring leading "the ")
+    def sort_key(e: dict) -> str:
+        t = e["term"].lower()
+        if t.startswith("the "):
+            t = t[4:]
+        return t
+
+    sorted_entries = sorted(ENTRIES, key=sort_key)
+    total = len(sorted_entries)
+
+    # "New" threshold — entries updated within the last 30 days
+    today = date.today()
+    new_cutoff = today - timedelta(days=30)
+
     jsonld = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -7837,33 +7893,72 @@ def render_index() -> str:
                 "description": e["meta_description"],
                 "url": f"https://lexio.site/glossary/{e['slug']}",
             }
-            for e in ENTRIES
+            for e in sorted_entries
         ],
     }
     jsonld_tag = f'<script type="application/ld+json">{_json.dumps(jsonld, ensure_ascii=False)}</script>'
 
     cards = []
-    for e in ENTRIES:
-        # Truncate body for preview — pull first <p> text content.
+    for e in sorted_entries:
         body = e["body_html"]
-        # crude first-paragraph extraction
         start = body.find("<p>")
         end = body.find("</p>", start) if start != -1 else -1
         preview = ""
         if start != -1 and end != -1:
             raw = body[start + 3:end]
-            # strip HTML tags for the preview
-            import re
             preview = re.sub(r"<[^>]+>", "", raw)
             preview = preview.strip().replace("\n", " ")
             if len(preview) > 180:
                 preview = preview[:180].rstrip() + "…"
+
+        # Determine "new" badge
+        is_new = False
+        try:
+            updated_str = e.get("updated", "")
+            if updated_str:
+                y, m, d = updated_str.split("-")
+                entry_date = date(int(y), int(m), int(d))
+                is_new = entry_date >= new_cutoff
+        except Exception:
+            pass
+
+        new_badge = '<span class="entry-card-new">New</span>' if is_new else ''
+
+        # data-search attribute for client-side filtering
+        search_blob = f"{e['term']} {e['context']} {preview}".lower()
+
         cards.append(f"""
-    <a class="entry-card" href="/glossary/{escape(e['slug'])}">
-      <div class="entry-card-term">{escape(e['term'])}</div>
+    <a class="entry-card" href="/glossary/{escape(e['slug'])}" data-search="{escape(search_blob)}">
+      <div class="entry-card-head">
+        <div class="entry-card-term">{escape(e['term'])}</div>
+        {new_badge}
+      </div>
       <div class="entry-card-context">in {escape(e['context'])}</div>
       <div class="entry-card-desc">{escape(preview)}</div>
     </a>""")
+
+    search_js = """
+<script>
+(function() {
+  var input = document.getElementById('entry-search');
+  var grid = document.getElementById('entry-grid');
+  var empty = document.getElementById('entry-empty');
+  if (!input || !grid) return;
+  var cards = grid.querySelectorAll('.entry-card');
+  input.addEventListener('input', function() {
+    var q = (input.value || '').trim().toLowerCase();
+    var visible = 0;
+    cards.forEach(function(c) {
+      var blob = c.getAttribute('data-search') || '';
+      var match = q === '' || blob.indexOf(q) !== -1;
+      c.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    if (empty) empty.style.display = visible === 0 ? 'block' : 'none';
+  });
+})();
+</script>
+"""
 
     return f"""{head}
 <body>
@@ -7876,9 +7971,15 @@ def render_index() -> str:
 
   <span class="logo">Le<em>x</em>io</span>
   <h1>Glossary</h1>
-  <p class="intro">Literary terms that don't survive a dictionary lookup — explained in the context where you actually meet them. Free to read, no signup. New entries added regularly.</p>
+  <p class="intro">Literary terms that don't survive a dictionary lookup — explained in the context where you actually meet them. Free to read, no signup. {total} entries and counting.</p>
 
-  <div class="entry-grid">{''.join(cards)}</div>
+  <div class="entry-search-wrap">
+    <svg class="entry-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="entry-search" type="search" placeholder="Search {total} entries — try ‘hamartia’, ‘irony’, ‘Bakhtin’…" autocomplete="off" />
+  </div>
+
+  <div class="entry-grid" id="entry-grid">{''.join(cards)}</div>
+  <p id="entry-empty" class="entry-empty" style="display:none">No entries match. Try a shorter query.</p>
 
   {_cta_block()}
 
@@ -7887,6 +7988,7 @@ def render_index() -> str:
     © 2026 Lexio · <a href="/privacy.html">Privacy</a> · <a href="/credits.html">Credits</a>
   </p>
 </div>
+{search_js}
 </body>
 </html>
 """
