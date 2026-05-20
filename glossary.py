@@ -5193,6 +5193,108 @@ but as liberation — or at least as a condition to be played
 with rather than mourned.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "postmodernism",
+        "term": "postmodernism",
+        "context": "literary history, roughly 1950s onward",
+        "title": "What \"Postmodernism\" Means in Literature — The Movement Explained",
+        "meta_description": "Literary postmodernism (1950s onward) pushed past modernism's experiments into self-referential fiction, pastiche, and the collapse of stable meaning. Here's what it actually is.",
+        "h1": "What \"postmodernism\" means in literature",
+        "updated": "2026-05-20",
+        "related": ["modernism", "metafiction", "magical-realism"],
+        "body_html": """
+<p><strong>Postmodernism</strong> in literature names a loose
+constellation of attitudes, techniques, and assumptions that
+emerged in the 1950s and intensified through the 1960s–80s —
+partly as an extension of modernism's experiments, partly as
+a reaction against modernism's residual seriousness and its
+faith that art could still make meaning against chaos. Where
+modernism was anguished about fragmentation, postmodernism
+tends to be playful about it, or at least ironic.</p>
+
+<h2>What postmodernism argues</h2>
+
+<p>The theoretical underpinning — Lyotard, Baudrillard,
+Derrida, Foucault — is that the "grand narratives" of Western
+modernity (progress, reason, humanism, the sovereign subject)
+have collapsed, or have been exposed as ideological constructions
+rather than neutral truths. Language does not refer to a stable
+reality outside it; there are only other texts. Meaning is
+not discovered but produced — and always unstable, provisional,
+contested.</p>
+
+<p>In literary practice, this produces several characteristic
+moves:</p>
+
+<ul>
+  <li><strong>Metafiction</strong> — fiction that explicitly
+      calls attention to its own status as a fictional
+      construction. "You are reading a novel" intrudes into
+      the narrative. The artifice is foregrounded rather than
+      concealed.</li>
+  <li><strong>Pastiche and parody.</strong> Postmodern fiction
+      freely borrows, recombines, and parodies prior styles
+      and genres. There is no "original" style to be achieved;
+      all writing is a collage of existing voices. Pynchon's
+      <em>The Crying of Lot 49</em>, DeLillo's <em>White Noise</em>,
+      and Eco's <em>The Name of the Rose</em> all work through
+      genre pastiche.</li>
+  <li><strong>Unreliable narration and multiple versions.</strong>
+      Where modernism's multiple perspectives (Faulkner,
+      Woolf) still implied a coherent underlying reality
+      you could triangulate, postmodern fiction sometimes
+      insists there is no underlying reality to be found.
+      John Fowles's <em>The French Lieutenant's Woman</em>
+      offers two incompatible endings; Borges's fictions
+      describe impossible, self-contradicting worlds.</li>
+  <li><strong>Intertextuality.</strong> The text is explicitly
+      made of other texts. Pynchon, Borges, and Calvino
+      weave literary allusion, historical quotation, and
+      invented sources into fiction that refuses the boundary
+      between "real" and "made up."</li>
+  <li><strong>The collapse of high/low culture.</strong>
+      Modernism was largely elitist — difficulty was a
+      badge of seriousness. Postmodernism deliberately blurs
+      the line between high culture and popular genre fiction,
+      advertising, comic books, and television. The mixing
+      is itself a statement about the arbitrariness of
+      cultural hierarchies.</li>
+</ul>
+
+<h2>Key figures</h2>
+
+<ul>
+  <li>Jorge Luis Borges — the godfather; his labyrinths, libraries,
+      and impossible fictions anticipate almost everything.</li>
+  <li>Thomas Pynchon, <em>Gravity's Rainbow</em> (1973)</li>
+  <li>Don DeLillo, <em>White Noise</em> (1985)</li>
+  <li>Italo Calvino, <em>If on a winter's night a traveler</em> (1979)</li>
+  <li>John Barth, <em>Lost in the Funhouse</em> (1968)</li>
+  <li>Samuel Beckett — the hinge between modernism and postmodernism</li>
+  <li>Angela Carter, <em>The Bloody Chamber</em> (1979)</li>
+</ul>
+
+<h2>Postmodernism vs. modernism</h2>
+
+<p>The simplest way to hold the distinction: modernism believed
+that the collapse of old certainties was a crisis — and art
+should rise to meet it, seeking new form, new myth, new order.
+Postmodernism tends to view the collapse as permanent and
+irreversible — and either celebrates the freedom this creates
+(everything is playful, everything is available) or examines
+the political and psychological consequences of a world without
+stable reference points.</p>
+
+<p>Both movements are interested in form. But modernist formal
+experiment usually aims at something — a harder, cleaner
+representation of reality. Postmodern formal experiment often
+aims at nothing in particular — or at the demonstration that
+"aiming at something" is a fiction we have inherited and should
+interrogate.</p>
+""",
+    },
 ]
 
 
