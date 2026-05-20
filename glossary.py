@@ -5295,6 +5295,108 @@ aims at nothing in particular — or at the demonstration that
 interrogate.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "naturalism-literature",
+        "term": "naturalism",
+        "context": "literary history and realist fiction",
+        "title": "What \"Naturalism\" Means in Literature — Realism's Darker Twin",
+        "meta_description": "Literary naturalism pushed realism into determinism: characters are shaped by heredity, environment, and social forces they cannot control. Here's what the movement actually believed.",
+        "h1": "What \"naturalism\" means in literature",
+        "updated": "2026-05-20",
+        "related": ["verisimilitude-in-literature", "modernism", "grotesque-literature"],
+        "body_html": """
+<p><strong>Literary naturalism</strong> is an extension of realism
+that hardened into something darker. Where realism sought to
+represent social life accurately, naturalism added a philosophical
+claim: human beings are products of their heredity and environment,
+driven by forces — biological, economic, psychological — they
+neither fully understand nor control. Free will, in the strict
+sense, is an illusion. Character is fate, and fate is determined
+before the character even appears on the page.</p>
+
+<h2>The philosophical background</h2>
+
+<p>Naturalism emerged in the 1870s–80s, shaped by Darwinian
+evolutionary biology and Hippolyte Taine's influential formula:
+race, milieu, moment. Taine argued that a person's character
+and a nation's literature could be explained by three factors:
+inherited racial characteristics, the physical and social
+environment, and the historical moment. Apply this to fiction
+and you get characters who are, in Zola's terms, human
+"documents" — specimens in a scientific study of how heredity
+and milieu determine behavior.</p>
+
+<p>Émile Zola was the movement's theorist and practitioner.
+His 1880 essay "Le Roman expérimental" (The Experimental Novel)
+proposed that the novelist should operate like a scientist —
+constructing controlled experiments with characters in specific
+environments, observing what follows. The novel becomes a lab
+report on human nature.</p>
+
+<h2>Characteristics of naturalist fiction</h2>
+
+<ul>
+  <li><strong>Determinism.</strong> Characters do not transcend
+      their origins. The shopgirl who grew up in poverty will
+      not rise through virtue; she will be destroyed by forces
+      already in motion before her first scene.</li>
+  <li><strong>Lower-class subjects.</strong> Naturalist fiction
+      characteristically descends to the working class, the
+      urban poor, the immigrant, the gambler, the prostitute.
+      These are environments where the brute forces of appetite,
+      poverty, and heredity are most visible.</li>
+  <li><strong>Unglamorous detail.</strong> Naturalist writers
+      document what polite fiction avoided: hunger, violence,
+      alcoholism, sexual coercion, bodily degradation. This is
+      not sensationalism for its own sake but an insistence
+      that art look at what is actually there.</li>
+  <li><strong>Absence of redemption.</strong> Unlike Victorian
+      fiction, where suffering tends toward transformation or
+      reconciliation, naturalist plots often end in destruction
+      or stasis. Characters are worn down, not built up.</li>
+</ul>
+
+<h2>Key texts</h2>
+
+<p><strong>Zola's <em>Rougon-Macquart</em> cycle</strong> (1871–1893)
+— twenty novels tracing a single family across five generations,
+demonstrating how hereditary "taint" (alcoholism, mental
+instability) plays out differently across the social spectrum.
+<em>Germinal</em> (1885) is his masterpiece: coal miners in
+conditions that reduce them to the forces of appetite and
+survival.</p>
+
+<p><strong>Stephen Crane, <em>Maggie: A Girl of the Streets</em></strong>
+(1893) — a slum girl destroyed by her environment, the first
+American naturalist novel. Crane does not sentimentalize Maggie;
+he documents her.</p>
+
+<p><strong>Frank Norris, <em>McTeague</em></strong> (1899) — a
+dentist whose animal nature gradually overwhelms his veneer
+of civilization. The novel is grimly Darwinian: human nature
+as a set of drives barely held in check by social convention.</p>
+
+<p><strong>Theodore Dreiser, <em>Sister Carrie</em></strong>
+(1900) — a country girl who rises and falls in Chicago, driven
+by desire and circumstance rather than moral choice. Dreiser
+refuses the Victorian moral: Carrie is not punished for her
+transgressions because the universe is not moral in that way.</p>
+
+<h2>Naturalism vs. realism</h2>
+
+<p>Both movements value accurate representation of social life,
+but they differ on agency. Realist characters — even in
+grim circumstances — typically retain some capacity for
+moral choice and its consequences. Naturalist characters
+are substantially determined. Middlemarch's characters choose;
+<em>Germinal</em>'s characters are chosen for. Realism
+represents a world where character is destiny; naturalism
+represents a world where destiny is chemistry, heredity,
+and economic position.</p>
+""",
+    },
 ]
 
 
