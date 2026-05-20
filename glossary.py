@@ -4695,6 +4695,110 @@ language can reach what ordinary experience cannot. The question
 is whether the poem earns that claim.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "anaphora",
+        "term": "anaphora",
+        "context": "rhetoric and prosody",
+        "title": "What \"Anaphora\" Means — Repetition at the Start of Lines Explained",
+        "meta_description": "Anaphora is the deliberate repetition of a word or phrase at the beginning of successive lines, clauses, or sentences. Here's what the figure does and why the King James Bible and Whitman use it so heavily.",
+        "h1": "What \"anaphora\" means in rhetoric and poetry",
+        "updated": "2026-05-20",
+        "related": ["chiasmus", "asyndeton-polysyndeton", "blank-verse"],
+        "body_html": """
+<p><strong>Anaphora</strong> (from the Greek <em>anaphorá</em>,
+"a carrying back") is the repetition of a word or phrase at the
+beginning of successive clauses, sentences, or lines. "We shall
+fight on the beaches, we shall fight on the landing grounds,
+we shall fight in the fields" — that is anaphora. The repeated
+"we shall fight" is not an accident or a stylistic tic; it is
+doing specific rhetorical work.</p>
+
+<h2>What anaphora does</h2>
+
+<p>The figure has several effects, sometimes working simultaneously:</p>
+
+<ul>
+  <li><strong>Accumulation.</strong> Each repetition adds another
+      element to a mounting list. The repetition is the form of
+      the accumulation — it tells you: there is more, and more,
+      and more. Churchill's speech gathers resolve from this
+      momentum. The repeated phrase becomes a drumbeat.</li>
+  <li><strong>Emphasis.</strong> By returning to the same opening,
+      the speaker signals: this is the thing worth returning to,
+      the anchor of the argument. Everything that follows it is
+      a variation; the repeated phrase is the invariant truth.</li>
+  <li><strong>Incantatory rhythm.</strong> The repeating structure
+      creates a forward momentum that feels close to liturgy
+      or song. Biblical parallelism — the Old Testament's
+      characteristic mode — is essentially anaphoric: "The Lord
+      is my shepherd; I shall not want. He maketh me to lie down
+      in green pastures: he leadeth me beside the still waters."
+      The repetition of grammatical structure at the start of each
+      clause is the form's sacred quality.</li>
+  <li><strong>Unity.</strong> A long anaphoric list is unified by
+      its opening phrase, which gives the reader a thread to hold
+      through the accumulation. Without the repeated anchor, the
+      list risks dissolving into catalogue.</li>
+</ul>
+
+<h2>The King James Bible</h2>
+
+<p>The KJB's anaphora — "In the beginning God created the heaven and
+the earth. And the earth was without form, and void; and darkness
+was upon the face of the deep. And the Spirit of God moved upon the
+face of the waters" — is one of the most influential models in the
+English language. That opening "And" repeated at the start of each
+verse (in the Hebrew, <em>waw</em>, the connecting conjunction) gave
+generations of English writers a template for expansive, accumulative
+prose. Hemingway's use of "and" as a structural principle in his
+early stories is anaphoric in the biblical sense.</p>
+
+<h2>Walt Whitman</h2>
+
+<p>Whitman is the supreme practitioner of anaphora in American poetry.
+<em>Song of Myself</em> builds entire sections on anaphoric repetition:
+"I celebrate myself, and sing myself... I lean and loafe at my ease
+observing a spear of summer grass." But the technique reaches its
+fullest expression in catalogues like the "I am large, I contain
+multitudes" passages, where anaphoric "I see" or "I hear" or "Where"
+anchors a rushing list of American scenes. The repetition enacts
+democratic inclusion — the same opening phrase for every item, no
+hierarchy of importance.</p>
+
+<h2>Martin Luther King Jr.</h2>
+
+<p>"I have a dream that one day... I have a dream that one day...
+I have a dream that one day..." The rhetorical power of the speech
+depends substantially on anaphora. Each repetition of "I have a dream"
+resets the listener's attention and signals: here comes another
+specification of the vision. The accumulation is not redundant;
+it is the accumulation itself that constitutes the vision's
+comprehensiveness. By the fifth or eighth repetition, the phrase
+has become a ritual incantation that the audience participates in.</p>
+
+<h2>Anaphora vs. epistrophe vs. symploce</h2>
+
+<p>Anaphora's sister figures: <strong>epistrophe</strong> is
+repetition at the <em>end</em> of successive clauses ("government
+of the people, by the people, for the people"). <strong>Symploce</strong>
+combines both — same beginning and same ending — creating the
+tightest possible rhetorical cage. Anaphora alone leaves the middle
+open for variation, which is why it accommodates catalogue and
+accumulation so naturally.</p>
+
+<h2>When to look for it</h2>
+
+<p>Any time a writer begins two or more consecutive sentences,
+clauses, or lines with the same word or phrase, look for anaphora.
+Then ask: what is the repeated element doing? Is it accumulating,
+emphasizing, unifying, or incanting? What would be lost if the
+writer had simply listed the items without the repeated anchor?
+The answer tells you what the figure is contributing and how
+central it is to the passage's effect.</p>
+""",
+    },
 ]
 
 
