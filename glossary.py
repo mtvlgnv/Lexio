@@ -4261,6 +4261,122 @@ framing operate within its assumptions. The author is dead;
 we just argue about what that means for the living reader.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "anxiety-of-influence",
+        "term": "anxiety of influence",
+        "context": "literary theory and poetic tradition",
+        "title": "What the \"Anxiety of Influence\" Means — Harold Bloom Explained",
+        "meta_description": "Harold Bloom's \"anxiety of influence\" describes how poets struggle against their precursors, misreading them to clear imaginative space. Here's what the theory actually says.",
+        "h1": "What the \"anxiety of influence\" means",
+        "updated": "2026-05-20",
+        "related": ["death-of-the-author", "negative-capability", "intertextuality"],
+        "body_html": """
+<p>In <em>The Anxiety of Influence</em> (1973), Harold Bloom proposed
+one of the most provocative theories in literary criticism: that
+strong poets do not simply learn from their great predecessors;
+they struggle against them, misread them, distort them — and that
+this struggle is not a failure but the very mechanism by which
+originality is achieved. The concept reshaped how critics think
+about tradition, influence, and poetic identity.</p>
+
+<h2>The core argument</h2>
+
+<p>Every strong poet, Bloom argues, begins in the shadow of a
+poetic father — a precursor whose power is so overwhelming that
+the young poet risks being "devoured," reduced to mere imitation.
+To become a poet in his own right, the latecomer must perform
+what Bloom calls a "creative misreading" (<em>clinamen</em>, one
+of his six revisionary ratios): a deliberate swerve away from
+the precursor, a reading of the earlier poet that is in some sense
+wrong but in another sense necessary. The strong poet does not
+faithfully absorb and transmit the tradition; he warps it to
+create room for himself.</p>
+
+<p>Bloom draws heavily on Freud: the relationship between poet and
+precursor is Oedipal. The latecomer must, symbolically, kill the
+father — not through rejection but through a more violent act,
+the act of appropriation and deformation that makes the precursor
+seem to have anticipated the latecomer rather than the other way
+around. Bloom calls this "apophrades" (the return of the dead):
+the uncanny effect where the strong poet, having absorbed and
+transformed his precursor, makes the earlier work look as if it
+were influenced by him.</p>
+
+<h2>The six revisionary ratios</h2>
+
+<p>Bloom identifies six ways poets swerve from their precursors,
+giving them deliberately obscure Greek and Kabbalistic names.
+The most useful to know:</p>
+
+<ul>
+  <li><strong>Clinamen</strong> — the swerve itself, the opening
+      divergence where the latecomer corrects the precursor's
+      supposed error.</li>
+  <li><strong>Tessera</strong> — completion and antithesis: the
+      latecomer "completes" the precursor's work but in a direction
+      the precursor did not anticipate.</li>
+  <li><strong>Kenosis</strong> — a self-emptying, in which the
+      latecomer appears to diminish himself but actually empties
+      the precursor of force.</li>
+  <li><strong>Apophrades</strong> — the haunting return: the late
+      poet so thoroughly inhabits the precursor's voice that the
+      precursor seems to have been imitating the latecomer.</li>
+</ul>
+
+<h2>Examples in practice</h2>
+
+<p><strong>Milton and Shakespeare</strong>: Bloom argues that Milton's
+<em>Paradise Lost</em> is in part a massive swerve from Shakespeare
+— a poem that claims the epic tradition as a counter-tradition to
+the drama that Shakespeare had dominated. Milton had to suppress
+Shakespeare to write his poem.</p>
+
+<p><strong>Keats and Milton</strong>: Keats's <em>Hyperion</em>
+begins in full Miltonic grandeur and then, in the revised
+<em>Fall of Hyperion</em>, collapses that mode under the pressure
+of the poet's own consciousness. The revision is Bloom's clinamen
+in action: Keats swerves from Milton by dramatizing the cost of
+the Miltonic stance.</p>
+
+<p><strong>Emerson and Whitman</strong>: Bloom sees Whitman as the
+great American example. <em>Song of Myself</em> is a creative
+misreading of Emerson — it takes Emerson's prose vision of the
+democratic self and inflates it into a cosmic poetic persona that
+makes Emerson seem a mere precursor.</p>
+
+<h2>Objections and limits</h2>
+
+<p>The theory has been criticized on several fronts. It is
+relentlessly masculinist: Bloom builds his argument around a
+canon of strong male poets, and critics have pointed out that
+the Oedipal model of struggle and parricide applies poorly to
+women writers, who historically had to struggle not against
+overwhelming precursors but against the absence of any tradition
+at all. Sandra Gilbert and Susan Gubar's response, <em>The
+Madwoman in the Attic</em>, argues that women writers faced an
+"anxiety of authorship" — a question of whether they had the
+right to write at all — that is structurally different from
+Bloom's anxiety.</p>
+
+<p>Bloom also applies the theory mainly to post-Miltonic English
+poetry. Its applicability to fiction, drama, or non-Western
+traditions is much less clear.</p>
+
+<h2>Why it matters</h2>
+
+<p>Despite its limits, the anxiety of influence changed how critics
+talk about tradition. Before Bloom, influence was often discussed
+as a matter of "sources" — one poet borrowing from another. After
+Bloom, the question became psychodynamic: how does a writer
+<em>struggle</em> with a predecessor? How does the precursor's
+power get converted into the latecomer's originality? These are
+richer and harder questions, and Bloom's vocabulary — swerve,
+misreading, apophrades — gives you a set of precise tools for
+asking them.</p>
+""",
+    },
 ]
 
 
