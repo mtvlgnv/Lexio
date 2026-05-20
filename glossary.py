@@ -3693,6 +3693,123 @@ Oedipus's problem is not pride but the drive to know. Hubris is a
 subset; hamartia is the wider category.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "hubris",
+        "term": "hubris",
+        "context": "Greek tragedy and classical ethics",
+        "title": "What \"Hubris\" Means — Beyond \"Excessive Pride\"",
+        "meta_description": "Hubris in Greek tragedy meant violent contempt for others, not simply arrogance. Here's what the term really means and why its modern use misses the original force.",
+        "h1": "What \"hubris\" means in tragedy",
+        "updated": "2026-05-20",
+        "related": ["hamartia", "catharsis-greek-tragedy", "anagnorisis"],
+        "body_html": """
+<p>Modern usage has softened <strong>hubris</strong> into little more
+than excessive pride or overconfidence — the quality you diagnose
+when someone gets too big for their boots. The ancient Greeks meant
+something sharper and more specific: an act of violent contempt,
+a deliberate effort to humiliate another person for the pleasure
+of asserting your own superiority. Understanding that original force
+makes the concept far more useful in literary analysis.</p>
+
+<h2>Hubris in Greek culture</h2>
+
+<p>In classical Athens, <em>hybris</em> (ὕβρις) was a legal category
+as well as a moral one. The Athenian orator Demosthenes defines it
+precisely: hubris is doing harm to another not for gain, not in anger,
+but purely for the enjoyment of demonstrating one's power. The
+victim's humiliation is the point. Rape, assault, and public
+shaming could all qualify. What made hubris distinctive was motive:
+you acted not because you had to, but because you could, and you
+wanted the other person to feel it.</p>
+
+<p>The gods took particular notice. To treat another human being
+— or, worse, a god — with that kind of contempt was to invite
+divine retribution, what the Greeks called <em>nemesis</em>. The
+sequence hubris → nemesis was a moral law as reliable, to the
+Greek mind, as gravity.</p>
+
+<h2>Hubris in tragedy</h2>
+
+<p>Greek tragedy made this law visible on stage. The tragic hero
+typically commits some act of overreach — treating divine limits as
+irrelevant, treating other people as obstacles to be crushed —
+and the drama shows what happens next. The satisfaction for the
+audience is partly ethical: order is restored. The satisfaction
+is also psychological: the hero's fall produces the catharsis
+that Aristotle describes.</p>
+
+<p><strong>Creon</strong> in Sophocles' <em>Antigone</em> is one
+of the clearest examples. His refusal to allow Antigone to bury
+her brother is not mere error; it is hubris — a contemptuous
+assertion of political power over divine law and human
+feeling. The play charts the consequences methodically.</p>
+
+<p><strong>Achilles</strong> in the <em>Iliad</em> is another
+study in hubris. His treatment of Hector's body — dragging it
+behind his chariot, denying it burial — crosses from grief
+and anger into something the poem clearly marks as transgression.
+Even his own camp is disturbed. The gods intervene.</p>
+
+<p><strong>Agamemnon</strong> commits hubris when he walks on the
+crimson tapestries at Clytemnestra's invitation — a ceremony
+reserved for gods. Aeschylus shows him knowing it is wrong, doing
+it anyway, and paying for it.</p>
+
+<h2>What hubris is not</h2>
+
+<p>The modern reduction of hubris to "overconfidence" or "pride
+before a fall" loses three things the ancient concept had:</p>
+
+<ul>
+  <li><strong>The victim.</strong> Ancient hubris requires someone
+      who is humiliated. It is an interpersonal offense, not a
+      private character flaw. Modern "hubris" often has no victim —
+      just an overreaching person who fails. That is closer to the
+      Greek concept of <em>ate</em> (blind recklessness) than to
+      hubris proper.</li>
+  <li><strong>The intent.</strong> The Greek hubrist enjoys the
+      other person's abasement. Accidental offense is not hubris.
+      The pleasure in domination is the defining feature.</li>
+  <li><strong>The religious dimension.</strong> Greek hubris affronts
+      the gods because it violates the divinely sanctioned order in
+      which all humans are finite creatures. Modern "hubris" is
+      mostly secular — it just means getting above yourself.</li>
+</ul>
+
+<h2>Hubris in modern literature</h2>
+
+<p>Shakespeare's tragic heroes are often described as hubristic,
+and the description fits in the looser modern sense. Macbeth's
+ambition, Lear's division of the kingdom, Othello's claim to
+certainty about Desdemona — each involves a kind of overreach.
+But Shakespearean tragedy also picks up the element of victim
+and contempt: Lear's treatment of Cordelia in Act I is genuinely
+contemptuous; Macbeth commits actual violence against innocents
+for his own advancement.</p>
+
+<p>Mary Shelley's Victor Frankenstein is the archetypal modern
+hubristic figure — the scientist who refuses to recognize limits,
+who creates life and then abandons his creation in contempt. The
+title <em>Frankenstein; or, The Modern Prometheus</em> flags the
+classical resonance directly.</p>
+
+<h2>Using the word precisely</h2>
+
+<p>When you write about hubris in a literary context, the more precise
+you are the better your analysis. Ask: who is the victim of this
+contempt? What limit is being transgressed — divine, social, human?
+Does the character take pleasure in the transgression, or is it
+incidental? A character who simply takes risks is not hubristic.
+A character who overrides another person's dignity or the gods'
+prerogatives — and does so with relish — is.</p>
+
+<p>That distinction will carry you from a vague observation about
+pride to a pointed claim about power, transgression, and the moral
+logic of the text.</p>
+""",
+    },
 ]
 
 
