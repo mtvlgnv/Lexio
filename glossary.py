@@ -2605,6 +2605,482 @@ hierarchical and regenerative work — when the joke is also a
 dethroning, and the dethroning is also a renewal.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "enjambment",
+        "term": "enjambment",
+        "context": "poetic form",
+        "title": "What \"Enjambment\" Means in Poetry",
+        "meta_description": "Enjambment is when a poetic line runs on past its end without a pause. Here's how it works, why poets use it, and how to read enjambed verse.",
+        "h1": "What \"enjambment\" means in poetry",
+        "updated": "2026-05-19",
+        "related": ["caesura", "iambic-pentameter", "blank-verse"],
+        "body_html": """
+<p><strong>Enjambment</strong> is the technical term for when a
+poetic line runs on past its end, with no punctuation or natural
+pause, into the next line. The sentence continues; the line does not.
+The reader's eye drops down before the grammar lets them rest.</p>
+
+<p>The word comes from the French <em>enjamber</em>, "to stride over."
+That image is exact — the sentence strides over the line break.</p>
+
+<h2>End-stopped vs. enjambed</h2>
+
+<p>Lines in poetry can end in one of two ways:</p>
+
+<ul>
+  <li><strong>End-stopped:</strong> The line ends at a natural syntactic
+      and grammatical pause — a comma, a semicolon, a period.</li>
+  <li><strong>Enjambed:</strong> The line ends mid-phrase. The grammar
+      pulls forward; the line shape says stop.</li>
+</ul>
+
+<p>The two create totally different reading experiences. End-stopped
+verse feels measured, declarative, contained. Enjambed verse feels
+restless, urgent, modern.</p>
+
+<h2>Why poets use it</h2>
+
+<ol>
+  <li><strong>Tension between meter and meaning.</strong> The line is
+      one unit; the sentence is another. When they don't align, the
+      reader's attention is split, and the poem gets two layers at
+      once.</li>
+  <li><strong>Surprise.</strong> A line break can interrupt a thought
+      mid-flight, making the next word a small shock when it arrives.</li>
+  <li><strong>Speed.</strong> A heavily enjambed poem feels fast,
+      because nothing lets the reader rest.</li>
+  <li><strong>Visual emphasis.</strong> The word stranded at the start
+      of a new line gets weight it wouldn't get mid-sentence.</li>
+</ol>
+
+<h2>Famous examples</h2>
+
+<p>Milton's <em>Paradise Lost</em> is the great early case in English.
+Milton claimed his blank verse drew its power from the "sense
+variously drawn out from one verse into another." A line ending in
+<em>"and"</em> or <em>"of"</em> forces the reader on.</p>
+
+<p>The Romantics — especially Keats and Shelley — used enjambment to
+push lyric poetry past the heroic couplet's tidy stops. By the time of
+modernism, the line had lost its sentence almost entirely. William
+Carlos Williams's "so much depends / upon" makes the line break carry
+nearly all the poem's weight.</p>
+
+<h2>Reading enjambed verse aloud</h2>
+
+<p>A common student mistake is to over-stop at every line break, as if
+the poem were a list. A better practice is to follow the grammar — let
+the sentence carry the voice — while still letting the line break
+register as a tiny suspension, a held breath. The pause is shorter
+than a comma, longer than nothing. With practice you can hear both
+the line and the sentence at once.</p>
+
+<h2>Enjambment vs. caesura</h2>
+
+<p>Enjambment is a break the line forces on the sentence. A
+<a href="/glossary/caesura">caesura</a> is a break the sentence forces
+inside a line. They are mirror images — and poets often pair them.
+Heavy enjambment plus heavy caesura is the classic recipe for the
+mature blank verse line.</p>
+
+<h2>How to read it</h2>
+
+<p>When a critic notes "heavy enjambment" in a poem, they are
+pointing at the tension between the line as a visual unit and the
+sentence as a grammatical unit. Look at the word that ends each line
+and the word that begins the next. Where the join is interesting, the
+poet is doing work there. The enjambment is rarely accidental —
+modern poets choose every line break.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "caesura",
+        "term": "caesura",
+        "context": "poetic form",
+        "title": "What \"Caesura\" Means in Poetry",
+        "meta_description": "A caesura is a pause inside a poetic line. Here's how it shapes everything from Old English half-lines to Shakespeare's pentameter — and how to hear it.",
+        "h1": "What \"caesura\" means in poetry",
+        "updated": "2026-05-19",
+        "related": ["enjambment", "iambic-pentameter", "blank-verse"],
+        "body_html": """
+<p>A <strong>caesura</strong> is a pause inside a poetic line — a
+break in the middle of the verse, not at its end. The word comes from
+the Latin <em>caedere</em>, "to cut." A caesura is a place where the
+line is cut, where the voice rests for a beat in the middle of the
+meter.</p>
+
+<h2>How a caesura works</h2>
+
+<p>Caesurae are usually produced by punctuation — a comma, semicolon,
+period, or dash mid-line. They can also be produced by syntax: a
+natural grammatical pause where no punctuation appears. Either way,
+the effect is the same: the line is divided into two unequal or equal
+half-lines, and the rhythm of the poem now has an internal as well as
+an external structure.</p>
+
+<p>Scholars distinguish two positions:</p>
+
+<ul>
+  <li><strong>Masculine caesura:</strong> the pause falls after a
+      stressed syllable. The half-line ends firmly.</li>
+  <li><strong>Feminine caesura:</strong> the pause falls after an
+      unstressed syllable. The half-line trails into the pause more
+      softly.</li>
+</ul>
+
+<h2>The historical importance</h2>
+
+<p>In Old English poetry — <em>Beowulf</em>, the elegies — the caesura
+was the single most important formal feature. Each line was built as
+two half-lines separated by a strong central pause, with alliteration
+binding them together. The caesura wasn't optional; it was the
+structural backbone.</p>
+
+<p>Latin hexameter (Virgil, Ovid) relied on caesura just as heavily,
+typically falling somewhere around the third foot. Without the
+caesura, the line would collapse into a single long roll of stresses.</p>
+
+<h2>The Shakespearean caesura</h2>
+
+<p>In English blank verse, caesura is more flexible. Early
+pentameter tended to place its caesura predictably after the fourth
+or sixth syllable. Shakespeare, by his mature period, distributes the
+pause anywhere in the line — sometimes very early, sometimes very
+late, sometimes twice in the same line.</p>
+
+<p>The famous opening of Hamlet's soliloquy — "To be, or not to be:
+that is the question" — has a caesura right at the colon. The line
+divides into a two-part question. The shift of the caesura within
+otherwise regular pentameter is one of Shakespeare's main rhythmic
+expressive tools.</p>
+
+<h2>Caesura and enjambment together</h2>
+
+<p>The mature pentameter line uses both: a caesura inside the line and
+enjambment at its end. The result is a line whose internal grammar
+keeps the voice moving while the visible line shape disciplines it.
+(See our <a href="/glossary/enjambment">entry on enjambment</a>.) The
+combination is one of the reasons English blank verse has been the
+default for serious poetry for four centuries.</p>
+
+<h2>How to hear it</h2>
+
+<p>Read a passage of Milton or late Shakespeare aloud. Mark the place
+in each line where your voice naturally wants to pause. That place,
+wherever it is, is the caesura. The variation of where it falls from
+line to line is what gives the verse its conversational fluency under
+its formal frame.</p>
+
+<h2>How to read it</h2>
+
+<p>When a critic talks about a poem's caesurae, they are pointing at
+the internal architecture of the line. Look for the pauses inside the
+lines, not just at their ends. Where the caesura falls, and how it
+moves, often tells you how a poet is using meter as a flexible
+instrument rather than a fixed grid.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "volta-sonnet",
+        "term": "volta",
+        "context": "sonnet form",
+        "title": "What \"Volta\" Means in a Sonnet",
+        "meta_description": "The volta is the turn — the moment a sonnet pivots. Here's where to look for it in Petrarchan and Shakespearean sonnets and what it does to the poem.",
+        "h1": "What \"volta\" means in a sonnet",
+        "updated": "2026-05-19",
+        "related": ["enjambment", "caesura", "iambic-pentameter"],
+        "body_html": """
+<p>The <strong>volta</strong> — Italian for "turn" — is the moment a
+sonnet pivots. It is the structural hinge that distinguishes a sonnet
+from a fourteen-line poem that just happens to be fourteen lines long.
+The volta is where the argument turns, where the mood shifts, where
+the speaker's relationship to their material moves.</p>
+
+<h2>The Petrarchan volta</h2>
+
+<p>The Italian or Petrarchan sonnet is divided into two parts:</p>
+
+<ul>
+  <li><strong>The octave</strong> (lines 1–8) — usually rhyming
+      ABBAABBA. Establishes a problem, situation, or question.</li>
+  <li><strong>The sestet</strong> (lines 9–14) — usually CDECDE or
+      CDCDCD. Responds, resolves, or reverses.</li>
+</ul>
+
+<p>The volta falls between line 8 and line 9 — at the seam of octave
+and sestet. The shift can be argumentative ("but…"), temporal ("yet
+now…"), or attitudinal (from despair to faith, from question to
+answer). It is the structural promise the form makes.</p>
+
+<h2>The Shakespearean volta</h2>
+
+<p>The English or Shakespearean sonnet (three quatrains and a couplet,
+rhyming ABAB CDCD EFEF GG) places its turn differently. The couplet at
+the end carries the weight, and the volta typically falls at or near
+line 13. The first twelve lines build a position; the final two
+detonate or summarize or undercut it.</p>
+
+<p>Shakespeare often uses this for ironic effect. The quatrains
+develop a praise or a complaint; the couplet abruptly recasts it.
+Sonnet 130's "And yet, by heaven, I think my love as rare / As any
+she belied with false compare" is a textbook volta — twelve lines of
+anti-praise overturned in two.</p>
+
+<h2>Variants</h2>
+
+<ul>
+  <li><strong>The Miltonic sonnet</strong> uses the Petrarchan rhyme
+      scheme but lets the syntax slide over the line 8/9 seam, blurring
+      the volta. Milton, Wordsworth, and Keats all work this looser
+      structure.</li>
+  <li><strong>The Spenserian sonnet</strong> (ABAB BCBC CDCD EE)
+      interlocks the rhymes more tightly and tends to soften the
+      turn.</li>
+  <li><strong>The modern sonnet</strong> — Hopkins, Rilke, Brooks,
+      Hayden, Hill — keeps the fourteen lines and the meter but
+      relocates or multiplies the volta, sometimes producing two or
+      three turns in a single poem.</li>
+</ul>
+
+<h2>How to spot it</h2>
+
+<p>The signals of a volta include:</p>
+
+<ul>
+  <li>A logical pivot word: "but," "yet," "and yet," "still," "now,"
+      "however."</li>
+  <li>A change of address: from "you" to "I," or to direct address
+      after general statement.</li>
+  <li>A change of tense.</li>
+  <li>A visible stanza break (in Petrarchan sonnets) or an emphatic
+      indentation.</li>
+</ul>
+
+<h2>Why the form keeps it</h2>
+
+<p>The sonnet's compact size — fourteen lines, usually in iambic
+pentameter — gives the volta its force. A poem long enough to develop
+a thought and short enough to require a single decisive shift is
+ideally shaped for an argument that needs to turn. That is why the
+sonnet has been used for love, prayer, political argument, grief,
+and philosophical riddle for seven hundred years.</p>
+
+<h2>How to read it</h2>
+
+<p>When you read a sonnet, find the turn before you analyze
+anything else. Mark line 9 in a Petrarchan sonnet and line 13 in a
+Shakespearean one and ask: what changes here? The sonnet is a
+two-part argument with the volta as its joint. Without locating the
+turn, the poem reads as flat description. With it, the architecture
+opens.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "iambic-pentameter",
+        "term": "iambic pentameter",
+        "context": "poetic meter",
+        "title": "What \"Iambic Pentameter\" Means in Poetry",
+        "meta_description": "Iambic pentameter is the basic meter of English serious poetry. Here's how it works, why it sounds natural in English, and how to scan a line of it.",
+        "h1": "What \"iambic pentameter\" means in poetry",
+        "updated": "2026-05-19",
+        "related": ["blank-verse", "enjambment", "caesura"],
+        "body_html": """
+<p><strong>Iambic pentameter</strong> is the most important meter in
+English poetry. Shakespeare's plays, Milton's epics, almost every
+sonnet you have read, and most serious English poetry through the
+19th century are written in it. Understanding it gives you access to
+a huge swath of literature you would otherwise just float over.</p>
+
+<h2>The mechanics</h2>
+
+<p>An <strong>iamb</strong> is a metrical foot of two syllables: one
+unstressed, one stressed. Da-<em>DUM</em>. <em>Pentameter</em> means
+five feet per line.</p>
+
+<p>So a line of iambic pentameter has ten syllables, alternating
+unstressed and stressed: da-<em>DUM</em>, da-<em>DUM</em>,
+da-<em>DUM</em>, da-<em>DUM</em>, da-<em>DUM</em>.</p>
+
+<p>Shakespeare's "Shall I com-<em>pare</em> thee to a <em>sum</em>-mer's
+<em>day</em>?" gives you the basic shape. Five iambs, ten syllables,
+end on a stress.</p>
+
+<h2>Why English likes it</h2>
+
+<p>English is a stress-timed language. Our ordinary speech naturally
+clumps into iambic shapes — "be-<em>cause</em>," "a-<em>lone</em>,"
+"to-<em>day</em>" are all iambs. A line of iambic pentameter sounds
+like elevated speech rather than song, because it is built from the
+same rhythms our mouths already use.</p>
+
+<p>Ten syllables also happens to be roughly the longest unit a speaker
+can comfortably deliver in a single breath. That is one reason
+iambic pentameter has stayed the default for English dramatic verse
+for four hundred years.</p>
+
+<h2>Variation</h2>
+
+<p>Strict alternation gets monotonous fast. The mature pentameter
+line uses regular variations:</p>
+
+<ul>
+  <li><strong>Trochaic substitution.</strong> Replacing an iamb with a
+      trochee (<em>DUM</em>-da) — usually at the start of a line. "<em>To</em>
+      be, or <em>not</em> to be" opens with a trochee.</li>
+  <li><strong>Spondaic substitution.</strong> Replacing an iamb with a
+      spondee (<em>DUM</em>-<em>DUM</em>) — two stresses in a row.
+      Heavier, slower lines.</li>
+  <li><strong>Pyrrhic substitution.</strong> Replacing an iamb with a
+      pyrrhus (da-da) — two unstressed syllables. Lighter, faster.</li>
+  <li><strong>Feminine endings.</strong> An extra unstressed syllable
+      at line's end. "To be or not to be: that <em>is</em> the
+      <em>ques</em>-tion" — eleven syllables, the last unstressed.</li>
+</ul>
+
+<h2>How to scan a line</h2>
+
+<ol>
+  <li>Read the line aloud naturally. Don't force the meter.</li>
+  <li>Mark which syllables you actually stress.</li>
+  <li>Compare your stress pattern to strict iambs. Where does it
+      vary?</li>
+  <li>Ask <em>why</em> the variation might be there. The meter
+      breaks are usually expressive — emphasizing a key word, slowing
+      a key moment.</li>
+</ol>
+
+<h2>Iambic pentameter and blank verse</h2>
+
+<p>Iambic pentameter is a meter; <a href="/glossary/blank-verse">blank
+verse</a> is a form — unrhymed iambic pentameter. Most of Shakespeare's
+plays, Milton's <em>Paradise Lost</em>, and Wordsworth's <em>Prelude</em>
+are in blank verse. Sonnets are in rhymed iambic pentameter and so are
+many longer poems through the 19th century.</p>
+
+<h2>How to read it</h2>
+
+<p>When a critic notes that a passage is in iambic pentameter, the
+useful question is not "is it iambic pentameter?" (most serious
+English verse is). The useful question is <em>where does the meter
+break</em>? The departures from the strict pattern are where the poet
+is doing expressive work — pointing emphasis, signaling emotional
+disturbance, or showing speech under pressure. Read for the
+variations, not the rule.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "blank-verse",
+        "term": "blank verse",
+        "context": "poetic form",
+        "title": "What \"Blank Verse\" Means in Poetry",
+        "meta_description": "Blank verse is unrhymed iambic pentameter — the form Shakespeare, Milton, and Wordsworth used for serious English poetry. Here's why it became the default.",
+        "h1": "What \"blank verse\" means in poetry",
+        "updated": "2026-05-19",
+        "related": ["iambic-pentameter", "enjambment", "caesura"],
+        "body_html": """
+<p><strong>Blank verse</strong> is unrhymed iambic pentameter. That is
+the whole definition. It is the verse form of most of English serious
+literature for four centuries — most of Shakespeare's plays, most of
+Milton, all of Wordsworth's longer poems, and a great deal of the
+20th-century long poem.</p>
+
+<h2>Why "blank"</h2>
+
+<p>The "blank" refers to the absence of rhyme. The lines end without
+matching sounds, which makes the verse sound closer to elevated
+speech than to song. Blank verse is what English poets reach for when
+they want the discipline of meter but the freedom of unrhymed thought.</p>
+
+<h2>The history</h2>
+
+<p>The form was introduced into English in the 1550s by Henry
+Howard, Earl of Surrey, who used it to translate parts of the
+<em>Aeneid</em>. Within a generation, the playwrights of the 1580s
+and 1590s — Marlowe, Kyd, Shakespeare — had taken it up for the
+stage. By <em>Hamlet</em> and <em>King Lear</em>, blank verse had
+become the medium of English serious drama.</p>
+
+<p>Milton's <em>Paradise Lost</em> (1667) gave blank verse its
+epic credentials. Milton's preface to the second edition explicitly
+rejected rhyme as the "invention of a barbarous age," arguing that
+blank verse was closer to the heroic verse of Homer and Virgil. From
+that point forward, blank verse was the default for any English poem
+with serious ambition.</p>
+
+<h2>Why English poetry favors it</h2>
+
+<p>Three reasons blank verse stuck:</p>
+
+<ol>
+  <li><strong>Length without strain.</strong> Rhyme demands a closing
+      sound every two or four lines. Over a long poem, this becomes
+      audible artifice. Blank verse can sustain narrative or
+      philosophical thought for thousands of lines without that
+      rhyme-fatigue.</li>
+  <li><strong>Speech-likeness.</strong> Iambic pentameter is close to
+      the natural cadence of English. (See our
+      <a href="/glossary/iambic-pentameter">entry on iambic
+      pentameter</a>.) Without rhyme, it sounds like elevated speech
+      rather than song.</li>
+  <li><strong>Flexibility.</strong> Caesurae can fall anywhere;
+      enjambment can be heavy or light; substitutions can vary the
+      meter. (See our <a href="/glossary/caesura">entry on
+      caesura</a> and our <a href="/glossary/enjambment">entry on
+      enjambment</a>.) Blank verse gives the poet a stable ground and
+      enormous expressive room.</li>
+</ol>
+
+<h2>Blank verse vs. free verse</h2>
+
+<p>These are often confused but are opposites:</p>
+
+<ul>
+  <li><strong>Blank verse</strong> is metrical. Five iambs per line.
+      The meter is strict (with permitted substitutions).</li>
+  <li><strong>Free verse</strong> has no fixed meter. The line is
+      whatever the poet says it is. Free verse comes into English
+      poetry mostly in the late 19th century (Whitman) and dominates
+      the 20th.</li>
+</ul>
+
+<p>Blank verse is unrhymed but metrical. Free verse is unmetered.
+They are not the same.</p>
+
+<h2>Canonical blank-verse works</h2>
+
+<ul>
+  <li>Most of <strong>Shakespeare</strong>'s major plays.</li>
+  <li><strong>Milton, <em>Paradise Lost</em></strong> (1667) and
+      <em>Paradise Regained</em> (1671).</li>
+  <li><strong>Wordsworth, <em>The Prelude</em></strong> (1850).</li>
+  <li><strong>Tennyson, <em>The Idylls of the King</em></strong>.</li>
+  <li><strong>Robert Frost</strong> — much of his apparently
+      conversational verse is blank verse in disguise.</li>
+  <li><strong>Wallace Stevens</strong> — many of his long poems use
+      blank verse with sophisticated variation.</li>
+</ul>
+
+<h2>How to read it</h2>
+
+<p>When you read a passage of blank verse, the useful instinct is to
+listen for the meter under the syntax. The pentameter is the heart;
+the sentence is what breathes through it. The play between the two —
+sentence pulling against line — is where blank verse becomes
+expressive. A poet who locks the sentence and line together produces
+oratory. A poet who lets them slip and rejoin, like Shakespeare or
+Milton, produces music.</p>
+""",
+    },
 ]
 
 
