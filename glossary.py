@@ -4474,6 +4474,122 @@ what happens to meaning at the boundary between them. Those
 boundaries are often where the most significant action takes place.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "heteroglossia",
+        "term": "heteroglossia",
+        "context": "Bakhtinian theory and the novel",
+        "title": "What \"Heteroglossia\" Means — Bakhtin's Many-Voiced Novel",
+        "meta_description": "Bakhtin's heteroglossia describes the novel as a site of multiple languages and social voices in conflict. Here's what the term means and why it distinguishes the novel from poetry.",
+        "h1": "What \"heteroglossia\" means",
+        "updated": "2026-05-20",
+        "related": ["chronotope", "carnivalesque", "free-indirect-discourse"],
+        "body_html": """
+<p><strong>Heteroglossia</strong> — from the Greek <em>heteros</em>
+(other) and <em>glossa</em> (tongue) — is Mikhail Bakhtin's term
+for the condition of language in which multiple social voices,
+registers, and ideological perspectives coexist and clash. The novel,
+for Bakhtin, is not a single unified utterance in a single language;
+it is a site where many different "languages" — professional jargon,
+class dialects, generational speech, ideological discourse — are
+assembled and set into dialogue with each other. This heteroglossia,
+Bakhtin argues, is what distinguishes the novel from other literary
+forms and is the source of its peculiar power.</p>
+
+<h2>What Bakhtin means by "language"</h2>
+
+<p>Bakhtin is not referring to French versus English. He means
+socially and historically specific ways of speaking: the language
+of lawyers, the language of peasants, the language of romantic
+love, the language of ecclesiastical authority, the language of
+the marketplace. Each of these "languages" carries a worldview.
+To speak in a particular register is to inhabit a particular social
+position and to see the world through its characteristic categories.</p>
+
+<p>In real life, these languages are in constant contact and
+conflict — they penetrate each other, parody each other, and
+contest each other's authority. The novel, uniquely among literary
+forms, is built to represent this contact. It is, Bakhtin says,
+"a diversity of social speech types and a diversity of individual
+voices, artistically organized."</p>
+
+<h2>The novel vs. poetry</h2>
+
+<p>For Bakhtin, poetry is the opposite of heteroglossic. The lyric
+poem speaks in a single, unified language — the poet's own —
+which aims at the suppression of other voices. Poetry absorbs and
+neutralizes the heteroglossia of ordinary language; it purifies
+and unifies. The novel, by contrast, amplifies heteroglossia.
+It does not speak in one voice; it orchestrates many voices,
+each of which the narrator may or may not endorse.</p>
+
+<p>This is why Bakhtin values the novel above other forms. The
+novel's refusal of a single authoritative voice makes it, for
+him, the form most adequate to the actual complexity of social life.</p>
+
+<h2>Dialogism</h2>
+
+<p>Heteroglossia is the condition; <strong>dialogism</strong> is
+the activity. For Bakhtin, all language is inherently dialogic —
+every utterance is addressed to someone, anticipates a response,
+and echoes prior utterances. There is no purely "one's own" word;
+every word is already populated by others' intentions and
+inflections. The novel makes this dialogism its explicit subject
+and formal principle.</p>
+
+<p>In <strong>free indirect discourse</strong> — the technique
+where the narrator's voice and a character's voice merge without
+quotation marks — heteroglossia is visible at the sentence level.
+When Austen writes "It was a truth universally acknowledged," the
+sentence speaks in an ironic double voice: the character's
+self-satisfied certainty and the narrator's amused distance occupy
+the same words simultaneously. Two languages, one sentence.</p>
+
+<h2>Double-voiced discourse</h2>
+
+<p>Bakhtin calls this effect <strong>double-voiced discourse</strong>:
+language that simultaneously expresses two different intentions,
+belonging to two different speakers with two different worldviews.
+Parody is the clearest example: a parodic text speaks in the
+language of its target while simultaneously signaling its distance
+from and mockery of that language. But double-voicing is everywhere
+in fiction: in irony, in characterization, in the way characters'
+speech infects the narrator's.</p>
+
+<h2>Examples</h2>
+
+<p><strong>Dickens</strong> is a master of heteroglossia: his novels
+are densely populated with distinct speech styles — Cockney slang,
+legal jargon, sentimental effusion, bureaucratic circumlocution —
+each carrying its class position and ideology, each commenting
+implicitly on the others.</p>
+
+<p><strong>Dostoevsky</strong> is Bakhtin's primary example of
+the "polyphonic novel" — the form where heteroglossia reaches
+its highest development. Characters like Raskolnikov, Ivan
+Karamazov, and Myshkin are not controlled by a single authorial
+perspective; they argue with the narrator, with each other, and
+with the novel's implied worldview on equal terms. The author does
+not simply have ideas; the ideas fight.</p>
+
+<p><strong>Tolstoy</strong>, by contrast, Bakhtin sees as more
+monologic: the narrator's perspective ultimately dominates and
+shapes how characters' voices are heard. This is not a failing —
+<em>Anna Karenina</em> and <em>War and Peace</em> are great novels —
+but it is a different relationship to heteroglossia.</p>
+
+<h2>Why the term matters</h2>
+
+<p>Heteroglossia gives you a way to analyze voice in fiction that
+goes beyond identifying the narrator's tone. It asks you to map
+the social languages present in the text, trace where they conflict,
+and notice which voices the text endorses, mocks, or leaves
+genuinely unresolved. In a richly heteroglossic novel, no single
+reading fully exhausts the meaning because no single voice controls
+it. The conflict between voices is the meaning.</p>
+""",
+    },
 ]
 
 
