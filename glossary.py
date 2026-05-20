@@ -5590,6 +5590,109 @@ experience of the poem's rhythms. Without that base, the
 scholarship is a frame around an absent picture.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "madeleine-proust",
+        "term": "the madeleine",
+        "context": "Proust and involuntary memory",
+        "title": "What Proust's \"Madeleine\" Means — Involuntary Memory Explained",
+        "meta_description": "The madeleine in Proust's \"In Search of Lost Time\" is the most famous sensory trigger in literary history — a bite of cookie that unlocks an entire world. Here's what it means and why it matters.",
+        "h1": "What Proust's madeleine means",
+        "updated": "2026-05-20",
+        "related": ["stream-of-consciousness", "epiphany-joyce", "modernism"],
+        "body_html": """
+<p>Near the beginning of <em>Du côté de chez Swann</em> — the first
+volume of Marcel Proust's seven-volume <em>À la recherche du temps
+perdu</em> (translated as <em>In Search of Lost Time</em> or
+<em>Remembrance of Things Past</em>) — the narrator dips a small
+scalloped cake, a madeleine, into a cup of lime-blossom tea.
+The taste produces an overwhelming flood of feeling — followed, after
+reflection, by the recovery of an entire vanished world: the town
+of Combray, his aunt's house, the streets and people of his childhood.
+This passage has become the most famous account of involuntary memory
+in literary history, and the madeleine itself has entered the cultural
+vocabulary as shorthand for any sensory trigger that unlocks the past.</p>
+
+<h2>Involuntary vs. voluntary memory</h2>
+
+<p>Proust distinguishes two kinds of memory. <strong>Voluntary
+memory</strong> — the deliberate effort to recall the past —
+produces only an impoverished reconstruction. It gives you facts,
+chronology, surfaces; but the past as it was actually lived,
+with its full sensory and emotional density, is not available
+through deliberate recall. The past that voluntary memory recovers
+is a dead archive.</p>
+
+<p><strong>Involuntary memory</strong> (mémoire involontaire) is
+different. When a sensory experience in the present accidentally
+matches a sensory experience stored from the past — a taste, a
+smell, a texture, the specific quality of light on a particular
+afternoon — the past is not merely remembered but relived. The
+present moment and the past moment coincide, and the result is
+not recollection but resurrection: the past as fully present
+as it ever was.</p>
+
+<p>This is why the madeleine passage is not about nostalgia.
+Nostalgia is a sentimental attitude toward the past; it keeps
+the past at a comfortable distance. Proust's involuntary memory
+collapses the distance entirely. Time, for a moment, does not
+pass.</p>
+
+<h2>The passage itself</h2>
+
+<p>The structural position of the madeleine passage is precise:
+it comes after a long section in which the narrator has described
+Combray as accessible only through voluntary memory — dim,
+flattened, as if seen through the wrong end of a telescope.
+Then the madeleine dissolves in the tea, the taste arrives,
+and what follows is an extraordinary phenomenological account:
+the narrator does not immediately know what is happening;
+he recognizes only that something has arrived, something
+important. He has to be patient — to let the sensation
+persist, to resist interpretation, before the memory
+surfaces. The recovery is an act of attention, not
+merely of stimulus and response.</p>
+
+<h2>Smell and taste as privileged senses</h2>
+
+<p>Proust's choice of taste (and smell — the tea is also
+lime-blossom, a fragrance) as the trigger is not arbitrary.
+Olfactory and gustatory memories are known to be particularly
+vivid and persistent, and to carry emotional weight that
+visual and verbal memories do not. They bypass the
+intellectual processing that voluntary memory uses and
+connect directly to the brain's emotional centers.
+Proust — writing intuitively in 1912–13 — anticipated
+what neuroscientists would later study as the Proust
+phenomenon: the distinctive power of scent to trigger
+involuntary autobiographical memory.</p>
+
+<h2>The search for lost time</h2>
+
+<p>The madeleine passage is the novel's origin moment:
+what follows from it, across thousands of pages, is
+the narrator's attempt to understand what involuntary
+memory revealed — that time is not simply lost but
+preserved, and that art is the only medium adequate to
+its recovery. The novel's conclusion, in <em>Le Temps
+retrouvé</em> (Time Regained), returns to this insight
+and expands it: the work of art is the mechanism by which
+involuntary memory's revelation is made permanent and shareable.
+Proust's novel is itself the thing the madeleine began.</p>
+
+<h2>Why "the madeleine" became a word</h2>
+
+<p>The madeleine has entered common usage because it names
+something everyone has experienced and no one had a word for:
+the involuntary return of the past through a sensory trigger.
+The smell of a particular sunscreen, the taste of a specific
+candy, a song heard in a particular summer — these produce
+the Proustian madeleine effect. Proust gave us both the
+concept and the word for it. The literary experience and the
+vocabulary arrived together.</p>
+""",
+    },
 ]
 
 
