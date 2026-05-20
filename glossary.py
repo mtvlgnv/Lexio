@@ -5397,6 +5397,104 @@ represents a world where destiny is chemistry, heredity,
 and economic position.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "symbolism-movement",
+        "term": "symbolism",
+        "context": "French poetry and the late nineteenth century",
+        "title": "What the \"Symbolism\" Movement Was — French Poetry Explained",
+        "meta_description": "Symbolism was the late-nineteenth-century French poetic movement that used symbols, not statements, to evoke emotional and spiritual states. Here's what it believed and why it matters for understanding modern poetry.",
+        "h1": "What the Symbolism movement was",
+        "updated": "2026-05-20",
+        "related": ["synesthesia-literature", "allegory-vs-symbol", "modernism"],
+        "body_html": """
+<p>The <strong>Symbolist movement</strong> emerged in France in the
+1880s as a reaction against two dominant modes of literary production:
+Parnassian poetry (technically refined but cold and descriptive)
+and Naturalism (documentary, materialist, deterministic). Against
+both, the Symbolists asserted the primacy of the inner life —
+of mood, atmosphere, the half-conscious emotional state — and
+insisted that poetry could reach these depths only through
+evocation, suggestion, and symbol, never through direct statement
+or photographic description.</p>
+
+<h2>The manifesto</h2>
+
+<p>Jean Moréas published the Symbolist manifesto in <em>Le Figaro</em>
+on 18 September 1886. The key passage: Symbolist poetry seeks
+"to clothe the Idea in a sensible form" — the symbol does not
+represent an idea from outside; it <em>is</em> the idea in its
+only possible form. The poem should not say; it should evoke.
+The symbol is not an emblem pointing to a meaning that could be
+stated otherwise; it is irreducible, untranslatable, the direct
+embodiment of the inexpressible.</p>
+
+<h2>Key figures</h2>
+
+<p><strong>Charles Baudelaire</strong> is the forerunner. His
+<em>Fleurs du Mal</em> (1857) established the tone: the city
+as sensorium, beauty in unexpected places, the correspondence
+between the visible and invisible worlds. The sonnet
+"Correspondances" — nature as a "forest of symbols" —
+is the movement's sacred text even though it predates the
+manifesto.</p>
+
+<p><strong>Paul Verlaine</strong> gave the movement its musical
+ideal: "De la musique avant toute chose" ("Music before everything
+else"). His poem "Art poétique" (1874) called for verse that was
+nuanced, indefinite, suggestive rather than precise. The poem
+should work like music — producing emotional states without
+specifying their content.</p>
+
+<p><strong>Stéphane Mallarmé</strong> was the movement's
+theorist and most extreme practitioner. His mature poetry
+is deliberately obscure — syntax fractured, reference
+displaced, the poem's meaning concentrated in the white
+space as much as the words. For Mallarmé, the poem should
+not depict a flower; it should evoke "the flower absent from
+all bouquets" — the pure Idea of flower, untainted by any
+particular instance. Poetry should be the purification of
+language toward silence.</p>
+
+<p><strong>Arthur Rimbaud</strong> — formally associated with
+the movement though he abandoned poetry at nineteen — pushed
+the disorientation of the senses further than anyone. His
+"Vowel Sonnet," his "Illuminations," and "A Season in Hell"
+are radical experiments in synesthesia and visionary disorder.
+The poet must make himself a "seer" by "a long, immense, and
+systematic derangement of all the senses."</p>
+
+<h2>Symbolism and music</h2>
+
+<p>The Symbolists' model art was music. Music produces emotional
+and psychological states without naming them; it works through
+pattern, rhythm, and association rather than reference. If
+poetry could become more like music — could suggest rather
+than state, could work through the sound and rhythm of words
+rather than their dictionary meanings — it could access
+levels of experience that propositional language cannot reach.</p>
+
+<p>This is why Verlaine emphasized musicality of verse and
+Mallarmé's poems are often nearly impossible to paraphrase:
+paraphrase is precisely what they resist, because the poem's
+content <em>is</em> its form.</p>
+
+<h2>Legacy</h2>
+
+<p>Symbolism was the most direct precursor of Anglo-American
+modernism. Eliot acknowledged the French Symbolists as his
+primary poetic education; Yeats came to Symbolism through
+his French reading and through his involvement in occultism.
+The Imagist movement's "direct treatment of the thing" and
+the doctrine of the Image as a unit of pure meaning are
+Symbolism translated into English-language poetry.
+The idea that the poem should not state but enact — that the
+symbol should be irreducible, that suggestion is more powerful
+than assertion — runs from Baudelaire through Eliot,
+Stevens, and Crane to contemporary lyric practice.</p>
+""",
+    },
 ]
 
 
