@@ -4377,6 +4377,103 @@ misreading, apophrades — gives you a set of precise tools for
 asking them.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "chronotope",
+        "term": "chronotope",
+        "context": "Bakhtinian literary theory",
+        "title": "What a \"Chronotope\" Is — Bakhtin's Concept of Time-Space in Fiction",
+        "meta_description": "Bakhtin's chronotope describes how novels represent time and space as inseparable — the road, the castle, the threshold. Here's what the term means and why it matters.",
+        "h1": "What a \"chronotope\" is",
+        "updated": "2026-05-20",
+        "related": ["heteroglossia", "carnivalesque", "bildungsroman-genre"],
+        "body_html": """
+<p>The <strong>chronotope</strong> (χρόνος + τόπος: time-space) is
+Mikhail Bakhtin's term for the way literary genres organize time
+and space into characteristic patterns — patterns that carry specific
+sets of meanings and values. The word comes from Einstein's theory of
+relativity, which Bakhtin invoked as a metaphor for the inseparability
+of temporal and spatial relations. In a novel, how a story is set in
+time and space is not decorative; it is constitutive of what the story
+can mean.</p>
+
+<h2>Where the concept comes from</h2>
+
+<p>Bakhtin developed the chronotope in a long essay, "Forms of Time
+and of the Chronotope in the Novel," written in the late 1930s
+and published in his 1975 collection. He was trying to account for
+why different literary genres — the Greek romance, the picaresque,
+the biographical novel, the novel of provincial life — feel so
+different from each other even when they share plot elements. His
+answer: because they organize time and space differently, and those
+different organizations embody different worldviews.</p>
+
+<h2>Key chronotopes</h2>
+
+<p>Bakhtin identifies several recurring chronotopes that have shaped
+the novel's development:</p>
+
+<p><strong>The road.</strong> Time moves forward; space moves
+outward. Encounters happen by chance, and chance is the narrative
+engine. Characters from different social worlds brush against each
+other on the road, and that contact is what the story is made of.
+The road chronotope implies a democratic, contingent world where
+hierarchy is temporarily suspended. Cervantes, Fielding, Dickens,
+and the American road novel all work within it.</p>
+
+<p><strong>The castle.</strong> Time moves backward — into
+genealogy, inheritance, legend, the weight of the past. Space is
+enclosed, hierarchical, full of secret passages and hidden history.
+Gothic fiction is the natural home of the castle chronotope: the
+past literally haunts the present, and the spatial architecture
+embodies centuries of power.</p>
+
+<p><strong>The threshold.</strong> A moment of crisis: the doorway,
+the border, the instant of decision or confession. The threshold
+chronotope is concentrated in time (a single decisive moment) and
+symbolic in space (a liminal boundary). Crime fiction, confessional
+scenes, the moment of anagnorisis — all use it.</p>
+
+<p><strong>The provincial town.</strong> Time seems not to move at
+all — cyclical, repetitive, stagnant. Space is small, familiar,
+claustrophobic. What happens is gossip, recurrence, the slow
+accumulation of social judgment. Flaubert's <em>Madame Bovary</em>,
+Eliot's <em>Middlemarch</em>, and Chekhov's provincial stories
+are saturated with the provincial chronotope.</p>
+
+<p><strong>The salon or drawing room.</strong> Time is interrupted,
+episodic, structured around encounters and conversations that
+may lead nowhere or everywhere. Space is intimate but charged
+with social meaning. The realist social novel — Austen, James,
+Proust — works extensively within this chronotope.</p>
+
+<h2>Why chronotope matters</h2>
+
+<p>The concept does several things that other critical tools do not.
+First, it links form and meaning directly: the way a text structures
+time and space is not just a technical choice but a meaning-making
+one. A novel set in a static provincial town is not simply a
+different backdrop for the same story; it has a different ontology
+of human experience built into its form.</p>
+
+<p>Second, it explains genre better than thematic descriptions do.
+Genres are not just collections of plot conventions; they are
+habitual configurations of time-space. The detective novel has its
+own chronotope — a present moment that is the aftermath of a past
+crime; investigation as a form of time-travel backward to
+reconstruct the event. The romance has another: a time of trials
+that tests the lovers before returning them to a stable present.
+Genres create different phenomenologies of lived time.</p>
+
+<p>Third, the chronotope is a critical tool for reading specific
+passages. When a novel's setting shifts — from city to countryside,
+from winter to summer, from a confined room to an open road —
+ask what temporal and spatial logic governs each zone, and
+what happens to meaning at the boundary between them. Those
+boundaries are often where the most significant action takes place.</p>
+""",
+    },
 ]
 
 
