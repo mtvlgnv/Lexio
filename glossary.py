@@ -3081,6 +3081,500 @@ oratory. A poet who lets them slip and rejoin, like Shakespeare or
 Milton, produces music.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "metonymy-synecdoche",
+        "term": "metonymy vs. synecdoche",
+        "context": "rhetoric and literary tropes",
+        "title": "What \"Metonymy\" and \"Synecdoche\" Mean — and How They Differ",
+        "meta_description": "Metonymy and synecdoche are often confused. Here's the precise distinction, with examples from everyday speech, Shakespeare, and modern criticism.",
+        "h1": "What \"metonymy\" and \"synecdoche\" mean",
+        "updated": "2026-05-19",
+        "related": ["zeugma", "litotes", "allegory-vs-symbol"],
+        "body_html": """
+<p><strong>Metonymy</strong> and <strong>synecdoche</strong> are two of
+the most useful and most confused terms in literary analysis. They
+both involve calling one thing by the name of another, and they often
+look almost identical in practice. The distinction is real, however,
+and worth keeping straight.</p>
+
+<h2>Metonymy</h2>
+
+<p>Metonymy substitutes the name of one thing for another based on
+<strong>association</strong> — the two are not parts of each other,
+they are just regularly found together.</p>
+
+<ul>
+  <li>"The <em>White House</em> released a statement" — the building
+      stands in for the administration. The building isn't part of the
+      administration; the two are simply associated.</li>
+  <li>"The <em>crown</em> will hear the petition" — the crown stands
+      in for the monarchy.</li>
+  <li>"The <em>pen</em> is mightier than the sword" — the pen and
+      sword stand in for writing and warfare.</li>
+  <li>"Hollywood loves a remake" — the place stands in for the
+      industry.</li>
+</ul>
+
+<p>The link is contextual or conventional. Crowns are associated with
+monarchs by long tradition; nobody confuses the metal with the
+person.</p>
+
+<h2>Synecdoche</h2>
+
+<p>Synecdoche, by contrast, substitutes a <strong>part for the
+whole</strong> (or, sometimes, the whole for a part).</p>
+
+<ul>
+  <li>"All hands on deck" — hands stand for the sailors. The hand is
+      literally part of the sailor.</li>
+  <li>"Nice <em>wheels</em>" — wheels stand for the car. They are
+      physically part of the car.</li>
+  <li>"Give us this day our daily <em>bread</em>" — bread stands for
+      all food. Bread is a part of food generally.</li>
+  <li>"England won" — the country stands for the team that represents
+      it (whole for part).</li>
+</ul>
+
+<p>The link is one of part to whole, not mere association.</p>
+
+<h2>The borderline cases</h2>
+
+<p>Some examples blur the line. Is "the crown" a part of the monarchy
+or merely associated with it? Most rhetoricians treat it as metonymy
+because the crown is a regalia object, not a literal piece of the
+institution. But this is the kind of case where critics differ.</p>
+
+<p>A useful test: ask whether the substituted noun could be physically
+detached from the thing it stands for and still be recognizable as
+that thing's component. Hands can be removed from sailors; the
+sailor is still a person with hands as parts. Crowns can be removed
+from monarchs; the monarch isn't a person who is partly a crown.</p>
+
+<h2>Why the distinction matters</h2>
+
+<p>Modern criticism — especially structuralist criticism (Jakobson,
+Lacan) — gives these terms heavy theoretical weight. Roman Jakobson
+argued that metonymy and metaphor are the two basic poles of language
+itself: metaphor works by similarity, metonymy by contiguity. Some
+critics extend this further: realist prose, in this account, is
+fundamentally metonymic (one detail evokes the world it belongs to),
+while symbolist poetry is fundamentally metaphoric.</p>
+
+<p>For literary analysis, you don't need to take these large claims
+on faith. The basic distinction — association vs. part-for-whole —
+gives you a sharper vocabulary for what figurative language is doing.</p>
+
+<h2>How to read them</h2>
+
+<p>When you spot a substitution in a text, ask: is the substituted
+noun a <em>part</em> of the thing it stands for, or just
+<em>associated</em> with it? If part, synecdoche. If associated,
+metonymy. Then ask what the substitution does that the literal noun
+couldn't — what does it foreground, hide, compress, or charge?
+Tropes don't just sit on the page; they reshape attention.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "zeugma",
+        "term": "zeugma",
+        "context": "rhetoric and literary tropes",
+        "title": "What \"Zeugma\" Means in Literature",
+        "meta_description": "Zeugma is the figure of speech where one word governs two others in incompatible ways. Here's how it works, with classic examples from Pope and Dickens.",
+        "h1": "What \"zeugma\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["metonymy-synecdoche", "litotes", "allegory-vs-symbol"],
+        "body_html": """
+<p><strong>Zeugma</strong> is a figure of speech in which a single
+word governs two or more other words in ways that are grammatically
+or logically incompatible. The result is usually witty — sometimes
+absurd, sometimes piercing — because the shared word has to do work
+across registers it does not really fit.</p>
+
+<p>The word comes from the Greek for "yoke." Two words are yoked
+together under a single verb or noun that can only properly hold one
+of them.</p>
+
+<h2>The classic example</h2>
+
+<p>Pope's <em>The Rape of the Lock</em> gives the most famous English
+zeugma: a young woman may "stain her honour, or her new brocade." The
+verb "stain" works literally on the brocade and metaphorically on the
+honour. The single word forces the reader to register both meanings
+at once, and the satirical point — that the young woman cares as
+much about her dress as about her virtue — lands without the poet
+needing to spell it out.</p>
+
+<p>Another classic from Pope: Queen Anne "Dost sometimes counsel
+take — and sometimes tea." The verb "take" operates on counsel
+(figurative) and tea (literal). The implied judgment of the queen's
+priorities is in the joke.</p>
+
+<h2>Two types</h2>
+
+<p>Some rhetoricians distinguish zeugma from <em>syllepsis</em>:</p>
+
+<ul>
+  <li><strong>Zeugma (strict).</strong> The shared word fits one of
+      its objects grammatically but not the other. The "wrong" use is
+      a deliberate stretch.</li>
+  <li><strong>Syllepsis.</strong> The shared word fits both objects
+      grammatically but in different senses (literal and figurative).</li>
+</ul>
+
+<p>In practice, the two terms are often used interchangeably, and
+"zeugma" is the more common label in modern criticism.</p>
+
+<h2>Dickens and the comic zeugma</h2>
+
+<p>Dickens loved the device. "Miss Bolo went home in a flood of tears
+and a sedan chair." The verb "went home in" is yoked to a flood of
+tears (figurative) and a sedan chair (literal). The juxtaposition
+captures both Miss Bolo's distress and her wealth in a single line.</p>
+
+<p>The Victorian novel uses zeugma constantly because it can deliver
+satirical judgment without explicit comment. The narrator simply
+yokes the wrong two nouns under one verb, and the reader supplies
+the rest.</p>
+
+<h2>Modern uses</h2>
+
+<p>Zeugma survives in contemporary writing because it remains
+economical. A single sentence with a well-placed zeugma can compress
+what would otherwise need a paragraph of commentary. Joan Didion is a
+modern master of the technique: her essays often pivot on yoked
+phrases that mix material and moral registers.</p>
+
+<p>The device also lives on in stand-up comedy, where the yoked
+mismatch is often the entire punchline. ("She broke my heart and my
+favorite mug.")</p>
+
+<h2>How to read it</h2>
+
+<p>When you spot a zeugma, the question to ask is: what
+<em>judgment</em> does the yoke imply? A zeugma is never neutral. The
+author has chosen to make a single word do double duty across
+incompatible terms, and the discomfort the reader registers is
+usually a moral or critical observation in disguise. Zeugma turns
+grammar into evaluation.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "litotes",
+        "term": "litotes",
+        "context": "rhetoric and literary tropes",
+        "title": "What \"Litotes\" Means in Literature",
+        "meta_description": "Litotes is understatement by double negative — \"not bad\" meaning excellent. Here's how it works from Old English to Jane Austen to modern English.",
+        "h1": "What \"litotes\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["zeugma", "metonymy-synecdoche", "allegory-vs-symbol"],
+        "body_html": """
+<p><strong>Litotes</strong> (pronounced LIE-tuh-teez) is the figure of
+speech that affirms by denying the opposite. "Not bad" for "good."
+"No small accomplishment" for "a great accomplishment." "He is not
+unfamiliar with the work" for "he knows it well." The double negative
+produces a positive — but with extra weight, restraint, or irony
+that a direct positive could not carry.</p>
+
+<p>The word comes from the Greek <em>litos</em>, "plain" or "small."
+Litotes is the rhetorical figure of deliberate understatement.</p>
+
+<h2>How it works</h2>
+
+<p>A litotes has three structural features:</p>
+
+<ol>
+  <li><strong>A negation.</strong> "Not."</li>
+  <li><strong>A word with a negative meaning.</strong> "Bad,"
+      "small," "unfamiliar," "unhappy."</li>
+  <li><strong>An implied positive.</strong> The reader must invert the
+      negation to get the meaning.</li>
+</ol>
+
+<p>The work the reader does to perform the inversion is the source of
+the figure's power. Saying "not bad" is not the same as saying "good."
+It is "good" plus the trace of "bad" plus the work of inversion. The
+phrase carries a tone of restraint, knowingness, or dry irony that
+"good" alone cannot.</p>
+
+<h2>The Old English inheritance</h2>
+
+<p>Litotes is one of the oldest figures in English. Old English
+poetry uses it constantly. <em>Beowulf</em> describes the dragon's
+treasure as "not the least of his troubles." The poet does not say
+"a great deal of trouble" — he understates it, and the understatement
+carries more weight than a direct statement would.</p>
+
+<p>The Anglo-Saxon love of litotes is part of why English (and
+especially British English) retains a strong taste for understatement.
+"Not unimpressive" feels native to the language in a way "very
+impressive" does not.</p>
+
+<h2>Litotes in literature</h2>
+
+<ul>
+  <li><strong>Jane Austen</strong> uses litotes constantly. "It is a
+      truth universally acknowledged…" is not a litotes, but Austen's
+      narrators are full of them: "she was not displeased," "no small
+      embarrassment," "not unimpressive in figure." The technique fits
+      her ironic surface.</li>
+  <li><strong>Henry James</strong> uses litotes to construct his
+      famous indirection. His characters and narrators almost never
+      say "yes" or "no" when "not unaware" or "not without hope"
+      will do.</li>
+  <li><strong>Oscar Wilde</strong> uses litotes for camp wit: "It is
+      simply not done."</li>
+  <li><strong>Modern British political writing</strong> (Orwell,
+      Auden) treats litotes as a marker of seriousness — direct
+      claims feel American or vulgar; double negatives feel
+      considered.</li>
+</ul>
+
+<h2>Litotes vs. understatement generally</h2>
+
+<p>All litotes are understatement, but not all understatement is
+litotes. "It was a flesh wound" — said about a serious injury — is
+understatement but not litotes; there is no negation. Litotes is
+specifically understatement <em>via</em> the structure
+"not + negative term."</p>
+
+<h2>Why writers use it</h2>
+
+<ol>
+  <li><strong>Tone.</strong> The double negative produces restraint
+      and dry wit that a positive cannot.</li>
+  <li><strong>Politeness.</strong> Litotes softens claims. "I am not
+      unhappy" is gentler than "I am happy" in some social contexts.</li>
+  <li><strong>Irony.</strong> The gap between the modest grammar and
+      the strong meaning is itself ironic.</li>
+  <li><strong>Defamiliarization.</strong> The reader has to translate
+      — a brief delay that makes the statement land harder. (See our
+      <a href="/glossary/defamiliarization">entry on
+      defamiliarization</a>.)</li>
+</ol>
+
+<h2>How to read it</h2>
+
+<p>When you spot a litotes in a text, do not just convert it to its
+positive form and move on. The figure exists precisely because the
+writer wanted the negation kept visible. Ask: what would the direct
+positive sound like, and why does the writer not want that sound? The
+answer is usually about tone — and tone is much of what
+distinguishes one writer from another.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "allegory-vs-symbol",
+        "term": "allegory vs. symbol",
+        "context": "literary criticism",
+        "title": "What \"Allegory\" and \"Symbol\" Mean — and How They Differ",
+        "meta_description": "Allegory and symbol are often confused. Here's the precise distinction, with examples from Bunyan, Dante, Melville, and Coleridge.",
+        "h1": "What \"allegory\" and \"symbol\" mean",
+        "updated": "2026-05-19",
+        "related": ["metonymy-synecdoche", "magical-realism", "metafiction"],
+        "body_html": """
+<p><strong>Allegory</strong> and <strong>symbol</strong> are the two
+classical ways of building meaning beyond the literal surface of a
+text. They are often used interchangeably in casual conversation, and
+the conflation costs you precision. Critics from Coleridge onward
+have treated the distinction as central to literary analysis.</p>
+
+<h2>Allegory</h2>
+
+<p>An allegory is a sustained, systematic correspondence between the
+literal surface of a story and a second, abstract meaning. The
+elements of the story map, often one-to-one, onto an abstract scheme
+— moral, religious, political — that exists independently of the
+story.</p>
+
+<p>Bunyan's <em>The Pilgrim's Progress</em> is the textbook English
+example. Christian, the protagonist, journeys from the City of
+Destruction to the Celestial City, meeting characters named
+Faithful, Hopeful, Mr. Worldly Wiseman, Giant Despair. Each
+character and place corresponds to a specific theological idea. The
+correspondences are explicit and stable.</p>
+
+<p>Other classical allegories: Dante's <em>Divine Comedy</em>
+(though more layered than pure allegory), Spenser's <em>The Faerie
+Queene</em>, Orwell's <em>Animal Farm</em> (the Russian Revolution
+mapped onto a barnyard), and many medieval morality plays.</p>
+
+<h2>Symbol</h2>
+
+<p>A symbol, by contrast, is an image that stands for something else
+without a fixed scheme of meaning. A symbol is open-ended; an
+allegory's meanings are nailed down. Coleridge's famous distinction
+in <em>The Statesman's Manual</em> (1816): allegory is a translation
+of abstract notions into a picture-language; the symbol participates
+in the reality it stands for.</p>
+
+<p>Melville's white whale in <em>Moby-Dick</em> is the most-discussed
+symbol in American literature precisely because it refuses to settle
+into one meaning. Ahab reads it as malevolence; Ishmael reads it as
+inscrutable nature; later critics have read it as God, evil, the
+unconscious, capital, race. The whale resists single translation.
+That refusal is what makes it a symbol rather than an allegory.</p>
+
+<h2>The defining difference</h2>
+
+<table style="width:100%; border-collapse:collapse; margin:18px 0;">
+  <tr style="border-bottom:1px solid rgba(255,255,255,0.1);">
+    <td style="padding:8px;"><strong>Allegory</strong></td>
+    <td style="padding:8px;"><strong>Symbol</strong></td>
+  </tr>
+  <tr>
+    <td style="padding:8px;">Fixed, systematic correspondence.</td>
+    <td style="padding:8px;">Open, polyvalent.</td>
+  </tr>
+  <tr>
+    <td style="padding:8px;">Meaning exists prior to the text.</td>
+    <td style="padding:8px;">Meaning arises through the text.</td>
+  </tr>
+  <tr>
+    <td style="padding:8px;">Decodable.</td>
+    <td style="padding:8px;">Interpretable.</td>
+  </tr>
+</table>
+
+<h2>Why Coleridge cared</h2>
+
+<p>Coleridge (and the Romantics generally) treated symbol as
+artistically superior. Allegory, for them, was a translation — the
+real meaning was elsewhere, and the story was a vehicle. Symbol was
+the real thing — meaning embedded in the image, not paraphrasable.
+Their argument shaped 19th- and 20th-century criticism, which often
+treats "merely allegorical" as a put-down and "symbolic" as praise.</p>
+
+<p>The hierarchy has loosened. Modern critics — Walter Benjamin
+notably — have rehabilitated allegory as the more historically
+honest mode. Benjamin argued that allegory's openly artificial
+correspondences are more truthful about how meaning is constructed
+than symbol's pretense of natural unity.</p>
+
+<h2>Mixed cases</h2>
+
+<p>Most real texts mix the two. Dante's <em>Inferno</em> has
+allegorical structure (sins arranged into circles) but symbolic
+images (Geryon, the dark wood) that exceed any allegorical scheme.
+Kafka's <em>The Trial</em> looks allegorical (a man tried by an
+inscrutable court) but refuses to provide the key — the allegorical
+shape with no allegorical content is its own technique.</p>
+
+<h2>How to read them</h2>
+
+<p>When a text seems "deeper than itself," ask: does it
+<em>translate</em>, or does it <em>resonate</em>? An allegory
+translates: there is a paraphrase, and you can extract it. A symbol
+resonates: any paraphrase shrinks it. Both modes are doing legitimate
+work — the choice tells you something about what the writer thinks
+meaning is.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "defamiliarization",
+        "term": "defamiliarization",
+        "context": "Russian Formalism and literary theory",
+        "title": "What \"Defamiliarization\" Means in Literature",
+        "meta_description": "Defamiliarization (Russian: ostranenie) is the literary technique of making the familiar strange. Here's Shklovsky's argument and how the device works in practice.",
+        "h1": "What \"defamiliarization\" means in literature",
+        "updated": "2026-05-19",
+        "related": ["uncanny-literature", "free-indirect-discourse", "metafiction"],
+        "body_html": """
+<p><strong>Defamiliarization</strong> is the English translation of
+the Russian <em>ostranenie</em>, a term coined by the literary
+theorist Viktor Shklovsky in his 1917 essay "Art as Device." It names
+the literary technique of making the familiar strange — slowing the
+reader's perception so they see again what habit has rendered
+invisible. The concept became one of the founding ideas of Russian
+Formalism, and through Formalism, of modern literary theory.</p>
+
+<h2>Shklovsky's argument</h2>
+
+<p>Shklovsky began with an observation about perception. In daily
+life, repetition makes things invisible. You stop noticing the road
+you walk every morning, the face of the person you live with, the
+weight of your own hand. Habit, Shklovsky argued, "eats" the world.</p>
+
+<p>The function of art, on his account, is to fight that erosion. Art
+returns objects to perception by making them strange. A poem about a
+chair is not useful as information about chairs; it is useful as a
+way of <em>seeing chairs again</em>. The technique that accomplishes
+this is <em>ostranenie</em> — defamiliarization, "making strange."</p>
+
+<h2>Shklovsky's example</h2>
+
+<p>His central example is from Tolstoy. In the story "Kholstomer," a
+horse narrates. The horse describes human institutions — property,
+money, marriage — without the human categories that make them
+intelligible. The reader sees these structures as the horse sees
+them: arbitrary, strange, sometimes cruel. The familiar institution
+of private property, narrated by a creature that does not understand
+it, becomes visible again.</p>
+
+<p>Tolstoy uses the technique constantly. The opera scene in
+<em>War and Peace</em>, narrated through Natasha's bewildered eyes,
+makes opera-going look ridiculous. The court scene in <em>Resurrection</em>,
+narrated by a defendant who does not follow procedure, exposes the
+court's theatre. In each case the writer's job is to interrupt
+recognition long enough for perception to return.</p>
+
+<h2>The techniques</h2>
+
+<p>Writers defamiliarize in many ways:</p>
+
+<ul>
+  <li><strong>Estranged perspective.</strong> A narrator who does not
+      share the reader's cultural assumptions — a child, an animal, a
+      foreigner, a Martian.</li>
+  <li><strong>Slowed description.</strong> Spending paragraphs on an
+      object normally dispatched in a phrase. Robbe-Grillet's
+      <em>nouveau roman</em> takes this to its limit.</li>
+  <li><strong>Refusal of names.</strong> Describing a thing's
+      properties without naming it, so the reader meets the thing
+      before the category.</li>
+  <li><strong>Unusual syntax.</strong> Sentences that make the reader
+      slow down at every clause, refusing the fluency that produces
+      automatic reading.</li>
+  <li><strong>Formal disruption.</strong> Breaking with the reader's
+      expectations of genre, line, paragraph, or chapter.</li>
+</ul>
+
+<h2>The afterlife of the idea</h2>
+
+<p>Defamiliarization left Russia with the émigré Formalists and the
+Czech Structuralists; from there it shaped the New Criticism,
+reader-response theory, and most subsequent thinking about how
+literary form actually works on perception. Brecht's <em>Verfremdungseffekt</em>
+("alienation effect") in theatre is a politicized version of the same
+idea — distancing the audience from the action so they think rather
+than identify.</p>
+
+<h2>The broader claim</h2>
+
+<p>Shklovsky's deeper claim is that this perception-renewal is what
+makes art <em>art</em>. Without defamiliarization, a poem about a
+sunset is just a slow way of saying "sunset." With it, the poem
+gives back something the sunset itself had stopped giving.</p>
+
+<h2>How to read it</h2>
+
+<p>When you read a passage that feels strange — strange syntax,
+strange perspective, strange slowness — ask whether the strangeness
+is incompetence or technique. If it is technique, the writer is
+doing defamiliarization. Ask what the device is making you see again:
+a body, a building, a feeling, a social arrangement. The strangeness
+is the work the writer is doing on your habituated eye.</p>
+""",
+    },
 ]
 
 
