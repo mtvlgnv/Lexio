@@ -4056,6 +4056,106 @@ The term asks you to look at the text's concrete surface, not
 its stated intentions, for the source of emotional power.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "negative-capability",
+        "term": "negative capability",
+        "context": "Romantic poetry and Keats's letters",
+        "title": "What \"Negative Capability\" Means — Keats's Idea Explained",
+        "meta_description": "Keats coined \"negative capability\" in an 1817 letter to describe the quality of a great poet: the capacity to remain in uncertainty without reaching after fact and reason. Here's what it means.",
+        "h1": "What \"negative capability\" means",
+        "updated": "2026-05-20",
+        "related": ["objective-correlative", "sublime-in-romanticism", "stream-of-consciousness"],
+        "body_html": """
+<p>On 21 December 1817, John Keats wrote a letter to his brothers
+George and Tom in which he described, almost parenthetically, a
+quality he had identified in the great poets and found lacking in
+lesser ones. He called it <strong>negative capability</strong>:
+the capacity of being "in uncertainties, mysteries, doubts, without
+any irritable reaching after fact and reason." The phrase is one
+of the most suggestive in literary criticism, and its implications
+extend far beyond Romantic poetry.</p>
+
+<h2>The occasion</h2>
+
+<p>Keats had spent the previous evening with the poet Dilke and was
+struck by the contrast between Dilke's relentless systematizing —
+his need to resolve every question, to fit everything into a
+scheme — and what Keats felt was the deeper intellectual stance
+of genius. Shakespeare was his exemplar: a poet who could inhabit
+many minds, many contradictions, without forcing them to cohere.
+The great poet does not flinch at ambiguity. He can hold it,
+live in it, make it the substance of the work.</p>
+
+<h2>What the phrase means</h2>
+
+<p>The word "negative" here does not mean bad or absent. It comes
+from the vocabulary of capability and potential: a negative
+capability is one that opens rather than closes, that receives
+rather than constructs. The poet of negative capability does not
+impose a system on experience; he allows experience to remain
+complex, contradictory, unresolved.</p>
+
+<p>"Irritable reaching after fact and reason" is Keats's description
+of the opposite quality: the anxious need to reduce every mystery
+to explanation, every poem to a paraphraseable idea, every
+character to a consistent psychology. Keats thought this impulse
+— which he associated with Coleridge, though gently — was the
+enemy of poetic truth. The poem that too quickly resolves its
+tensions into statement has abandoned the uncertainty where
+genuine insight lives.</p>
+
+<h2>Negative capability and Shakespeare</h2>
+
+<p>For Keats, Shakespeare was the supreme practitioner of negative
+capability — a poet of such self-effacing receptivity that he
+could inhabit Iago and Desdemona, Shylock and Portia, Hamlet and
+Claudius, with equal imaginative fidelity. You cannot locate
+"Shakespeare's opinion" in his plays because Shakespeare is not
+there as a distinct personality. He is everywhere and nowhere.
+This is what Keats meant by the "poetical Character," which
+"has no self — it is every thing and nothing — It has no character."</p>
+
+<p>This stands in contrast to what Keats called the "Wordsworthian
+or egotistical sublime" — poetry in which the poet's powerful self
+is constantly present, organizing and subduing experience according
+to its own moral and philosophical requirements. Keats admired
+Wordsworth but found his method limiting.</p>
+
+<h2>Negative capability and modernism</h2>
+
+<p>Keats's idea proved extraordinarily generative. T. S. Eliot's
+concept of the "objective correlative" and his insistence on
+poetic "impersonality" — the poet as catalyst rather than
+self-expresser — is continuous with negative capability in ways
+Eliot acknowledged. The modernist distrust of the romantic lyric
+"I," the interest in dramatic monologue (Browning first, then
+Eliot's Prufrock), the turn toward image over statement — all of
+these can be read as different inflections of Keats's idea.</p>
+
+<p>The concept also anticipates Roland Barthes's "death of the
+author": the idea that the author's intentions and biography should
+not constrain the meaning of the text, that the work operates
+independently of the self that produced it. Keats arrived at a
+version of this insight a century and a half before structuralism.</p>
+
+<h2>Negative capability in practice</h2>
+
+<p>For readers and critics, negative capability is a useful
+corrective to the impulse to resolve. When a poem, novel, or play
+holds two contradictory possibilities in suspension — when Hamlet
+is both mad and sane, when the narrator's account is both true
+and false, when a character's motivation is genuinely opaque —
+the temptation is to decide, to pick the reading that makes
+the text coherent. Keats's concept suggests that this impulse
+can be a failure of attention: the discomfort of unresolved
+complexity is precisely where the work does its most interesting
+work. The reader who can remain in the uncertainty, exploring
+rather than resolving, is practicing something like the quality
+Keats found essential to the poet's mind.</p>
+""",
+    },
 ]
 
 
