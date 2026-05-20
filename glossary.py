@@ -3810,6 +3810,138 @@ pride to a pointed claim about power, transgression, and the moral
 logic of the text.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "mimesis",
+        "term": "mimesis",
+        "context": "literary theory and Aristotelian aesthetics",
+        "title": "What \"Mimesis\" Means — Imitation, Representation, and Literature",
+        "meta_description": "Mimesis is Aristotle's term for art's imitation of reality — but it's more complex than simple copying. Here's what it means and why it's still essential in literary theory.",
+        "h1": "What \"mimesis\" means in literary theory",
+        "updated": "2026-05-20",
+        "related": ["defamiliarization", "verisimilitude-in-literature", "magical-realism"],
+        "body_html": """
+<p><strong>Mimesis</strong> (μίμησις) is the Greek word for imitation
+or representation, and it has been at the center of debates about
+what literature does — and whether it does it well or badly — since
+Plato picked a fight with the poets in the fourth century BCE. The
+concept sounds simple: art imitates life. But the history of that
+"imitation" is where almost everything interesting in literary theory
+lives.</p>
+
+<h2>Plato's attack</h2>
+
+<p>In <em>The Republic</em>, Plato argues that mimetic art — poetry,
+painting, drama — is three removes from truth. Reality as we
+perceive it is already a copy of the eternal Forms; art then
+imitates our perception; so art is a copy of a copy. Worse, it
+appeals to the emotional, irrational part of the soul, stirring
+pity and fear rather than reason. Plato's conclusion is notorious:
+the poets should be expelled from the ideal city (or at least given
+a garland and sent politely on their way).</p>
+
+<p>This is not simply a crank position. Plato is making a serious
+epistemological claim: if knowledge requires access to unchanging
+truth, and art only gives us images of changing appearances, then
+art is fundamentally at odds with philosophy. The argument has had
+enormous influence, even among people who ultimately reject it.</p>
+
+<h2>Aristotle's defense</h2>
+
+<p>Aristotle's <em>Poetics</em> is in part a response to Plato. For
+Aristotle, mimesis is not a defect but a virtue — the thing that
+makes art cognitively valuable. Three key moves:</p>
+
+<ul>
+  <li><strong>Mimesis as natural pleasure.</strong> Humans are
+      imitative animals by nature, and we take pleasure in
+      representations even of things that would distress us in
+      reality. A painting of a corpse can be beautiful. This is
+      not irrational; it is how we learn.</li>
+  <li><strong>Poetry as more philosophical than history.</strong>
+      History records what happened; poetry represents what could
+      happen — the universal, the probable, the typical. This makes
+      poetry, paradoxically, <em>closer</em> to truth than historical
+      particulars.</li>
+  <li><strong>Catharsis.</strong> Tragic mimesis purges or refines
+      the emotions rather than inflaming them. Art is not a moral
+      danger but a moral resource.</li>
+</ul>
+
+<h2>Mimesis is not simple copying</h2>
+
+<p>A persistent misreading treats mimesis as straightforward copying:
+art should look like life, and the better it looks like life, the
+better the art. This is close to the nineteenth-century ideology
+of literary realism, but it is not what Aristotle meant. For
+Aristotle, mimesis involves selection, arrangement, and
+intensification. The plot of a tragedy is a mimesis of an action —
+but it is a plot, with a beginning, middle, and end, with
+probability and necessity governing the sequence. Real life has none
+of that. The imitation is of the form of action, not its random
+surface.</p>
+
+<p>Erich Auerbach's magisterial <em>Mimesis: The Representation of
+Reality in Western Literature</em> (1946) traces this distinction
+across three thousand years, from Homer to Virginia Woolf. His
+opening chapter contrasts two styles of representing reality:
+Homer's fully externalized, luminous surface, where everything
+is visible and explained, versus the Hebrew Bible's fraught
+background, its silences and moral depths. Both are mimetic; they
+imitate reality in completely different ways. The question is not
+whether art copies life but <em>how</em> it selects and shapes
+what it represents.</p>
+
+<h2>Mimesis and realism</h2>
+
+<p>In nineteenth-century literary criticism, mimesis became closely
+associated with realism — the ambition to represent social life
+accurately, with attention to class, economics, psychology, and
+the texture of daily existence. Balzac's <em>Comédie humaine</em>,
+Eliot's <em>Middlemarch</em>, Tolstoy's novels — these are
+mimetic in the sense that they try to show how life actually works,
+not how it appears in romance or melodrama.</p>
+
+<p>But modernism complicated this. If consciousness is fragmented
+and subjective, then accurate mimesis requires stream of
+consciousness, unreliable narration, broken chronology — techniques
+that look "un-realistic" but are more faithful to mental life than
+conventional third-person narration. Joyce's <em>Ulysses</em> is
+highly mimetic in Aristotle's sense — it imitates the form of
+experience — while being completely non-realistic in the nineteenth-century
+sense.</p>
+
+<h2>Anti-mimetic traditions</h2>
+
+<p>Not all literature aims at mimesis. Allegory, fantasy, and
+metafiction deliberately call attention to the gap between
+representation and reality. The Russian Formalists, whose concept
+of <strong>defamiliarization</strong> is in some ways a theory
+of anti-mimesis, argued that art should <em>not</em> reproduce
+familiar reality but should make the familiar strange — interrupt
+automatic perception. On this view, the most powerful literature
+does the opposite of copying: it deranges ordinary perception to
+make you see again.</p>
+
+<p>Still, even anti-mimetic art works in relation to mimesis —
+departing from it, ironizing it, or achieving a different kind of
+imitation at a higher level of abstraction. The question "what
+does this text represent, and how?" remains unavoidable.</p>
+
+<h2>Why it matters</h2>
+
+<p>Mimesis is the background assumption of most ordinary literary
+discussion. When we ask whether a character feels "real," whether a
+setting is "convincing," whether a story is "true to life" — we
+are making mimetic judgments. When we ask why a novel's distortions
+feel right, or why a realistic-seeming novel feels false, we are
+asking how mimesis works. The term gives you a handle on questions
+that otherwise get answered with vague impressionism. It asks you
+to specify: imitation of what, in what mode, with what degree of
+selection and transformation?</p>
+""",
+    },
 ]
 
 
