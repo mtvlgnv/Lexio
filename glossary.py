@@ -7623,6 +7623,13 @@ blockquote {
   margin-bottom: 40px; padding-bottom: 28px;
   border-bottom: 1px solid var(--border);
 }
+.intro-link {
+  display: inline-block; margin-top: 6px;
+  color: var(--accent2); border-bottom: 1px solid transparent;
+  text-decoration: none; font-size: 0.95rem;
+  transition: border-color 0.15s;
+}
+.intro-link:hover { border-bottom-color: var(--accent2); }
 .entry-grid {
   display: grid;
   gap: 14px;
@@ -7971,7 +7978,7 @@ def render_index() -> str:
 
   <span class="logo">Le<em>x</em>io</span>
   <h1>Glossary</h1>
-  <p class="intro">Literary terms that don't survive a dictionary lookup — explained in the context where you actually meet them. Free to read, no signup. {total} entries and counting.</p>
+  <p class="intro">Literary terms that don't survive a dictionary lookup — explained in the context where you actually meet them. Free to read, no signup. {total} entries and counting. <a href="/works" class="intro-link">Or browse reader's guides to whole works →</a></p>
 
   <div class="entry-search-wrap">
     <svg class="entry-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>

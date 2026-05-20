@@ -3293,5 +3293,21 @@ async def glossary_entry(slug: str):
     return HTMLResponse(_glossary.render_entry(entry))
 
 
+# ── Reader's guides — work-specific landing pages ──────────────────────────────
+import works as _works
+
+@app.get("/works", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/works/", response_class=HTMLResponse, include_in_schema=False)
+async def works_index():
+    return HTMLResponse(_works.render_index())
+
+@app.get("/works/{slug}", response_class=HTMLResponse, include_in_schema=False)
+async def work_page(slug: str):
+    work = _works.get(slug)
+    if not work:
+        return RedirectResponse(url="/works", status_code=302)
+    return HTMLResponse(_works.render_work(work))
+
+
 # ── Static frontend ───────────────────────────────────────────────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
