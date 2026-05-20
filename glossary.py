@@ -4799,6 +4799,102 @@ The answer tells you what the figure is contributing and how
 central it is to the passage's effect.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "chiasmus",
+        "term": "chiasmus",
+        "context": "rhetoric and classical style",
+        "title": "What \"Chiasmus\" Means — The ABBA Reversal Explained",
+        "meta_description": "Chiasmus is the rhetorical figure in which the order of words or ideas in the first clause is reversed in the second. \"Ask not what your country can do for you\" — here's how it works.",
+        "h1": "What \"chiasmus\" means",
+        "updated": "2026-05-20",
+        "related": ["anaphora", "zeugma", "litotes"],
+        "body_html": """
+<p><strong>Chiasmus</strong> (from the Greek letter chi, Χ, which
+resembles a crossing) is a rhetorical figure in which two or more
+clauses are related by a reversal of their grammatical or conceptual
+structure: A–B, B–A. The two parts mirror each other in an X-shape.
+"Ask not what your country can do for you — ask what you can do for
+your country." Country / you / you / country: the subjects and
+objects cross.</p>
+
+<p>At its simplest, chiasmus is structural symmetry with a twist —
+the second half reverses the first, and the reversal generates
+meaning that neither half could produce alone.</p>
+
+<h2>The key examples</h2>
+
+<p><strong>Kennedy's inauguration</strong> (1961): "Ask not what
+your country can do for you — ask what you can do for your country."
+The chiastic structure makes the civic reversal feel inevitable.
+You cannot have the first without implying the second; by crossing
+the terms, Kennedy performs the very reversal he is urging on
+his audience.</p>
+
+<p><strong>Oscar Wilde</strong> was a serial practitioner, often
+for comic effect: "I can resist everything except temptation."
+"Work is the curse of the drinking classes." "We are all in the
+gutter, but some of us are looking at the stars." That last one
+is technically antithesis rather than strict chiasmus, but the
+structural flip is the same. Wilde understood that reversing
+expected word order produces the effect of paradoxical wisdom —
+the world upended reveals itself more clearly.</p>
+
+<p><strong>The Gospel of Mark</strong>: "Many that are first shall
+be last; and the last shall be first." First/last :: last/first.
+The reversal is the theological point, not an ornament to it.
+Chiasmus gives permanent form to a radical inversion of social
+order.</p>
+
+<p><strong>Pope, <em>The Rape of the Lock</em></strong>: "On her
+white breast a sparkling cross she wore, / Which Jews might kiss,
+and Infidels adore." Cross / Jews / Infidels / adore — the ironic
+inversion relies on our noticing the reversal of who ought to
+be venerating what.</p>
+
+<h2>Antimetabole vs. chiasmus</h2>
+
+<p>Strictly speaking, <strong>antimetabole</strong> is the narrower
+term: the exact same words repeated in reverse order. "Fair is foul,
+and foul is fair." Chiasmus is the broader category: the reversal
+of grammatical structure or conceptual sequence, even if different
+words are used. In practice, the two terms are often used
+interchangeably. The distinction matters only when you need to
+be precise about whether the reversal involves exact word repetition
+(antimetabole) or structural inversion with different vocabulary
+(chiasmus proper).</p>
+
+<h2>What the crossing achieves</h2>
+
+<p>Chiasmus works by creating an expectation (the first half sets up
+a grammatical and conceptual trajectory) and then reversing it in
+a way that feels both surprising and inevitable. The crossing is
+satisfying because symmetry is satisfying — the second half completes
+the first — but the reversal is more than completion; it transforms.
+"Ask not what your country can do for you" sets up a self-interested
+frame; the chiastic reversal dismantles it. The structure performs
+the argument.</p>
+
+<p>In this way chiasmus is a particularly persuasive figure: it
+shows rather than states the reversal it is advocating. The reader
+or listener experiences the flip rather than being told about it.
+This is why it appears so often in oratory, theological writing,
+and wit: all three genres depend on the audience feeling the
+point, not just understanding it.</p>
+
+<h2>How to spot and analyze it</h2>
+
+<p>Look for balanced, symmetrical constructions in which the second
+half reverses the grammatical or thematic order of the first. Then
+ask: what does the reversal produce semantically? The crossing is
+never purely formal; it always generates a specific meaning —
+paradox, irony, inversion, reconciliation — that the linear version
+could not produce. The figure is only worth noting when the crossing
+creates meaning; decorative symmetry without conceptual reversal
+is just parallelism.</p>
+""",
+    },
 ]
 
 
