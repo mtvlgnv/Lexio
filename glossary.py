@@ -4895,6 +4895,98 @@ creates meaning; decorative symmetry without conceptual reversal
 is just parallelism.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "asyndeton-polysyndeton",
+        "term": "asyndeton and polysyndeton",
+        "context": "rhetoric and sentence style",
+        "title": "What \"Asyndeton\" and \"Polysyndeton\" Mean — Conjunctions and Their Absence",
+        "meta_description": "Asyndeton omits conjunctions for speed and impact; polysyndeton multiplies them for accumulation and breath. Here's what both figures do and how to tell them apart.",
+        "h1": "What \"asyndeton\" and \"polysyndeton\" mean",
+        "updated": "2026-05-20",
+        "related": ["anaphora", "chiasmus", "zeugma"],
+        "body_html": """
+<p>Two opposite ways of handling conjunctions — and both are
+rhetorical figures:</p>
+
+<p><strong>Asyndeton</strong> (from the Greek for "unconnected")
+omits conjunctions between items in a list or between clauses:
+"I came, I saw, I conquered." No "and." The result is speed,
+compression, force. Each item lands separately, with its own
+weight.</p>
+
+<p><strong>Polysyndeton</strong> (from the Greek for "many connections")
+multiplies conjunctions: "And the rain fell, and the wind blew,
+and the floods came." The extra conjunctions slow the sentence down
+and give each element its own space. The effect is expansive,
+almost incantatory — time dilates.</p>
+
+<h2>What asyndeton does</h2>
+
+<p>Caesar's "Veni, vidi, vici" is the ur-example: the absence of
+conjunctions makes the three acts feel simultaneous and
+inevitable, each collapsing into the next with no pause for
+breath or reflection. Three separate campaigns condensed into
+three syllables each. The asyndeton performs the speed and
+completeness of the conquest.</p>
+
+<p>In prose, asyndeton creates urgency and economy. Hemingway
+uses it constantly in action sequences: "He shot the bull and
+the bull went down and he cut its ear off and put it in his
+pocket." Wait — that is actually polysyndeton (those "and"s
+are deliberate). Pure Hemingway asyndeton: "He saw it. He
+felt it. He said nothing." Three beats, no connective tissue.
+The compression suggests the character's emotional suppression
+as well as the prose's speed.</p>
+
+<p>In lists, asyndeton signals that the list could go on
+indefinitely — there is no "and" to close it. When Whitman
+lists occupations in <em>Song of Myself</em> without conjunctions,
+the effect is of an open catalogue: the world is too large
+and various to be closed off with "and finally."</p>
+
+<h2>What polysyndeton does</h2>
+
+<p>The King James Bible's characteristic style is heavily
+polysyndetic: "And God said, Let there be light: and there was
+light. And God saw the light, that it was good: and God divided
+the light from the darkness." Each "and" is a breath, a pause,
+a moment before the next thing comes into being. The polysyndeton
+enacts the deliberateness of creation — nothing hurries.</p>
+
+<p>Polysyndeton is the natural rhythm of oral storytelling and
+of children's narrative: "And then we went to the park and
+there was a dog and he chased the ball and I fell over and
+it was funny." The conjunctions hold the sequence together
+without imposing hierarchy; everything is equally "and then."</p>
+
+<p>In literary prose, polysyndeton can create a sense of
+overwhelming accumulation — things piling up faster than
+they can be processed — or of dreamy suspension, as in
+biblical repetition. Which effect dominates depends on
+context and pace.</p>
+
+<h2>The two figures together</h2>
+
+<p>Writers often use both figures in proximity for contrast.
+A passage of polysyndeton — slow, expansive, accumulative —
+followed by asyndeton — sharp, clipped, decisive — is a
+classic rhetorical rhythm: the build-up and the punch.
+Hemingway's Nick Adams stories sometimes do this: long
+compound sentences connected by "and" (polysyndeton) followed
+by a short declarative with no conjunction at all.</p>
+
+<p>Both figures are ways of controlling how readers experience
+time in a sentence. Asyndeton compresses; polysyndeton
+expands. Both draw attention to the structure of the list
+or sequence itself — not just what the items are, but how
+they relate. Removing conjunctions implies independence and
+speed; multiplying them implies connection and accumulation.
+The question is always: what is the writer doing with time
+here, and why?</p>
+""",
+    },
 ]
 
 
