@@ -4156,6 +4156,111 @@ rather than resolving, is practicing something like the quality
 Keats found essential to the poet's mind.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "death-of-the-author",
+        "term": "death of the author",
+        "context": "structuralism and literary theory",
+        "title": "What \"Death of the Author\" Means — Barthes Explained",
+        "meta_description": "Roland Barthes's \"death of the author\" (1967) argues that the author's intentions are irrelevant to a text's meaning. Here's what the concept actually says — and what it doesn't.",
+        "h1": "What \"death of the author\" means",
+        "updated": "2026-05-20",
+        "related": ["negative-capability", "metafiction", "free-indirect-discourse"],
+        "body_html": """
+<p>In 1967, Roland Barthes published a short, combative essay called
+"La mort de l'auteur" — "The Death of the Author" — and announced
+the end of a critical tradition. The tradition he was attacking held
+that to understand a literary text, you should understand its author:
+the author's biography, intentions, psychological state, social
+position. Barthes's claim was radical: none of that is relevant.
+The author, as a source of meaning, is dead. The reader, not the
+author, produces meaning.</p>
+
+<h2>What Barthes actually argues</h2>
+
+<p>The essay opens with a passage from Balzac's <em>Sarrasine</em>
+in which a narrator describes a castrato. Barthes asks: whose voice
+is this? The character's? Balzac the author's? The author of
+Romantic stories? Universal wisdom? And his answer is that it is
+impossible to assign a single origin. Writing, he argues, is
+essentially anonymous. When an author writes, "his" voice is made
+of other voices — of prior texts, of the language itself, of
+the conventions of genre. The author does not precede the text;
+the text produces a kind of author-function, an impression of
+a governing voice that is a product of reading, not a prior cause.</p>
+
+<p>The key argument: if the author's intention determined meaning,
+each text would have a single "ultimate meaning" — the one the author
+wanted. Literary criticism would then be a biographical detective
+story, trying to reconstruct what the author "really meant." But
+this, Barthes says, is a tyranny of origin. The text exceeds the
+author's intention; it activates multiple meanings simultaneously;
+it enters into relations with other texts the author never read.
+To insist on authorial intention is to impoverish the text.</p>
+
+<h2>The birth of the reader</h2>
+
+<p>Barthes ends the essay with a famous reversal: "the birth of the
+reader must be at the cost of the death of the Author." The reader,
+not the author, is where meaning happens. Every reading is a new
+performance of the text, activating some possibilities and not
+others. Meaning is not retrieved from a hidden source; it is
+produced in the encounter between text and reader.</p>
+
+<p>This has political as well as aesthetic dimensions. Barthes is
+associated with the French left of the 1960s, and "the Author" for
+him carries the weight of bourgeois individualism — the prestige
+attached to authorial originality and genius. Killing the author
+democratizes the text: no professional critic with biographical
+knowledge has privileged access; any reading is, in principle,
+as valid as any other.</p>
+
+<h2>Foucault's version</h2>
+
+<p>Michel Foucault's "What Is an Author?" (1969), written in response
+to Barthes, offers a more measured account. Foucault does not
+simply kill the author but analyzes the "author-function" — the
+social and institutional role that the name of an author plays.
+Different types of writing have different author-functions: a
+scientific paper and a novel mobilize "the author" in different
+ways. Legal responsibility, copyright, canonicity — these depend
+on the author-function. Foucault's question is not whether the
+author exists but how the concept operates and what work it does.</p>
+
+<h2>What the concept does not mean</h2>
+
+<p>A persistent misreading: "death of the author" does not mean
+that all interpretations are equally valid, or that there are no
+wrong readings, or that biography is always irrelevant. It means
+that the author's intention is not the arbiter of meaning — that
+the text can and does support readings the author did not intend,
+and that these readings are legitimate on the text's own evidence.
+The text's language, structure, intertextual relations, and
+historical context constrain interpretation; they provide the
+grounds for preferring some readings over others. The reader
+is not free to read any way they like; they are bound to the
+text. They are just not bound to the author.</p>
+
+<h2>Why it still provokes</h2>
+
+<p>The essay continues to generate heat because it challenges an
+assumption so deeply embedded in literary culture that most people
+hold it without knowing it: that there is a fact of the matter
+about what a work means, and that fact is located in the author's
+mind. Authors themselves tend to resist the concept, for obvious
+reasons. Critics who have done archival work on a writer's
+manuscripts and correspondence find it irritating to be told their
+evidence is irrelevant.</p>
+
+<p>But the essay's core insight — that a text's meaning is not
+sealed in the author's intention, that reading is an active
+production rather than a passive retrieval — has been so thoroughly
+absorbed into literary theory that even critics who reject Barthes's
+framing operate within its assumptions. The author is dead;
+we just argue about what that means for the living reader.</p>
+""",
+    },
 ]
 
 
