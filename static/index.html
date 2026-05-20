@@ -1848,6 +1848,56 @@
     }
     .lp-faq-a a { color: var(--accent); }
 
+    /* Glossary preview (homepage section) */
+    .lp-glossary {
+      padding: 56px 48px;
+      background: var(--bg); border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+    }
+    .lp-glossary-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .lp-glossary-sub {
+      font-size: 0.95rem; color: var(--text-mid); line-height: 1.7;
+      max-width: 640px; text-align: center; margin-bottom: 16px;
+    }
+    .lp-glossary-sub em { font-style: italic; color: var(--text); }
+    .lp-glossary-grid {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      width: 100%; max-width: 1000px;
+    }
+    .lp-glossary-card {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 16px 18px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      text-decoration: none; transition: border-color 0.15s, transform 0.15s, background 0.15s;
+    }
+    .lp-glossary-card:hover {
+      border-color: var(--accent-mid); transform: translateY(-1px);
+      background: rgba(255,255,255,0.7);
+    }
+    .lp-glossary-term {
+      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600;
+      color: var(--text);
+    }
+    .lp-glossary-context {
+      font-size: 0.78rem; font-style: italic; color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .lp-glossary-desc {
+      font-size: 0.85rem; color: var(--text-mid); line-height: 1.55;
+    }
+    .lp-glossary-cta {
+      margin-top: 12px; display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px; background: var(--accent); color: white;
+      font-size: 0.88rem; font-weight: 600; text-decoration: none;
+      border-radius: var(--radius); transition: background 0.15s, transform 0.15s;
+    }
+    .lp-glossary-cta:hover { background: var(--accent-dk, var(--accent)); transform: translateY(-1px); }
+    @media (max-width: 760px) { .lp-glossary { padding: 40px 24px; } }
+
     .lp-footer {
       padding: 28px 48px;
       background: var(--surface); border-top: 1px solid var(--border);
@@ -2049,6 +2099,7 @@
     <a class="lp-nav-link" href="#lp-pro"           data-section="lp-pro">Pricing</a>
     <a class="lp-nav-link" href="#lp-faq"           data-section="lp-faq">FAQ</a>
     <a class="lp-nav-link" href="#lp-download"      data-section="lp-download">Download</a>
+    <a class="lp-nav-link" href="/glossary">Glossary</a>
     <a class="lp-nav-link" href="/credits.html">Credits</a>
   </nav>
 
@@ -2740,6 +2791,61 @@
       </div>
 
     </div>
+  </div>
+
+  <!-- Glossary preview (SEO + internal linking to /glossary entries) -->
+  <div class="lp-glossary" id="lp-glossary">
+    <span class="lp-glossary-eyebrow">Free reading</span>
+    <h2 class="lp-section-title">Literary terms, explained in <em>context</em>.</h2>
+    <p class="lp-glossary-sub">In-depth essays on the words that don't survive a dictionary lookup — <em>spleen</em>, <em>hamartia</em>, <em>negative capability</em>. Free to read, no signup, 58 entries and counting.</p>
+
+    <div class="lp-glossary-grid">
+      <a class="lp-glossary-card" href="/glossary/hamartia">
+        <div class="lp-glossary-term">hamartia</div>
+        <div class="lp-glossary-context">in Greek tragedy</div>
+        <div class="lp-glossary-desc">The tragic flaw — Aristotle's term for the error of judgment that brings a hero down.</div>
+      </a>
+      <a class="lp-glossary-card" href="/glossary/spleen-baudelaire">
+        <div class="lp-glossary-term">spleen</div>
+        <div class="lp-glossary-context">in Baudelaire</div>
+        <div class="lp-glossary-desc">Not anger — a heavier, more clinical despair, the modern condition of urban exhaustion.</div>
+      </a>
+      <a class="lp-glossary-card" href="/glossary/negative-capability">
+        <div class="lp-glossary-term">negative capability</div>
+        <div class="lp-glossary-context">Keats's idea</div>
+        <div class="lp-glossary-desc">The capacity to remain in uncertainty without "irritable reaching after fact and reason."</div>
+      </a>
+      <a class="lp-glossary-card" href="/glossary/sublime-in-romanticism">
+        <div class="lp-glossary-term">the sublime</div>
+        <div class="lp-glossary-context">in Romanticism</div>
+        <div class="lp-glossary-desc">Beauty that frightens — the aesthetic category that defines Wordsworth, Shelley, and Burke.</div>
+      </a>
+      <a class="lp-glossary-card" href="/glossary/catharsis-greek-tragedy">
+        <div class="lp-glossary-term">catharsis</div>
+        <div class="lp-glossary-context">Greek tragedy</div>
+        <div class="lp-glossary-desc">Aristotle's claim about what tragedy actually does to us — purgation, clarification, or both.</div>
+      </a>
+      <a class="lp-glossary-card" href="/glossary/stream-of-consciousness">
+        <div class="lp-glossary-term">stream of consciousness</div>
+        <div class="lp-glossary-context">modernist technique</div>
+        <div class="lp-glossary-desc">The mind on the page — how Woolf, Joyce, and Faulkner rendered thought before it became language.</div>
+      </a>
+      <a class="lp-glossary-card" href="/glossary/madeleine-proust">
+        <div class="lp-glossary-term">the madeleine</div>
+        <div class="lp-glossary-context">Proust</div>
+        <div class="lp-glossary-desc">Involuntary memory — a bite of cake that unlocks an entire childhood, and why it works.</div>
+      </a>
+      <a class="lp-glossary-card" href="/glossary/unreliable-narrator">
+        <div class="lp-glossary-term">unreliable narrator</div>
+        <div class="lp-glossary-context">point of view</div>
+        <div class="lp-glossary-desc">The narrator you can't trust — and the technical signals that tell you when not to.</div>
+      </a>
+    </div>
+
+    <a class="lp-glossary-cta" href="/glossary">
+      Browse all 58 entries
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </a>
   </div>
 
   <!-- Apps CTA (merged) -->
