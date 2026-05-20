@@ -3615,6 +3615,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .wrap { max-width: 720px; margin: 0 auto; padding: 56px 0 96px; }
+.wrap-wide { max-width: 1080px; margin: 0 auto; padding: 56px 0 96px; }
 .back {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 0.85rem; color: var(--muted);
@@ -3723,20 +3724,30 @@ blockquote {
   margin-bottom: 40px; padding-bottom: 28px;
   border-bottom: 1px solid var(--border);
 }
-.entry-grid { display: grid; gap: 14px; }
+.entry-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
 .entry-card {
-  display: block; padding: 18px 20px;
+  display: flex; flex-direction: column;
+  padding: 18px 20px;
   background: var(--surface); border: 1px solid var(--border);
   border-radius: 12px; text-decoration: none;
   transition: border-color 0.15s, transform 0.15s;
+  height: 100%;
 }
 .entry-card:hover { border-color: rgba(255,122,24,0.4); transform: translateY(-1px); }
 .entry-card-term {
   font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600;
   color: var(--text); margin-bottom: 4px;
 }
-.entry-card-context { font-size: 0.85rem; color: var(--muted); font-style: italic; margin-bottom: 8px; }
-.entry-card-desc { font-size: 0.9rem; color: var(--text-mid); line-height: 1.55; }
+.entry-card-context { font-size: 0.85rem; color: var(--muted); font-style: italic; margin-bottom: 10px; }
+.entry-card-desc {
+  font-size: 0.9rem; color: var(--text-mid); line-height: 1.55;
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 .closing {
   margin-top: 56px; padding-top: 28px;
@@ -3958,7 +3969,7 @@ def render_index() -> str:
     return f"""{head}
 <body>
 {jsonld_tag}
-<div class="wrap">
+<div class="wrap-wide">
   <a class="back" href="/">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     Back to Lexio
