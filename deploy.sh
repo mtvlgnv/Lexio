@@ -16,13 +16,18 @@ git pull --ff-only
 echo
 echo "── restarting lexio (uvicorn) ──"
 systemctl restart lexio
-sleep 2
-if systemctl is-active --quiet lexio; then
-    echo "✓ lexio is running"
-else
-    echo "✗ lexio failed to start — check: journalctl -u lexio -n 30"
-    exit 1
-fi
+# Poll for readiness rather than fixed sleep — uvicorn workers take ~5s to bind.
+for i in {1..15}; do
+    if curl -fs -o /dev/null -m 2 http://127.0.0.1:8000/api/config; then
+        echo "✓ lexio is running (ready after ${i}s)"
+        break
+    fi
+    sleep 1
+    if [[ $i -eq 15 ]]; then
+        echo "✗ lexio failed to start within 15s — check: journalctl -u lexio -n 30"
+        exit 1
+    fi
+done
 
 # Show nginx.conf diff if the repo template differs from the live config.
 # (We don't auto-apply because the live config has Certbot SSL blocks not in the template.)
