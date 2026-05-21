@@ -1065,97 +1065,58 @@
       #back-to-top { width: 38px; height: 38px; bottom: 20px; right: 20px; }
     }
 
-    /* ── User dashboard (between main and landing) ─────────── */
-    #user-dashboard {
-      padding: 28px 24px 40px;
+    /* ── Sample-passage carousel (compact-mode only) ─────────── */
+    #try-passage {
+      padding: 24px 24px 36px;
       background: var(--bg);
       display: flex; flex-direction: column; align-items: center;
-      gap: 4px;
+      gap: 14px;
+      max-height: 0; opacity: 0; overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.3s ease,
+                  padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    body.in-app #user-dashboard { display: none; }
-    .dashboard-title {
-      font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 600;
-      color: var(--text); text-align: center; margin: 0;
+    body.app-compact:not(.in-app) #try-passage {
+      max-height: 420px; opacity: 1;
     }
-    .dashboard-title em { font-style: italic; color: var(--accent); }
-    .dashboard-name { color: var(--accent); font-style: italic; }
-    .dashboard-sub {
-      font-size: 0.85rem; color: var(--text-mid); text-align: center;
-      margin: 0 0 18px; max-width: 560px;
+    .try-eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted);
+      margin: 0;
     }
-    .dashboard-grid {
+    .try-grid {
       display: grid; gap: 12px;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      width: 100%; max-width: 1040px;
+      width: 100%; max-width: 880px;
     }
-    .dash-card {
+    .try-card {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 12px; padding: 16px 18px;
-      display: flex; flex-direction: column; gap: 8px;
-      min-height: 160px;
+      display: flex; flex-direction: column; gap: 6px;
+      text-align: left; cursor: pointer;
+      font-family: inherit; color: var(--text);
+      transition: border-color 0.15s, transform 0.15s, background 0.15s;
     }
-    .dash-card h3 {
-      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--muted);
-      margin: 0; display: flex; align-items: center; justify-content: space-between;
+    .try-card:hover {
+      border-color: var(--accent-mid); transform: translateY(-1px);
+      background: color-mix(in oklch, var(--surface) 85%, var(--accent));
     }
-    .dash-card h3 .dash-count {
-      font-size: 0.72rem; letter-spacing: 0; text-transform: none;
-      color: var(--accent); font-weight: 600;
+    .try-card-author {
+      font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); font-weight: 600;
     }
-    .dash-recent-list {
-      display: flex; flex-direction: column; gap: 6px; flex: 1; min-height: 0;
+    .try-card-title {
+      font-family: 'Lora', serif; font-size: 1.02rem; font-weight: 600;
+      color: var(--text); font-style: italic;
     }
-    .dash-recent-item {
-      display: flex; align-items: baseline; gap: 8px;
-      padding: 6px 0; border-bottom: 1px solid var(--border);
-      font-family: 'Lora', serif;
+    .try-card-excerpt {
+      font-size: 0.83rem; color: var(--text-mid); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-top: 2px;
     }
-    .dash-recent-item:last-child { border-bottom: none; }
-    .dash-recent-word { font-weight: 600; color: var(--text); font-size: 0.95rem; }
-    .dash-recent-meaning {
-      font-size: 0.8rem; color: var(--text-mid); font-family: 'DM Sans', sans-serif;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0;
-    }
-    .dash-recent-empty {
-      font-size: 0.85rem; color: var(--muted); font-style: italic;
-      padding: 8px 0;
-    }
-    .dash-wotd-term {
-      font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 600;
-      color: var(--text);
-    }
-    .dash-wotd-context {
-      font-size: 0.78rem; font-style: italic; color: var(--muted);
-    }
-    .dash-wotd-desc {
-      font-size: 0.85rem; color: var(--text-mid); line-height: 1.5;
-      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
-      overflow: hidden; flex: 1;
-    }
-    .dash-link {
-      margin-top: auto; font-size: 0.82rem; color: var(--accent);
-      text-decoration: none; font-weight: 600; cursor: pointer;
-      align-self: flex-start;
-    }
-    .dash-link:hover { text-decoration: underline; }
-    .dash-sample-btn {
-      display: flex; align-items: center; gap: 8px;
-      background: transparent; border: 1px solid var(--border);
-      border-radius: 8px; padding: 8px 12px; text-align: left;
-      font-family: 'DM Sans', inherit; font-size: 0.85rem; color: var(--text);
-      cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s;
-    }
-    .dash-sample-btn:hover {
-      border-color: var(--accent-mid); background: var(--accent-lt); color: var(--accent);
-    }
-    .dash-sample-btn-icon { color: var(--accent); flex-shrink: 0; }
-    .dash-card p {
-      font-size: 0.85rem; color: var(--text-mid); line-height: 1.55; margin: 0;
-      flex: 1;
-    }
-    @media (max-width: 880px) {
-      .dashboard-grid { grid-template-columns: 1fr; }
+    @media (max-width: 720px) {
+      .try-grid { grid-template-columns: 1fr; }
     }
 
     /* ── Landing page ───────────────────────────────────────── */
@@ -2555,70 +2516,10 @@
   </div>
 </main>
 
-<!-- ── User dashboard (signed-in: recent words; signed-out: samples + glossary) ─ -->
-<section id="user-dashboard">
-
-  <!-- Signed-in variant -->
-  <div id="dashboard-signed-in" class="dashboard-variant" hidden>
-    <h2 class="dashboard-title">Welcome back<span class="dashboard-name" id="dashboard-name"></span></h2>
-    <p class="dashboard-sub">Pick up where you left off — or read deeper.</p>
-    <div class="dashboard-grid">
-      <div class="dash-card">
-        <h3>Recent saves <span class="dash-count" id="dash-recent-count"></span></h3>
-        <div class="dash-recent-list" id="dash-recent-list">
-          <div class="dash-recent-empty">No saved words yet — click any word after analyzing to save it.</div>
-        </div>
-        <a class="dash-link" href="#" onclick="openWordBank(); return false;">View word bank →</a>
-      </div>
-      <div class="dash-card" id="dash-wotd-card">
-        <h3>Word of the day</h3>
-        <div class="dash-wotd-term" id="dash-wotd-term">—</div>
-        <div class="dash-wotd-context" id="dash-wotd-context"></div>
-        <div class="dash-wotd-desc" id="dash-wotd-desc"></div>
-        <a class="dash-link" id="dash-wotd-link" href="/glossary">Read essay →</a>
-      </div>
-      <div class="dash-card">
-        <h3>From the glossary</h3>
-        <p>78 in-depth essays on terms that don't survive a dictionary lookup — <em>hamartia</em>, <em>spleen</em>, <em>negative capability</em>, and more.</p>
-        <a class="dash-link" href="/glossary">Browse all entries →</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Signed-out variant -->
-  <div id="dashboard-signed-out" class="dashboard-variant">
-    <h2 class="dashboard-title">Read deeper, understand <em>everything</em>.</h2>
-    <p class="dashboard-sub">Try Lexio with a sample passage, or explore the free glossary of literary terms.</p>
-    <div class="dashboard-grid">
-      <div class="dash-card">
-        <h3>Try a sample passage</h3>
-        <button class="dash-sample-btn" onclick="loadDashSample(3)" type="button">
-          <svg class="dash-sample-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          Literary prose
-        </button>
-        <button class="dash-sample-btn" onclick="loadDashSample(0)" type="button">
-          <svg class="dash-sample-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Philosophy
-        </button>
-        <button class="dash-sample-btn" onclick="loadDashSample(2)" type="button">
-          <svg class="dash-sample-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.74 0 3.37.5 4.74 1.36"/></svg>
-          Neuroscience
-        </button>
-      </div>
-      <div class="dash-card" id="dash-wotd-card-out">
-        <h3>Word of the day</h3>
-        <div class="dash-wotd-term" id="dash-wotd-term-out">—</div>
-        <div class="dash-wotd-context" id="dash-wotd-context-out"></div>
-        <div class="dash-wotd-desc" id="dash-wotd-desc-out"></div>
-        <a class="dash-link" id="dash-wotd-link-out" href="/glossary">Read essay →</a>
-      </div>
-      <div class="dash-card">
-        <h3>From the glossary</h3>
-        <p>78 in-depth essays on terms that don't survive a dictionary lookup — <em>hamartia</em>, <em>spleen</em>, <em>negative capability</em>, and more.</p>
-        <a class="dash-link" href="/glossary">Browse all entries →</a>
-      </div>
-    </div>
-  </div>
+<!-- ── Sample-passage carousel (visible when app is in compact/empty state) ── -->
+<section id="try-passage">
+  <p class="try-eyebrow">Or try a passage</p>
+  <div class="try-grid" id="try-grid"></div>
 </section>
 
 <!-- ── Scroll progress bar (thin, top of viewport) ───────────── -->
@@ -3650,7 +3551,6 @@ function loadWordBank() {
 function saveWordBank() {
   try { localStorage.setItem(WB_KEY, JSON.stringify(wordBank)); } catch {}
   updateWBBadge();
-  if (typeof renderDashboardRecents === 'function') renderDashboardRecents();
 }
 function updateWBBadge() {
   const badge = document.getElementById('wb-badge');
@@ -5037,7 +4937,6 @@ function updateAcctBtn() {
     btn.classList.remove('signed-in');
     btn.title = 'Sign in';
   }
-  if (typeof refreshDashboard === 'function') refreshDashboard();
 }
 
 function openAuthModal(fromAnalyze) {
@@ -5491,9 +5390,9 @@ if (new URLSearchParams(window.location.search).get('app') === '1') {
   document.body.classList.add('in-app');
 }
 
-// ── App compact / dashboard / scroll progress / back-to-top ──────────────────
+// ── App compact / try-passage carousel / scroll progress / back-to-top ──────
 
-/* Compact-mode: shrink <main> when empty so the dashboard is visible below.
+/* Compact-mode: shrink <main> when empty so the carousel is visible below.
    Grow back to full viewport height when user has input, results, or focus. */
 function updateAppCompact() {
   const ta = document.getElementById('input-text');
@@ -5505,98 +5404,51 @@ function updateAppCompact() {
   document.body.classList.toggle('app-compact', compact);
 }
 
-// Sample loader for the dashboard cards — uses the existing SAMPLES array.
-function loadDashSample(idx) {
-  const ta = document.getElementById('input-text');
-  if (!ta || !SAMPLES[idx]) return;
-  ta.value = SAMPLES[idx].text;
-  ta.focus();
-  // scroll to the input
-  ta.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  updateAppCompact();
-  // trigger any character-counter listeners
-  ta.dispatchEvent(new Event('input', { bubbles: true }));
-}
-
-/* Deterministic Word of the Day — uses today's date as the seed so all
-   visitors see the same entry within a 24h window. */
-const WOTD_ENTRIES = [
-  { slug:'hamartia',                term:'hamartia',                context:'Greek tragedy',                  desc:"The tragic flaw — Aristotle's term for the error of judgment that brings a hero down." },
-  { slug:'spleen-baudelaire',       term:'spleen',                  context:'Baudelaire',                     desc:'Not anger — a heavier, more clinical despair, the modern condition of urban exhaustion.' },
-  { slug:'negative-capability',     term:'negative capability',     context:"Keats's letters",                desc:'The capacity to remain in uncertainty without "irritable reaching after fact and reason."' },
-  { slug:'sublime-in-romanticism',  term:'the sublime',             context:'Romanticism',                    desc:'Beauty that frightens — the aesthetic category that defines Wordsworth, Shelley, and Burke.' },
-  { slug:'catharsis-greek-tragedy', term:'catharsis',               context:'Greek tragedy',                  desc:"Aristotle's claim about what tragedy actually does — purgation, clarification, or both." },
-  { slug:'stream-of-consciousness', term:'stream of consciousness', context:'modernist technique',            desc:'The mind on the page — how Woolf, Joyce, and Faulkner rendered thought before it became language.' },
-  { slug:'madeleine-proust',        term:'the madeleine',           context:'Proust',                          desc:'Involuntary memory — a bite of cake that unlocks an entire childhood, and why it works.' },
-  { slug:'kafkaesque',              term:'kafkaesque',              context:'beyond "bureaucratic"',          desc:"Not just bureaucratic — the experience of authority operating by rules you can't read or appeal." },
-  { slug:'flaneur',                 term:'flâneur',                 context:'Baudelaire & Benjamin',           desc:'The leisurely urban observer — a figure of nineteenth-century Paris and of modernity itself.' },
-  { slug:'palimpsest',              term:'palimpsest',              context:'literary metaphor',               desc:'A manuscript with older writing visible beneath the new — and a powerful metaphor for any layered text.' },
-  { slug:'liminality-literature',   term:'liminality',              context:'literary theory',                 desc:'The in-between state — neither here nor there — where literature characteristically does its most serious work.' },
-  { slug:'death-of-the-author',     term:'death of the author',     context:'Barthes (1967)',                  desc:"Barthes's claim that the author's intentions don't determine meaning — the reader produces the text." },
+/* Sample literary passages — short, famous openings. Click a card to load
+   into the textarea. */
+const TRY_PASSAGES = [
+  {
+    author: 'F. Scott Fitzgerald',
+    title:  'The Great Gatsby',
+    excerpt: 'In my younger and more vulnerable years my father gave me some advice that I\'ve been turning over in my mind ever since.',
+    text: 'In my younger and more vulnerable years my father gave me some advice that I\'ve been turning over in my mind ever since. "Whenever you feel like criticizing anyone," he told me, "just remember that all the people in this world haven\'t had the advantages that you\'ve had." He didn\'t say any more, but we\'ve always been unusually communicative in a reserved way, and I understood that he meant a great deal more than that. In consequence, I\'m inclined to reserve all judgments, a habit that has opened up many curious natures to me and also made me the victim of not a few veteran bores.'
+  },
+  {
+    author: 'Franz Kafka',
+    title:  'The Metamorphosis',
+    excerpt: 'When Gregor Samsa woke one morning from uneasy dreams, he found himself transformed into a monstrous vermin.',
+    text: 'When Gregor Samsa woke one morning from uneasy dreams, he found himself transformed in his bed into a monstrous vermin. He lay on his armour-hard back and saw, as he lifted his head a little, his domed, brown belly, divided by stiff arched segments, on top of which the bed-quilt could hardly keep in position and was about to slide off completely. His numerous legs, pathetically thin in comparison to the rest of his bulk, flickered helplessly before his eyes.'
+  },
+  {
+    author: 'Virginia Woolf',
+    title:  'Mrs Dalloway',
+    excerpt: 'Mrs. Dalloway said she would buy the flowers herself. For Lucy had her work cut out for her.',
+    text: 'Mrs. Dalloway said she would buy the flowers herself. For Lucy had her work cut out for her. The doors would be taken off their hinges; Rumpelmayer\'s men were coming. And then, thought Clarissa Dalloway, what a morning—fresh as if issued to children on a beach. What a lark! What a plunge! For so it had always seemed to her when, with a little squeak of the hinges, which she could hear now, she had burst open the French windows and plunged at Bourton into the open air.'
+  },
 ];
-function pickWordOfTheDay() {
-  const d = new Date();
-  const dayKey = d.getFullYear() * 1000 + d.getMonth() * 50 + d.getDate();
-  return WOTD_ENTRIES[dayKey % WOTD_ENTRIES.length];
+
+function renderTryPassages() {
+  const grid = document.getElementById('try-grid');
+  if (!grid) return;
+  grid.innerHTML = TRY_PASSAGES.map((p, i) => `
+    <button class="try-card" type="button" onclick="loadTryPassage(${i})">
+      <span class="try-card-author">${p.author}</span>
+      <span class="try-card-title">${p.title}</span>
+      <span class="try-card-excerpt">${p.excerpt}</span>
+    </button>
+  `).join('');
 }
 
-function renderWotd() {
-  const w = pickWordOfTheDay();
-  ['', '-out'].forEach(suffix => {
-    const t  = document.getElementById('dash-wotd-term'    + suffix);
-    const c  = document.getElementById('dash-wotd-context' + suffix);
-    const dd = document.getElementById('dash-wotd-desc'    + suffix);
-    const ln = document.getElementById('dash-wotd-link'    + suffix);
-    if (!t) return;
-    t.textContent = w.term;
-    c.textContent = 'in ' + w.context;
-    dd.textContent = w.desc;
-    ln.href = '/glossary/' + w.slug;
-  });
-}
-
-function renderDashboardRecents() {
-  const list = document.getElementById('dash-recent-list');
-  const cnt  = document.getElementById('dash-recent-count');
-  if (!list) return;
-  if (!wordBank || wordBank.length === 0) {
-    list.innerHTML = '<div class="dash-recent-empty">No saved words yet — click any word after analyzing to save it.</div>';
-    cnt.textContent = '';
-    return;
-  }
-  cnt.textContent = wordBank.length + ' total';
-  const recent = wordBank.slice(0, 5);
-  list.innerHTML = recent.map(w =>
-    `<div class="dash-recent-item">
-       <span class="dash-recent-word">${escapeHtml(w.word)}</span>
-       <span class="dash-recent-meaning">${escapeHtml(w.contextual || w.simpler || '')}</span>
-     </div>`
-  ).join('');
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c =>
-    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
-  );
-}
-
-function refreshDashboard() {
-  const si = document.getElementById('dashboard-signed-in');
-  const so = document.getElementById('dashboard-signed-out');
-  if (authUser) {
-    si.hidden = false;
-    so.hidden = true;
-    const nameEl = document.getElementById('dashboard-name');
-    if (nameEl) {
-      const display = authUser.name || (authUser.email ? authUser.email.split('@')[0] : '');
-      nameEl.textContent = display ? (', ' + display) : '';
-    }
-    renderDashboardRecents();
-  } else {
-    si.hidden = true;
-    so.hidden = false;
-  }
-  renderWotd();
+function loadTryPassage(idx) {
+  const ta = document.getElementById('input-text');
+  const p = TRY_PASSAGES[idx];
+  if (!ta || !p) return;
+  ta.value = p.text;
+  updateAppCompact();
+  // smooth-scroll back to the top so the input is centered
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // allow the smooth-scroll to finish before focusing (focus jumps the page)
+  setTimeout(() => { ta.focus(); ta.dispatchEvent(new Event('input', { bubbles: true })); }, 350);
 }
 
 // Scroll progress bar + back-to-top
@@ -5611,13 +5463,11 @@ function updateScrollUI() {
   if (bt) bt.classList.toggle('visible', scrolled > 600);
 }
 
-// Hooks
 window.addEventListener('scroll', updateScrollUI, { passive: true });
 window.addEventListener('resize', updateScrollUI);
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize compact + dashboard once DOM is ready
   updateAppCompact();
-  refreshDashboard();
+  renderTryPassages();
   updateScrollUI();
 
   const ta = document.getElementById('input-text');
