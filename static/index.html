@@ -1125,51 +1125,86 @@
 
     /* Hero + How it works combined row */
     .lp-hero {
-      padding: 64px 72px;
-      display: flex; flex-direction: row; align-items: center;
-      gap: 80px; background: var(--surface); border-top: none;
+      padding: 64px 64px 56px;
+      display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+      align-items: center; gap: 56px;
+      background: var(--surface); border-top: none;
       position: relative; overflow: hidden;
+      min-height: 540px;
     }
     .lp-hero::before {
       content: '';
       position: absolute; top: 0; left: 0; right: 0;
-      height: 120px; z-index: 1; pointer-events: none;
+      height: 80px; z-index: 1; pointer-events: none;
       background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
     }
     .lp-hero-left {
-      flex: 1; display: flex; flex-direction: column; gap: 20px; position: relative; z-index: 2;
+      display: flex; flex-direction: column; gap: 22px;
+      position: relative; z-index: 2;
     }
     .lp-hero-right {
-      flex: 1; display: flex; flex-direction: column; gap: 28px; position: relative; z-index: 2;
-      background: color-mix(in oklch, var(--surface) 55%, transparent);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      padding: 28px 32px;
-      border-radius: 16px;
-      border: 1px solid color-mix(in oklch, var(--border) 45%, transparent);
+      position: relative; z-index: 2;
+      background: var(--surface);
+      padding: 0;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px -20px rgba(0,0,0,0.45);
+      overflow: hidden;
     }
     .lp-hero-eyebrow {
-      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      display: inline-flex; align-items: center; gap: 8px;
+      width: fit-content;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
       text-transform: uppercase; color: var(--accent);
+      padding: 6px 12px;
+      background: color-mix(in oklch, var(--accent) 12%, transparent);
+      border: 1px solid color-mix(in oklch, var(--accent) 24%, transparent);
+      border-radius: 999px;
     }
     .lp-hero h1 {
-      font-family: 'Lora', serif; font-size: clamp(1.8rem, 3vw, 2.8rem);
-      font-weight: 600; line-height: 1.2; color: var(--text);
-      /* No max-width: the rotating em changes width on every cycle, so
-         constraining the headline causes "Understand X." to drop onto a
-         new line for longer words. Let the heading size to its content. */
-      white-space: nowrap;
-      position: relative;
+      font-family: 'Lora', serif;
+      font-size: clamp(2.1rem, 3.9vw, 3.4rem);
+      font-weight: 600; line-height: 1.08; letter-spacing: -0.015em;
+      color: var(--text);
+      max-width: 560px;
     }
     .lp-hero h1 em { font-style: italic; color: var(--accent); }
     .lp-hero-sub {
-      font-size: 1rem; color: var(--text-mid); max-width: 440px;
-      line-height: 1.7;
+      font-size: 1.08rem; color: var(--text-mid); max-width: 520px;
+      line-height: 1.6;
+      font-weight: 400;
     }
     .lp-hero-cta {
-      display: flex; gap: 12px; flex-wrap: wrap;
-      margin-top: 4px;
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+      margin-top: 6px;
     }
+    .lp-hero-secondary {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.92rem; font-weight: 600;
+      color: var(--text-mid); text-decoration: none;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .lp-hero-secondary:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    .lp-hero-secondary svg { color: var(--accent); }
+    .lp-hero-trust {
+      list-style: none; padding: 0; margin: 14px 0 0;
+      display: flex; flex-wrap: wrap; gap: 8px 20px;
+    }
+    .lp-hero-trust li {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.82rem; color: var(--text-mid); font-weight: 500;
+    }
+    .lp-hero-trust li svg { color: var(--accent); flex-shrink: 0; }
+    .lp-btn-primary-lg {
+      padding: 13px 26px;
+      font-size: 0.98rem; font-weight: 600;
+      box-shadow: 0 6px 20px -4px color-mix(in oklch, var(--accent) 55%, transparent);
+    }
+    .lp-btn-primary-lg:hover { transform: translateY(-1px); box-shadow: 0 10px 28px -6px color-mix(in oklch, var(--accent) 65%, transparent); }
+    .lp-btn-primary-lg svg { transition: transform 0.2s; }
+    .lp-btn-primary-lg:hover svg { transform: translateX(3px); }
     .lp-btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 11px 28px; color: #fff;
@@ -1352,13 +1387,58 @@
       text-transform: uppercase; color: var(--accent);
     }
 
+    /* ── Hero demo panel ───────────────────────────────────────────────── */
+    .lp-demo-frame-top {
+      display: flex; align-items: center; gap: 6px;
+      padding: 11px 14px; border-bottom: 1px solid var(--border);
+      background: color-mix(in oklch, var(--bg) 50%, var(--surface));
+    }
+    .lp-demo-frame-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      opacity: 0.55;
+    }
+    .lp-demo-frame-label {
+      margin-left: 8px;
+      font-size: 0.72rem; color: var(--muted); font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .lp-demo-stage-eyebrow {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 12px;
+    }
+    .lp-demo-stage-eyebrow em {
+      font-style: italic; color: var(--text-mid); text-transform: none;
+      letter-spacing: 0;
+    }
+    .lp-demo-footer {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0; border-top: 1px solid var(--border);
+      background: color-mix(in oklch, var(--bg) 50%, var(--surface));
+    }
+    .lp-demo-footer-step {
+      display: flex; align-items: center; gap: 9px;
+      padding: 12px 16px;
+      font-size: 0.78rem; color: var(--text-mid); font-weight: 500;
+    }
+    .lp-demo-footer-step + .lp-demo-footer-step {
+      border-left: 1px solid var(--border);
+    }
+    .lp-demo-footer-step-num {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: color-mix(in oklch, var(--accent) 18%, transparent);
+      color: var(--accent);
+      font-size: 0.7rem; font-weight: 700; font-family: 'DM Sans', sans-serif;
+      flex-shrink: 0;
+    }
+
     /* ── Hero animated demo ──────────────────────────────────────────────── */
     .lp-hero-demo .lp-demo-stage {
       position: relative;
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 22px 22px 26px;
+      border: none; border-radius: 0;
+      padding: 22px 24px 30px;
       min-height: 200px;
     }
     .lp-demo-text {
@@ -2004,9 +2084,21 @@
     .lp-footer-brand { font-family: 'Lora', serif; font-weight: 600; font-size: 0.95rem; color: var(--text); }
 
     /* Landing responsive */
+    @media (max-width: 960px) {
+      .lp-hero {
+        grid-template-columns: 1fr;
+        padding: 48px 32px 40px; gap: 36px; min-height: 0;
+      }
+      .lp-hero h1 { max-width: 100%; }
+      .lp-hero-sub { max-width: 100%; }
+      .lp-demo-footer-step { padding: 10px 12px; font-size: 0.74rem; }
+    }
     @media (max-width: 760px) {
-      .lp-hero { padding: 48px 24px 40px; flex-direction: column; gap: 40px; }
-      .lp-hero-right { border-top: 1px solid var(--border); padding-top: 32px; }
+      .lp-hero { padding: 40px 20px 32px; }
+      .lp-hero h1 { font-size: clamp(1.85rem, 7vw, 2.4rem); }
+      .lp-hero-cta { gap: 16px; }
+      .lp-hero-trust { gap: 6px 14px; }
+      .lp-hero-trust li { font-size: 0.78rem; }
       .lp-steps, .lp-features { padding: 40px 24px; }
       .lp-steps-grid, .lp-features-grid { grid-template-columns: 1fr; }
       .lp-footer { flex-direction: column; gap: 12px; text-align: center; }
@@ -2544,35 +2636,43 @@
     <canvas id="hero-webgl" style="
       position:absolute;left:0;top:0;width:100%;height:100%;
       pointer-events:none;z-index:0;
-      -webkit-mask-image:linear-gradient(to right, transparent 0%, black 70%);
-      mask-image:linear-gradient(to right, transparent 0%, black 70%);
+      -webkit-mask-image:linear-gradient(to right, black 0%, transparent 55%);
+      mask-image:linear-gradient(to right, black 0%, transparent 55%);
+      opacity:0.85;
       --gradient-color-1:#ef7040;
       --gradient-color-2:#c2541e;
       --gradient-color-3:#7a3b9e;
       --gradient-color-4:#f0b060;
     "></canvas>
     <div class="lp-hero-left">
-      <h1 data-i18n-html="heroH1">Read deeper.<br>Understand <em>everything.</em></h1>
-      <p class="lp-hero-sub" data-i18n="heroSub">Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.</p>
+      <span class="lp-hero-eyebrow" data-i18n="heroEyebrow">AI reading companion</span>
+      <h1 data-i18n-html="heroH1">A dictionary that reads the <em>sentence.</em></h1>
+      <p class="lp-hero-sub" data-i18n="heroSub">Click any word in any text. Lexio reads the surrounding sentence and gives you the meaning that actually fits — not a generic dictionary entry.</p>
       <div class="lp-hero-cta">
-        <button class="lp-btn-primary" onclick="tryHeroSample()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-          <span>Try it now — free</span>
+        <button class="lp-btn-primary lp-btn-primary-lg" onclick="tryHeroSample()">
+          <span data-i18n="tryItNow">Try Lexio free</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
-        <a class="lp-btn-ghost lp-btn-chrome" href="#lp-download" onclick="document.getElementById('lp-download').scrollIntoView({behavior:'smooth'});return false;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9.5 3.5a8.5 8.5 0 0 1 11.5 8.5"/>
-            <path d="M3.5 8a8.5 8.5 0 0 1 9.5-4.5"/>
-            <path d="M21 12a8.5 8.5 0 0 1-11.5 8"/>
-            <circle cx="12" cy="12" r="3.2"/>
-          </svg>
-          <span>Add to Chrome — free</span>
+        <a class="lp-hero-secondary" href="#lp-features" onclick="document.getElementById('lp-features').scrollIntoView({behavior:'smooth'});return false;">
+          <span data-i18n="seeHow">See how it works</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
         </a>
       </div>
+      <ul class="lp-hero-trust">
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>100 free lookups / month</li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No credit card</li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Works in 11 languages</li>
+      </ul>
     </div>
     <div class="lp-hero-right lp-hero-demo">
-      <span class="lp-hero-steps-title">See it in action</span>
+      <div class="lp-demo-frame-top">
+        <span class="lp-demo-frame-dot" style="background:#ff5f57"></span>
+        <span class="lp-demo-frame-dot" style="background:#febc2e"></span>
+        <span class="lp-demo-frame-dot" style="background:#28c840"></span>
+        <span class="lp-demo-frame-label">Lexio · live preview</span>
+      </div>
       <div class="lp-demo-stage" aria-hidden="true">
+        <div class="lp-demo-stage-eyebrow">Reading: <em>The novel's plot…</em></div>
         <div class="lp-demo-text">
           The novel's <span class="lp-demo-word">labyrinthine</span> plot left readers spellbound — twists weaving with deliberate ambiguity.
         </div>
@@ -2587,7 +2687,20 @@
           <div class="lp-demo-popup-line">Stronger than "complex" — implies deliberate, almost architectural intricacy.</div>
         </div>
       </div>
-      <p class="lp-demo-caption">Click any word. Get its exact meaning in <em>this</em> sentence — not a generic dictionary entry.</p>
+      <div class="lp-demo-footer">
+        <div class="lp-demo-footer-step">
+          <span class="lp-demo-footer-step-num">1</span>
+          <span>Paste any text</span>
+        </div>
+        <div class="lp-demo-footer-step">
+          <span class="lp-demo-footer-step-num">2</span>
+          <span>Click a word</span>
+        </div>
+        <div class="lp-demo-footer-step">
+          <span class="lp-demo-footer-step-num">3</span>
+          <span>Get the meaning</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -3906,7 +4019,7 @@ function cancelOCR() {
 let currentUILang = 'en';
 
 const UI_T = {
-  en: { tagline:'AI contextual definition solutions', saved:'Collected', panelLabel:'Text', trySample:'Try a sample', analyzeText:'Analyze text', edit:'← Edit', fetchArticle:'Fetch article', tweaks:'Tweaks', colorTheme:'Color theme', textSize:'Text size', lineHeight:'Line height', theme:'Theme', model:'AI Model', macApp:'Get the Mac app', shortcuts:'Keyboard shortcuts', clickWord:'Click any word', placeholderSub:'After analyzing your text, tap any word to see its precise meaning in context.', meaning:'Meaning', inContext:'In this context', moreDetail:'More detail', origin:'Origin', whyWord:'Why this word?', respondIn:'Respond in', simpler:'simpler:', copy:'Copy', save:'Collect', link:'Link', share:'Share', say:'Say', uiLang:'Interface language', heroEyebrow:'Contextual understanding', heroH1:'Read deeper.<br>Understand <em>everything.</em>', heroSub:"Lexio gives you the precise meaning of any word in context — not a dictionary definition, but what it actually means in the sentence you're reading.", tryItNow:'Try it now', seeHow:'See how it works', howLabel:'How it works', step1Title:'Paste any text', step1Desc:'Drop in a paragraph from an article, book, email, or anything else — any language works.', step2Title:'Analyze it', step2Desc:'Lexio reads the full context and prepares every word for instant lookup. Takes about a second.', step3Title:'Click any word', step3Desc:'Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.', trendingTitle:'What people are looking up', trendingEmpty:'No searches recorded yet this month — be the first!', featuresTitle:'Everything you need to understand', feat1Title:'Contextual definitions', feat1Desc:'Not what the word means in general — what it means right here, in this sentence, the way this author used it.', feat2Title:'11 languages', feat2Desc:'Paste text in Spanish, French, German, Russian, Japanese, and more. Get definitions in whatever language you prefer.', feat3Title:'IPA pronunciation', feat3Desc:'See the phonetic transcription of every word and hear it spoken aloud with a single tap.', feat4Title:'Etymology', feat4Desc:"Understand where words come from. Knowing a word's roots makes it stick — and makes the next related word easier.", feat5Title:'Word bank', feat5Desc:'Save words you want to remember. Your personal vocabulary list, always one click away.', feat6Title:'Mac app', feat6Desc:'Use Lexio from any app on your Mac — a full-featured desktop app or a floating menu bar overlay.', extEyebrow:'Chrome Extension', extH2:'Look up words without leaving the page.', extP:'Select any word or sentence on any website. Lexio appears instantly with the meaning in context — no copy-paste, no tab switching.', extBtn:'Add to Chrome', extNote:'Free · Works on any page · No account required', deskH2:'Always at hand, wherever you read.', deskP:'The Lexio Mac app lives in your menu bar or dock, so you can look up words without switching to your browser.', downloadMac:'Download for Mac', openBrowser:'Open in browser', footerTagline:'Built for curious readers.', privacyPolicy:'Privacy Policy' },
+  en: { tagline:'AI contextual definition solutions', saved:'Collected', panelLabel:'Text', trySample:'Try a sample', analyzeText:'Analyze text', edit:'← Edit', fetchArticle:'Fetch article', tweaks:'Tweaks', colorTheme:'Color theme', textSize:'Text size', lineHeight:'Line height', theme:'Theme', model:'AI Model', macApp:'Get the Mac app', shortcuts:'Keyboard shortcuts', clickWord:'Click any word', placeholderSub:'After analyzing your text, tap any word to see its precise meaning in context.', meaning:'Meaning', inContext:'In this context', moreDetail:'More detail', origin:'Origin', whyWord:'Why this word?', respondIn:'Respond in', simpler:'simpler:', copy:'Copy', save:'Collect', link:'Link', share:'Share', say:'Say', uiLang:'Interface language', heroEyebrow:'AI reading companion', heroH1:'A dictionary that reads the <em>sentence.</em>', heroSub:"Click any word in any text. Lexio reads the surrounding sentence and gives you the meaning that actually fits — not a generic dictionary entry.", tryItNow:'Try Lexio free', seeHow:'See how it works', howLabel:'How it works', step1Title:'Paste any text', step1Desc:'Drop in a paragraph from an article, book, email, or anything else — any language works.', step2Title:'Analyze it', step2Desc:'Lexio reads the full context and prepares every word for instant lookup. Takes about a second.', step3Title:'Click any word', step3Desc:'Tap a word to see its exact meaning in that sentence, where it comes from, and how to say it.', trendingTitle:'What people are looking up', trendingEmpty:'No searches recorded yet this month — be the first!', featuresTitle:'Everything you need to understand', feat1Title:'Contextual definitions', feat1Desc:'Not what the word means in general — what it means right here, in this sentence, the way this author used it.', feat2Title:'11 languages', feat2Desc:'Paste text in Spanish, French, German, Russian, Japanese, and more. Get definitions in whatever language you prefer.', feat3Title:'IPA pronunciation', feat3Desc:'See the phonetic transcription of every word and hear it spoken aloud with a single tap.', feat4Title:'Etymology', feat4Desc:"Understand where words come from. Knowing a word's roots makes it stick — and makes the next related word easier.", feat5Title:'Word bank', feat5Desc:'Save words you want to remember. Your personal vocabulary list, always one click away.', feat6Title:'Mac app', feat6Desc:'Use Lexio from any app on your Mac — a full-featured desktop app or a floating menu bar overlay.', extEyebrow:'Chrome Extension', extH2:'Look up words without leaving the page.', extP:'Select any word or sentence on any website. Lexio appears instantly with the meaning in context — no copy-paste, no tab switching.', extBtn:'Add to Chrome', extNote:'Free · Works on any page · No account required', deskH2:'Always at hand, wherever you read.', deskP:'The Lexio Mac app lives in your menu bar or dock, so you can look up words without switching to your browser.', downloadMac:'Download for Mac', openBrowser:'Open in browser', footerTagline:'Built for curious readers.', privacyPolicy:'Privacy Policy' },
   es: { tagline:'Soluciones de definición contextual con IA', saved:'Coleccionado',panelLabel:'Texto', trySample:'Probar ejemplo', analyzeText:'Analizar texto', edit:'← Editar', fetchArticle:'Obtener artículo', tweaks:'Ajustes', colorTheme:'Color del tema', textSize:'Tamaño del texto', lineHeight:'Interlineado', theme:'Tema', macApp:'Obtener la app para Mac', shortcuts:'Atajos de teclado', clickWord:'Haz clic en cualquier palabra', placeholderSub:'Tras analizar el texto, toca cualquier palabra para ver su significado preciso en contexto.', meaning:'Significado', inContext:'En este contexto', moreDetail:'Más detalle', origin:'Origen', whyWord:'¿Por qué esta palabra?', respondIn:'Responder en', simpler:'más simple:', copy:'Copiar', save:'Coleccionar', link:'Enlace', share:'Compartir', say:'Decir', uiLang:'Idioma de interfaz', heroEyebrow:'Comprensión contextual', heroH1:'Lee más profundo.<br>Entiende <em>todo.</em>', heroSub:'Lexio te da el significado preciso de cualquier palabra en contexto — no una definición de diccionario, sino lo que realmente significa en la oración que estás leyendo.', tryItNow:'Pruébalo ahora', seeHow:'Ver cómo funciona', howLabel:'Cómo funciona', step1Title:'Pega cualquier texto', step1Desc:'Introduce un párrafo de un artículo, libro, correo o cualquier cosa — funciona en cualquier idioma.', step2Title:'Analízalo', step2Desc:'Lexio lee el contexto completo y prepara cada palabra para una búsqueda instantánea. Tarda un segundo.', step3Title:'Haz clic en cualquier palabra', step3Desc:'Toca una palabra para ver su significado exacto en esa oración, de dónde viene y cómo pronunciarla.', trendingTitle:'Lo que la gente está <em>buscando</em>', trendingEmpty:'No hay búsquedas este mes todavía — ¡sé el primero!', featuresTitle:'Todo lo que necesitas para <em>entender</em>', feat1Title:'Definiciones contextuales', feat1Desc:'No lo que significa la palabra en general — lo que significa aquí, en esta oración, como lo usó este autor.', feat2Title:'11 idiomas', feat2Desc:'Pega texto en español, francés, alemán, ruso, japonés y más. Obtén definiciones en el idioma que prefieras.', feat3Title:'Pronunciación IPA', feat3Desc:'Ve la transcripción fonética de cada palabra y escúchala en voz alta con un solo toque.', feat4Title:'Etimología', feat4Desc:'Entiende de dónde vienen las palabras. Conocer las raíces hace que las recuerdes — y la próxima palabra relacionada será más fácil.', feat5Title:'Banco de palabras', feat5Desc:'Guarda las palabras que quieres recordar. Tu lista de vocabulario personal, siempre a un clic.', feat6Title:'App para Mac', feat6Desc:'Usa Lexio desde cualquier app en tu Mac — una app de escritorio completa o un panel flotante en la barra de menú.', extEyebrow:'Extensión de Chrome', extH2:'Busca palabras <em>sin</em><br>salir de la página.', extP:'Selecciona cualquier palabra o frase en cualquier sitio web. Lexio aparece al instante con el significado en contexto — sin copiar y pegar, sin cambiar de pestaña.', extBtn:'Añadir a Chrome', extNote:'Gratis · Funciona en cualquier página · Sin cuenta requerida', deskH2:'Siempre <em>a mano</em>,<br>donde quieras que leas.', deskP:'La app de Lexio para Mac vive en tu barra de menú o dock, para que puedas buscar palabras sin cambiar de navegador.', downloadMac:'Descargar para Mac', openBrowser:'Abrir en el navegador', footerTagline:'Hecho para lectores curiosos.', privacyPolicy:'Política de privacidad' },
   fr: { tagline:'Solutions de définition contextuelle par IA', saved:'Collecté',panelLabel:'Texte', trySample:'Essayer un exemple', analyzeText:'Analyser le texte', edit:'← Modifier', fetchArticle:"Récupérer l'article", tweaks:'Réglages', colorTheme:'Thème de couleur', textSize:'Taille du texte', lineHeight:'Interligne', theme:'Thème', macApp:"Obtenir l'app Mac", shortcuts:'Raccourcis clavier', clickWord:"Cliquez sur n'importe quel mot", placeholderSub:"Après analyse, appuyez sur n'importe quel mot pour voir sa signification précise dans le contexte.", meaning:'Signification', inContext:'Dans ce contexte', moreDetail:'Plus de détails', origin:'Origine', whyWord:'Pourquoi ce mot ?', respondIn:'Répondre en', simpler:'plus simple :', copy:'Copier', save:'Collecter', link:'Lien', share:'Partager', say:'Lire', uiLang:"Langue de l'interface", heroEyebrow:'Compréhension contextuelle', heroH1:'Lisez plus profond.<br>Comprenez <em>tout.</em>', heroSub:"Lexio vous donne la signification précise de n'importe quel mot en contexte — pas une définition de dictionnaire, mais ce qu'il signifie vraiment dans la phrase que vous lisez.", tryItNow:'Essayer maintenant', seeHow:'Voir comment ça marche', howLabel:'Comment ça marche', step1Title:"Collez n'importe quel texte", step1Desc:"Entrez un paragraphe d'un article, d'un livre, d'un e-mail ou autre — n'importe quelle langue fonctionne.", step2Title:'Analysez-le', step2Desc:'Lexio lit le contexte complet et prépare chaque mot pour une recherche instantanée. Prend environ une seconde.', step3Title:"Cliquez sur n'importe quel mot", step3Desc:"Touchez un mot pour voir sa signification exacte dans cette phrase, d'où il vient et comment le prononcer.", trendingTitle:'Ce que les gens <em>recherchent</em>', trendingEmpty:'Aucune recherche ce mois-ci encore — soyez le premier !', featuresTitle:'Tout ce dont vous avez besoin pour <em>comprendre</em>', feat1Title:'Définitions contextuelles', feat1Desc:"Pas ce que le mot signifie en général — ce qu'il signifie ici, dans cette phrase, tel que cet auteur l'a utilisé.", feat2Title:'11 langues', feat2Desc:'Collez du texte en espagnol, français, allemand, russe, japonais et plus. Obtenez des définitions dans la langue de votre choix.', feat3Title:'Prononciation IPA', feat3Desc:"Voyez la transcription phonétique de chaque mot et écoutez-le à voix haute d'une simple touche.", feat4Title:'Étymologie', feat4Desc:"Comprenez d'où viennent les mots. Connaître les racines d'un mot le rend mémorable — et le prochain mot associé plus facile.", feat5Title:'Banque de mots', feat5Desc:'Sauvegardez les mots que vous voulez retenir. Votre liste de vocabulaire personnelle, toujours à portée de clic.', feat6Title:'App Mac', feat6Desc:"Utilisez Lexio depuis n'importe quelle app sur votre Mac — une app de bureau complète ou un panneau flottant dans la barre de menu.", extEyebrow:'Extension Chrome — Bêta', extH2:'Cherchez des mots <em>sans</em><br>quitter la page.', extP:"Sélectionnez n'importe quel mot ou phrase sur n'importe quel site web. Lexio apparaît instantanément avec le sens en contexte — sans copier-coller, sans changer d'onglet.", extBtn:'Ajouter à Chrome', extNote:'Gratuit · Fonctionne sur toutes les pages · Sans compte requis', deskH2:'Toujours <em>à portée de main</em>,<br>où que vous lisiez.', deskP:"L'app Lexio pour Mac vit dans votre barre de menu ou dock, pour chercher des mots sans passer à votre navigateur.", downloadMac:'Télécharger pour Mac', openBrowser:'Ouvrir dans le navigateur', footerTagline:'Conçu pour les lecteurs curieux.', privacyPolicy:'Politique de confidentialité' },
   de: { tagline:'KI-gestützte kontextuelle Definitionslösungen', saved:'Gesammelt',panelLabel:'Text', trySample:'Beispiel versuchen', analyzeText:'Text analysieren', edit:'← Bearbeiten', fetchArticle:'Artikel abrufen', tweaks:'Einstellungen', colorTheme:'Farbthema', textSize:'Schriftgröße', lineHeight:'Zeilenhöhe', theme:'Thema', macApp:'Mac-App herunterladen', shortcuts:'Tastenkürzel', clickWord:'Klicke auf ein beliebiges Wort', placeholderSub:'Klicke nach der Analyse auf ein Wort, um seine genaue Bedeutung im Kontext zu sehen.', meaning:'Bedeutung', inContext:'In diesem Kontext', moreDetail:'Mehr Details', origin:'Herkunft', whyWord:'Warum dieses Wort?', respondIn:'Antworten auf', simpler:'einfacher:', copy:'Kopieren', save:'Sammeln', link:'Link', share:'Teilen', say:'Vorlesen', uiLang:'Oberflächensprache', heroEyebrow:'Kontextuelles Verstehen', heroH1:'Lesen Sie tiefer.<br>Verstehen Sie <em>alles.</em>', heroSub:'Lexio gibt Ihnen die genaue Bedeutung jedes Wortes im Kontext — keine Wörterbuchdefinition, sondern was es wirklich in dem Satz bedeutet, den Sie gerade lesen.', tryItNow:'Jetzt ausprobieren', seeHow:'Wie es funktioniert', howLabel:'So funktioniert es', step1Title:'Beliebigen Text einfügen', step1Desc:'Fügen Sie einen Absatz aus einem Artikel, Buch, einer E-Mail oder anderem ein — jede Sprache funktioniert.', step2Title:'Analysieren', step2Desc:'Lexio liest den gesamten Kontext und bereitet jedes Wort für die sofortige Suche vor. Dauert etwa eine Sekunde.', step3Title:'Auf ein Wort klicken', step3Desc:'Tippen Sie auf ein Wort, um seine genaue Bedeutung in diesem Satz zu sehen, woher es kommt und wie man es ausspricht.', trendingTitle:'Was die Leute gerade <em>nachschlagen</em>', trendingEmpty:'Noch keine Suchen diesen Monat — seien Sie der Erste!', featuresTitle:'Alles, was Sie zum <em>Verstehen</em> brauchen', feat1Title:'Kontextuelle Definitionen', feat1Desc:'Nicht was das Wort im Allgemeinen bedeutet — was es genau hier, in diesem Satz bedeutet, so wie es dieser Autor verwendete.', feat2Title:'11 Sprachen', feat2Desc:'Fügen Sie Text auf Spanisch, Französisch, Deutsch, Russisch, Japanisch und mehr ein. Erhalten Sie Definitionen in der Sprache Ihrer Wahl.', feat3Title:'IPA-Aussprache', feat3Desc:'Sehen Sie die phonetische Umschrift jedes Wortes und hören Sie es mit einem einzigen Tipp laut aussprechen.', feat4Title:'Etymologie', feat4Desc:'Verstehen Sie, wo Wörter herkommen. Die Wurzeln eines Wortes zu kennen, lässt es haften — und das nächste verwandte Wort wird leichter.', feat5Title:'Wortbank', feat5Desc:'Speichern Sie Wörter, die Sie sich merken möchten. Ihre persönliche Vokabelliste, immer einen Klick entfernt.', feat6Title:'Mac-App', feat6Desc:'Verwenden Sie Lexio von jeder App auf Ihrem Mac — eine voll ausgestattete Desktop-App oder ein schwebendes Menüleisten-Panel.', extEyebrow:'Chrome-Erweiterung', extH2:'Wörter nachschlagen <em>ohne</em><br>die Seite zu verlassen.', extP:'Wählen Sie ein beliebiges Wort oder einen Satz auf einer beliebigen Website aus. Lexio erscheint sofort mit der Bedeutung im Kontext — kein Kopieren und Einfügen, kein Tabwechsel.', extBtn:'Zu Chrome hinzufügen', extNote:'Kostenlos · Funktioniert auf jeder Seite · Kein Konto erforderlich', deskH2:'Immer <em>zur Hand</em>,<br>wo immer Sie lesen.', deskP:'Die Lexio Mac-App lebt in Ihrer Menüleiste oder im Dock, damit Sie Wörter nachschlagen können, ohne zu Ihrem Browser zu wechseln.', downloadMac:'Für Mac herunterladen', openBrowser:'Im Browser öffnen', footerTagline:'Gebaut für neugierige Leser.', privacyPolicy:'Datenschutzrichtlinie' },
@@ -5982,8 +6095,13 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
     .forEach(el => io.observe(el));
 })();
 
-// ── Hero word swap: cycle the italic accent in the headline ──────
+// ── Hero word swap: DISABLED ────────────────────────────────────
+// New headline is declarative ("A dictionary that reads the sentence.")
+// — the italic accent is stable for clarity. Keeping the logic in case
+// we want to re-enable rotation later, gated to never run.
 (function() {
+  const ENABLED = false;
+  if (!ENABLED) return;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;
   setTimeout(function() {
