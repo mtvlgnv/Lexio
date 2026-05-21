@@ -313,7 +313,14 @@
     [data-theme="dark"] .btn-apple:hover { background:var(--bg); }
 
     /* ── Main layout ────────────────────────────────────────── */
-    main { flex:0 0 auto; display:flex; padding:20px 24px; height:calc(100vh - var(--header-h)); gap:0; min-height:0; }
+    main {
+      flex:0 0 auto; display:flex; padding:20px 24px;
+      height:calc(100vh - var(--header-h)); gap:0; min-height:0;
+      transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Compact mode — empty state shrinks main so dashboard is visible below.
+       Does not apply in the Electron full-app mode (where there's no scroll page). */
+    body.app-compact:not(.in-app) main { height: 460px; }
 
     /* ── Panels ─────────────────────────────────────────────── */
     .panel {
@@ -1027,6 +1034,129 @@
       50%       { transform: translateX(-50%) translateY(5px); }
     }
     body.in-app #scroll-nudge { display: none; }
+    /* In compact mode, the user already sees the dashboard below — hide the bobbing arrow */
+    body.app-compact #scroll-nudge { opacity: 0; pointer-events: none; }
+
+    /* ── Scroll progress bar (top of page) ──────────────────── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      width: 0; height: 3px; z-index: 50;
+      background: linear-gradient(90deg, var(--accent), oklch(72% 0.16 75));
+      transition: width 0.05s linear;
+      pointer-events: none;
+    }
+    body.in-app #scroll-progress { display: none; }
+
+    /* ── Back-to-top button ─────────────────────────────────── */
+    #back-to-top {
+      position: fixed; bottom: 28px; right: 28px;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--accent); color: #fff; border: none;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+      cursor: pointer; z-index: 11;
+      opacity: 0; transform: translateY(10px); pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s, background 0.15s;
+    }
+    #back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    #back-to-top:hover { background: var(--accent-dk); }
+    body.in-app #back-to-top { display: none; }
+    @media (max-width: 760px) {
+      #back-to-top { width: 38px; height: 38px; bottom: 20px; right: 20px; }
+    }
+
+    /* ── User dashboard (between main and landing) ─────────── */
+    #user-dashboard {
+      padding: 28px 24px 40px;
+      background: var(--bg);
+      display: flex; flex-direction: column; align-items: center;
+      gap: 4px;
+    }
+    body.in-app #user-dashboard { display: none; }
+    .dashboard-title {
+      font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 600;
+      color: var(--text); text-align: center; margin: 0;
+    }
+    .dashboard-title em { font-style: italic; color: var(--accent); }
+    .dashboard-name { color: var(--accent); font-style: italic; }
+    .dashboard-sub {
+      font-size: 0.85rem; color: var(--text-mid); text-align: center;
+      margin: 0 0 18px; max-width: 560px;
+    }
+    .dashboard-grid {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: 100%; max-width: 1040px;
+    }
+    .dash-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px;
+      display: flex; flex-direction: column; gap: 8px;
+      min-height: 160px;
+    }
+    .dash-card h3 {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      margin: 0; display: flex; align-items: center; justify-content: space-between;
+    }
+    .dash-card h3 .dash-count {
+      font-size: 0.72rem; letter-spacing: 0; text-transform: none;
+      color: var(--accent); font-weight: 600;
+    }
+    .dash-recent-list {
+      display: flex; flex-direction: column; gap: 6px; flex: 1; min-height: 0;
+    }
+    .dash-recent-item {
+      display: flex; align-items: baseline; gap: 8px;
+      padding: 6px 0; border-bottom: 1px solid var(--border);
+      font-family: 'Lora', serif;
+    }
+    .dash-recent-item:last-child { border-bottom: none; }
+    .dash-recent-word { font-weight: 600; color: var(--text); font-size: 0.95rem; }
+    .dash-recent-meaning {
+      font-size: 0.8rem; color: var(--text-mid); font-family: 'DM Sans', sans-serif;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0;
+    }
+    .dash-recent-empty {
+      font-size: 0.85rem; color: var(--muted); font-style: italic;
+      padding: 8px 0;
+    }
+    .dash-wotd-term {
+      font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 600;
+      color: var(--text);
+    }
+    .dash-wotd-context {
+      font-size: 0.78rem; font-style: italic; color: var(--muted);
+    }
+    .dash-wotd-desc {
+      font-size: 0.85rem; color: var(--text-mid); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+      overflow: hidden; flex: 1;
+    }
+    .dash-link {
+      margin-top: auto; font-size: 0.82rem; color: var(--accent);
+      text-decoration: none; font-weight: 600; cursor: pointer;
+      align-self: flex-start;
+    }
+    .dash-link:hover { text-decoration: underline; }
+    .dash-sample-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 12px; text-align: left;
+      font-family: 'DM Sans', inherit; font-size: 0.85rem; color: var(--text);
+      cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .dash-sample-btn:hover {
+      border-color: var(--accent-mid); background: var(--accent-lt); color: var(--accent);
+    }
+    .dash-sample-btn-icon { color: var(--accent); flex-shrink: 0; }
+    .dash-card p {
+      font-size: 0.85rem; color: var(--text-mid); line-height: 1.55; margin: 0;
+      flex: 1;
+    }
+    @media (max-width: 880px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
 
     /* ── Landing page ───────────────────────────────────────── */
     #landing { display: flex; flex-direction: column; }
@@ -2085,7 +2215,7 @@
     plausible.init()
   </script>
 </head>
-<body data-theme="dark">
+<body data-theme="dark" class="app-compact">
 
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header>
@@ -2424,6 +2554,80 @@
 
   </div>
 </main>
+
+<!-- ── User dashboard (signed-in: recent words; signed-out: samples + glossary) ─ -->
+<section id="user-dashboard">
+
+  <!-- Signed-in variant -->
+  <div id="dashboard-signed-in" class="dashboard-variant" hidden>
+    <h2 class="dashboard-title">Welcome back<span class="dashboard-name" id="dashboard-name"></span></h2>
+    <p class="dashboard-sub">Pick up where you left off — or read deeper.</p>
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <h3>Recent saves <span class="dash-count" id="dash-recent-count"></span></h3>
+        <div class="dash-recent-list" id="dash-recent-list">
+          <div class="dash-recent-empty">No saved words yet — click any word after analyzing to save it.</div>
+        </div>
+        <a class="dash-link" href="#" onclick="openWordBank(); return false;">View word bank →</a>
+      </div>
+      <div class="dash-card" id="dash-wotd-card">
+        <h3>Word of the day</h3>
+        <div class="dash-wotd-term" id="dash-wotd-term">—</div>
+        <div class="dash-wotd-context" id="dash-wotd-context"></div>
+        <div class="dash-wotd-desc" id="dash-wotd-desc"></div>
+        <a class="dash-link" id="dash-wotd-link" href="/glossary">Read essay →</a>
+      </div>
+      <div class="dash-card">
+        <h3>From the glossary</h3>
+        <p>78 in-depth essays on terms that don't survive a dictionary lookup — <em>hamartia</em>, <em>spleen</em>, <em>negative capability</em>, and more.</p>
+        <a class="dash-link" href="/glossary">Browse all entries →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Signed-out variant -->
+  <div id="dashboard-signed-out" class="dashboard-variant">
+    <h2 class="dashboard-title">Read deeper, understand <em>everything</em>.</h2>
+    <p class="dashboard-sub">Try Lexio with a sample passage, or explore the free glossary of literary terms.</p>
+    <div class="dashboard-grid">
+      <div class="dash-card">
+        <h3>Try a sample passage</h3>
+        <button class="dash-sample-btn" onclick="loadDashSample(3)" type="button">
+          <svg class="dash-sample-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Literary prose
+        </button>
+        <button class="dash-sample-btn" onclick="loadDashSample(0)" type="button">
+          <svg class="dash-sample-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Philosophy
+        </button>
+        <button class="dash-sample-btn" onclick="loadDashSample(2)" type="button">
+          <svg class="dash-sample-btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c1.74 0 3.37.5 4.74 1.36"/></svg>
+          Neuroscience
+        </button>
+      </div>
+      <div class="dash-card" id="dash-wotd-card-out">
+        <h3>Word of the day</h3>
+        <div class="dash-wotd-term" id="dash-wotd-term-out">—</div>
+        <div class="dash-wotd-context" id="dash-wotd-context-out"></div>
+        <div class="dash-wotd-desc" id="dash-wotd-desc-out"></div>
+        <a class="dash-link" id="dash-wotd-link-out" href="/glossary">Read essay →</a>
+      </div>
+      <div class="dash-card">
+        <h3>From the glossary</h3>
+        <p>78 in-depth essays on terms that don't survive a dictionary lookup — <em>hamartia</em>, <em>spleen</em>, <em>negative capability</em>, and more.</p>
+        <a class="dash-link" href="/glossary">Browse all entries →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Scroll progress bar (thin, top of viewport) ───────────── -->
+<div id="scroll-progress" aria-hidden="true"></div>
+
+<!-- ── Back-to-top button ───────────────────────────────────── -->
+<button id="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <!-- ── Scroll nudge ──────────────────────────────────────────── -->
 <div id="scroll-nudge" onclick="document.getElementById('landing').scrollIntoView({behavior:'smooth'})">
@@ -3446,6 +3650,7 @@ function loadWordBank() {
 function saveWordBank() {
   try { localStorage.setItem(WB_KEY, JSON.stringify(wordBank)); } catch {}
   updateWBBadge();
+  if (typeof renderDashboardRecents === 'function') renderDashboardRecents();
 }
 function updateWBBadge() {
   const badge = document.getElementById('wb-badge');
@@ -3980,6 +4185,7 @@ function analyze() {
   statsEl.textContent = stats; statsEl.classList.remove('hidden');
   showSmartPlaceholder(raw);
   advanceTooltip(1);
+  if (typeof updateAppCompact === 'function') updateAppCompact();
 }
 
 function computeReadingStats(text) {
@@ -4000,6 +4206,7 @@ function resetToEdit() {
   activeToken = null; currentResult = null;
   clearModelResults(); cancelModelSwitch();
   showPlaceholder(); hideError(); updateCharCount(); startPlaceholderRotation();
+  if (typeof updateAppCompact === 'function') updateAppCompact();
 }
 
 /* ── Sentence boundary detection ────────────────────────────── */
@@ -4830,6 +5037,7 @@ function updateAcctBtn() {
     btn.classList.remove('signed-in');
     btn.title = 'Sign in';
   }
+  if (typeof refreshDashboard === 'function') refreshDashboard();
 }
 
 function openAuthModal(fromAnalyze) {
@@ -5282,6 +5490,143 @@ if (new URLSearchParams(window.location.search).get('compact') === '1') {
 if (new URLSearchParams(window.location.search).get('app') === '1') {
   document.body.classList.add('in-app');
 }
+
+// ── App compact / dashboard / scroll progress / back-to-top ──────────────────
+
+/* Compact-mode: shrink <main> when empty so the dashboard is visible below.
+   Grow back to full viewport height when user has input, results, or focus. */
+function updateAppCompact() {
+  const ta = document.getElementById('input-text');
+  const tv = document.getElementById('token-view');
+  const hasInput  = ta && ta.value && ta.value.trim().length > 0;
+  const hasResult = tv && !tv.classList.contains('hidden');
+  const focused   = document.activeElement === ta;
+  const compact = !(hasInput || hasResult || focused);
+  document.body.classList.toggle('app-compact', compact);
+}
+
+// Sample loader for the dashboard cards — uses the existing SAMPLES array.
+function loadDashSample(idx) {
+  const ta = document.getElementById('input-text');
+  if (!ta || !SAMPLES[idx]) return;
+  ta.value = SAMPLES[idx].text;
+  ta.focus();
+  // scroll to the input
+  ta.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  updateAppCompact();
+  // trigger any character-counter listeners
+  ta.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+/* Deterministic Word of the Day — uses today's date as the seed so all
+   visitors see the same entry within a 24h window. */
+const WOTD_ENTRIES = [
+  { slug:'hamartia',                term:'hamartia',                context:'Greek tragedy',                  desc:"The tragic flaw — Aristotle's term for the error of judgment that brings a hero down." },
+  { slug:'spleen-baudelaire',       term:'spleen',                  context:'Baudelaire',                     desc:'Not anger — a heavier, more clinical despair, the modern condition of urban exhaustion.' },
+  { slug:'negative-capability',     term:'negative capability',     context:"Keats's letters",                desc:'The capacity to remain in uncertainty without "irritable reaching after fact and reason."' },
+  { slug:'sublime-in-romanticism',  term:'the sublime',             context:'Romanticism',                    desc:'Beauty that frightens — the aesthetic category that defines Wordsworth, Shelley, and Burke.' },
+  { slug:'catharsis-greek-tragedy', term:'catharsis',               context:'Greek tragedy',                  desc:"Aristotle's claim about what tragedy actually does — purgation, clarification, or both." },
+  { slug:'stream-of-consciousness', term:'stream of consciousness', context:'modernist technique',            desc:'The mind on the page — how Woolf, Joyce, and Faulkner rendered thought before it became language.' },
+  { slug:'madeleine-proust',        term:'the madeleine',           context:'Proust',                          desc:'Involuntary memory — a bite of cake that unlocks an entire childhood, and why it works.' },
+  { slug:'kafkaesque',              term:'kafkaesque',              context:'beyond "bureaucratic"',          desc:"Not just bureaucratic — the experience of authority operating by rules you can't read or appeal." },
+  { slug:'flaneur',                 term:'flâneur',                 context:'Baudelaire & Benjamin',           desc:'The leisurely urban observer — a figure of nineteenth-century Paris and of modernity itself.' },
+  { slug:'palimpsest',              term:'palimpsest',              context:'literary metaphor',               desc:'A manuscript with older writing visible beneath the new — and a powerful metaphor for any layered text.' },
+  { slug:'liminality-literature',   term:'liminality',              context:'literary theory',                 desc:'The in-between state — neither here nor there — where literature characteristically does its most serious work.' },
+  { slug:'death-of-the-author',     term:'death of the author',     context:'Barthes (1967)',                  desc:"Barthes's claim that the author's intentions don't determine meaning — the reader produces the text." },
+];
+function pickWordOfTheDay() {
+  const d = new Date();
+  const dayKey = d.getFullYear() * 1000 + d.getMonth() * 50 + d.getDate();
+  return WOTD_ENTRIES[dayKey % WOTD_ENTRIES.length];
+}
+
+function renderWotd() {
+  const w = pickWordOfTheDay();
+  ['', '-out'].forEach(suffix => {
+    const t  = document.getElementById('dash-wotd-term'    + suffix);
+    const c  = document.getElementById('dash-wotd-context' + suffix);
+    const dd = document.getElementById('dash-wotd-desc'    + suffix);
+    const ln = document.getElementById('dash-wotd-link'    + suffix);
+    if (!t) return;
+    t.textContent = w.term;
+    c.textContent = 'in ' + w.context;
+    dd.textContent = w.desc;
+    ln.href = '/glossary/' + w.slug;
+  });
+}
+
+function renderDashboardRecents() {
+  const list = document.getElementById('dash-recent-list');
+  const cnt  = document.getElementById('dash-recent-count');
+  if (!list) return;
+  if (!wordBank || wordBank.length === 0) {
+    list.innerHTML = '<div class="dash-recent-empty">No saved words yet — click any word after analyzing to save it.</div>';
+    cnt.textContent = '';
+    return;
+  }
+  cnt.textContent = wordBank.length + ' total';
+  const recent = wordBank.slice(0, 5);
+  list.innerHTML = recent.map(w =>
+    `<div class="dash-recent-item">
+       <span class="dash-recent-word">${escapeHtml(w.word)}</span>
+       <span class="dash-recent-meaning">${escapeHtml(w.contextual || w.simpler || '')}</span>
+     </div>`
+  ).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
+  );
+}
+
+function refreshDashboard() {
+  const si = document.getElementById('dashboard-signed-in');
+  const so = document.getElementById('dashboard-signed-out');
+  if (authUser) {
+    si.hidden = false;
+    so.hidden = true;
+    const nameEl = document.getElementById('dashboard-name');
+    if (nameEl) {
+      const display = authUser.name || (authUser.email ? authUser.email.split('@')[0] : '');
+      nameEl.textContent = display ? (', ' + display) : '';
+    }
+    renderDashboardRecents();
+  } else {
+    si.hidden = true;
+    so.hidden = false;
+  }
+  renderWotd();
+}
+
+// Scroll progress bar + back-to-top
+function updateScrollUI() {
+  const sp = document.getElementById('scroll-progress');
+  const bt = document.getElementById('back-to-top');
+  const doc = document.documentElement;
+  const scrolled = doc.scrollTop || document.body.scrollTop;
+  const max = Math.max(1, (doc.scrollHeight - doc.clientHeight));
+  const pct = Math.min(100, (scrolled / max) * 100);
+  if (sp) sp.style.width = pct + '%';
+  if (bt) bt.classList.toggle('visible', scrolled > 600);
+}
+
+// Hooks
+window.addEventListener('scroll', updateScrollUI, { passive: true });
+window.addEventListener('resize', updateScrollUI);
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize compact + dashboard once DOM is ready
+  updateAppCompact();
+  refreshDashboard();
+  updateScrollUI();
+
+  const ta = document.getElementById('input-text');
+  if (ta) {
+    ta.addEventListener('input', updateAppCompact);
+    ta.addEventListener('focus', updateAppCompact);
+    ta.addEventListener('blur',  updateAppCompact);
+  }
+});
 
 // Restore language preference
 try {
