@@ -1086,15 +1086,8 @@
     /* ── Sample-passage carousel (compact-mode only) ─────────── */
     #try-passage {
       padding: 24px 24px 36px;
-      /* Bridges into the hero gradient below — starts as page bg
-         at the top and warms into peach/orange by the bottom, so
-         the carousel feels like part of the same surface. */
-      background: linear-gradient(
-        to bottom,
-        var(--bg) 0%,
-        color-mix(in oklch, var(--bg) 85%, oklch(85% 0.08 55)) 55%,
-        color-mix(in oklch, var(--bg) 55%, oklch(82% 0.12 50)) 100%
-      );
+      background: var(--bg);
+      position: relative;
       display: flex; flex-direction: column; align-items: center;
       gap: 14px;
       max-height: 0; opacity: 0; overflow: hidden;
@@ -1159,19 +1152,9 @@
       min-height: 540px;
     }
     .lp-hero::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 140px; z-index: 1; pointer-events: none;
-      /* Smooth ease-out fade — starts dissolving right away so the
-         hero gradient becomes visible quickly, just without a hard
-         seam at the top edge. */
-      background: linear-gradient(
-        to bottom,
-        color-mix(in oklch, var(--bg) 85%, transparent) 0%,
-        color-mix(in oklch, var(--bg) 45%, transparent) 45%,
-        color-mix(in oklch, var(--bg) 15%, transparent) 80%,
-        transparent 100%
-      );
+      /* No top fade needed — the #try-passage gradient already bridges
+         the in-app cream into the hero's warm gradient seamlessly. */
+      content: none;
     }
     /* Horizontal dark veil — keeps the headline readable over the warm
        gradient (dark on the left, fades to transparent past the headline). */
@@ -2341,7 +2324,7 @@
        the hero, and reduce sample-passages to a single card. */
     @media (max-width: 760px) {
       /* Kill expensive backgrounds */
-      #hero-webgl, #twin-webgl { display: none !important; }
+      #hero-webgl, #twin-webgl, #try-webgl { display: none !important; }
       .lp-hero-veil { display: none !important; }
       .lp-hero::before { display: none; }
       .lp-twin { background: var(--bg); }
@@ -2776,8 +2759,18 @@
 
 <!-- ── Sample-passage carousel (visible when app is in compact/empty state) ── -->
 <section id="try-passage">
-  <p class="try-eyebrow">Or try a passage</p>
-  <div class="try-grid" id="try-grid"></div>
+  <canvas id="try-webgl" style="
+    position:absolute;left:0;top:0;width:100%;height:100%;
+    pointer-events:none;z-index:0;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 70%);
+    mask-image:linear-gradient(to bottom, transparent 0%, black 70%);
+    --gradient-color-1:#ef7040;
+    --gradient-color-2:#c2541e;
+    --gradient-color-3:#7a3b9e;
+    --gradient-color-4:#f0b060;
+  "></canvas>
+  <p class="try-eyebrow" style="position:relative;z-index:1;">Or try a passage</p>
+  <div class="try-grid" id="try-grid" style="position:relative;z-index:1;"></div>
 </section>
 
 <!-- ── Scroll progress bar (thin, top of viewport) ───────────── -->
@@ -6465,6 +6458,7 @@ if (!_gradMobile && !_gradReduced) {
   const { Gradient } = await import('https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js');
   new Gradient().initGradient('#hero-webgl');
   new Gradient().initGradient('#twin-webgl');
+  new Gradient().initGradient('#try-webgl');
 }
 </script>
 
