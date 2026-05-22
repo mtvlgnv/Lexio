@@ -1005,10 +1005,17 @@
       .tagline, .shortcut-hint { display:none; }
       .lang-btn { display:flex; }
       main { flex-direction:column; height:auto; padding:12px; }
-      .panel-left  { margin-right:0; margin-bottom:10px; min-height:420px; }
+      .panel-left  { margin-right:0; margin-bottom:10px; min-height:260px; }
       .panel-right { width:100%; min-height:300px; }
-      #input-text  { min-height:220px; }
+      #input-text  { min-height:160px; }
       #token-view  { min-height:220px; }
+      /* Compact (empty) state on mobile: hide the empty right panel so the
+         giant "w" placeholder doesn't sit between the textarea and the
+         sample-passage carousel, and shrink the textarea so the user
+         can see the carousel without scrolling much. */
+      body.app-compact:not(.in-app) .panel-right { display: none; }
+      body.app-compact:not(.in-app) .panel-left { min-height: 0; margin-bottom: 0; }
+      body.app-compact:not(.in-app) #input-text { min-height: 140px; }
     }
 
     /* ── Scroll nudge ───────────────────────────────────────── */
