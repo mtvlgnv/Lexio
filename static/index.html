@@ -1116,13 +1116,24 @@
     .try-marquee-track {
       display: flex; gap: 14px;
       width: max-content;
-      /* Slow enough to read — full cycle ~70s. */
-      animation: try-scroll 70s linear infinite;
+      /* Stepped marquee — holds for ~1.8s, then slides one card-width
+         (~0.7s ease) to the next position. 10 steps per cycle, so
+         every passage gets a "stay still and read me" beat. */
+      animation: try-step 25s cubic-bezier(0.65, 0, 0.35, 1) infinite;
     }
     .try-marquee:hover .try-marquee-track { animation-play-state: paused; }
-    @keyframes try-scroll {
-      from { transform: translate3d(0, 0, 0); }
-      to   { transform: translate3d(-50%, 0, 0); }
+    @keyframes try-step {
+      0%,   7%  { transform: translate3d(0,    0, 0); }
+      10%,  17% { transform: translate3d(-5%,  0, 0); }
+      20%,  27% { transform: translate3d(-10%, 0, 0); }
+      30%,  37% { transform: translate3d(-15%, 0, 0); }
+      40%,  47% { transform: translate3d(-20%, 0, 0); }
+      50%,  57% { transform: translate3d(-25%, 0, 0); }
+      60%,  67% { transform: translate3d(-30%, 0, 0); }
+      70%,  77% { transform: translate3d(-35%, 0, 0); }
+      80%,  87% { transform: translate3d(-40%, 0, 0); }
+      90%,  97% { transform: translate3d(-45%, 0, 0); }
+      100%      { transform: translate3d(-50%, 0, 0); }
     }
     .try-card {
       flex-shrink: 0; width: 280px;
@@ -1153,7 +1164,8 @@
     }
     @media (max-width: 720px) {
       .try-card { width: 240px; }
-      .try-marquee-track { animation-duration: 80s; }
+      /* Slower on mobile — give readers more time per card. */
+      .try-marquee-track { animation-duration: 32s; }
     }
     /* Respect reduced motion — stop the scroll. */
     @media (prefers-reduced-motion: reduce) {
