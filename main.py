@@ -748,8 +748,15 @@ def _device_label_from_ua(ua: Optional[str]) -> str:
 
 
 def _register_session(db: DBSession, user: "User", ua: Optional[str]) -> str:
-    """Generate a new jti, append to the user's active session list, prune
-    to MAX_SESSIONS_PER_USER (oldest dropped first). Returns the jti."""
+    """Generate a new jti, register it as the user's session for this device,
+    prune to MAX_SESSIONS_PER_USER (oldest dropped first). Returns the jti.
+
+    Re-logging in on the same device REPLACES that device's prior session
+    (matched by device label) instead of appending a new one. Without this,
+    a user re-running the OAuth flow on one Mac would quietly burn through
+    the session cap and evict their phone — which is what happened to the
+    founder account before this fix.
+    """
     jti = secrets.token_urlsafe(12)
     try:
         sessions = json.loads(user.active_jtis or "[]")
@@ -757,17 +764,23 @@ def _register_session(db: DBSession, user: "User", ua: Optional[str]) -> str:
             sessions = []
     except (json.JSONDecodeError, TypeError):
         sessions = []
+    ua_label = _device_label_from_ua(ua)
     entry = {
         "jti": jti,
         "iat": datetime.datetime.utcnow().isoformat(timespec="seconds"),
-        "ua":  _device_label_from_ua(ua),
+        "ua":  ua_label,
     }
-    # Newest first, oldest dropped
-    sessions = [entry] + [s for s in sessions if isinstance(s, dict) and s.get("jti")]
+    # Drop any prior session from the same device label (one slot per device
+    # class), then newest first, oldest dropped if still over cap.
+    sessions = [
+        s for s in sessions
+        if isinstance(s, dict) and s.get("jti") and s.get("ua") != ua_label
+    ]
+    sessions = [entry] + sessions
     sessions = sessions[:MAX_SESSIONS_PER_USER]
     user.active_jtis = json.dumps(sessions)
     user.last_login_at = datetime.datetime.utcnow()
-    user.last_login_ua = entry["ua"]
+    user.last_login_ua = ua_label
     db.commit()
     return jti
 
