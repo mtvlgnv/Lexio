@@ -1086,7 +1086,15 @@
     /* ── Sample-passage carousel (compact-mode only) ─────────── */
     #try-passage {
       padding: 24px 24px 36px;
-      background: var(--bg);
+      /* Bridges into the hero gradient below — starts as page bg
+         at the top and warms into peach/orange by the bottom, so
+         the carousel feels like part of the same surface. */
+      background: linear-gradient(
+        to bottom,
+        var(--bg) 0%,
+        color-mix(in oklch, var(--bg) 85%, oklch(85% 0.08 55)) 55%,
+        color-mix(in oklch, var(--bg) 55%, oklch(82% 0.12 50)) 100%
+      );
       display: flex; flex-direction: column; align-items: center;
       gap: 14px;
       max-height: 0; opacity: 0; overflow: hidden;
