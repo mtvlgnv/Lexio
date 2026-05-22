@@ -2305,7 +2305,7 @@
     plausible.init()
   </script>
 </head>
-<body data-theme="dark" class="app-compact">
+<body data-theme="warm" class="app-compact">
 
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header>
@@ -2371,8 +2371,8 @@
       <div class="menu-section">
         <span class="menu-label" data-i18n="theme">Theme</span>
         <div class="menu-theme-row">
-          <button class="menu-theme-btn" data-theme="warm" onclick="setTheme('warm');updateMenuTheme()">Warm</button>
-          <button class="menu-theme-btn active" data-theme="dark" onclick="setTheme('dark');updateMenuTheme()">Dark</button>
+          <button class="menu-theme-btn active" data-theme="warm" onclick="setTheme('warm');updateMenuTheme()">Warm</button>
+          <button class="menu-theme-btn" data-theme="dark" onclick="setTheme('dark');updateMenuTheme()">Dark</button>
           <button class="menu-theme-btn" data-theme="auto" onclick="setTheme('auto');updateMenuTheme()">Auto</button>
         </div>
       </div>
@@ -3685,7 +3685,7 @@ let isAutoTheme      = false;
 
 /* ── Tweaks ─────────────────────────────────────────────────── */
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "theme": "dark", "fontSize": 18, "lineHeight": 2.1
+  "theme": "warm", "fontSize": 18, "lineHeight": 2.1
 }/*EDITMODE-END*/;
 let currentTweaks = { ...TWEAK_DEFAULTS };
 
