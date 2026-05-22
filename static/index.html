@@ -1099,16 +1099,33 @@
       max-height: 420px; opacity: 1;
     }
     .try-eyebrow {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--muted);
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--text-mid);
       margin: 0;
     }
-    .try-grid {
-      display: grid; gap: 12px;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      width: 100%; max-width: 880px;
+    /* Marquee: a continuously-scrolling horizontal track of passage
+       cards. Edges fade so cards appear/disappear softly; hover
+       pauses the animation so users can read & click. */
+    .try-marquee {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+              mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    }
+    .try-marquee-track {
+      display: flex; gap: 14px;
+      width: max-content;
+      /* Slow enough to read — full cycle ~70s. */
+      animation: try-scroll 70s linear infinite;
+    }
+    .try-marquee:hover .try-marquee-track { animation-play-state: paused; }
+    @keyframes try-scroll {
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-50%, 0, 0); }
     }
     .try-card {
+      flex-shrink: 0; width: 280px;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 12px; padding: 16px 18px;
       display: flex; flex-direction: column; gap: 6px;
@@ -1135,7 +1152,12 @@
       margin-top: 2px;
     }
     @media (max-width: 720px) {
-      .try-grid { grid-template-columns: 1fr; }
+      .try-card { width: 240px; }
+      .try-marquee-track { animation-duration: 80s; }
+    }
+    /* Respect reduced motion — stop the scroll. */
+    @media (prefers-reduced-motion: reduce) {
+      .try-marquee-track { animation: none; }
     }
 
     /* ── Landing page ───────────────────────────────────────── */
@@ -1168,32 +1190,21 @@
     .lp-warm-area > #warm-webgl { z-index: 0; }
     .lp-warm-area > .lp-hero-veil { z-index: 1; }
 
-    /* Decorative divider between the carousel and the hero — a hairline
-       horizontal gradient line with a centered ornament dot, both fading
-       softly at the ends so it reads as a flourish, not a hard border. */
+    /* Single hairline divider between carousel and hero — soft fade-in
+       at the edges so it reads as a flourish, not a hard border. */
     .lp-warm-divider {
       position: relative; z-index: 2;
-      height: 28px;
-      display: flex; align-items: center; justify-content: center;
-      pointer-events: none;
-    }
-    .lp-warm-divider::before, .lp-warm-divider::after {
-      content: '';
-      flex: 1; max-width: 200px;
       height: 1px;
+      width: min(560px, 70%);
+      margin: 14px auto;
+      pointer-events: none;
       background: linear-gradient(
         to right,
         transparent,
-        color-mix(in oklch, var(--text) 35%, transparent),
+        color-mix(in oklch, var(--text) 30%, transparent) 30%,
+        color-mix(in oklch, var(--text) 30%, transparent) 70%,
         transparent
       );
-    }
-    .lp-warm-divider span {
-      display: block;
-      width: 5px; height: 5px; border-radius: 50%;
-      margin: 0 12px;
-      background: color-mix(in oklch, var(--accent) 80%, var(--text));
-      box-shadow: 0 0 0 3px color-mix(in oklch, var(--surface) 70%, transparent);
     }
 
     /* Hero + How it works combined row */
@@ -2444,10 +2455,8 @@
       .lp-steps { display: none !important; }        /* duplicated by demo footer */
       #lp-glossary { display: none !important; }     /* too heavy for mobile */
 
-      /* Sample passages — only the first card on phones */
-      #try-passage { padding: 18px 20px 28px; }
-      .try-grid { grid-template-columns: 1fr; max-width: 480px; }
-      .try-grid > .try-card:nth-child(n+2) { display: none; }
+      /* Sample passages — marquee still scrolls on mobile, just tighter */
+      #try-passage { padding: 18px 0 28px; }
 
       /* Trending — smaller, tighter, less visual weight */
       .lp-trending-compact { margin-top: 26px; padding-top: 20px; }
@@ -2857,11 +2866,13 @@
 
     <section id="try-passage">
       <p class="try-eyebrow">Or try a passage</p>
-      <div class="try-grid" id="try-grid"></div>
+      <div class="try-marquee">
+        <div class="try-marquee-track" id="try-grid"></div>
+      </div>
     </section>
 
-    <!-- Decorative divider — soft hairline + center dot -->
-    <div class="lp-warm-divider" aria-hidden="true"><span></span></div>
+    <!-- Decorative hairline divider -->
+    <div class="lp-warm-divider" aria-hidden="true"></div>
 
   <!-- Hero + How it works -->
   <div class="lp-hero">
@@ -5794,18 +5805,64 @@ const TRY_PASSAGES = [
     excerpt: 'Mrs. Dalloway said she would buy the flowers herself. For Lucy had her work cut out for her.',
     text: 'Mrs. Dalloway said she would buy the flowers herself. For Lucy had her work cut out for her. The doors would be taken off their hinges; Rumpelmayer\'s men were coming. And then, thought Clarissa Dalloway, what a morning—fresh as if issued to children on a beach. What a lark! What a plunge! For so it had always seemed to her when, with a little squeak of the hinges, which she could hear now, she had burst open the French windows and plunged at Bourton into the open air.'
   },
+  {
+    author: 'Jane Austen',
+    title:  'Pride and Prejudice',
+    excerpt: 'It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.',
+    text: 'It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife. However little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered the rightful property of some one or other of their daughters.'
+  },
+  {
+    author: 'George Orwell',
+    title:  '1984',
+    excerpt: 'It was a bright cold day in April, and the clocks were striking thirteen.',
+    text: 'It was a bright cold day in April, and the clocks were striking thirteen. Winston Smith, his chin nuzzled into his breast in an effort to escape the vile wind, slipped quickly through the glass doors of Victory Mansions, though not quickly enough to prevent a swirl of gritty dust from entering along with him.'
+  },
+  {
+    author: 'Leo Tolstoy',
+    title:  'Anna Karenina',
+    excerpt: 'Happy families are all alike; every unhappy family is unhappy in its own way.',
+    text: 'Happy families are all alike; every unhappy family is unhappy in its own way. Everything was in confusion in the Oblonskys\' house. The wife had discovered that the husband was carrying on an intrigue with a French girl, who had been a governess in their family, and she had announced to her husband that she could not go on living in the same house with him.'
+  },
+  {
+    author: 'Albert Camus',
+    title:  'The Stranger',
+    excerpt: 'Mother died today. Or, maybe, yesterday; I can\'t be sure.',
+    text: 'Mother died today. Or, maybe, yesterday; I can\'t be sure. The telegram from the Home says: YOUR MOTHER PASSED AWAY. FUNERAL TOMORROW. DEEP SYMPATHY. Which leaves the matter doubtful; it could have been yesterday.'
+  },
+  {
+    author: 'Gabriel García Márquez',
+    title:  'One Hundred Years of Solitude',
+    excerpt: 'Many years later, as he faced the firing squad, Colonel Aureliano Buendía was to remember that distant afternoon when his father took him to discover ice.',
+    text: 'Many years later, as he faced the firing squad, Colonel Aureliano Buendía was to remember that distant afternoon when his father took him to discover ice. At that time Macondo was a village of twenty adobe houses, built on the bank of a river of clear water that ran along a bed of polished stones, which were white and enormous, like prehistoric eggs.'
+  },
+  {
+    author: 'Herman Melville',
+    title:  'Moby-Dick',
+    excerpt: 'Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little.',
+    text: 'Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world. It is a way I have of driving off the spleen, and regulating the circulation.'
+  },
+  {
+    author: 'Vladimir Nabokov',
+    title:  'Lolita',
+    excerpt: 'Lolita, light of my life, fire of my loins. My sin, my soul.',
+    text: 'Lolita, light of my life, fire of my loins. My sin, my soul. Lo-lee-ta: the tip of the tongue taking a trip of three steps down the palate to tap, at three, on the teeth. Lo. Lee. Ta. She was Lo, plain Lo, in the morning, standing four feet ten in one sock.'
+  },
 ];
 
 function renderTryPassages() {
-  const grid = document.getElementById('try-grid');
-  if (!grid) return;
-  grid.innerHTML = TRY_PASSAGES.map((p, i) => `
+  const track = document.getElementById('try-grid');
+  if (!track) return;
+  // Render each passage TWICE in sequence so the -50% translate
+  // in the keyframe loops seamlessly back to start.
+  const cardHtml = (p, i) => `
     <button class="try-card" type="button" onclick="loadTryPassage(${i})">
       <span class="try-card-author">${p.author}</span>
       <span class="try-card-title">${p.title}</span>
       <span class="try-card-excerpt">${p.excerpt}</span>
     </button>
-  `).join('');
+  `;
+  const once = TRY_PASSAGES.map(cardHtml).join('');
+  track.innerHTML = once + once;
 }
 
 function loadTryPassage(idx) {
