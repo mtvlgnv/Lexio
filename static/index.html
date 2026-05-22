@@ -1149,11 +1149,52 @@
       position: relative; overflow: hidden;
       background: var(--surface);
     }
+    /* Soft fade at the very top so the in-app panels above don't
+       end against the warm gradient with a hard horizontal line. */
+    .lp-warm-area::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 60px; z-index: 3; pointer-events: none;
+      background: linear-gradient(
+        to bottom,
+        var(--bg) 0%,
+        color-mix(in oklch, var(--bg) 65%, transparent) 50%,
+        transparent 100%
+      );
+    }
     /* Content sections sit above the canvas + veil. */
     .lp-warm-area > #try-passage,
     .lp-warm-area > .lp-hero { position: relative; z-index: 2; }
     .lp-warm-area > #warm-webgl { z-index: 0; }
     .lp-warm-area > .lp-hero-veil { z-index: 1; }
+
+    /* Decorative divider between the carousel and the hero — a hairline
+       horizontal gradient line with a centered ornament dot, both fading
+       softly at the ends so it reads as a flourish, not a hard border. */
+    .lp-warm-divider {
+      position: relative; z-index: 2;
+      height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .lp-warm-divider::before, .lp-warm-divider::after {
+      content: '';
+      flex: 1; max-width: 200px;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        color-mix(in oklch, var(--text) 35%, transparent),
+        transparent
+      );
+    }
+    .lp-warm-divider span {
+      display: block;
+      width: 5px; height: 5px; border-radius: 50%;
+      margin: 0 12px;
+      background: color-mix(in oklch, var(--accent) 80%, var(--text));
+      box-shadow: 0 0 0 3px color-mix(in oklch, var(--surface) 70%, transparent);
+    }
 
     /* Hero + How it works combined row */
     .lp-hero {
@@ -2818,6 +2859,9 @@
       <p class="try-eyebrow">Or try a passage</p>
       <div class="try-grid" id="try-grid"></div>
     </section>
+
+    <!-- Decorative divider — soft hairline + center dot -->
+    <div class="lp-warm-divider" aria-hidden="true"><span></span></div>
 
   <!-- Hero + How it works -->
   <div class="lp-hero">
