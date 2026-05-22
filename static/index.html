@@ -1175,15 +1175,16 @@
        under the headline column and below the carousel cards. */
     .lp-hero-veil {
       position: absolute; inset: 0; pointer-events: none;
+      /* Heavy cream wash across the whole warm-area, with a soft
+         "spotlight" cut-out around where the demo panel sits so the
+         colorful gradient still reads through on the right side. */
       background: radial-gradient(
-        ellipse 135% 130% at 0% 100%,
-        var(--surface) 0%,
-        var(--surface) 18%,
-        color-mix(in oklch, var(--surface) 92%, transparent) 35%,
-        color-mix(in oklch, var(--surface) 75%, transparent) 55%,
-        color-mix(in oklch, var(--surface) 50%, transparent) 72%,
-        color-mix(in oklch, var(--surface) 25%, transparent) 88%,
-        transparent 100%
+        ellipse 70% 75% at 78% 72%,
+        transparent 0%,
+        color-mix(in oklch, var(--surface) 20%, transparent) 28%,
+        color-mix(in oklch, var(--surface) 55%, transparent) 55%,
+        color-mix(in oklch, var(--surface) 80%, transparent) 80%,
+        color-mix(in oklch, var(--surface) 92%, transparent) 100%
       );
     }
     .lp-hero-left {
