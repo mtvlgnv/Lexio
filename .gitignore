@@ -14,3 +14,4 @@ extension.zip
 *.zip
 # …but keep the published Chrome extension that the site serves:
 !static/lexio-extension.zip
+.claude/
