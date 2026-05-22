@@ -1086,7 +1086,7 @@
     /* ── Sample-passage carousel (compact-mode only) ─────────── */
     #try-passage {
       padding: 24px 24px 36px;
-      background: var(--bg);
+      background: transparent;
       position: relative;
       display: flex; flex-direction: column; align-items: center;
       gap: 14px;
@@ -1142,13 +1142,23 @@
     #landing { display: flex; flex-direction: column; }
     body.in-app #landing { display: none; }
 
+    /* Shared warm-gradient surface: the try-passage carousel and
+       the hero share a single WebGL canvas so the gradient is one
+       continuous animation with no seam between them. */
+    .lp-warm-area {
+      position: relative; overflow: hidden;
+      background: var(--surface);
+    }
+    .lp-warm-area > * { position: relative; z-index: 1; }
+    .lp-warm-area > #warm-webgl { z-index: 0; }
+
     /* Hero + How it works combined row */
     .lp-hero {
       padding: 64px 64px 56px;
       display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
       align-items: center; gap: 56px;
-      background: var(--surface); border-top: none;
-      position: relative; overflow: hidden;
+      background: transparent; border-top: none;
+      position: relative; overflow: visible;
       min-height: 540px;
     }
     .lp-hero::before {
@@ -1156,10 +1166,21 @@
          the in-app cream into the hero's warm gradient seamlessly. */
       content: none;
     }
-    /* Veil removed — the canvas now covers the full hero width with
-       no mask, so the try-passage gradient flows into the hero
-       seamlessly. Headline contrast is fine against the warm gradient. */
-    .lp-hero-veil { display: none; }
+    /* Cream "spotlight" behind the headline column — combines a
+       horizontal fade (cream on the left, transparent past the
+       headline) with a vertical fade-in at the top so it doesn't
+       create a seam where the carousel above ends. */
+    .lp-hero-veil {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(
+        to right,
+        color-mix(in oklch, var(--surface) 75%, transparent) 0%,
+        color-mix(in oklch, var(--surface) 45%, transparent) 18%,
+        transparent 38%
+      );
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%);
+              mask-image: linear-gradient(to bottom, transparent 0%, black 22%);
+    }
     .lp-hero-left {
       display: flex; flex-direction: column; gap: 22px;
       position: relative; z-index: 2;
@@ -2317,7 +2338,8 @@
        the hero, and reduce sample-passages to a single card. */
     @media (max-width: 760px) {
       /* Kill expensive backgrounds */
-      #hero-webgl, #twin-webgl, #try-webgl { display: none !important; }
+      #warm-webgl, #twin-webgl { display: none !important; }
+      .lp-warm-area { background: var(--bg); }
       .lp-hero-veil { display: none !important; }
       .lp-hero::before { display: none; }
       .lp-twin { background: var(--bg); }
@@ -2751,21 +2773,6 @@
 </main>
 
 <!-- ── Sample-passage carousel (visible when app is in compact/empty state) ── -->
-<section id="try-passage">
-  <canvas id="try-webgl" style="
-    position:absolute;left:0;top:0;width:100%;height:100%;
-    pointer-events:none;z-index:0;
-    -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 70%);
-    mask-image:linear-gradient(to bottom, transparent 0%, black 70%);
-    --gradient-color-1:#ef7040;
-    --gradient-color-2:#c2541e;
-    --gradient-color-3:#7a3b9e;
-    --gradient-color-4:#f0b060;
-  "></canvas>
-  <p class="try-eyebrow" style="position:relative;z-index:1;">Or try a passage</p>
-  <div class="try-grid" id="try-grid" style="position:relative;z-index:1;"></div>
-</section>
-
 <!-- ── Scroll progress bar (thin, top of viewport) ───────────── -->
 <div id="scroll-progress" aria-hidden="true"></div>
 
@@ -2783,9 +2790,28 @@
 <!-- ── Landing page ───────────────────────────────────────────── -->
 <div id="landing">
 
+  <!-- Shared warm-gradient area: a SINGLE canvas spans both the
+       "Or try a passage" carousel and the hero, so the gradient
+       is one continuous surface with no seam between sections. -->
+  <div class="lp-warm-area">
+    <canvas id="warm-webgl" style="
+      position:absolute;left:0;top:0;width:100%;height:100%;
+      pointer-events:none;z-index:0;
+      --gradient-color-1:#ef7040;
+      --gradient-color-2:#c2541e;
+      --gradient-color-3:#7a3b9e;
+      --gradient-color-4:#f0b060;
+    "></canvas>
+
+    <section id="try-passage">
+      <p class="try-eyebrow">Or try a passage</p>
+      <div class="try-grid" id="try-grid"></div>
+    </section>
+
   <!-- Hero + How it works -->
   <div class="lp-hero">
     <canvas id="hero-webgl" style="
+      display:none;
       position:absolute;left:0;top:0;width:100%;height:100%;
       pointer-events:none;z-index:0;
       --gradient-color-1:#ef7040;
@@ -2855,6 +2881,7 @@
       </div>
     </div>
   </div>
+  </div><!-- end .lp-warm-area -->
 
   <!-- How it works -->
   <section class="lp-steps">
@@ -6447,9 +6474,9 @@ const _gradMobile = window.matchMedia('(max-width: 760px)').matches;
 const _gradReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (!_gradMobile && !_gradReduced) {
   const { Gradient } = await import('https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js');
-  new Gradient().initGradient('#hero-webgl');
+  // #warm-webgl is the shared canvas that spans #try-passage + .lp-hero.
+  new Gradient().initGradient('#warm-webgl');
   new Gradient().initGradient('#twin-webgl');
-  new Gradient().initGradient('#try-webgl');
 }
 </script>
 
