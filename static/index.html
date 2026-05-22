@@ -1149,8 +1149,11 @@
       position: relative; overflow: hidden;
       background: var(--surface);
     }
-    .lp-warm-area > * { position: relative; z-index: 1; }
+    /* Content sections sit above the canvas + veil. */
+    .lp-warm-area > #try-passage,
+    .lp-warm-area > .lp-hero { position: relative; z-index: 2; }
     .lp-warm-area > #warm-webgl { z-index: 0; }
+    .lp-warm-area > .lp-hero-veil { z-index: 1; }
 
     /* Hero + How it works combined row */
     .lp-hero {
@@ -1171,14 +1174,15 @@
        and the hero. Creates the soft cream coverage approximately
        under the headline column and below the carousel cards. */
     .lp-hero-veil {
-      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      position: absolute; inset: 0; pointer-events: none;
       background: radial-gradient(
-        ellipse 95% 105% at 0% 100%,
-        color-mix(in oklch, var(--surface) 85%, transparent) 0%,
-        color-mix(in oklch, var(--surface) 65%, transparent) 25%,
-        color-mix(in oklch, var(--surface) 35%, transparent) 50%,
-        color-mix(in oklch, var(--surface) 12%, transparent) 70%,
-        transparent 88%
+        ellipse 100% 110% at 0% 100%,
+        var(--surface) 0%,
+        color-mix(in oklch, var(--surface) 88%, transparent) 20%,
+        color-mix(in oklch, var(--surface) 65%, transparent) 40%,
+        color-mix(in oklch, var(--surface) 35%, transparent) 60%,
+        color-mix(in oklch, var(--surface) 10%, transparent) 78%,
+        transparent 92%
       );
     }
     .lp-hero-left {
