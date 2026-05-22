@@ -2591,7 +2591,7 @@
         </div>
       </div>
       <span class="usage-pill" id="usage-pill" title="AI lookups used this month">
-        <span id="usage-text">0 / 100</span>
+        <span id="usage-text">0 / 20</span>
         <span class="usage-bar"><span class="usage-fill" id="usage-fill" style="width:0%"></span></span>
       </span>
       <span class="usage-pill hourly-pill" id="hourly-pill" title="Hourly credits — Fast=1, Balanced=2, Deep=3. Resets every hour." style="display:none">
@@ -2810,7 +2810,7 @@
         </a>
       </div>
       <ul class="lp-hero-trust">
-        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>100 free lookups / month</li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>20 free lookups / month</li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No credit card</li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Works in 11 languages</li>
       </ul>
@@ -2932,7 +2932,7 @@
           </div>
         </div>
         <ul class="lp-pro-perks">
-          <li>100 word lookups / month</li>
+          <li>20 word lookups / month</li>
           <li>3 OCR scans / month</li>
           <li>Fast mode</li>
           <li>Re-request definition up to 5×</li>
@@ -3096,7 +3096,7 @@
           Is Lexio free?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. The free plan gives you 100 word lookups and 3 image scans per month, in Fast mode. If you want to try Pro, you can start a <strong>3-day free trial</strong> — a card is required up-front, you can cancel any time before day 3, and you won't be charged. After the trial, Pro is <span class="lp-pro-amount-dynamic">$2.99</span>/month and removes all limits and unlocks Balanced and Deep modes.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. The free plan gives you 20 word lookups and 3 image scans per month, in Fast mode. If you want to try Pro, you can start a <strong>3-day free trial</strong> — a card is required up-front, you can cancel any time before day 3, and you won't be charged. After the trial, Pro is <span class="lp-pro-amount-dynamic">$2.99</span>/month and removes all limits and unlocks Balanced and Deep modes.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -3507,7 +3507,7 @@
           <div class="ap-section-label">Plan</div>
           <div class="ap-plan-card" id="ap-plan-card">
             <div class="ap-plan-badge free">Free</div>
-            <div class="ap-plan-desc" id="ap-plan-desc">100 lookups &amp; 3 OCR scans per month.</div>
+            <div class="ap-plan-desc" id="ap-plan-desc">20 lookups &amp; 3 OCR scans per month.</div>
             <button class="ap-plan-action upgrade" id="ap-plan-btn" onclick="closeAuthModal();handleProCta()">Get Pro →</button>
           </div>
         </div>
@@ -3518,7 +3518,7 @@
           <div class="ap-usage-row">
             <div class="ap-usage-meta">
               <span class="ap-usage-name">Word lookups</span>
-              <span class="ap-usage-num" id="ap-lookup-num">— / 100</span>
+              <span class="ap-usage-num" id="ap-lookup-num">— / 20</span>
             </div>
             <div class="ap-bar-track"><div class="ap-bar-fill" id="ap-lookup-bar" style="width:0%"></div></div>
           </div>
@@ -4614,7 +4614,7 @@ async function fetchDefinition(word, context, modelOverride, bypassCache=false) 
         const d = err.detail || {};
         clearHighlights(); activeToken = null;
         showPlaceholder();
-        showProModal(d.kind || 'lookup', d.used || 0, d.limit || 30);
+        showProModal(d.kind || 'lookup', d.used || 0, d.limit || 20);
         return;
       }
       const err = await resp.json().catch(()=>({detail:resp.statusText}));
@@ -5307,7 +5307,7 @@ async function _populateAccountPanel() {
       // Free
       badge.className   = 'ap-plan-badge free';
       badge.textContent = 'Free';
-      desc.textContent  = '100 lookups & 3 OCR scans per month.';
+      desc.textContent  = '20 lookups & 3 OCR scans per month.';
       btn.textContent   = 'Get Pro →';
       btn.className     = 'ap-plan-action upgrade';
       btn.onclick       = () => { closeAuthModal(); handleProCta(); };
@@ -6457,7 +6457,7 @@ if (!_gradMobile && !_gradReduced) {
     <button class="pro-modal-close" onclick="closeProModal()">✕</button>
     <div class="pro-modal-icon">⚡</div>
     <h2 class="pro-modal-title">You've hit your free limit</h2>
-    <p class="pro-modal-sub" id="pro-modal-sub">You've used all 100 free lookups this month.</p>
+    <p class="pro-modal-sub" id="pro-modal-sub">You've used all 20 free lookups this month.</p>
     <div class="pro-plan-card">
       <div class="pro-plan-header">
         <span class="pro-plan-name">Lexio Pro</span>

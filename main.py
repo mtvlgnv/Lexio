@@ -363,7 +363,7 @@ def _run_migrations():
 _run_migrations()
 
 # ── Usage limits ─────────────────────────────────────────────────────────────
-FREE_LOOKUP_LIMIT = 100
+FREE_LOOKUP_LIMIT = 20
 FREE_OCR_LIMIT    = 3
 TRIAL_DAYS        = 3
 
@@ -382,7 +382,7 @@ HOURLY_LIMIT_FREE = 20
 # Per-month credit ceiling for Pro accounts. Caps absolute exposure to a single
 # abusing account at ~$33/month in Anthropic costs while remaining ~5× more
 # than any real reader could ever consume. Free users are already bounded by
-# FREE_LOOKUP_LIMIT (100 lookups, fast-only = 100 credits/month).
+# FREE_LOOKUP_LIMIT (20 lookups, fast-only = 20 credits/month).
 MONTHLY_CREDIT_CAP_PRO = 20000
 
 # Hard monthly OCR cap for Pro. Realistic heavy use is <100/month; this leaves
