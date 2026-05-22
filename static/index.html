@@ -4090,6 +4090,25 @@ async function loadUsage() {
     const token = localStorage.getItem('lexio_token');
     const headers = token ? { Authorization: 'Bearer ' + token } : {};
     const res = await fetch('/api/usage', { headers });
+    // Stale token (e.g. session pruned by MAX_SESSIONS_PER_USER on another
+    // device). Server returns 401 + {code:"session_expired"} so we can
+    // clear stale local auth and surface a clear "sign in again" prompt
+    // instead of silently downgrading to the free-tier display.
+    if (res.status === 401 && token) {
+      const body = await res.json().catch(() => ({}));
+      const code = body?.detail?.code;
+      if (code === 'session_expired') {
+        try {
+          localStorage.removeItem('lexio_token');
+          localStorage.removeItem('lexio_user');
+        } catch {}
+        authToken = null; authUser = null;
+        updateAcctBtn();
+        // Toast-like banner if available, otherwise the auth modal.
+        if (typeof openAuthModal === 'function') openAuthModal(true);
+        return;
+      }
+    }
     if (!res.ok) return;
     const data = await res.json();
     if (data.is_pro) {

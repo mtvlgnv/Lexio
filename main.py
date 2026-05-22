@@ -706,10 +706,11 @@ def create_token(user_id: int, token_version: int = 0, jti: Optional[str] = None
 
 # ── Concurrent session management (Gap 1) ────────────────────────────────────
 # Cap concurrent active JWTs per user. Friendly enough for real users
-# (laptop + phone + work + spare = 4); tight enough to make casual account
-# sharing noticeable. The hourly + monthly credit caps remain the real cost
-# defenses — this is mostly a visibility/UX win and minor abuse friction.
-MAX_SESSIONS_PER_USER = 5
+# (laptop + phone + tablet + work + chrome-extension = 5+); tight enough
+# to make casual account sharing noticeable. The hourly + monthly credit
+# caps remain the real cost defenses — this is mostly a visibility/UX
+# win and minor abuse friction.
+MAX_SESSIONS_PER_USER = 8
 
 def _device_label_from_ua(ua: Optional[str]) -> str:
     """Compact, human-friendly device summary from a User-Agent string."""
@@ -2902,7 +2903,22 @@ async def ocr_image(request: Request, file: UploadFile = File(...),
 @app.get("/api/usage")
 async def get_usage(request: Request, user: Optional[User] = Depends(optional_user),
                     db: DBSession = Depends(get_db)):
-    """Return current-month usage for the caller (authenticated or anonymous)."""
+    """Return current-month usage for the caller (authenticated or anonymous).
+
+    If the request supplied a Bearer token but it was rejected (expired
+    token version, pruned JTI, or unknown user), we surface a 401 with a
+    machine-readable code so the client can clear stale local state and
+    prompt re-login — instead of silently downgrading to anonymous and
+    showing the user confusing free-tier limits.
+    """
+    auth_hdr = request.headers.get("authorization", "")
+    if auth_hdr.lower().startswith("bearer ") and user is None:
+        raise HTTPException(
+            status_code=401,
+            detail={"code": "session_expired",
+                    "message": "Your session ended on this device — please sign in again."},
+        )
+
     now_month = datetime.datetime.utcnow().strftime("%Y-%m")
     ip = _get_client_ip(request)
 
