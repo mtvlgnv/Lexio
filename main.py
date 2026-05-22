@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import json
+import re
 import secrets
 import datetime
 import html as _html
@@ -72,21 +73,70 @@ def _extract_json_object(text: str) -> str | None:
                     return s[start : i + 1]
     return None
 
+_CTRL_RE = re.compile(r'[\x00-\x08\x0b\x0c\x0e-\x1f]')
+
+def _repair_json_strings(text: str) -> str:
+    """Escape literal control characters (newlines, tabs, etc.) that appear
+    INSIDE JSON string values. Gemini occasionally emits raw newlines inside
+    its definitions, which is invalid JSON. This walker tracks string state
+    and rewrites the offending characters as their escaped equivalents.
+    Outside of strings, whitespace is left untouched."""
+    out = []
+    in_str = False
+    esc = False
+    for ch in text:
+        if in_str:
+            if esc:
+                esc = False
+                out.append(ch)
+            elif ch == "\\":
+                esc = True
+                out.append(ch)
+            elif ch == '"':
+                in_str = False
+                out.append(ch)
+            elif ch == "\n":
+                out.append("\\n")
+            elif ch == "\r":
+                out.append("\\r")
+            elif ch == "\t":
+                out.append("\\t")
+            elif _CTRL_RE.match(ch):
+                # Drop other control chars rather than try to escape them
+                pass
+            else:
+                out.append(ch)
+        else:
+            if ch == '"':
+                in_str = True
+            out.append(ch)
+    return "".join(out)
+
+
 def _safe_json_loads(text: str) -> dict:
     """
-    Parse model output as JSON. First try strict json.loads; if that fails,
-    try extracting a JSON object and parsing that.
+    Parse model output as JSON. Try in order:
+      1. Strict json.loads
+      2. Extract the first {...} block, parse that
+      3. Repair common Gemini issues (literal newlines inside strings),
+         then re-parse the extracted block.
     """
     try:
         obj = json.loads(text)
         if not isinstance(obj, dict):
             raise ValueError("Model output JSON is not an object")
         return obj
-    except Exception:
+    except Exception as first_exc:
         extracted = _extract_json_object(text)
         if not extracted:
             raise
-        obj = json.loads(extracted)
+        try:
+            obj = json.loads(extracted)
+        except json.JSONDecodeError:
+            # Last-resort: escape literal control characters inside strings,
+            # which is the most common Gemini failure mode.
+            repaired = _repair_json_strings(extracted)
+            obj = json.loads(repaired)
         if not isinstance(obj, dict):
             raise ValueError("Extracted JSON is not an object")
         return obj
@@ -993,12 +1043,21 @@ def _call_openai(prompt: str) -> str:
 
 
 def _call_google(prompt: str) -> str:
-    """Call Google Gemini API and return the response text."""
+    """Call Google Gemini API and return the response text.
+
+    Uses response_mime_type="application/json" so Gemini is forced into
+    strict-JSON mode — without this the model occasionally emits literal
+    newlines or unescaped quotes inside string values, producing
+    JSONDecodeErrors that surface to the user as "unexpected response".
+    """
     if not os.getenv("GOOGLE_API_KEY"):
         raise ValueError("GOOGLE_API_KEY not configured")
     response = google_client.models.generate_content(
         model="gemini-2.5-flash",
         contents=prompt,
+        config=genai_types.GenerateContentConfig(
+            response_mime_type="application/json",
+        ),
     )
     return response.text.strip()
 
@@ -1128,7 +1187,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         required_keys = ("pos", "contextual")
 
     # ── AI call (no debit until we have a valid response) ──────────────────
-    try:
+    def _call_and_parse():
         if actual_model == "fast":
             text = _call_openai(prompt)          # GPT-4o Mini
         elif actual_model == "balanced":
@@ -1141,10 +1200,21 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
             lines = text.splitlines()
             text  = "\n".join(l for l in lines if not l.startswith("```")).strip()
 
-        result = _safe_json_loads(text)
+        parsed = _safe_json_loads(text)
         for key in required_keys:
-            if key not in result:
+            if key not in parsed:
                 raise ValueError(f"Missing key: {key}")
+        return parsed
+
+    # Single retry on parse/value errors — Gemini occasionally produces
+    # malformed JSON on the first call; a fresh sample usually succeeds.
+    try:
+        try:
+            result = _call_and_parse()
+        except (json.JSONDecodeError, ValueError) as first_exc:
+            logger.warning("/define %s parse failed (%s) — retrying once",
+                           actual_model, first_exc)
+            result = _call_and_parse()
     except json.JSONDecodeError as exc:
         logger.error("/define JSON parse error: %s", exc)
         raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
