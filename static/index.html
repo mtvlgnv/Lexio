@@ -1032,14 +1032,14 @@
     /* ── Scroll nudge ───────────────────────────────────────── */
     /* Scroll nudge — three stacked chevrons that flicker in sequence,
        signaling "more below". Quiet gray, no background, sits at the
-       bottom-center of the viewport. */
+       bottom-right corner of the viewport (à la photondelta.com). */
     #scroll-nudge {
-      position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+      position: fixed; bottom: 22px; right: 28px;
       display: flex; flex-direction: column; align-items: center;
       gap: 0;
       cursor: pointer; z-index: 10;
       opacity: 1; transition: opacity 0.4s ease;
-      padding: 6px 12px;
+      padding: 6px 8px;
     }
     #scroll-nudge svg {
       width: 18px; height: 18px;
@@ -1058,9 +1058,10 @@
     #scroll-nudge:hover svg { color: var(--accent); }
     #scroll-nudge.hidden { opacity: 0; pointer-events: none; }
     @media (max-width: 760px) { #scroll-nudge { display: none !important; } }
+    /* Only hidden when user is actively in-app (typing/analyzing) —
+       still shown in compact/empty state so the user knows there's
+       more landing content below the carousel. */
     body.in-app #scroll-nudge { display: none; }
-    /* In compact mode, the user already sees the dashboard below — hide the indicator */
-    body.app-compact #scroll-nudge { opacity: 0; pointer-events: none; }
 
     /* ── Scroll progress bar (top of page) ──────────────────── */
     #scroll-progress {
