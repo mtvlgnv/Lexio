@@ -1144,9 +1144,9 @@
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background: linear-gradient(
         to right,
-        var(--surface) 0%,
-        color-mix(in oklch, var(--surface) 80%, transparent) 30%,
-        transparent 55%
+        color-mix(in oklch, var(--surface) 75%, transparent) 0%,
+        color-mix(in oklch, var(--surface) 45%, transparent) 18%,
+        transparent 38%
       );
     }
     .lp-hero-left {
@@ -2267,8 +2267,32 @@
       50%      { box-shadow: 0 0 0 10px color-mix(in oklch, var(--accent) 0%,  transparent); }
     }
 
+    /* ── Hero-specific reveal (triggers only when user has scrolled
+       into the hero — not on first paint when it peeks at the bottom). */
+    .lp-hero-anim {
+      opacity: 0;
+      transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+    .lp-hero-anim-fade { transform: translateY(20px); }
+    .lp-hero-anim.is-visible { opacity: 1; transform: none; }
+    /* Staggered children (h1, sub, CTA, trust line) */
+    .lp-hero-anim-stagger { opacity: 1; }  /* the container stays — only the children animate */
+    .lp-hero-anim-stagger > * {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lp-hero-anim-stagger.is-visible > * { opacity: 1; transform: none; }
+    .lp-hero-anim-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms;   }
+    .lp-hero-anim-stagger.is-visible > *:nth-child(2) { transition-delay: 90ms;  }
+    .lp-hero-anim-stagger.is-visible > *:nth-child(3) { transition-delay: 180ms; }
+    .lp-hero-anim-stagger.is-visible > *:nth-child(4) { transition-delay: 270ms; }
+
     @media (prefers-reduced-motion: reduce) {
       .lp-reveal, .lp-reveal-stagger > * { opacity: 1; transform: none; transition: none; }
+      .lp-hero-anim, .lp-hero-anim-stagger > * { opacity: 1; transform: none; transition: none; }
       .lp-hero::after { animation: none; opacity: 0.7; }
       .lp-btn-primary { animation: none; }
       .lp-hero h1 em { transition: none; }
@@ -2659,8 +2683,8 @@
     <!-- Soft dark-to-transparent veil over the left half so the headline
          is readable over the warm gradient regardless of where the
          radial breathing glow happens to be. -->
-    <div class="lp-hero-veil" aria-hidden="true"></div>
-    <div class="lp-hero-left lp-reveal-stagger">
+    <div class="lp-hero-veil lp-hero-anim lp-hero-anim-veil" aria-hidden="true"></div>
+    <div class="lp-hero-left lp-hero-anim lp-hero-anim-stagger">
       <h1 data-i18n-html="heroH1">A dictionary that reads the <em>sentence.</em></h1>
       <p class="lp-hero-sub" data-i18n="heroSub">Click any word in any text. Lexio reads the surrounding sentence and gives you the meaning that actually fits — not a generic dictionary entry.</p>
       <div class="lp-hero-cta">
@@ -2679,7 +2703,7 @@
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Works in 11 languages</li>
       </ul>
     </div>
-    <div class="lp-hero-right lp-hero-demo lp-reveal">
+    <div class="lp-hero-right lp-hero-demo lp-hero-anim lp-hero-anim-fade">
       <div class="lp-demo-frame-top">
         <span class="lp-demo-frame-dot" style="background:#ff5f57"></span>
         <span class="lp-demo-frame-dot" style="background:#febc2e"></span>
@@ -6108,6 +6132,34 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
   document.querySelectorAll('.lp-reveal, .lp-reveal-stagger')
     .forEach(el => io.observe(el));
+
+  // ── Hero-specific reveal ──────────────────────────────────────
+  // The hero often peeks above the bottom of the viewport on first
+  // paint (because the compact app area + carousel above is shorter
+  // than 100vh on tall screens), which would fire the standard
+  // observer immediately. We want the hero to stay hidden until the
+  // user has actively scrolled into it.
+  //
+  // Trick: rootMargin "-40% 0px -40% 0px" effectively shrinks the
+  // viewport to its middle 20%. Elements only count as "intersecting"
+  // when they cross that thin central band — i.e. when the user has
+  // genuinely scrolled the hero into view.
+  const heroEls = document.querySelectorAll('.lp-hero-anim');
+  if (heroEls.length) {
+    if (reduce) {
+      heroEls.forEach(el => el.classList.add('is-visible'));
+    } else {
+      const heroIo = new IntersectionObserver(function(entries) {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            heroIo.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0, rootMargin: '-30% 0px -45% 0px' });
+      heroEls.forEach(el => heroIo.observe(el));
+    }
+  }
 })();
 
 // ── Hero word swap: DISABLED ────────────────────────────────────
