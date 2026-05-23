@@ -2030,23 +2030,8 @@
     .lp-ext-note { font-size: 0.74rem; color: var(--muted); }
 
     /* Extension install modal */
-    #ext-modal { position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; padding:24px; animation:fadeIn 0.18s ease; }
-    #ext-modal.hidden { display:none; }
-    .ext-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:460px; border:1px solid var(--border); overflow:hidden; }
-    .ext-header { display:flex; align-items:center; justify-content:space-between; padding:20px 24px 16px; border-bottom:1px solid var(--border); }
-    .ext-header h3 { font-family:'Lora',serif; font-size:1.1rem; font-weight:600; }
-    .ext-close { background:none; border:none; font-size:1.4rem; color:var(--muted); cursor:pointer; line-height:1; padding:0; }
-    .ext-body { padding:24px; display:flex; flex-direction:column; gap:20px; }
-    .ext-steps { display:flex; flex-direction:column; gap:12px; }
-    .ext-step { display:flex; align-items:flex-start; gap:14px; }
-    .ext-step-num { width:24px; height:24px; border-radius:50%; background:var(--accent); color:#fff; font-size:0.72rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
-    .ext-step-text { font-size:0.875rem; color:var(--text-mid); line-height:1.55; }
-    .ext-step-text strong { color:var(--text); font-weight:600; }
-    .ext-step-text code { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-size:0.8rem; font-family:monospace; }
-    .ext-dl-btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:11px; background-color:var(--accent); background-image:none; color:#fff; border:none; border-radius:var(--radius-sm); font-family:inherit; font-size:0.9rem; font-weight:600; cursor:pointer; text-decoration:none; transition:background-color 0.15s; }
-    .ext-dl-btn.btn-glow { background-image:radial-gradient(circle at var(--glow-x) var(--glow-y), color-mix(in oklch, white 35%, var(--accent)) 0%, var(--accent) 60%); }
-    .ext-dl-btn:hover { background-color:var(--accent-dk); }
-    .ext-footer-note { font-size:0.76rem; color:var(--muted); text-align:center; line-height:1.5; }
+    /* (Chrome extension install modal removed — extension is now on
+       the Chrome Web Store, the CTA links there directly.) */
 
     /* Merged apps CTA */
     /* Founder byline */
@@ -3215,7 +3200,7 @@
           Does the Chrome extension work on every website?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — the extension works on any page in Chrome. Select a word or phrase, right-click and choose "Define with Lexio", or use the keyboard shortcut. It works on news sites, PDFs opened in Chrome, academic papers, and more.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — <a href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">install Lexio from the Chrome Web Store</a> and it works on any page in Chrome. Select a word or phrase, right-click and choose "Define with Lexio", or use the keyboard shortcut. It works on news sites, PDFs opened in Chrome, academic papers, and more.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
@@ -3344,12 +3329,12 @@
       <h3 data-i18n-html="extH2">Look up words without leaving the page.</h3>
       <p data-i18n="extP">Select any word or sentence on any website. Lexio appears instantly with the meaning in context — no copy-paste, no tab switching.</p>
       <div class="lp-app-card-btns">
-        <button class="lp-ext-badge" onclick="openExtModal()">
+        <a class="lp-ext-badge" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
           <span data-i18n="extBtn">Add to Chrome</span>
-        </button>
+        </a>
       </div>
-      <span class="lp-ext-note" data-i18n="extNote">Free · Works on any page · No account required</span>
+      <span class="lp-ext-note" data-i18n="extNote">Free on the Chrome Web Store · Works on any page · No account required</span>
     </div>
     <div class="lp-app-card">
       <span class="lp-ext-eyebrow">Mac App</span>
@@ -3380,6 +3365,7 @@
     <span data-i18n="footerTagline">Built for curious readers.</span>
     <span style="display:flex;gap:16px;align-items:center;">
       <a href="/glossary">Glossary</a>
+      <a href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">Chrome Extension</a>
       <a href="/privacy.html" data-i18n="privacyPolicy">Privacy Policy</a>
       <a href="/credits.html">Credits</a>
       <a href="https://github.com/mtvlgnv" target="_blank" rel="noopener" aria-label="GitHub" style="display:inline-flex;align-items:center;">
@@ -3393,45 +3379,6 @@
 
 <!-- ── Floating chip tooltip ─────────────────────────────────── -->
 <div id="chip-tooltip"></div>
-
-<!-- ── Chrome extension install modal ───────────────────────── -->
-<div id="ext-modal" class="hidden">
-  <div class="ext-inner">
-    <div class="ext-header">
-      <h3>Add Lexio to Chrome</h3>
-      <button class="ext-close" onclick="closeExtModal()">×</button>
-    </div>
-    <div class="ext-body">
-      <a class="ext-dl-btn" href="/lexio-extension.zip" download="lexio-extension.zip">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download extension (.zip)
-      </a>
-      <div class="ext-steps">
-        <div class="ext-step">
-          <div class="ext-step-num">1</div>
-          <div class="ext-step-text"><strong>Unzip</strong> the downloaded file — you'll get a folder called <code>extension</code></div>
-        </div>
-        <div class="ext-step">
-          <div class="ext-step-num">2</div>
-          <div class="ext-step-text">Open Chrome and go to <code>chrome://extensions</code></div>
-        </div>
-        <div class="ext-step">
-          <div class="ext-step-num">3</div>
-          <div class="ext-step-text">Enable <strong>Developer mode</strong> with the toggle in the top-right corner</div>
-        </div>
-        <div class="ext-step">
-          <div class="ext-step-num">4</div>
-          <div class="ext-step-text">Click <strong>Load unpacked</strong> and select the <code>extension</code> folder</div>
-        </div>
-        <div class="ext-step">
-          <div class="ext-step-num">5</div>
-          <div class="ext-step-text"><strong>Select any word</strong> on any webpage — Lexio appears instantly</div>
-        </div>
-      </div>
-      <p class="ext-footer-note">One-click install via the Chrome Web Store is coming soon.</p>
-    </div>
-  </div>
-</div>
 
 <!-- ── Forgot password modal ────────────────────────────────── -->
 <div id="forgot-modal" class="hidden" style="position:fixed;inset:0;z-index:110;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;padding:24px;">
@@ -5294,10 +5241,6 @@ function toggleShortcuts() {
   document.getElementById('shortcuts-overlay').classList.toggle('hidden',!shortcutsOpen);
 }
 
-/* ── Extension install modal ────────────────────────────── */
-function openExtModal()  { document.getElementById('ext-modal').classList.remove('hidden'); }
-function closeExtModal() { document.getElementById('ext-modal').classList.add('hidden'); }
-
 /* ── Desktop app modal ──────────────────────────────────── */
 function openDesktopModal()  { document.getElementById('desktop-modal').classList.remove('hidden'); }
 function closeDesktopModal() {
@@ -5966,7 +5909,7 @@ inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key===
 document.addEventListener('keydown', e => {
   const tag = document.activeElement?.tagName;
   if (tag==='TEXTAREA'||tag==='INPUT') return;
-  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeExtModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
   if (e.key==='?')  toggleShortcuts();
   if (e.key==='b'||e.key==='B') openWordBank();
 });
@@ -5975,7 +5918,6 @@ document.getElementById('wb-overlay').addEventListener('click', e => { if(e.targ
 document.getElementById('fc-overlay').addEventListener('click', e => { if(e.target===document.getElementById('fc-overlay')) closeFlashcards(); });
 document.getElementById('shortcuts-overlay').addEventListener('click', e => { if(e.target===document.getElementById('shortcuts-overlay')) toggleShortcuts(); });
 document.getElementById('desktop-modal').addEventListener('click', e => { if(e.target===document.getElementById('desktop-modal')) closeDesktopModal(); });
-document.getElementById('ext-modal').addEventListener('click', e => { if(e.target===document.getElementById('ext-modal')) closeExtModal(); });
 document.getElementById('auth-modal').addEventListener('click', e => { if(e.target===document.getElementById('auth-modal')) closeAuthModal(); });
 // Enter key in auth inputs
 ['auth-email','auth-password','auth-name'].forEach(id => {
