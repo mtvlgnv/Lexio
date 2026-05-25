@@ -1327,6 +1327,58 @@
       font-size: 0.82rem; color: var(--text-mid); font-weight: 500;
     }
     .lp-hero-trust li svg { color: var(--accent); flex-shrink: 0; }
+
+    /* Rotating audience phrase — variable SEO content */
+    .lp-hero-rotator {
+      margin: 18px 0 0;
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-mid);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .lp-hero-rotator-words {
+      position: relative;
+      display: inline-block;
+      height: 1.4em;
+      overflow: hidden;
+      vertical-align: bottom;
+      min-width: 180px;
+    }
+    .lp-hero-rotator-word {
+      position: absolute;
+      left: 0; top: 0;
+      width: max-content;
+      color: var(--accent);
+      font-weight: 600;
+      font-style: normal;
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(100%);
+      animation: rotator-cycle 24s infinite;
+    }
+    .lp-hero-rotator-word:nth-child(1) { animation-delay: 0s;  }
+    .lp-hero-rotator-word:nth-child(2) { animation-delay: 3s;  }
+    .lp-hero-rotator-word:nth-child(3) { animation-delay: 6s;  }
+    .lp-hero-rotator-word:nth-child(4) { animation-delay: 9s;  }
+    .lp-hero-rotator-word:nth-child(5) { animation-delay: 12s; }
+    .lp-hero-rotator-word:nth-child(6) { animation-delay: 15s; }
+    .lp-hero-rotator-word:nth-child(7) { animation-delay: 18s; }
+    .lp-hero-rotator-word:nth-child(8) { animation-delay: 21s; }
+    @keyframes rotator-cycle {
+      0%   { opacity: 0; transform: translateY(100%); }
+      2%   { opacity: 1; transform: translateY(0); }
+      11%  { opacity: 1; transform: translateY(0); }
+      13%  { opacity: 0; transform: translateY(-100%); }
+      100% { opacity: 0; transform: translateY(-100%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .lp-hero-rotator-word { animation: none; }
+      .lp-hero-rotator-word:first-child { opacity: 1; transform: none; }
+    }
+
     .lp-btn-primary-lg {
       padding: 13px 26px;
       font-size: 0.98rem; font-weight: 600;
@@ -2190,6 +2242,92 @@
       border-radius: var(--radius); transition: background 0.15s, transform 0.15s;
     }
     .lp-glossary-cta:hover { background: var(--accent-dk, var(--accent)); transform: translateY(-1px); }
+
+    /* ── Audience / use-cases section (SEO long-tail) ─────────── */
+    .lp-audience {
+      padding: 64px 48px;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      border-top: 1px solid var(--border);
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 0%, color-mix(in oklch, var(--accent) 6%, transparent), transparent 70%),
+        var(--bg);
+    }
+    .lp-audience-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .lp-audience-sub {
+      font-size: 0.98rem; color: var(--text-mid); line-height: 1.75;
+      max-width: 680px; text-align: center; margin-bottom: 24px;
+    }
+    .lp-audience-sub em { font-style: italic; color: var(--text); }
+    .lp-audience-grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      width: 100%; max-width: 1140px;
+    }
+    .lp-audience-card {
+      display: flex; flex-direction: column; gap: 8px;
+      padding: 22px 22px 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .lp-audience-card:hover {
+      border-color: var(--accent-mid); transform: translateY(-2px);
+      box-shadow: 0 12px 28px -16px color-mix(in oklch, var(--accent) 40%, transparent);
+    }
+    .lp-audience-icon {
+      width: 38px; height: 38px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      background: color-mix(in oklch, var(--accent) 12%, var(--surface));
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .lp-audience-card h3 {
+      font-family: 'Lora', serif; font-size: 1.12rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.005em;
+    }
+    .lp-audience-card p {
+      font-size: 0.92rem; color: var(--text-mid); line-height: 1.65;
+    }
+    .lp-audience-card p em { font-style: italic; color: var(--text); }
+    .lp-audience-card p strong { color: var(--text); font-weight: 600; }
+    .lp-audience-meta {
+      margin-top: 4px;
+      font-size: 0.78rem !important; color: var(--muted) !important;
+      font-style: italic;
+      border-top: 1px dashed var(--border); padding-top: 8px;
+    }
+
+    /* ── Long-form SEO copy ───────────────────────────────────── */
+    .lp-longform {
+      padding: 56px 48px 64px;
+      display: flex; flex-direction: column; align-items: center; gap: 16px;
+      border-top: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .lp-longform-body {
+      max-width: 720px;
+      display: flex; flex-direction: column; gap: 16px;
+      margin-top: 8px;
+    }
+    .lp-longform-body p {
+      font-family: 'Lora', serif;
+      font-size: 1.02rem; line-height: 1.78; color: var(--text-mid);
+    }
+    .lp-longform-body p em { font-style: italic; color: var(--text); }
+    .lp-longform-body p strong { color: var(--text); font-weight: 600; }
+
+    @media (max-width: 760px) {
+      .lp-audience { padding: 40px 20px; }
+      .lp-audience-grid { gap: 12px; grid-template-columns: 1fr; }
+      .lp-audience-card { padding: 18px; }
+      .lp-audience-card h3 { font-size: 1.05rem; }
+      .lp-audience-card p { font-size: 0.88rem; line-height: 1.6; }
+      .lp-longform { padding: 36px 20px 48px; }
+      .lp-longform-body p { font-size: 0.95rem; line-height: 1.72; }
+    }
     @media (max-width: 760px) { .lp-glossary { padding: 40px 24px; } }
 
     .lp-footer {
@@ -2500,6 +2638,163 @@
   <script>
     window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
     plausible.init()
+  </script>
+
+  <!-- Extended keywords for niche search engines (Google ignores these; Bing/Yandex/DuckDuckGo still parse them in some cases) -->
+  <meta name="keywords" content="contextual dictionary, AI dictionary, chrome dictionary extension, define word in context, dictionary that reads the sentence, AI definitions, contextual definitions, reading companion, vocabulary tool for readers, ESL reading helper, dictionary for literature, dictionary for law students, dictionary for philosophy, polyglot reading tool, PDF dictionary, academic reading tool, classic literature reader, language learning chrome extension, click-to-define">
+  <meta name="author" content="Lexio">
+  <meta name="theme-color" content="#f3ead8">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+  <!-- ── Structured data (JSON-LD) ─────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Lexio",
+    "alternateName": "Lexio — Contextual Definitions",
+    "url": "https://lexio.site/",
+    "description": "A dictionary that reads the sentence. Click any word in any text and get the meaning that actually fits the passage, not a generic dictionary entry.",
+    "inLanguage": ["en", "es", "fr", "de", "nl", "ru", "ja", "zh", "ar", "pt", "it"],
+    "publisher": { "@type": "Organization", "name": "Lexio", "url": "https://lexio.site/" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Lexio",
+    "url": "https://lexio.site/",
+    "logo": "https://lexio.site/icon512.png",
+    "sameAs": [
+      "https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "matveylgnv2021@gmail.com",
+      "availableLanguage": ["English"]
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Lexio",
+    "applicationCategory": "EducationalApplication",
+    "applicationSubCategory": "Dictionary",
+    "operatingSystem": "Web, Chrome, macOS, Windows, Linux, iOS, Android",
+    "description": "Lexio is an AI-powered contextual dictionary. Highlight a word on any page or PDF, and Lexio reads the surrounding sentence to give the meaning that fits — not a generic dictionary entry. Built for readers of literature, philosophy, law, and language learners.",
+    "url": "https://lexio.site/",
+    "downloadUrl": "https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob",
+    "image": "https://lexio.site/og-image.png",
+    "screenshot": "https://lexio.site/og-image.png",
+    "inLanguage": ["en", "es", "fr", "de", "nl", "ru", "ja", "zh", "ar", "pt", "it"],
+    "featureList": [
+      "Click-to-define on any web page",
+      "Reads the surrounding sentence for context",
+      "Three reading modes: Fast, Balanced, Deep",
+      "Works in 11 languages",
+      "OCR — scan a book page from your phone",
+      "Personal word bank — saves every lookup",
+      "Works on PDFs in Chrome"
+    ],
+    "offers": [
+      {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "name": "Free",
+        "description": "20 contextual lookups and 3 OCR scans per month, Fast mode."
+      },
+      {
+        "@type": "Offer",
+        "price": "2.99",
+        "priceCurrency": "USD",
+        "name": "Lexio Pro (monthly)",
+        "description": "Unlimited lookups within fair-use credits, all three reading modes, OCR, word bank.",
+        "category": "subscription"
+      }
+    ],
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "37",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Lexio free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The free plan gives you 20 word lookups and 3 image scans per month in Fast mode. Lexio Pro is $2.99/month and removes all limits, with a 3-day free trial."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the Chrome extension work on every website?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Install Lexio from the Chrome Web Store and it works on any page in Chrome — news sites, PDFs opened in Chrome, academic papers, and more. Select a word and choose Define with Lexio."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens to the text I paste into Lexio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Only the word you look up and a short surrounding context window are sent to the AI provider. The full text is never stored on our servers."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which reading mode should I use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Fast mode is free and great for everyday reading. Pro unlocks Balanced (Gemini 2.5 Flash) and Deep (Claude Sonnet 4.5). For literature, legal texts, or academic prose, Deep gives the richest analysis."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which languages does Lexio support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Lexio reads and defines text in English, Spanish, French, German, Dutch, Russian, Japanese, Chinese, Arabic, Portuguese, and Italian. Definitions can be returned in any of those languages."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I cancel my Lexio Pro subscription?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — cancel any time from your account settings. You keep Pro access until the end of the billing period, then automatically move to the free tier. There is also a 14-day refund window on every Pro purchase."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://lexio.site/" },
+      { "@type": "ListItem", "position": 2, "name": "Glossary", "item": "https://lexio.site/glossary" }
+    ]
+  }
   </script>
 </head>
 <body data-theme="warm" class="app-compact">
@@ -2909,6 +3204,19 @@
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No credit card</li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Works in 11 languages</li>
       </ul>
+      <p class="lp-hero-rotator" aria-live="polite">
+        Built for
+        <span class="lp-hero-rotator-words">
+          <span class="lp-hero-rotator-word">literature students</span>
+          <span class="lp-hero-rotator-word">ESL readers</span>
+          <span class="lp-hero-rotator-word">law school</span>
+          <span class="lp-hero-rotator-word">philosophy readers</span>
+          <span class="lp-hero-rotator-word">polyglots</span>
+          <span class="lp-hero-rotator-word">classics lovers</span>
+          <span class="lp-hero-rotator-word">screenwriters</span>
+          <span class="lp-hero-rotator-word">curious minds</span>
+        </span>
+      </p>
     </div>
     <div class="lp-hero-right lp-hero-demo lp-hero-anim lp-hero-anim-fade">
       <div class="lp-demo-frame-top">
@@ -3181,6 +3489,101 @@
     </div>
   </div>
   </div><!-- end .lp-twin -->
+
+  <!-- ── Audience / use cases (SEO long-tail, variable copy per reader type) ── -->
+  <section class="lp-audience" id="lp-audience" aria-labelledby="lp-audience-title">
+    <span class="lp-audience-eyebrow">Built for everyone who reads</span>
+    <h2 class="lp-section-title" id="lp-audience-title">One dictionary. Eight kinds of <em>reader</em>.</h2>
+    <p class="lp-audience-sub">A generic dictionary tells you what a word means. Lexio tells you what it means <em>here</em> — in this sentence, on this page, in this book. Which is exactly what every reader below actually needs.</p>
+
+    <div class="lp-audience-grid">
+
+      <article class="lp-audience-card">
+        <div class="lp-audience-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3>For literature students</h3>
+        <p>Reading Joyce, Woolf, Faulkner, or Pynchon and watching the page turn into syntax soup? Lexio reads the surrounding sentence and tells you why this exact word — not its synonym — is doing the work. Stop bouncing between Wikipedia tabs.</p>
+        <p class="lp-audience-meta">Best on: modernist fiction, Shakespeare, the canonical novel.</p>
+      </article>
+
+      <article class="lp-audience-card">
+        <div class="lp-audience-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>For ESL & language learners</h3>
+        <p>Reading English fiction in your second language? Paste a passage — Lexio defines any word using the sentence around it, so phrasal verbs and idioms finally make sense. Available in 11 languages, both directions.</p>
+        <p class="lp-audience-meta">Translates and explains: English ⇄ Spanish, French, German, Russian, Japanese, Chinese, Arabic, Portuguese, Italian, Dutch.</p>
+      </article>
+
+      <article class="lp-audience-card">
+        <div class="lp-audience-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 18l9 4 9-4"/></svg>
+        </div>
+        <h3>For law students & professionals</h3>
+        <p>Latin maxims, terms of art, courtroom Anglicisms — legal prose is dense and ambiguous on purpose. Lexio's Deep mode (Claude Sonnet 4.5) reads the passage and tells you whether <em>consideration</em> means what you think it means in this contract.</p>
+        <p class="lp-audience-meta">Tested on: case law, statutes, contracts, common-law textbooks.</p>
+      </article>
+
+      <article class="lp-audience-card">
+        <div class="lp-audience-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>
+        </div>
+        <h3>For philosophy readers</h3>
+        <p>Kant's <em>noumenon</em>, Heidegger's <em>Dasein</em>, Wittgenstein's <em>language-game</em> — terms whose dictionary definition is useless without the system around them. Lexio reads the surrounding paragraph and tells you which sense the author is invoking right now.</p>
+        <p class="lp-audience-meta">Strongest on: continental philosophy, ancient Greek thought, analytic philosophy of language.</p>
+      </article>
+
+      <article class="lp-audience-card">
+        <div class="lp-audience-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>For polyglots & translators</h3>
+        <p>You read in three languages a week and own four dictionaries you never open. Lexio collapses all of them into one click and saves every lookup to a personal word bank you can export. Toggle the answer language anytime.</p>
+        <p class="lp-audience-meta">Designed for: comparative literature, multilingual research, working translators.</p>
+      </article>
+
+      <article class="lp-audience-card">
+        <div class="lp-audience-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-4z"/></svg>
+        </div>
+        <h3>For classics & history readers</h3>
+        <p>Reading Gibbon, Plutarch, the King James Bible, or a Victorian three-decker novel? Lexio knows that <em>spleen</em> in Baudelaire is not <em>spleen</em> in Hippocrates, and that <em>discover</em> in Shakespeare means something very different from what it does today.</p>
+        <p class="lp-audience-meta">Handles: archaic English, Latinisms, period-specific senses, dated idiom.</p>
+      </article>
+
+      <article class="lp-audience-card">
+        <div class="lp-audience-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>
+        </div>
+        <h3>For writers & screenwriters</h3>
+        <p>You're not looking up the word — you're checking that the word means what you want it to mean before you commit it to a sentence. Lexio shows the precise shade of meaning a word carries in context, plus why this word and not its near-synonyms.</p>
+        <p class="lp-audience-meta">Pairs well with: novelists, poets, dramatists, copywriters, editors.</p>
+      </article>
+
+      <article class="lp-audience-card">
+        <div class="lp-audience-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
+        </div>
+        <h3>For anyone with a PDF & a phone</h3>
+        <p>Found a paper page you can't paste? Snap it with your phone — Lexio's OCR scans the photo, lifts the text, and lets you click any word for a contextual definition. The book stays a book; Lexio reads it for you.</p>
+        <p class="lp-audience-meta">Works on: photos of printed books, journal printouts, lecture handouts.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── Why contextual definitions matter (long-form SEO copy) ── -->
+  <section class="lp-longform" id="lp-longform" aria-labelledby="lp-longform-title">
+    <h2 class="lp-section-title" id="lp-longform-title">Why a contextual dictionary, and not the one you already have.</h2>
+    <div class="lp-longform-body">
+      <p>Every dictionary you've ever opened lists definitions in order of frequency, not in order of <em>this sentence</em>. You meet the word <em>register</em> on the page; the dictionary hands you ten entries; you pick whichever one feels closest and move on. Most of the time you pick wrong, and the sentence stays slightly wrong with you for the rest of the chapter.</p>
+      <p>A contextual dictionary inverts the problem. It does not return a list. It returns the one meaning the author intended in the sentence in front of you — drawn from the words to the left and right, the tone of the passage, and the conventions of the genre. For literary prose, that means catching the difference between a word's literal sense and the figurative weight an author is leaning on. For technical reading, it means catching the term of art rather than the everyday word that happens to share its spelling.</p>
+      <p>Lexio runs three reading modes for a reason. <strong>Fast</strong> handles everyday reading — news, blogs, fiction in your daily rotation — and is free. <strong>Balanced</strong> mode brings in Gemini 2.5 Flash for prose that rewards a second pass: nineteenth-century novels, denser non-fiction, journalism with a load-bearing vocabulary. <strong>Deep</strong> mode uses Claude Sonnet 4.5 for the kind of reading where being almost-right is wrong: philosophy, law, classical literature, scholarly criticism. The three modes correspond to three kinds of reading, not three price tiers; the pricing is just the price of compute.</p>
+      <p>The Chrome extension brings the same thing to every page you already read. Select a word, choose <em>Define with Lexio</em>, and the contextual answer appears inline. It works on PDFs that Chrome can open, on Substack and Medium and JSTOR, on the Internet Archive's borrowable books, and on the long-tail of personal blogs where the writing you actually love lives. Nothing gets stored beyond what you choose to save to your word bank — only the word and a short context window leaves your machine.</p>
+      <p>If you spend any real fraction of your week reading, the question is not whether you want a contextual dictionary. It's how you read without one.</p>
+    </div>
+  </section>
 
   <!-- FAQ -->
   <div class="lp-faq" id="lp-faq">
