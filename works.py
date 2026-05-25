@@ -743,6 +743,760 @@ The bildungsroman closes with the recognition that completes it.</p>
             "foreshadowing",
         ],
     },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "pride-and-prejudice",
+        "title": "Pride and Prejudice — A Reader's Guide to Jane Austen's Free Indirect Discourse and Irony",
+        "h1": "Pride and Prejudice — themes, voice, and structure",
+        "author": "Jane Austen",
+        "year": "1813",
+        "meta_description": "A reader's guide to Jane Austen's Pride and Prejudice — free indirect discourse, irony, the marriage plot, Regency-era social codes, and why the famous opening sentence is a trap.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Jane Austen's <em>Pride and Prejudice</em> is the most often
+recommended and the most often misread novel in the English
+canon. Read superficially, it is a love story with a snobbery
+problem. Read carefully, it is a textbook of narrative technique
+— the place where the modern novel first masters the art of
+showing a character's mind while standing outside it. This guide
+collects the formal vocabulary you need to read it that way.</p>
+
+<h2>The famous opening: aphorism as trap</h2>
+
+<p>"It is a truth universally acknowledged, that a single man in
+possession of a good fortune, must be in want of a wife." Read
+the line slowly. It is an <a href="/glossary/aphorism">aphorism</a>
+— a short, polished, general claim. It sounds like wisdom. And
+it is, in fact, completely false. Single men in possession of
+good fortunes are not, in any universal sense, in want of wives;
+the people who are urgently in want of those wives are the
+families with unmarried daughters and limited prospects. Austen
+opens the novel with an aphorism that the novel will quietly
+expose. Once you notice the move, you start seeing it everywhere.</p>
+
+<h2>Free indirect discourse: Austen's invention</h2>
+
+<p>The technical innovation that makes the novel modern is
+<a href="/glossary/free-indirect-discourse"><strong>free indirect
+discourse</strong></a> (FID) — the narrator's third-person voice
+seamlessly absorbing a character's first-person thoughts, without
+quotation marks or attributive tags. Austen did not invent FID,
+but <em>Pride and Prejudice</em> is one of the first novels in
+English to wield it constantly and at scale.</p>
+
+<blockquote>
+She began now to comprehend that he was exactly the man, who, in
+disposition and talents, would most suit her. His understanding
+and temper, though unlike her own, would have answered all her
+wishes.
+</blockquote>
+
+<p>Whose voice is that? Grammatically, it is the narrator
+reporting Elizabeth's thoughts. Idiomatically, the rhythms — "His
+understanding and temper" — are Elizabeth's own. Austen lets us
+hear Elizabeth think without making her speak. The result is
+intimacy with detachment.</p>
+
+<h2>Irony at every scale</h2>
+
+<p>The novel is built on
+<a href="/glossary/dramatic-irony">irony</a> — verbal, situational,
+dramatic, all at once. Mr. Bennet's biting verbal irony toward
+his wife. The situational irony of Elizabeth's certainty that
+Wickham is good and Darcy is bad (the novel's whole arc reverses
+this). The dramatic irony of the reader knowing what Elizabeth is
+about to be told and watching her resist the telling. Most of the
+novel's comedy is also its argument: every character whose
+self-knowledge fails them is wrong about something the reader can
+already see.</p>
+
+<h2>The marriage plot as social analysis</h2>
+
+<p>The marriage plot — five sisters, no income, the need for
+husbands — is not romantic backdrop; it is economic infrastructure.
+A daughter in Regency England without a husband had three
+options: dependence on a brother, governessing for someone
+richer, or genteel destitution. Mr. Collins's proposal is funny
+on the page and brutal in implication: he is offering Elizabeth a
+secure life she has no other path to. Charlotte Lucas, who takes
+him, is not romantically deluded; she is making the only rational
+trade her circumstances allow.</p>
+
+<p>Reading the novel as a marriage plot only — without seeing the
+economic infrastructure under it — flattens what Austen is doing.
+Reading it as economic only — without the comedy and the
+romance — flattens it the other way. The novel insists on both
+at once.</p>
+
+<h2>The pivotal letter</h2>
+
+<p>Darcy's letter, delivered after his first proposal, is the
+structural pivot of the novel. Up to that point, Elizabeth has
+read every character (and herself) wrong. The letter does not
+soften her judgment; it reverses it. Austen places this
+recognition at the geometric centre of the book. Notice that the
+recognition does not come through speech or action — it comes
+through reading. The novel's deepest moments are reading
+moments: Elizabeth reads Darcy's letter, then re-reads it; the
+reader reads Elizabeth reading. The novel is teaching us how it
+wants to be read.</p>
+
+<h2>Characters as social types</h2>
+
+<p>Austen's secondary characters are sharply drawn types —
+Mr. Collins (the sycophantic clergyman), Lady Catherine (the
+domineering aristocrat), Lydia (the unchecked sensual impulse),
+Mary (the unreflective moralizer), Mrs. Bennet (the anxious
+matchmaker). Each is comic, and each is also a social position
+the novel is interested in. The types let Austen do moral
+sociology without sounding like she is doing moral sociology.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>First impressions vs. true judgment.</strong> The
+      novel's original title was <em>First Impressions</em>. Every
+      major character misreads someone, then learns to read them
+      again.</li>
+  <li><strong>Pride and prejudice as paired failures.</strong>
+      Darcy's pride and Elizabeth's prejudice mirror each other.
+      The novel doesn't argue for the absence of either; it
+      argues for the discipline of revising both when evidence
+      arrives.</li>
+  <li><strong>Talk and what it conceals.</strong> Almost every
+      conversation in the novel is doing double work — saying one
+      thing in public, signalling another in private. Reading
+      Austen well means hearing both channels.</li>
+  <li><strong>The mind as the object of comedy.</strong> The book
+      is funny about characters' interiors more than about their
+      actions. Austen invented a kind of comic novel that is
+      really a comedy of cognition.</li>
+</ul>
+
+<h2>Why it lasts</h2>
+
+<p><em>Pride and Prejudice</em> survives because the formal
+machinery it perfected — free indirect discourse, the comic
+unreliable interior, the social plot as moral argument — became
+the operating system of the European novel. Every nineteenth-
+and twentieth-century novelist who lets a character's voice and
+the narrator's voice fold into one another (George Eliot, Flaubert,
+Henry James, Virginia Woolf) is working in technique Austen
+helped invent in this book.</p>
+""",
+        "related_works": ["great-gatsby", "hamlet"],
+        "key_entries": [
+            "free-indirect-discourse", "aphorism", "dramatic-irony",
+            "satire-vs-parody", "bildungsroman-genre", "tone-vs-mood",
+            "theme-vs-motif",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-catcher-in-the-rye",
+        "title": "The Catcher in the Rye — A Reader's Guide to Salinger's Unreliable Narrator",
+        "h1": "The Catcher in the Rye — Holden's voice and the bildungsroman that won't grow",
+        "author": "J. D. Salinger",
+        "year": "1951",
+        "meta_description": "A reader's guide to Salinger's The Catcher in the Rye — vernacular voice, the unreliable adolescent narrator, the bildungsroman that refuses to complete, and what 'phony' actually means in the book.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Salinger's <em>The Catcher in the Rye</em> is a novel almost
+entirely composed of a voice. Holden Caulfield narrates it from a
+psychiatric facility months after the events, in language so
+specific to him — and to a brief moment in American adolescent
+English — that the voice has been imitated for seventy years and
+never quite matched. Reading the novel well means hearing what
+the voice is doing, not just what it says.</p>
+
+<h2>The narrator: unreliable on purpose</h2>
+
+<p>Holden is one of the great
+<a href="/glossary/unreliable-narrator"><strong>unreliable
+narrators</strong></a> in American fiction — not because he lies,
+but because his ability to perceive what is happening around him
+is broken. He tells us, in the opening paragraph, that he is
+going to give us "this madman stuff that happened to me around
+last Christmas." The word <em>madman</em> is the first signal
+that we should not take the events at face value.</p>
+
+<p>Throughout the novel, Holden's judgments about people swing
+violently. Someone is "terrific" on one page and a "phony" on the
+next, often within the same scene. The instability is the point:
+we are inside the consciousness of someone in real psychological
+distress, and the prose registers the distress in its grammar.</p>
+
+<h2>The vernacular voice</h2>
+
+<p>Holden's voice — slangy, hedging, repetitive, full of
+intensifiers and qualifications ("really," "I mean," "and all,"
+"if you want to know the truth") — was a small revolution in
+1951. Most novels before <em>Catcher</em> used adolescent
+characters but wrote them in adult prose. Salinger wrote Holden
+in language a reader could plausibly hear inside a particular
+seventeen-year-old's head. The technique is closer to
+<a href="/glossary/stream-of-consciousness">stream of
+consciousness</a> than to traditional first-person narration —
+the sentences follow the rhythms of thought rather than the
+rhythms of considered speech.</p>
+
+<h2>The bildungsroman that won't complete</h2>
+
+<p>Structurally, the novel is a
+<a href="/glossary/bildungsroman-genre"><strong>bildungsroman</strong></a>
+— a coming-of-age story. But it is the
+bildungsroman with the formation refused. The classical
+bildungsroman ends with the protagonist integrated into society,
+having matured through trial. Holden ends in a psychiatric ward,
+incapable of saying what he has learned, refusing the future
+("you can't even pick a place that's nice"). The form is
+deliberately broken. Adolescence here is not a passage but an
+arrest.</p>
+
+<h2>What "phony" actually means</h2>
+
+<p>The word Holden uses more than any other is <em>phony</em>.
+Critics have variously read it as a moral category, a class
+critique, an adolescent's all-purpose dismissal. The most
+careful reading: phoniness, for Holden, is the gap between the
+self a person performs and the self they actually are. Phoneys
+are people who have learned to act adult — to participate in the
+small social rituals — without the inner life Holden imagines
+those rituals should reflect. Everyone over a certain age, by
+this definition, is at least a little phony. The tragedy of the
+novel is that Holden cannot find an alternative: he cannot live
+without performing, and any performance disqualifies him from his
+own moral standard.</p>
+
+<h2>The recurring motifs</h2>
+
+<ul>
+  <li><strong>The ducks in the lagoon.</strong> Holden keeps
+      asking, "Where do the ducks go in winter?" The question is
+      his small unresolved
+      <a href="/glossary/theme-vs-motif">motif</a> — what happens
+      to creatures who can't survive the cold? The implicit
+      parallel to himself is never stated and is the whole
+      point.</li>
+  <li><strong>The catcher in the rye.</strong> Holden's
+      misremembered fantasy of saving children before they fall
+      off a cliff. The image, taken from a misquoted line of
+      Burns, is the novel's central
+      <a href="/glossary/allegory-vs-symbol">symbol</a> — Holden
+      cannot save himself, but he wants to save the innocence
+      he sees disappearing in his sister Phoebe.</li>
+  <li><strong>Allie's baseball mitt.</strong> Holden's dead
+      brother's mitt, covered in poetry — the novel's reservoir
+      of grief, which Holden cannot name.</li>
+  <li><strong>Red hunting hat.</strong> The hat Holden puts on
+      when he wants to feel safe; the marker of his alienation
+      and his refuge from it.</li>
+  <li><strong>The carousel.</strong> The closing scene — Phoebe
+      on the carousel in the rain, going around. The novel's
+      one moment of unguarded happiness, and the only moment in
+      which Holden stops narrating-as-performance and just
+      watches.</li>
+</ul>
+
+<h2>The unreliable confession</h2>
+
+<p>Holden's narration is shaped throughout by the awareness that
+someone is listening to him — possibly a therapist, possibly an
+imagined adult, possibly us. The first sentence ("If you really
+want to hear about it…") frames the whole book as a confession
+delivered to an interlocutor whose patience is being tested. The
+device is dramatic monologue without the verse — a sustained
+performance of self in front of a silent listener whose judgment
+Holden both fears and craves.</p>
+
+<h2>The ending</h2>
+
+<p>Holden's final paragraph is one of the strangest in American
+fiction: "Don't ever tell anybody anything. If you do, you start
+missing everybody." The line is at once a refusal of the entire
+novel he has just told and the explanation of why he told it.
+Note that he does not say what he has learned. The novel ends
+with the protagonist still inside his own crisis, still
+mistrustful of the act of telling — and yet the telling has
+happened anyway.</p>
+""",
+        "related_works": ["great-gatsby", "to-kill-a-mockingbird"],
+        "key_entries": [
+            "unreliable-narrator", "bildungsroman-genre", "stream-of-consciousness",
+            "theme-vs-motif", "allegory-vs-symbol", "interior-monologue",
+            "tone-vs-mood",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-odyssey",
+        "title": "The Odyssey — A Reader's Guide to Homer's Epic Conventions",
+        "h1": "The Odyssey — themes, structure, and epic vocabulary",
+        "author": "Homer",
+        "year": "c. 700 BCE",
+        "meta_description": "A reader's guide to Homer's Odyssey — epic conventions, the Homeric epithet, nostos, in medias res structure, xenia, and why Odysseus is the prototype of the wandering hero.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>The <em>Odyssey</em> is the foundational text of Western
+narrative fiction. Almost every storytelling convention you can
+name — the in-medias-res opening, the frame narrative, the
+voyage as moral education, the hero's recognition, the long-
+delayed homecoming — either originates in the <em>Odyssey</em>
+or finds its earliest extant form there. To read it well, you
+need a working vocabulary for the technical features of Greek
+epic. This guide collects them.</p>
+
+<h2>The epic conventions</h2>
+
+<p>Homer's poem inaugurates a checklist of features that every
+later epic in the Western tradition — Virgil, Dante, Milton —
+would either use or deliberately reject:</p>
+
+<ul>
+  <li><strong>The invocation of the Muse.</strong> The poem opens
+      by asking the goddess of poetry for help: "Sing in me, Muse,
+      and through me tell the story of that man skilled in all
+      ways of contending." The convention frames the poet as a
+      vessel rather than an inventor.</li>
+  <li><strong><a href="/glossary/in-medias-res">In medias res</a>.</strong>
+      The narrative opens not at the beginning of Odysseus'
+      voyage but in its tenth year, with him stranded on Calypso's
+      island. The earlier events are filled in by later
+      narration.</li>
+  <li><strong><a href="/glossary/epithet">The Homeric epithet</a>.</strong>
+      "Swift-footed Achilles" in the <em>Iliad</em>;
+      "rosy-fingered Dawn," "wine-dark sea," "much-enduring
+      Odysseus" in the <em>Odyssey</em>. The epithets are
+      structural — they are the formulaic building blocks of an
+      oral-formulaic poetry composed in hexameter performance.</li>
+  <li><strong>Extended simile.</strong> The <em>Homeric simile</em>
+      is a comparison so elaborate it becomes a small poem of its
+      own, often three or four lines long: "as when a man on a
+      headland watches the sea darken under a wind…"</li>
+  <li><strong>Catalogues.</strong> Long lists — of ships, of
+      warriors, of suitors — function as both political claim
+      and mnemonic structure.</li>
+  <li><strong>Divine intervention.</strong> The gods are
+      participants, not spectators. Athena's protection of
+      Odysseus drives the plot; Poseidon's wrath complicates it.</li>
+</ul>
+
+<h2>Nostos: the homecoming</h2>
+
+<p>The Greek word <em>nostos</em> means "homecoming," and it
+gives us the English word <em>nostalgia</em> (literally, the pain
+of the desire to return home). The <em>Odyssey</em> is the
+foundational nostos narrative — the structural form in which a
+hero's journey is shaped by the longing to return rather than the
+longing to arrive. Every later return-narrative — from Tennyson's
+<em>Ulysses</em> to Joyce's <em>Ulysses</em> to any film about a
+soldier coming home — borrows from this prototype.</p>
+
+<h2>Xenia: the law of guest-friendship</h2>
+
+<p><em>Xenia</em> is the Greek code of hospitality between guest
+and host, considered sacred and enforced by Zeus himself. Almost
+every episode of the <em>Odyssey</em> is, in some way, a test of
+xenia: the Cyclops violates it (eating his guests); Calypso
+extends a corrupted version of it (refusing to let her guest
+leave); the suitors violate it (consuming their absent host's
+property); the swineherd Eumaeus honours it (sharing his last
+piglet with a stranger). The poem's moral framework runs on
+xenia, and modern readers who don't know the code miss most of
+what the scenes are arguing.</p>
+
+<h2>The structure</h2>
+
+<p>The poem is in twenty-four books, conventionally divided into
+three parts:</p>
+
+<ul>
+  <li><strong>The Telemachy</strong> (Books 1–4) — Telemachus, the
+      son, comes of age. Almost a separate bildungsroman embedded
+      in the larger poem.</li>
+  <li><strong>The Wanderings</strong> (Books 5–12) — Odysseus
+      narrates his adventures to the Phaeacians. These are the
+      most-anthologized books: Cyclops, Sirens, Scylla and
+      Charybdis, the descent to the underworld.</li>
+  <li><strong>The Return and Vengeance</strong> (Books 13–24) —
+      Odysseus reaches Ithaca, disguises himself, and reclaims
+      his household.</li>
+</ul>
+
+<p>The first and third parts are domestic and slow; the middle
+is mythic and fast. The contrast is part of the design.</p>
+
+<h2>The recognition scenes</h2>
+
+<p>The <em>Odyssey</em> is full of
+<a href="/glossary/anagnorisis">recognition scenes</a> —
+Aristotle's term for the moment a character realizes a hidden
+identity. Odysseus is recognized by his dog Argos, by his nurse
+Eurycleia (via a scar), by his son Telemachus, by his father
+Laertes (via a memory of olive trees), and finally by his wife
+Penelope (via the secret of their immovable bed). Each
+recognition is staged differently, and each one tests something
+the poem cares about — loyalty, intimacy, memory, marriage.</p>
+
+<h2>Odysseus as the prototype</h2>
+
+<p>The poem's hero is the original
+<a href="/glossary/epithet">"man of many turns"</a> — clever,
+duplicitous, eloquent, capable of cruelty, capable of grief, the
+prototype of every cunning protagonist in Western fiction from
+Joyce's Leopold Bloom to Tony Soprano. He is the opposite of the
+straightforward Achilles. Where Achilles' identity is fixed and
+fatal, Odysseus' is fluid and survivable. He is, by some count,
+the first hero of fiction we identify with because of his
+<em>interiority</em> rather than his deeds.</p>
+
+<h2>Reading Homer in translation</h2>
+
+<p>If you are reading the <em>Odyssey</em> in English, the
+translation choice matters. Fagles is the standard modern
+contemporary; Lattimore is the most line-by-line literal; Fitzgerald
+the most poetic; Wilson (2017) is the first English translation
+by a woman and the first to render the poem in lines of the same
+length as Homer's. Each gives you a different poem. Read at
+least two if you can.</p>
+""",
+        "related_works": ["hamlet"],
+        "key_entries": [
+            "epithet", "in-medias-res", "anagnorisis",
+            "hubris", "frame-narrative", "simile-vs-metaphor",
+            "theme-vs-motif",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "brave-new-world",
+        "title": "Brave New World — A Reader's Guide to Huxley's Dystopia of Pleasure",
+        "h1": "Brave New World — themes, satire, and the engineered society",
+        "author": "Aldous Huxley",
+        "year": "1932",
+        "meta_description": "A reader's guide to Aldous Huxley's Brave New World — dystopia through pleasure rather than pain, Fordism, conditioning, soma, and the novel's argument with Orwell.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Huxley's <em>Brave New World</em> is the great alternate
+dystopia — the one in which the state controls its citizens not
+through pain and surveillance but through pleasure, conditioning,
+and a pharmacological erasure of grief. Read alongside
+<a href="/works/1984">Orwell's <em>1984</em></a>, it makes a
+different and arguably more chilling claim: that totalitarianism
+in a wealthy society would not need boots and torture. It would
+only need contentment.</p>
+
+<h2>The genre: dystopia of pleasure</h2>
+
+<p>The novel sits in the broader genre of
+<a href="/glossary/dystopia"><strong>dystopia</strong></a>, but
+its specific contribution is the version of the genre in which
+the state's instrument is not coercion but desire. Huxley's
+World State has solved unhappiness by:</p>
+
+<ul>
+  <li><strong>Genetic engineering and predetermination.</strong>
+      Citizens are decanted from bottles in five caste hierarchies
+      (Alpha to Epsilon). Class is biological and absolute.</li>
+  <li><strong>Hypnopaedia (sleep-conditioning).</strong> Children
+      are trained in their sleep with thousands of repetitions of
+      class-appropriate slogans. Beliefs are installed before
+      consciousness has a chance to form them.</li>
+  <li><strong>Soma.</strong> The state-provided drug that
+      eliminates negative emotion ("a gramme is better than a
+      damn"). All grief, all anxiety, all dissatisfaction is
+      pharmacologically managed.</li>
+  <li><strong>Recreational sex without consequence.</strong>
+      Children are encouraged toward "erotic play"; monogamy is
+      pathologized; reproduction is industrialised.</li>
+  <li><strong>Consumer abundance.</strong> "Ending is better than
+      mending" — the economic system requires that everyone
+      consume constantly, and the conditioning ensures they do.</li>
+</ul>
+
+<h2>The Huxley vs. Orwell argument</h2>
+
+<p>The novel's most influential afterlife is its disagreement with
+<em>1984</em>. Huxley, who taught Orwell at Eton, wrote in 1949
+that he believed his version of totalitarianism — control through
+desire — was more likely than Orwell's control through pain. Neil
+Postman summarised the difference in 1985:</p>
+
+<blockquote>
+What Orwell feared were those who would ban books. What Huxley
+feared was that there would be no reason to ban a book, for there
+would be no one who wanted to read one.
+</blockquote>
+
+<p>Both novels remain alive because both fears turned out to
+describe real tendencies. The most useful way to read them is
+together.</p>
+
+<h2>The satire</h2>
+
+<p>The novel is structured as
+<a href="/glossary/satire-vs-parody"><strong>satire</strong></a>
+of three things at once: industrial capitalism (the cult of Ford),
+behaviourist psychology (Watson and Pavlov made literal), and the
+techno-utopian optimism of the 1920s. The deification of Henry
+Ford ("Our Ford"), the assembly line as the model for human
+reproduction, the worship of consumption — all are exaggerations
+of tendencies Huxley observed in his own moment. The satire works
+by extrapolation: take a present-day idea and ask what a society
+that had completely committed to it would look like.</p>
+
+<h2>The Savage as the novel's outsider</h2>
+
+<p>John, "the Savage," is raised on a Native American reservation
+on the literary diet of a single battered Complete Shakespeare.
+When he is brought to London, his vocabulary is Shakespeare's, his
+moral categories are Shakespeare's, and he is unable to translate
+between his inherited worldview and the World State's. He
+articulates the novel's central refusal in Shakespearean cadence:
+"But I don't want comfort. I want God, I want poetry, I want real
+danger, I want freedom, I want goodness. I want sin."</p>
+
+<p>John is the novel's structural device for letting Huxley
+critique the World State from inside the novel — not by authorial
+intrusion but by importing a character whose vocabulary
+incompatibility makes the critique unavoidable.</p>
+
+<h2>The vocabulary of the World State</h2>
+
+<p>Huxley invents a technical vocabulary that, like
+<a href="/works/1984">Orwell's Newspeak</a>, is doing political
+work:</p>
+
+<ul>
+  <li><strong>Bokanovsky's Process</strong> — the mass-cloning
+      technique that produces dozens of identical workers from a
+      single fertilized ovum.</li>
+  <li><strong>Soma holidays</strong> — pharmaceutical vacations
+      taken instead of solving problems.</li>
+  <li><strong>Feelies</strong> — multisensory cinema; entertainment
+      designed for total immersion and zero reflection.</li>
+  <li><strong>"Everyone belongs to everyone else"</strong> — the
+      hypnopaedic slogan that codifies the elimination of
+      monogamy and exclusive attachment.</li>
+  <li><strong>The Bureau of Propaganda</strong> — managing both
+      consent and desire.</li>
+</ul>
+
+<p>Each term is a <a href="/glossary/euphemism">euphemism</a>: it
+makes the state's machinery sound benign by giving it a friendly
+name.</p>
+
+<h2>The themes</h2>
+
+<ul>
+  <li><strong>Stability vs. freedom.</strong> The World Controller,
+      Mustapha Mond, argues openly: we traded high art, deep love,
+      and meaningful struggle for permanent stability. Huxley
+      makes the trade-off explicit so the reader can decide.</li>
+  <li><strong>The cost of eliminating suffering.</strong> Mond's
+      most disturbing speech: "You can't have a lasting
+      civilization without plenty of pleasant vices." Huxley is
+      arguing that meaning depends on the possibility of pain.</li>
+  <li><strong>Art and the state.</strong> Shakespeare is banned
+      because tragedy requires real loss, and the World State has
+      abolished the conditions under which loss is possible.
+      Without instability, art has nothing to say.</li>
+  <li><strong>The role of religion.</strong> Religion has been
+      replaced with consumer ritual (the Solidarity Service, with
+      its orgiastic communion). Huxley's argument: the religious
+      impulse doesn't disappear; it migrates into whatever
+      structure offers transcendence.</li>
+</ul>
+
+<h2>The ending</h2>
+
+<p>John's final solitude — and his eventual suicide — is the
+novel's verdict on the trade-off the World State has made.
+Importantly, John is not heroic; he is broken. Huxley refuses the
+consolation of a successful rebellion. The novel ends with the
+state intact, John dead, and the reader holding the disturbance
+the novel has produced. Like every successful dystopia, the book
+ends in defeat — because the genre's argument cannot be made
+through victory.</p>
+""",
+        "related_works": ["1984"],
+        "key_entries": [
+            "dystopia", "satire-vs-parody", "euphemism",
+            "paradox-oxymoron", "theme-vs-motif", "allegory-vs-symbol",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "beloved",
+        "title": "Beloved — A Reader's Guide to Toni Morrison's Postmemory and the Ghosts of Slavery",
+        "h1": "Beloved — fragmentation, memory, and the ghost as historical witness",
+        "author": "Toni Morrison",
+        "year": "1987",
+        "meta_description": "A reader's guide to Toni Morrison's Beloved — postmemory, magical realism, fragmented chronology, the ghost as historical witness, and rememory as the novel's defining concept.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Toni Morrison's <em>Beloved</em> is the most formally
+ambitious novel about American slavery and one of the most
+careful examples in English of how form can carry historical
+weight. The novel's fragmentation, its withheld revelations, and
+its insistence on the ghost as a literal presence are not
+stylistic choices laid on top of the subject. They <em>are</em>
+the subject. To read the novel well is to read its form as
+argument.</p>
+
+<h2>The opening: a haunted house</h2>
+
+<p>The novel begins: "124 was spiteful. Full of a baby's venom."
+The first sentence does two things. It refuses the conventional
+exposition (we have to assemble who lives where, when this is,
+who the baby was, over many pages). And it commits, immediately
+and without explanation, to the supernatural: a house can be
+spiteful; a baby can have venom. The novel is announcing its
+genre — <a href="/glossary/magical-realism"><strong>magical
+realism</strong></a> — in its first eight words.</p>
+
+<p>For Morrison, the ghost is not a metaphor. The history of
+American slavery cannot be told in realist prose because realist
+prose was, historically, the genre that consistently failed to
+register it. The ghost is the form the suppressed past takes
+when it returns.</p>
+
+<h2>Rememory: Morrison's invented concept</h2>
+
+<p>Sethe articulates the novel's central concept early: certain
+events have such intensity that they continue to exist
+independent of the person who experienced them. They become
+<em>rememory</em> — accessible to anyone who walks into their
+space, even decades later:</p>
+
+<blockquote>
+If a house burns down, it's gone, but the place — the picture of
+it — stays, and not just in my rememory, but out there, in the
+world. What I remember is a picture floating around out there
+outside my head.
+</blockquote>
+
+<p>Rememory is Morrison's literary term for what trauma theorists
+would later call <em>postmemory</em> — the inheritance of memory
+by people who did not experience the original event but live
+inside its consequences. The novel is a sustained investigation
+of how to write that inheritance.</p>
+
+<h2>The fragmented chronology</h2>
+
+<p>The novel's chronology refuses to be linear. We learn about
+Sethe's escape from Sweet Home, the killing of her child, the
+arrival of Paul D, the return of Beloved, and the early years at
+124 in a sequence that follows the rhythm of trauma rather than
+the rhythm of clock-time. Pages of present action are
+interrupted by sentences of unsourced memory; entire chapters
+are devoted to a single character's interior;
+<a href="/glossary/prolepsis-and-analepsis">analeptic flashes</a>
+arrive before we have the context to place them.</p>
+
+<p>The reader's experience — disorientation, the sense of
+something withheld — mirrors the characters' experience. Form is
+content here.</p>
+
+<h2>The withheld centre</h2>
+
+<p>The novel's central event — Sethe's killing of her own
+daughter to keep her from being returned to slavery — is
+disclosed only gradually. We hear references to it for many
+chapters before we are shown what happened. Morrison's
+<a href="/glossary/foreshadowing">foreshadowing</a> is structural:
+we are made to suspect, then to almost-know, then to know-without-
+being-told, and finally to read the scene directly. By the time we
+arrive at the central event, the novel has already made its
+argument about what kind of historical violence produces a mother
+who would do that.</p>
+
+<h2>Beloved as figure</h2>
+
+<p>The character who arrives at 124 and gives the novel its title
+is, depending on the reader, several different things at once:</p>
+
+<ul>
+  <li>The literal ghost of Sethe's killed daughter, materialized
+      in adult form.</li>
+  <li>A figure for the Sixty Million — Morrison's dedication
+      memorialising those who died in the Middle Passage and in
+      slavery.</li>
+  <li>An escaped slave from a contemporary trauma, displaced
+      onto Sethe's family.</li>
+  <li>The literary embodiment of rememory itself.</li>
+</ul>
+
+<p>The novel refuses to collapse these readings into one. Beloved
+is undecidable on purpose — the novel's argument is that the
+trauma cannot be cleanly individuated. Sethe's lost daughter and
+the historical Sixty Million share a single haunting.</p>
+
+<h2>Voice: the three interior chapters</h2>
+
+<p>The novel contains three remarkable consecutive chapters in
+Part II in which Sethe, Denver, and Beloved each speak from
+inside in unattributed
+<a href="/glossary/interior-monologue">interior monologue</a> —
+each ending with the line "Beloved, she my daughter. She mine"
+or close variants, the maternal claim that the novel both honours
+and asks us to question. The third chapter, Beloved's, dissolves
+syntax entirely: words run together, the Middle Passage and
+Sethe's killing become superimposed, and the prose itself
+performs the trauma it describes.</p>
+
+<h2>The narrative's relationship to slavery</h2>
+
+<p>Morrison once said she wrote <em>Beloved</em> because there
+was no monument to slavery anywhere in America. The novel is
+written as a substitute monument — a sustained act of
+remembrance for an experience that the dominant culture has, in
+her phrase, "national amnesia" about. The novel's epigraph is
+biblical (Romans 9:25): "I will call them my people, which were
+not my people." The reclamation of the unloved is the novel's
+deepest gesture.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Maternal love under conditions of slavery.</strong>
+      How does a mother love a child she does not own? Morrison's
+      answer is the engine of the book.</li>
+  <li><strong>The community's responsibility.</strong> The
+      exorcism at the end is performed not by an individual but
+      by thirty women. Morrison's argument: healing cannot be
+      private when the wound is collective.</li>
+  <li><strong>Naming and the right to a name.</strong> Sethe,
+      Halle, Paul D, Stamp Paid, Sixo, Beloved — almost every
+      name in the novel carries the mark of its having been
+      assigned by power rather than chosen.</li>
+  <li><strong>The body as the only document.</strong> Sethe's
+      back, scarred into the shape of a chokecherry tree by her
+      beating — the novel's most enduring image — is the body
+      reading itself, the wound become legible.</li>
+</ul>
+
+<h2>The closing line</h2>
+
+<p>The novel ends, after Beloved has been exorcised and forgotten:
+"This is not a story to pass on." The line is one of the great
+ambivalent endings in American fiction. <em>Pass on</em> can mean
+both "ignore" and "transmit." Morrison leaves the reader holding
+the contradiction: this is not a story to ignore; this is not a
+story to transmit. Both true; neither sufficient.</p>
+""",
+        "related_works": ["1984", "to-kill-a-mockingbird"],
+        "key_entries": [
+            "magical-realism", "prolepsis-and-analepsis", "interior-monologue",
+            "foreshadowing", "free-indirect-discourse", "theme-vs-motif",
+            "stream-of-consciousness",
+        ],
+    },
 ]
 
 _BY_SLUG: dict[str, dict] = {w["slug"]: w for w in WORKS}

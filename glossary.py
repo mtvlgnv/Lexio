@@ -8190,6 +8190,575 @@ exaggeration is the author's argument about the present.</p>
 """,
     },
 
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "personification",
+        "term": "personification",
+        "context": "figurative language",
+        "title": "What \"Personification\" Means — Giving Human Qualities to Non-Human Things",
+        "meta_description": "Personification is the figure of speech that gives human qualities, actions, or emotions to non-human things — animals, objects, abstractions, weather. With examples from Wordsworth to Tolkien.",
+        "h1": "What \"personification\" means",
+        "updated": "2026-05-25",
+        "related": ["pathetic-fallacy", "simile-vs-metaphor", "apostrophe-literary"],
+        "body_html": """
+<p><strong>Personification</strong> is the figure of speech that
+gives human qualities, actions, or emotions to non-human things —
+animals, objects, weather, abstract ideas, even institutions. It is
+one of the most ancient and most universal devices in literature;
+every mythology personifies its forces, every poet personifies
+something, and every advertising copywriter who has ever written
+"your kitchen deserves more" is also using it.</p>
+
+<h2>Examples from across the canon</h2>
+
+<ul>
+  <li><strong>Emily Dickinson</strong>: "Because I could not stop
+      for Death — / He kindly stopped for me." Death is given a
+      courteous personality and a carriage.</li>
+  <li><strong>John Donne</strong>: "Death, be not proud, though
+      some have called thee / Mighty and dreadful, for thou art
+      not so." The poet addresses Death as if it could feel
+      humiliation.</li>
+  <li><strong>Wordsworth</strong>: "The river glideth at his own
+      sweet will." The river is given volition, even mood.</li>
+  <li><strong>Sylvia Plath</strong>, "Daddy": "I was ten when they
+      buried you. / At twenty I tried to die / And get back, back,
+      back to you." Memory itself takes on the personality of the
+      addressee.</li>
+  <li><strong>Tolkien</strong>: the Ring "wants" to be found; the
+      Forest is "alive"; the swords of Westernesse "remember" old
+      wars. Personification gives Middle-earth its moral weight.</li>
+</ul>
+
+<h2>Personification vs. pathetic fallacy</h2>
+
+<p>These two terms overlap and are sometimes confused. The
+distinction:</p>
+
+<ul>
+  <li><strong>Personification</strong> is the broad figure — any
+      attribution of human qualities to a non-human thing.</li>
+  <li><strong>Pathetic fallacy</strong> (Ruskin's term) is the
+      more specific case where <em>nature</em> seems to share the
+      <em>emotions</em> of human characters — the storm rages with
+      Lear, the sky weeps at the funeral. All pathetic fallacy is
+      personification; not all personification is pathetic fallacy.
+      See <a href="/glossary/pathetic-fallacy">our entry on
+      pathetic fallacy</a> for the longer story.</li>
+</ul>
+
+<h2>Personification vs. apostrophe</h2>
+
+<p>Closely related: <a href="/glossary/apostrophe-literary">apostrophe</a>
+is when a speaker addresses an absent person, an abstraction, or
+an inanimate object directly. The two often appear together — when
+Donne addresses Death, he is both personifying Death and
+apostrophizing it. The two figures are independent, though:
+personification can describe (the river glides), apostrophe is
+always direct address (O River).</p>
+
+<h2>Why writers use it</h2>
+
+<p>Personification does several jobs. It makes the abstract
+concrete: a "rising threat" is harder to feel than "a threat that
+crouches in the next room." It creates moral relationships with
+non-moral things: once nature has intentions, our actions toward
+it can have ethical weight. It compresses: a single personifying
+verb does the work of a paragraph of analysis. And it carries
+ancient resonances — to personify is to participate in the same
+gesture as the myths that gave us Athena, Loki, and Janus.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When you notice that a non-human thing in a passage is being
+given a human verb — the city <em>sleeps</em>, the algorithm
+<em>decides</em>, the wind <em>whispers</em> — the writer is
+borrowing the weight of a human relationship to make you feel
+something about the non-human thing. Ask why <em>that</em> human
+quality, and not another.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "trope",
+        "term": "trope",
+        "context": "literary theory",
+        "title": "What \"Trope\" Means in Literature — The Original Meaning vs. the Modern One",
+        "meta_description": "A trope is a figurative use of language (the original sense), or a recurring narrative convention (the modern sense). Here's how the same word came to mean two very different things.",
+        "h1": "What \"trope\" means in literature",
+        "updated": "2026-05-25",
+        "related": ["simile-vs-metaphor", "motif", "leitmotif"],
+        "body_html": """
+<p><strong>Trope</strong> is one of the few literary terms with
+two genuinely different modern senses. The older sense, going back
+to classical rhetoric, is technical and narrow: a trope is a
+figure of speech in which a word is used in a sense other than its
+literal one. The newer sense, common in film and television
+criticism, is broad and colloquial: a trope is a recurring
+narrative device — the chosen one, the noble savage, the dead
+girlfriend who motivates the hero. Both senses are alive today, and
+the confusion between them is constant.</p>
+
+<h2>The classical sense: figurative use of language</h2>
+
+<p>In classical rhetoric, the tropes were a specific subset of
+rhetorical figures — the figures of <em>thought</em>, as opposed
+to the figures of arrangement (called "schemes"). The classical
+tropes include:</p>
+
+<ul>
+  <li><a href="/glossary/simile-vs-metaphor"><strong>Metaphor</strong></a>
+      — calling one thing another.</li>
+  <li><a href="/glossary/metonymy"><strong>Metonymy</strong></a>
+      — substitution by association.</li>
+  <li><a href="/glossary/synecdoche"><strong>Synecdoche</strong></a>
+      — part for whole.</li>
+  <li><strong>Irony</strong> — saying one thing and meaning
+      another.</li>
+  <li><a href="/glossary/hyperbole"><strong>Hyperbole</strong></a>
+      — exaggeration for effect.</li>
+  <li><strong>Litotes</strong> — understatement, especially by
+      double negative.</li>
+</ul>
+
+<p>In this sense, "trope" is the umbrella term, and individual
+figures like metaphor are sub-types.</p>
+
+<h2>The modern sense: narrative convention</h2>
+
+<p>In contemporary criticism (and especially on the internet),
+"trope" usually means a recurring narrative device, character
+type, or plot beat. The chosen one. The wise mentor. The locked
+room. The unreliable narrator. The villain who explains his plan.
+The romantic interest fridged to motivate the male protagonist.</p>
+
+<p>This sense became standard partly through cultural-studies
+analysis of mass media, and partly through the fan-driven
+encyclopedic project <em>TV Tropes</em>, which catalogued
+thousands of these conventions. The site changed how popular
+audiences talk about storytelling.</p>
+
+<h2>Why both senses survive</h2>
+
+<p>The two senses share a deep logic: both name a
+<em>repeatable pattern</em> in how meaning gets made. A metaphor
+is a repeatable pattern at the sentence level; a "chosen one"
+trope is a repeatable pattern at the plot level. Calling them by
+the same word emphasizes the continuity, even at the cost of
+ambiguity in any given sentence.</p>
+
+<h2>Trope vs. motif vs. cliché</h2>
+
+<ul>
+  <li><strong>Trope</strong> (modern sense) — a recurring
+      convention, neutral. "The marriage-plot trope."</li>
+  <li><a href="/glossary/motif"><strong>Motif</strong></a> — a
+      recurring image, phrase, or idea within a single work. "The
+      colour green is a motif in <em>Gatsby</em>."</li>
+  <li><strong>Cliché</strong> — a trope that has been used so
+      often it has become tired. The pejorative cousin of
+      "trope" — though the line is fuzzy and culturally
+      negotiated.</li>
+</ul>
+
+<h2>How to read it in context</h2>
+
+<p>If you meet "trope" in a critical essay from before 1980 or in
+a rhetorical context, it almost certainly means the classical
+sense — a figure of speech, probably metaphor or one of its
+cousins. If you meet it in a film review, a tweet, or a TV-Tropes
+entry, it means the narrative-convention sense. Both are correct;
+the only mistake is to assume the wrong one.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "epithet",
+        "term": "epithet",
+        "context": "epic and rhetoric",
+        "title": "What \"Epithet\" Means in Literature — From Homer's Formulas to Modern Usage",
+        "meta_description": "An epithet is a descriptive phrase attached to a name (rosy-fingered Dawn, swift-footed Achilles). Here's how Homer used them, why, and what the term means today.",
+        "h1": "What \"epithet\" means in literature",
+        "updated": "2026-05-25",
+        "related": ["metonymy", "synecdoche", "personification"],
+        "body_html": """
+<p>An <strong>epithet</strong> is a descriptive phrase or adjective
+attached to a name to characterise its bearer. The most famous
+examples come from Homer — "rosy-fingered Dawn," "swift-footed
+Achilles," "wine-dark sea" — but the figure long predates the
+<em>Iliad</em> and is still alive in everyday English.</p>
+
+<h2>The Homeric epithet</h2>
+
+<p>Homer's epithets are not decorative. They are structural — a
+technical feature of the oral-formulaic poetry from which the
+<em>Iliad</em> and <em>Odyssey</em> emerged. The bard composed in
+performance, drawing on a stock of pre-fitted phrases that
+matched the metrical needs of the hexameter line. "Swift-footed
+Achilles" is exactly the right length to fill a specific position
+in a Greek hexameter; "Achilles, slayer of Hector" fits a
+different one. The epithets are tools.</p>
+
+<p>This is the Milman Parry / Albert Lord thesis from the 1930s —
+a transformative discovery in classical scholarship. Before Parry,
+the epithets were read as character-revealing description. After
+Parry, they were understood as the building blocks of an oral
+tradition: prefabricated phrases that let an illiterate poet
+compose, in real time, lines that scanned.</p>
+
+<h2>Examples from Homer</h2>
+
+<ul>
+  <li><em>Rosy-fingered Dawn</em> (ῥοδοδάκτυλος Ἠώς) — Dawn
+      personified as a goddess whose fingers tinge the sky.</li>
+  <li><em>Swift-footed Achilles</em> — the hero's speed, his most
+      identifying physical quality.</li>
+  <li><em>Wine-dark sea</em> (οἶνοψ πόντος) — the sea's deep
+      colour, possibly suggestive of a wine-glass's reflection.</li>
+  <li><em>Grey-eyed Athena</em> — the goddess's piercing intellect
+      figured in her gaze.</li>
+  <li><em>Earth-shaker Poseidon</em> — the god named by what he
+      does, not just what he is.</li>
+</ul>
+
+<h2>Epithet in non-Homeric usage</h2>
+
+<p>Outside epic, "epithet" has several adjacent meanings:</p>
+
+<ul>
+  <li><strong>Fixed or characterizing epithet</strong> — any
+      descriptive phrase that habitually attaches to a name:
+      Alexander the Great, Ivan the Terrible, Pliny the Elder.</li>
+  <li><strong>Transferred epithet</strong> (hypallage) — an
+      adjective grammatically attached to the wrong noun for
+      effect: "a sleepless night" (we are sleepless, not the
+      night); "the cheerful fire" (we are cheered, not the fire).</li>
+  <li><strong>Pejorative epithet</strong> — in modern usage, often
+      a slur. "Racial epithet" is the dominant journalistic use
+      of the word, which is why "epithet" alone now sounds
+      faintly negative even when it isn't.</li>
+</ul>
+
+<h2>Why writers use it</h2>
+
+<p>The classical epithet is shorthand. "Swift-footed Achilles"
+tells you, in two words, what kind of warrior we are talking
+about. Modern writers use the form for the same compression —
+"Honest Iago," "Lawful Daniel," "Old Faithful." The epithet
+encodes a character trait into the very name, so that every time
+the name appears, the trait is reactivated.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a translation of Homer feels strange — when "Dawn" keeps
+arriving with rosy fingers and the sea keeps being wine-dark —
+remember that the strangeness is structural, not decorative. The
+epithets are the architecture of the verse. In a modern novel,
+when a character is repeatedly referred to by the same
+descriptive phrase, the writer is borrowing the Homeric move; ask
+what trait the epithet is foregrounding.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "euphemism",
+        "term": "euphemism",
+        "context": "rhetoric and political language",
+        "title": "What \"Euphemism\" Means — Substituting a Soft Word for a Hard One",
+        "meta_description": "A euphemism is a mild or indirect word substituted for one considered harsh or unpleasant — \"passed away\" for died, \"collateral damage\" for civilian deaths. Here's how they work.",
+        "h1": "What \"euphemism\" means",
+        "updated": "2026-05-25",
+        "related": ["paradox-oxymoron", "satire-vs-parody", "dystopia"],
+        "body_html": """
+<p>A <strong>euphemism</strong> is a mild, indirect, or pleasant
+word or phrase substituted for one that would otherwise be
+considered harsh, blunt, embarrassing, or unpleasant. From the
+Greek <em>eu-</em> ("good") + <em>phēmē</em> ("speech"). Every
+language has them; every era invents new ones; political euphemism
+is one of the most consequential subjects in modern rhetoric.</p>
+
+<h2>The everyday euphemisms</h2>
+
+<ul>
+  <li><strong>Death.</strong> <em>Passed away, passed, departed,
+      lost, no longer with us, in a better place</em>. English has
+      dozens because the underlying fact is so hard.</li>
+  <li><strong>Bodily functions.</strong> <em>Restroom, powder
+      room, ladies', the facilities</em> — for an institution
+      that, etymologically, has nothing to do with rest, powder,
+      or facilities.</li>
+  <li><strong>Sex.</strong> <em>Sleeping together, getting
+      intimate, hooking up</em> — vagueness is the entire point.</li>
+  <li><strong>Job loss.</strong> <em>Let go, downsized,
+      right-sized, restructured, transitioned out</em>. The
+      passive voice is doing structural work.</li>
+  <li><strong>Old age.</strong> <em>Senior, mature, of a certain
+      age</em>. We avoid "old" because the culture treats the fact
+      as a kind of shame.</li>
+</ul>
+
+<h2>Political euphemism</h2>
+
+<p>Where everyday euphemism is mostly social lubrication —
+softening what would otherwise feel rude — political euphemism is
+something more serious: language deliberately designed to
+obscure, anaesthetise, or sanitise actions the speaker would
+rather not name directly. The locus classicus is George Orwell's
+1946 essay <em>Politics and the English Language</em>:</p>
+
+<blockquote>
+The great enemy of clear language is insincerity. When there is
+a gap between one's real and one's declared aims, one turns as
+it were instinctively to long words and exhausted idioms…
+</blockquote>
+
+<p>Orwell's examples are still depressingly current. "Pacification"
+for the burning of villages. "Transfer of population" for ethnic
+cleansing. "Elimination of unreliable elements" for political
+murder. The euphemism is doing moral work — it is letting the
+reader (or speaker) not quite see what is being described.</p>
+
+<h2>The Orwellian euphemism in fiction</h2>
+
+<p>The most famous fictional treatment is the Party's vocabulary
+in <a href="/glossary/dystopia">Orwell's <em>1984</em></a>:
+"<em>Joycamp</em>" for forced-labour camp, "<em>Minipax</em>" for
+the Ministry of War, "<em>doublethink</em>" itself as a euphemism
+for self-deception. Orwell's argument is that the
+euphemism is the totalitarian state's basic instrument; once you
+control what something is called, you have done much of the work
+of controlling what people think about it.</p>
+
+<h2>Why euphemisms drift</h2>
+
+<p>Euphemisms have a short half-life — what linguists call the
+<em>euphemism treadmill</em>. A soft word eventually picks up
+the connotations of the hard reality it was invented to
+disguise, and then a new soft word is invented. "Idiot,"
+"moron," and "imbecile" were once clinical terms. "Crippled"
+became "handicapped" became "disabled" became "differently
+abled." The underlying social attitude has to change, or the new
+word just becomes the next problem.</p>
+
+<h2>Euphemism vs. dysphemism</h2>
+
+<p>The opposite figure is <strong>dysphemism</strong> — replacing
+a neutral term with a harsher one. "Pig" for police officer,
+"shrink" for psychiatrist, "boomer" for older person. Where
+euphemism softens, dysphemism aggravates. Both are doing the
+same kind of rhetorical work in opposite directions.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a passage uses many words to describe a thing that has a
+shorter, harder word — especially in political or institutional
+prose — ask why. The substitution is rarely accidental. The
+euphemism is what the writer (or institution) wants you to feel
+about the underlying reality, with the underlying reality just
+out of focus.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "juxtaposition",
+        "term": "juxtaposition",
+        "context": "literary technique",
+        "title": "What \"Juxtaposition\" Means in Literature — Placing Things Side by Side for Effect",
+        "meta_description": "Juxtaposition is the deliberate placement of two contrasting things side by side to highlight their differences or unexpected similarities. With examples from Dickens to Eliot.",
+        "h1": "What \"juxtaposition\" means",
+        "updated": "2026-05-25",
+        "related": ["paradox-oxymoron", "tone-vs-mood", "simile-vs-metaphor"],
+        "body_html": """
+<p><strong>Juxtaposition</strong> is the deliberate placement of
+two contrasting elements — words, images, scenes, characters,
+ideas — next to each other to highlight their differences or, more
+interestingly, their unexpected similarities. The word is from the
+Latin <em>juxta</em> ("near") + <em>positio</em> ("placing"). It is
+one of the most flexible techniques in literature because it
+operates at every scale, from the phrase to the entire structure
+of a novel.</p>
+
+<h2>Juxtaposition at the sentence level</h2>
+
+<p>The classic example is the opening of Dickens's <em>A Tale of
+Two Cities</em>:</p>
+
+<blockquote>
+It was the best of times, it was the worst of times, it was the
+age of wisdom, it was the age of foolishness…
+</blockquote>
+
+<p>Each clause juxtaposes its opposite. The cumulative effect is
+not paradox but unease — the narrator refuses to settle on a
+single characterisation, and the reader is left holding the
+contradictions.</p>
+
+<h2>Juxtaposition at the scene level</h2>
+
+<p>Modernist fiction made structural use of juxtaposition. In
+T. S. Eliot's <em>The Waste Land</em>, a Cockney pub scene
+("HURRY UP PLEASE ITS TIME") juxtaposes directly with allusions
+to <em>Hamlet</em> ("Good night, ladies, good night, sweet
+ladies, good night, good night"). The collision of registers —
+working-class English and Shakespeare — is the point. Eliot is
+arguing, by juxtaposition, that modernity is the place where
+these voices have collapsed into the same room.</p>
+
+<p>In film, this technique has its own name: <em>montage</em>.
+Eisenstein's <em>Battleship Potemkin</em>, with its cuts between
+the massacre on the steps and the mother holding her child, is
+juxtaposition raised to a theory of cinema.</p>
+
+<h2>Juxtaposition vs. paradox vs. oxymoron</h2>
+
+<p>The three are cousins:</p>
+
+<ul>
+  <li><strong>Juxtaposition</strong> — two things placed near each
+      other. The contrast is the writer's argument; the reader is
+      expected to draw the connection. ("Best of times, worst of
+      times.")</li>
+  <li><a href="/glossary/paradox-oxymoron"><strong>Paradox</strong></a>
+      — a statement that contradicts itself but reveals a deeper
+      truth. ("This statement is false.")</li>
+  <li><strong>Oxymoron</strong> — a compressed paradox, often a
+      two-word juxtaposition treated as a single concept. (Bittersweet,
+      living dead, jumbo shrimp.)</li>
+</ul>
+
+<p>Juxtaposition is the broadest of the three; oxymoron is the
+narrowest. All oxymorons are juxtapositions; not all juxtapositions
+are oxymorons.</p>
+
+<h2>Why writers use it</h2>
+
+<p>Juxtaposition is one of the most efficient ways a writer can
+make an argument without making it explicit. To set the rich
+landlord's manor next to the labourer's hovel is to say
+something about class without writing an essay about class. To
+cut from a politician's speech to a hospital ward is to argue
+about priorities without naming them. The technique works because
+human cognition automatically looks for relationships between
+things placed next to each other — and the writer who controls
+the placement controls the relationship the reader will infer.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a passage or scene seems to be doing two unrelated things
+at once, ask why those two things and not others. The
+juxtaposition is the author's invisible argument; the
+relationship you infer between the parts is the meaning the
+author was building toward.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "aphorism",
+        "term": "aphorism",
+        "context": "rhetoric and philosophy",
+        "title": "What \"Aphorism\" Means — The Short, Pointed Truth-Claim, Explained",
+        "meta_description": "An aphorism is a short, memorable, often paradoxical statement of principle or truth. Distinguished from proverb, epigram, and maxim, with examples from La Rochefoucauld to Wilde.",
+        "h1": "What \"aphorism\" means",
+        "updated": "2026-05-25",
+        "related": ["paradox-oxymoron", "hyperbole", "satire-vs-parody"],
+        "body_html": """
+<p>An <strong>aphorism</strong> is a short, pointed, memorable
+statement of a principle, observation, or truth-claim — usually
+expressed with a polish that makes it feel inevitable. The word is
+Greek (<em>aphorismos</em>, "definition" or "marking off"), and
+the form has a long pedigree: Hippocrates' medical
+<em>Aphorisms</em> ("Life is short, art is long") may be the
+earliest text deliberately titled with the genre name.</p>
+
+<h2>Examples that have outlived their authors</h2>
+
+<ul>
+  <li>"The unexamined life is not worth living." — Socrates</li>
+  <li>"All happy families are alike; each unhappy family is
+      unhappy in its own way." — Tolstoy, opening <em>Anna
+      Karenina</em></li>
+  <li>"We are all in the gutter, but some of us are looking at
+      the stars." — Oscar Wilde</li>
+  <li>"The road to hell is paved with good intentions." —
+      attributed to St. Bernard of Clairvaux</li>
+  <li>"Hell is other people." — Sartre, <em>No Exit</em></li>
+  <li>"Whereof one cannot speak, thereof one must be silent." —
+      Wittgenstein, closing the <em>Tractatus</em></li>
+</ul>
+
+<h2>What makes a statement an aphorism</h2>
+
+<p>Three features together:</p>
+
+<ol>
+  <li><strong>Brevity.</strong> One or two sentences. If you can't
+      say it in a breath, it's an essay, not an aphorism.</li>
+  <li><strong>Generality.</strong> The claim is about the world,
+      human nature, or some recurring situation — not a specific
+      incident.</li>
+  <li><strong>Surface polish.</strong> The form does work. Often
+      an aphorism turns on
+      <a href="/glossary/paradox-oxymoron">paradox</a>,
+      antithesis, or sudden reversal. The phrasing is part of why
+      it survives.</li>
+</ol>
+
+<h2>Aphorism vs. proverb vs. maxim vs. epigram</h2>
+
+<p>The genre has cousins:</p>
+
+<ul>
+  <li><strong>Proverb</strong> — also a short pithy saying, but
+      <em>anonymous</em> and <em>folk-transmitted</em>. "A stitch
+      in time saves nine." No author; common cultural property.</li>
+  <li><strong>Maxim</strong> — close to aphorism, often used
+      interchangeably, but usually carries a more explicit
+      <em>moral</em> intent. La Rochefoucauld's <em>Maxims</em>
+      (1665) are the classic case.</li>
+  <li><strong>Epigram</strong> — originally a short poem
+      (Martial); now any short, witty saying, especially one with
+      a sting. Wilde's "I can resist everything except
+      temptation" is an epigram.</li>
+  <li><strong>Aphorism</strong> — the broadest of the four, often
+      more philosophical than witty.</li>
+</ul>
+
+<h2>The masters of the form</h2>
+
+<p>Aphorism has its own short list of all-time practitioners:
+<strong>Heraclitus</strong> (the surviving fragments are mostly
+aphoristic), <strong>La Rochefoucauld</strong>, <strong>Pascal</strong>
+(the <em>Pensées</em> are aphorisms with occasional paragraphs),
+<strong>Nietzsche</strong> (whose <em>Human, All Too Human</em> is
+a textbook of the form), <strong>Wilde</strong>, <strong>Kafka</strong>
+(the <em>Zürau Aphorisms</em> are an underread book),
+<strong>Cioran</strong>, and <strong>Adorno</strong> (<em>Minima
+Moralia</em>).</p>
+
+<h2>The danger of the form</h2>
+
+<p>The aphorism rewards certainty. Its polish makes contradiction
+sound like wisdom. Nietzsche warned that "convictions are more
+dangerous enemies of truth than lies" — itself an aphorism. Read
+aphorisms suspiciously; the form is designed to make you nod
+before you've thought.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a novel opens with a generalizing sentence — Tolstoy's
+families, Austen's "It is a truth universally acknowledged" — you
+are being handed an aphorism. The first move of the book is often
+to test that aphorism against the story that follows. Notice
+whether the novel confirms its opening claim or quietly undoes it;
+the answer is usually the book's deepest argument.</p>
+""",
+    },
+
 
 ]
 
