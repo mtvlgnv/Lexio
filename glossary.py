@@ -8276,6 +8276,11 @@ def _head(title: str, description: str, canonical: str,
   <title>{escape(title)} — Lexio</title>
   <meta name="description" content="{escape(description)}" />
   <link rel="canonical" href="{escape(canonical)}" />
+  <link rel="alternate" hreflang="en" href="{escape(canonical)}" />
+  <link rel="alternate" hreflang="x-default" href="{escape(canonical)}" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <meta name="theme-color" content="#f3ead8" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
   <!-- Open Graph -->
@@ -8338,6 +8343,14 @@ def _cta_block() -> str:
 def _jsonld_entry(entry: dict, canonical: str) -> str:
     """Schema.org DefinedTerm + Article hybrid — best for glossary pages."""
     import json as _json
+    import re as _re
+
+    # Strip HTML tags from body for articleBody / wordCount — Google uses these
+    # to assess content depth and freshness.
+    _plain = _re.sub(r"<[^>]+>", " ", entry["body_html"])
+    _plain = _re.sub(r"\s+", " ", _plain).strip()
+    _word_count = len(_plain.split())
+
     data = {
         "@context": "https://schema.org",
         "@graph": [
@@ -8351,20 +8364,33 @@ def _jsonld_entry(entry: dict, canonical: str) -> str:
                     "url": "https://lexio.site/glossary",
                 },
                 "url": canonical,
+                "inLanguage": "en",
             },
             {
                 "@type": "Article",
                 "headline": entry["title"],
                 "description": entry["meta_description"],
                 "url": canonical,
+                "datePublished": entry["updated"],
                 "dateModified": entry["updated"],
-                "author": {"@type": "Organization", "name": "Lexio"},
+                "inLanguage": "en",
+                "wordCount": _word_count,
+                "image": "https://lexio.site/og-image.png",
+                "about": {"@type": "Thing", "name": entry["term"]},
+                "keywords": [entry["term"], entry["context"], "literary terms", "contextual definition"],
+                "articleSection": "Glossary",
+                "author": {
+                    "@type": "Organization",
+                    "name": "Lexio",
+                    "url": "https://lexio.site/",
+                },
                 "publisher": {
                     "@type": "Organization",
                     "name": "Lexio",
+                    "url": "https://lexio.site/",
                     "logo": {"@type": "ImageObject", "url": "https://lexio.site/favicon-512.png"},
                 },
-                "mainEntityOfPage": canonical,
+                "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
             },
             {
                 "@type": "BreadcrumbList",

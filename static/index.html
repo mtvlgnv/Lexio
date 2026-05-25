@@ -2300,6 +2300,73 @@
       border-top: 1px dashed var(--border); padding-top: 8px;
     }
 
+    /* ── Comparison cards (vs dictionary / Translate / ChatGPT) ─ */
+    .lp-compare {
+      padding: 64px 48px;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      border-top: 1px solid var(--border);
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 100%, color-mix(in oklch, var(--accent) 5%, transparent), transparent 70%),
+        var(--bg);
+    }
+    .lp-compare-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .lp-compare-sub {
+      font-size: 0.98rem; color: var(--text-mid); line-height: 1.75;
+      max-width: 680px; text-align: center; margin-bottom: 24px;
+    }
+    .lp-compare-grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      width: 100%; max-width: 1140px;
+    }
+    .lp-compare-card {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 24px 22px 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .lp-compare-head {
+      display: flex; align-items: baseline; gap: 8px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+    .lp-compare-vs {
+      font-family: 'Lora', serif; font-style: italic;
+      color: var(--muted); font-size: 0.9rem;
+    }
+    .lp-compare-card h3 {
+      font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.005em;
+    }
+    .lp-compare-card p {
+      font-size: 0.92rem; color: var(--text-mid); line-height: 1.65;
+    }
+    .lp-compare-best { color: var(--text-mid); }
+    .lp-compare-best::before {
+      content: "✓ "; color: var(--accent); font-weight: 700;
+    }
+    .lp-compare-worst::before {
+      content: "✗ "; color: color-mix(in oklch, var(--text-mid) 50%, transparent); font-weight: 700;
+    }
+    .lp-compare-card p em { font-style: italic; color: var(--text); }
+    .lp-compare-card p strong { color: var(--text); font-weight: 600; }
+    .lp-compare-verdict {
+      margin-top: 6px; padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.88rem !important;
+      color: var(--text) !important;
+    }
+    @media (max-width: 760px) {
+      .lp-compare { padding: 40px 20px; }
+      .lp-compare-grid { gap: 12px; grid-template-columns: 1fr; }
+      .lp-compare-card { padding: 20px 18px; }
+      .lp-compare-card h3 { font-size: 1.06rem; }
+      .lp-compare-card p { font-size: 0.88rem; line-height: 1.6; }
+    }
+
     /* ── Long-form SEO copy ───────────────────────────────────── */
     .lp-longform {
       padding: 56px 48px 64px;
@@ -2796,6 +2863,47 @@
     ]
   }
   </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to define a word in context with Lexio",
+    "description": "Learn the precise meaning of any word in any book, article, or PDF — based on the sentence it actually appears in, not a generic dictionary entry.",
+    "totalTime": "PT15S",
+    "image": "https://lexio.site/og-image.png",
+    "tool": [
+      { "@type": "HowToTool", "name": "A web browser, or the Lexio Chrome extension" }
+    ],
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Paste or open the text",
+        "text": "Paste any passage into Lexio's reader on lexio.site, or install the Chrome extension to use Lexio on any web page and PDF.",
+        "url": "https://lexio.site/#try-passage"
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Click any word",
+        "text": "Click a word you don't recognise — or whose meaning you suspect is more specific than your dictionary lets on. Lexio reads the surrounding sentence and feeds it to the AI.",
+        "url": "https://lexio.site/#lp-features"
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Read the contextual definition",
+        "text": "Lexio returns the meaning that fits this exact sentence, plus a short note on why the author chose this word rather than its near-synonyms. Save it to your word bank to revisit later.",
+        "url": "https://lexio.site/#lp-features"
+      }
+    ]
+  }
+  </script>
+
+  <!-- hreflang — declares the default page version for international crawlers -->
+  <link rel="alternate" hreflang="en" href="https://lexio.site/">
+  <link rel="alternate" hreflang="x-default" href="https://lexio.site/">
 </head>
 <body data-theme="warm" class="app-compact">
 
@@ -3572,6 +3680,75 @@
 
     </div>
   </section>
+
+  <!-- ── Comparison: Lexio vs. the obvious alternatives ─────────────── -->
+  <section class="lp-compare" id="lp-compare" aria-labelledby="lp-compare-title">
+    <span class="lp-compare-eyebrow">How is Lexio different</span>
+    <h2 class="lp-section-title" id="lp-compare-title">You already have a dictionary. Why <em>this</em>?</h2>
+    <p class="lp-compare-sub">Three honest comparisons with the tools you'd otherwise reach for. Lexio is not always the right answer — but it's the right answer more often than you'd guess.</p>
+
+    <div class="lp-compare-grid">
+
+      <article class="lp-compare-card">
+        <div class="lp-compare-head">
+          <span class="lp-compare-vs">vs.</span>
+          <h3>A regular dictionary</h3>
+        </div>
+        <p class="lp-compare-best">Where a dictionary still wins: looking up a word you've never seen, in isolation, when you just need the headword.</p>
+        <p class="lp-compare-worst">Where it fails: every time the word is doing something specific in <em>this</em> sentence. A dictionary lists ten possible senses; you guess; you usually guess wrong. Lexio reads the surrounding context and returns the one sense the author intended, plus the shade of meaning that distinguishes it from near-synonyms.</p>
+        <p class="lp-compare-verdict"><strong>Verdict:</strong> keep your dictionary for vocabulary practice. Use Lexio for reading.</p>
+      </article>
+
+      <article class="lp-compare-card">
+        <div class="lp-compare-head">
+          <span class="lp-compare-vs">vs.</span>
+          <h3>Google Translate</h3>
+        </div>
+        <p class="lp-compare-best">Where Translate still wins: fast translation of whole sentences or paragraphs between languages, especially for travel and conversation.</p>
+        <p class="lp-compare-worst">Where it fails: literary, philosophical, and legal texts. Translate produces a flat target-language equivalent that strips out register, irony, archaism, and the specific contextual sense. Lexio keeps the original text intact and explains what each word is <em>doing</em> in context — perfect for learners reading real books rather than memorising vocabulary lists.</p>
+        <p class="lp-compare-verdict"><strong>Verdict:</strong> Translate for getting the gist. Lexio for actually understanding the sentence.</p>
+      </article>
+
+      <article class="lp-compare-card">
+        <div class="lp-compare-head">
+          <span class="lp-compare-vs">vs.</span>
+          <h3>ChatGPT or Claude</h3>
+        </div>
+        <p class="lp-compare-best">Where a general chatbot still wins: open-ended literary analysis, plot summaries, essay help. Lexio is not trying to be that.</p>
+        <p class="lp-compare-worst">Where it fails as a reading companion: friction. You have to context-switch to a chat tab, type out the sentence, frame the question, wait for an essay-length reply, and find the answer inside it. Lexio is one click on the word you're already reading — a focused contextual definition in under two seconds, with no prompt to write.</p>
+        <p class="lp-compare-verdict"><strong>Verdict:</strong> chatbots for thinking <em>about</em> texts. Lexio for thinking <em>with</em> them.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "How Lexio compares to a regular dictionary, Google Translate, and AI chatbots",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Lexio vs. a regular dictionary",
+        "description": "Dictionaries list every possible sense of a word; Lexio returns only the sense that fits the sentence in front of you, plus a note on why the author chose this word."
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Lexio vs. Google Translate",
+        "description": "Translate produces a flat target-language equivalent of whole sentences; Lexio keeps the original text intact and explains what each word is doing in context — better for serious readers and language learners working through real books."
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Lexio vs. ChatGPT or Claude",
+        "description": "General chatbots are good for open-ended literary discussion; Lexio is a single click on the word you're reading, returning a focused contextual definition in under two seconds — no prompt to write."
+      }
+    ]
+  }
+  </script>
 
   <!-- ── Why contextual definitions matter (long-form SEO copy) ── -->
   <section class="lp-longform" id="lp-longform" aria-labelledby="lp-longform-title">
