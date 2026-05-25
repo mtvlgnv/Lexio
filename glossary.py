@@ -7474,6 +7474,560 @@ sense of late-civilizational exhaustion all carry forward, even
 when the floral excess of the 1890s prose has been pruned away.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "synecdoche",
+        "term": "synecdoche",
+        "context": "rhetoric & literature",
+        "title": "What \"Synecdoche\" Means — The Part for the Whole, Explained",
+        "meta_description": "Synecdoche is the figure of speech where a part stands for a whole (\"all hands on deck\"), or a whole for a part. Here's how it differs from metonymy, with examples.",
+        "h1": "What \"synecdoche\" means",
+        "updated": "2026-05-25",
+        "related": ["metonymy", "simile-vs-metaphor", "hyperbole"],
+        "body_html": """
+<p><strong>Synecdoche</strong> (pronounced <em>si-NEK-duh-kee</em>) is the
+figure of speech in which a <em>part</em> of something is used to refer to the
+<em>whole</em>, or the whole is used to refer to a part. It is one of the
+oldest tools in rhetoric, present in the Iliad and still alive in tomorrow's
+headline.</p>
+
+<h2>Two directions</h2>
+
+<ul>
+  <li><strong>Part for whole (pars pro toto).</strong> "All <em>hands</em> on
+      deck" — hands stand for sailors. "Nice <em>wheels</em>" — wheels stand
+      for the whole car. "Give us this day our daily <em>bread</em>" — bread
+      stands for sustenance in general.</li>
+  <li><strong>Whole for part (totum pro parte).</strong> "<em>England</em>
+      beat Australia at the Oval" — the country stands for the eleven players
+      on the field. "The <em>Pentagon</em> issued a statement" — the building
+      stands for the people inside it.</li>
+</ul>
+
+<h2>How it differs from metonymy</h2>
+
+<p>The two are constantly confused — even by literary critics. The cleanest
+rule: synecdoche is part-and-whole; metonymy is association. When the British
+press calls the monarchy "the <em>Crown</em>," that's metonymy (a symbol
+associated with the institution). When a captain shouts for more "hands," that's
+synecdoche (a literal body part standing for the whole sailor). The line is
+fuzzy, and some figures arguably do both at once.</p>
+
+<h2>Why writers use it</h2>
+
+<p>Synecdoche compresses. Instead of "the sailors must come on deck" — a flat
+operational sentence — "all hands on deck" creates urgency by drawing attention
+to the working part of the body. It also lets a writer pick which part to
+foreground: "hands" emphasizes labor; "souls" would emphasize value; "boots"
+would militarize the same crew. The figure carries an implicit argument about
+what matters in the whole.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When you meet a curiously specific noun standing in for a larger thing — a
+body part for a person, a building for an institution, a single object for a
+class — pause and ask what the substitution is doing. Synecdoche is rarely
+neutral. The part that gets named is the part the writer wants you to see.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "metonymy",
+        "term": "metonymy",
+        "context": "rhetoric & literature",
+        "title": "What \"Metonymy\" Means — Substitution by Association, Explained",
+        "meta_description": "Metonymy substitutes one term for another it is closely associated with — \"the Crown\" for the monarchy, \"the White House\" for the U.S. presidency. Here's how it works.",
+        "h1": "What \"metonymy\" means",
+        "updated": "2026-05-25",
+        "related": ["synecdoche", "simile-vs-metaphor", "paradox-oxymoron"],
+        "body_html": """
+<p><strong>Metonymy</strong> (pronounced <em>meh-TON-uh-mee</em>) is the figure
+of speech where one term is replaced by another it is closely associated with.
+The replacement is not a literal part of the thing it stands for — it is a
+neighbor, a symbol, a tool, an attribute.</p>
+
+<h2>Examples you already use</h2>
+
+<ul>
+  <li><strong>"The <em>Crown</em> has spoken."</strong> The crown is not the
+      monarch; it is the object that symbolizes the office.</li>
+  <li><strong>"The <em>White House</em> denied the rumor."</strong> The
+      building stands for the presidency and its staff.</li>
+  <li><strong>"The <em>pen</em> is mightier than the <em>sword</em>."</strong>
+      Writing for the institution of writing; weaponry for the institution of
+      war.</li>
+  <li><strong>"Hollywood is in crisis."</strong> A neighborhood in Los Angeles
+      stands for the American film industry.</li>
+  <li><strong>"Let me give you a <em>hand</em>."</strong> A figure of speech
+      whose surface looks like a body part — but here, "hand" means help.
+      (Compare synecdoche.)</li>
+</ul>
+
+<h2>Metonymy vs. synecdoche</h2>
+
+<p>Synecdoche uses a literal part of the thing it names. Metonymy uses
+something <em>associated</em> with it. "All hands on deck" — synecdoche
+(hands are part of sailors). "Suits in the conference room" — metonymy (suits
+are clothing worn by, not part of, businesspeople). The distinction is fuzzy,
+and many critics treat synecdoche as a sub-type of metonymy rather than a
+separate figure.</p>
+
+<h2>Why writers use it</h2>
+
+<p>Metonymy is the work-horse of compressed prose. A journalist doesn't write
+"the executive branch of the United States government announced a new
+policy" — she writes "Washington announced." The associative substitution is
+faster, idiomatic, and quietly editorial: choosing <em>which</em> associated
+term to use is an argument about what the institution really is. "The
+<em>Beltway</em>" makes Washington feel insular; "<em>the West Wing</em>"
+makes it feel intimate; "<em>1600 Pennsylvania Avenue</em>" makes it sound
+formal.</p>
+
+<h2>How to read it in context</h2>
+
+<p>Metonymies are most powerful when you stop noticing them. When a poet
+writes "the <em>sceptre</em> trembles," he is making the abstract noun
+<em>authority</em> physical and shaky. When a politician says "let
+<em>history</em> judge," history isn't a judge — it's the metonymic stand-in
+for the future verdict of historians and readers. Reading metonymy carefully
+means asking what concrete thing has been swapped in for the abstract one,
+and what that swap quietly says.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "objective-correlative",
+        "term": "objective correlative",
+        "context": "T. S. Eliot's criticism",
+        "title": "What \"Objective Correlative\" Means — Eliot's Term Explained",
+        "meta_description": "T. S. Eliot coined \"objective correlative\" in his 1919 essay on Hamlet — a set of objects, events, or situations that must evoke a specific emotion in the reader.",
+        "h1": "What \"objective correlative\" means",
+        "updated": "2026-05-25",
+        "related": ["melancholy-hamlet", "stream-of-consciousness", "interior-monologue"],
+        "body_html": """
+<p><strong>Objective correlative</strong> is a phrase coined (or at least
+popularized) by <strong>T. S. Eliot</strong> in his 1919 essay
+<em>Hamlet and His Problems</em>. Eliot's claim, in his own words: the only
+way to express emotion in art is to find an "objective correlative" — a set
+of objects, a situation, a chain of events that, when presented, will
+automatically evoke that emotion in the reader.</p>
+
+<h2>The core idea</h2>
+
+<p>An emotion in a poem or play cannot just be <em>named</em>. If the speaker
+of a poem says "I felt sad," nothing has happened on the page. For the emotion
+to land, the poet must find an external — <em>objective</em> — equivalent for
+it: a specific room, a particular weather, a remembered gesture, a precise
+chain of events. The reader assembles the emotion from those objects, the way
+a chemist mixes reagents to produce a known reaction.</p>
+
+<h2>Eliot's example: <em>Macbeth</em> works, <em>Hamlet</em> doesn't</h2>
+
+<p>Eliot's controversial application of the idea is the reason the phrase
+became famous. He argues that <em>Macbeth</em> is artistically successful
+because Lady Macbeth's guilt is given a perfect objective correlative — the
+sleepwalking, the obsessively-washed hands, "out, damned spot." The objects
+on stage equal the feeling.</p>
+
+<p><em>Hamlet</em>, Eliot argues, fails because Hamlet's emotion — disgust at
+his mother, existential nausea, paralysis — is <em>in excess</em> of anything
+the play actually shows. There is no objective correlative adequate to the
+mood. The play's atmosphere overflows its plot.</p>
+
+<h2>Why the idea stuck</h2>
+
+<p>The phrase gave twentieth-century poets and critics a shorthand for a real
+craft problem: how to make a reader feel something without telling them to
+feel it. Imagist poetry, the "show don't tell" doctrine of creative-writing
+classrooms, and the impersonal-poet ideal of modernism all descend from this
+small section of one essay.</p>
+
+<h2>How to use it as a reader</h2>
+
+<p>When a poem moves you and you don't know why, look for the objective
+correlative — the concrete particular that is doing the emotional work.
+Williams's red wheelbarrow, Eliot's own evening "spread out against the sky
+like a patient etherized upon a table," Bishop's filling station — these are
+not decorations. They are the emotion's external form, the only way the
+feeling could be put on the page.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "carpe-diem",
+        "term": "carpe diem",
+        "context": "Horace and the lyric tradition",
+        "title": "What \"Carpe Diem\" Means in Literature — Beyond \"Seize the Day\"",
+        "meta_description": "\"Carpe diem\" is more than \"seize the day.\" Horace's original phrase is about plucking the day like a ripe fruit — and it carries a darker awareness of mortality than the bumper-sticker version suggests.",
+        "h1": "What \"carpe diem\" means in literature",
+        "updated": "2026-05-25",
+        "related": ["memento-mori", "ennui-in-literature", "melancholy-hamlet"],
+        "body_html": """
+<p><strong>Carpe diem</strong> — usually translated "seize the day" — is a
+phrase from Horace's <em>Odes</em> (Book 1, Poem 11, written around 23 BCE).
+The poem is a small lyric addressed to a young woman named Leuconoe, urging
+her to stop reading horoscopes and instead enjoy the wine that is right in
+front of her.</p>
+
+<h2>The literal Latin</h2>
+
+<p>The verb <em>carpe</em> is the imperative of <em>carpere</em>, meaning to
+pluck, pick, or gather — especially fruit or flowers. "Seize" is a fine
+translation, but a more faithful one is "<em>pluck</em> the day." The image is
+horticultural: the day is a ripe fruit; the moment of ripeness is short; pick
+it while you can.</p>
+
+<h2>The full line</h2>
+
+<p>Carpe diem rarely appears alone in Horace. The full phrase is
+<em>carpe diem, quam minimum credula postero</em> — "pluck the day, trusting
+as little as possible in tomorrow." The injunction to enjoy now is grounded
+in a refusal to trust the future. This is what the bumper-sticker version
+flattens out.</p>
+
+<h2>The English carpe diem tradition</h2>
+
+<p>The phrase gave its name to an entire tradition of English lyric:</p>
+
+<ul>
+  <li><strong>Robert Herrick</strong>, "To the Virgins, to Make Much of Time"
+      (1648): "Gather ye rosebuds while ye may, / Old time is still
+      a-flying."</li>
+  <li><strong>Andrew Marvell</strong>, "To His Coy Mistress" (c. 1650): "Had
+      we but world enough and time…" — a seduction argument structured around
+      the brevity of life.</li>
+  <li><strong>Edmund Waller</strong>, "Go, Lovely Rose" (1645): "How small a
+      part of time they share / That are so wondrous sweet and fair."</li>
+</ul>
+
+<p>In each, the carpe diem theme is double: an apparent invitation to pleasure,
+underwritten by an unmistakable awareness of death. The seduction depends on
+mortality.</p>
+
+<h2>Why "seize the day" loses the point</h2>
+
+<p>The modern English idiom "seize the day" suggests energetic, optimistic
+action — go for it, take the chance. Horace's poem is quieter and sadder. It
+is an old poet telling a young woman that the gods have not told either of
+them how long they have left, that winter is wearing out the sea, and that
+the wise response is to strain the wine and let the long hope shrink to the
+short. The mood is not <em>carpe diem</em> the slogan — it is closer to
+<em>memento mori</em> the meditation.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a poem invokes carpe diem, the surface is invitation and the depth
+is mourning. The argument to enjoy the moment is always also an argument
+that the moment will end. To read a carpe diem poem well, hold both halves
+at once.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "memento-mori",
+        "term": "memento mori",
+        "context": "literature and visual art",
+        "title": "What \"Memento Mori\" Means — \"Remember You Will Die,\" Explained",
+        "meta_description": "Memento mori is a Latin phrase meaning \"remember that you must die\" — and a long tradition in art and literature of objects, images, and lines that hold mortality in view.",
+        "h1": "What \"memento mori\" means",
+        "updated": "2026-05-25",
+        "related": ["carpe-diem", "ennui-in-literature", "melancholy-hamlet"],
+        "body_html": """
+<p><strong>Memento mori</strong> is Latin for "remember that you must die."
+The phrase names both a meditative practice and a long tradition in Western
+literature and art: the deliberate keeping-in-view of mortality as a
+discipline for living.</p>
+
+<h2>The objects</h2>
+
+<p>In the visual arts, memento mori is the genre of the still life with a
+skull, an extinguished candle, a wilting flower, a watch frozen at a stopped
+hour, an hourglass, a soap bubble, a half-eaten meal turning. The Dutch
+seventeenth century made an industry of these <em>vanitas</em> paintings.
+Every object is an emblem of brevity. The viewer is supposed to look, register
+the lesson, and walk back into the world more carefully.</p>
+
+<h2>The literary tradition</h2>
+
+<p>Memento mori as a literary motif runs from late antiquity through the
+present. Some moments to know:</p>
+
+<ul>
+  <li><strong>Hamlet in the graveyard</strong> (Act 5, scene 1), holding the
+      skull of the court jester Yorick — perhaps the most famous memento mori
+      scene in English. The prince looks at the skull of a man he loved and
+      sees what every face becomes.</li>
+  <li><strong>John Donne's <em>Devotions Upon Emergent Occasions</em></strong>
+      (1624), especially Meditation XVII: "Any man's death diminishes me… and
+      therefore never send to know for whom the bell tolls; it tolls for
+      thee." The tolling bell is a memento mori the sick poet hears from
+      his window.</li>
+  <li><strong>Gerard Manley Hopkins, "Spring and Fall"</strong> (1880): a
+      child weeping over autumn leaves is told, gently, that what she is
+      really weeping for is herself.</li>
+</ul>
+
+<h2>Memento mori vs. carpe diem</h2>
+
+<p>The two phrases are siblings, not opposites. <em>Carpe diem</em> is the
+practical inference from <em>memento mori</em>: because you will die, enjoy
+the day. The classical and Christian traditions emphasize different sides of
+the same coin. Pagan Horace says drink the wine; Christian Hamlet says know
+yourself in the skull. Both start from the same recognition.</p>
+
+<h2>Modern descendants</h2>
+
+<p>The memento mori does not disappear with the seventeenth century. Eliot's
+<em>The Waste Land</em> ("I will show you fear in a handful of dust"), the
+existentialists' meditation on death as that which gives life its weight,
+and the elegies of contemporary poets like Mary Oliver and Mark Doty all
+descend from this tradition. What changes is the religious frame; what
+stays is the practice of looking at the skull on the desk.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a poem or scene foregrounds a perishable object — a flower, a
+candle, an old photograph, a clock — and the poem holds the object too long,
+suspect memento mori. The point is rarely the object itself. The object is
+there to look back at you.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "chekhovs-gun",
+        "term": "Chekhov's gun",
+        "context": "narrative theory",
+        "title": "What \"Chekhov's Gun\" Means — The Principle Explained, with Examples",
+        "meta_description": "Chekhov's gun is the principle that every prominent element in a story must matter. If you show a loaded rifle in act one, it has to go off by act three.",
+        "h1": "What \"Chekhov's gun\" means",
+        "updated": "2026-05-25",
+        "related": ["foreshadowing", "frame-narrative", "leitmotif"],
+        "body_html": """
+<p><strong>Chekhov's gun</strong> is a narrative principle most often
+attributed to the Russian playwright <strong>Anton Chekhov</strong> in
+various forms across his letters of the 1880s and 1890s. The cleanest
+formulation: if you say in chapter one that there is a rifle hanging on the
+wall, that rifle must, by the second or third chapter, go off. If it isn't
+going to be fired, it shouldn't have been hung there.</p>
+
+<h2>The two halves of the principle</h2>
+
+<ul>
+  <li><strong>Promises must be kept.</strong> Anything a story prominently
+      shows the reader is read as a promise. If a character carries a
+      conspicuous object, the reader expects that object to matter. If it
+      doesn't, the story has cheated.</li>
+  <li><strong>Don't load the wall.</strong> The corollary, just as important:
+      do not put prominent objects, characters, or hints in a story unless
+      they are going to do work. Decoration that <em>looks like</em>
+      foreshadowing is worse than no decoration, because it draws the
+      reader's attention to a dead end.</li>
+</ul>
+
+<h2>Chekhov's gun vs. foreshadowing</h2>
+
+<p>Foreshadowing is a hint placed early that the reader recognizes (often
+only in retrospect) as preparation for a later event. Chekhov's gun is the
+underlying rule that makes foreshadowing possible: the rule that every
+prominent element is implicitly a promise. Foreshadowing is one specific
+fulfillment of the rule.</p>
+
+<h2>The red herring problem</h2>
+
+<p>Detective fiction violates Chekhov's gun deliberately. A red herring is a
+prominent clue planted to mislead the reader — a "gun" hung on the wall that
+explicitly does not fire. The genre survives this violation because it is
+itself the promise: the reader of a mystery has agreed to be misled. In
+non-mystery fiction, hanging a gun that doesn't fire feels like a mistake.</p>
+
+<h2>Why the principle works</h2>
+
+<p>Readers and viewers are constantly making predictions about what matters
+in the story they are reading. Their attention is limited. A story that
+respects Chekhov's gun trains the reader's attention efficiently: things in
+the foreground will pay off; things in the background can be safely ignored.
+A story that violates it teaches the reader not to pay attention, which is
+the worst possible thing to teach a reader.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When you notice an object, a sentence, or a character that the narrative
+seems to be lingering on for no obvious plot reason, mark it. The principle
+says: the writer has hung something on the wall. The fun of reading is
+watching to see when, and how, it fires.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "defamiliarization",
+        "term": "defamiliarization",
+        "context": "Russian Formalism (ostranenie)",
+        "title": "What \"Defamiliarization\" Means — Shklovsky's Ostranenie, Explained",
+        "meta_description": "Defamiliarization is the artistic technique of presenting familiar things as if seen for the first time, coined by Russian Formalist Viktor Shklovsky as \"ostranenie.\"",
+        "h1": "What \"defamiliarization\" means",
+        "updated": "2026-05-25",
+        "related": ["stream-of-consciousness", "uncanny-literature", "interior-monologue"],
+        "body_html": """
+<p><strong>Defamiliarization</strong> is the translation of the Russian word
+<em>ostranenie</em> (остранение) — literally "making strange" — coined by the
+Russian Formalist critic <strong>Viktor Shklovsky</strong> in his 1917 essay
+<em>Art as Technique</em>. Shklovsky proposed it as nothing less than the
+definition of art itself.</p>
+
+<h2>The argument</h2>
+
+<p>Shklovsky observed that habitual perception is a kind of death. The objects
+we see every day stop registering: the sound of our partner's voice, the route
+to work, the taste of bread. Habit "devours objects, clothes, furniture, one's
+wife, and the fear of war."</p>
+
+<p>The function of art, Shklovsky argued, is to break the crust of habit and
+make perception possible again. Art does this by presenting familiar things
+as if they were unfamiliar — slowing the reader's eye, lengthening the act
+of perception, restoring the stoniness of stone. "The technique of art is to
+make objects 'unfamiliar,' to make forms difficult, to increase the difficulty
+and length of perception."</p>
+
+<h2>His example: Tolstoy</h2>
+
+<p>Shklovsky's central case study is Tolstoy. In the short story "Kholstomer,"
+the narrator is a horse. The horse describes the institution of private
+property in human society without knowing the word — and the institution
+suddenly looks bizarre, arbitrary, almost obscene. The reader, who has been
+inside the institution all her life, sees it for the first time.</p>
+
+<p>Tolstoy does the same with religious ritual in <em>Resurrection</em>,
+describing a Mass entirely from the outside — as a curious series of physical
+gestures by a man in costume. The reader who has attended Mass for decades
+suddenly cannot recognize it.</p>
+
+<h2>How writers achieve it</h2>
+
+<ul>
+  <li><strong>Strange narrators</strong> — children, animals, foreigners,
+      Martians, the dead. The narrator's unfamiliarity with the world becomes
+      the reader's renewed attention to it.</li>
+  <li><strong>Naïve description</strong> — refusing the technical or
+      idiomatic word and describing the thing physically: not "applause" but
+      "the percussive sound of many flat hands striking each other."</li>
+  <li><strong>Difficult form</strong> — anything that slows the eye:
+      enjambment, fragmentation, syntactic inversion, dense allusion.</li>
+</ul>
+
+<h2>The afterlife</h2>
+
+<p>Defamiliarization passed from Shklovsky into nearly every twentieth-century
+account of literature. Brecht's <em>Verfremdungseffekt</em> ("alienation
+effect") in theatre is a direct cousin. Surrealism, the nouveau roman, Beckett,
+Borges, Calvino — all rely on making the familiar strange. The Anglophone
+phrase "to see with fresh eyes" is the same thought in popular form.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a passage describes an ordinary thing with conspicuous slowness or
+oddness — a phone described as a slab of glass that vibrates, a meal described
+as a sequence of chewing motions, a relationship described in geological time
+— Shklovsky's term is the one you want. The writer is breaking the crust.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "enjambment",
+        "term": "enjambment",
+        "context": "poetry",
+        "title": "What \"Enjambment\" Means in Poetry — Line Breaks Without Pause, Explained",
+        "meta_description": "Enjambment is when a sentence runs over a line break without punctuation. It's one of the most expressive tools in poetry. Here's how it works, with examples from Milton to Bishop.",
+        "h1": "What \"enjambment\" means in poetry",
+        "updated": "2026-05-25",
+        "related": ["caesura", "alliteration", "assonance-consonance"],
+        "body_html": """
+<p><strong>Enjambment</strong> (from the French <em>enjamber</em>, "to stride
+over") is the technique in poetry where a sentence or phrase continues past
+the end of a line without a pause — no comma, no period, no breath. The
+opposite is the <strong>end-stopped line</strong>, where the line ending
+coincides with a grammatical stop.</p>
+
+<h2>What it does to the reader</h2>
+
+<p>Enjambment forces a small double-take. The eye reaches the end of the line
+and expects to rest; the syntax pulls it onward into the next line. That tiny
+hesitation — a pause that isn't really there, a momentum that isn't quite
+broken — is one of the most expressive resources in English verse.</p>
+
+<h2>A famous example</h2>
+
+<p>From Milton's <em>Paradise Lost</em>:</p>
+
+<blockquote>
+Of Man's first disobedience, and the fruit<br>
+Of that forbidden tree, whose mortal taste<br>
+Brought death into the world, and all our woe…
+</blockquote>
+
+<p>"The fruit" hangs at the line break for a fraction of a second before
+"Of that forbidden tree" resolves it. The hesitation echoes the moment of
+plucking. Milton's verse is famous for enjambments that turn the line
+ending into a tiny moment of suspended meaning.</p>
+
+<h2>Modern examples</h2>
+
+<p>Elizabeth Bishop, "One Art":</p>
+
+<blockquote>
+the art of losing isn't hard to master;<br>
+so many things seem filled with the intent<br>
+to be lost that their loss is no disaster.
+</blockquote>
+
+<p>The enjambment after "intent" makes the line hover on a charged
+abstraction before the next line lands on the concrete word "lost."</p>
+
+<p>William Carlos Williams's "The Red Wheelbarrow" is almost entirely
+enjambed — every line ends in the middle of a phrase — and the poem's
+strange weight comes from how aggressively it refuses to let any line rest:</p>
+
+<blockquote>
+so much depends<br>
+upon<br><br>
+a red wheel<br>
+barrow…
+</blockquote>
+
+<p>He even splits the word "wheelbarrow" itself across two lines.</p>
+
+<h2>End-stopped lines vs. enjambment</h2>
+
+<p>Pope and the eighteenth-century heroic couplet are mostly end-stopped: the
+line is the unit of thought, closed by punctuation, often paired into a
+couplet that wraps up a small argument. Milton, Shakespeare's late blank verse,
+and most modern free verse are heavily enjambed: the line is one rhythm and
+the syntax is another, and the poem lives in the friction between the two.</p>
+
+<h2>Why it matters for reading</h2>
+
+<p>If you read enjambed poetry by stopping at the end of every line, you will
+hear it wrong. The line break is not a punctuation mark. It is an event in
+the rhythm — a held breath, a small lift of suspense — but the syntax does
+not stop. Good readers learn to <em>weight</em> the line ending without
+<em>breaking</em> it.</p>
+
+<h2>How to spot it</h2>
+
+<p>Look at the end of any line of verse. If there is no punctuation, and the
+sentence is clearly continuing, the line is enjambed. The more important
+question is: what does the enjambment isolate? The word held at the line end
+gets a faint extra emphasis. Ask why the poet wanted that word, in
+particular, to be the one your eye lingers on for that half-second.</p>
+""",
+    },
 ]
 
 
