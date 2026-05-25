@@ -498,6 +498,39 @@
     .btn-sample:hover { background:var(--accent-lt); border-color:var(--accent-mid); color:var(--accent); }
     .btn-sample-icon { font-size:0.85rem; line-height:1; opacity:0.7; }
     .btn-sample:hover .btn-sample-icon { opacity:1; }
+
+    /* ── Header language picker ─────────────────────────────── */
+    .lang-hdr-wrap { position: relative; }
+    .lang-hdr-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      height: 32px; padding: 0 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 8px; cursor: pointer; font-family: inherit;
+      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em;
+      color: var(--text-mid); transition: background 0.13s, border-color 0.13s, color 0.13s;
+    }
+    .lang-hdr-btn:hover,
+    .lang-hdr-btn.active { background: var(--bg); border-color: var(--accent-mid); color: var(--text); }
+    .lang-hdr-drop {
+      position: absolute; top: calc(100% + 8px); right: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+      min-width: 160px; z-index: 200; overflow: hidden;
+      display: flex; flex-direction: column; padding: 4px;
+      animation: fadeIn 0.13s ease;
+    }
+    .lang-hdr-drop.hidden { display: none; }
+    .lang-hdr-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; border-radius: 7px; cursor: pointer;
+      font-size: 0.84rem; color: var(--text-mid); background: none; border: none;
+      font-family: inherit; width: 100%; text-align: left;
+      transition: background 0.11s, color 0.11s;
+    }
+    .lang-hdr-item:hover { background: var(--bg); color: var(--text); }
+    .lang-hdr-item.selected { color: var(--accent); font-weight: 600; }
+    @media (max-width: 540px) { .lang-hdr-drop { right: auto; left: 0; } }
+
     .lang-btn {
       display:flex; align-items:center; gap:7px;
       background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
@@ -2937,10 +2970,26 @@
     <span class="wb-badge" id="wb-badge"></span>
   </button>
 
-  <!-- Shortcuts button -->
-  <button class="hdr-icon-btn" onclick="toggleShortcuts()" title="Keyboard shortcuts (?)">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M18 12h.01M10 12h4M6 16h12"/></svg>
-  </button>
+  <!-- Language picker (header) -->
+  <div class="lang-hdr-wrap">
+    <button class="lang-hdr-btn" id="lang-hdr-btn" onclick="toggleLangPicker()" title="Interface language" aria-haspopup="listbox" aria-expanded="false">
+      <span id="lang-hdr-label">EN</span>
+      <svg width="9" height="9" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+    </button>
+    <div class="lang-hdr-drop hidden" id="lang-hdr-drop" role="listbox">
+      <button class="lang-hdr-item" data-code="en"  onclick="pickUILang('en')">🇬🇧 English</button>
+      <button class="lang-hdr-item" data-code="es"  onclick="pickUILang('es')">🇪🇸 Español</button>
+      <button class="lang-hdr-item" data-code="fr"  onclick="pickUILang('fr')">🇫🇷 Français</button>
+      <button class="lang-hdr-item" data-code="de"  onclick="pickUILang('de')">🇩🇪 Deutsch</button>
+      <button class="lang-hdr-item" data-code="it"  onclick="pickUILang('it')">🇮🇹 Italiano</button>
+      <button class="lang-hdr-item" data-code="pt"  onclick="pickUILang('pt')">🇵🇹 Português</button>
+      <button class="lang-hdr-item" data-code="nl"  onclick="pickUILang('nl')">🇳🇱 Nederlands</button>
+      <button class="lang-hdr-item" data-code="ru"  onclick="pickUILang('ru')">🇷🇺 Русский</button>
+      <button class="lang-hdr-item" data-code="zh"  onclick="pickUILang('zh')">🇨🇳 中文</button>
+      <button class="lang-hdr-item" data-code="ja"  onclick="pickUILang('ja')">🇯🇵 日本語</button>
+      <button class="lang-hdr-item" data-code="ko"  onclick="pickUILang('ko')">🇰🇷 한국어</button>
+    </div>
+  </div>
 
   <!-- Account -->
   <button class="acct-btn" id="acct-btn" onclick="openAuthModal()" title="Account"></button>
@@ -2951,24 +3000,6 @@
       <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="0" y1="1" x2="16" y2="1"/><line x1="0" y1="6" x2="16" y2="6"/><line x1="0" y1="11" x2="16" y2="11"/></svg>
     </button>
     <div class="menu-dropdown hidden" id="menu-dropdown">
-      <div class="menu-section">
-        <span class="menu-label" data-i18n="uiLang">Interface language</span>
-        <div style="padding:4px 6px 6px">
-          <select id="ui-lang-select" onchange="setUILang(this.value)" style="width:100%;padding:6px 8px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:0.82rem;color:var(--text);cursor:pointer;outline:none;appearance:none;-webkit-appearance:none">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
-            <option value="it">Italiano</option>
-            <option value="pt">Português</option>
-            <option value="nl">Nederlands</option>
-            <option value="ru">Русский</option>
-            <option value="zh">中文</option>
-            <option value="ja">日本語</option>
-            <option value="ko">한국어</option>
-          </select>
-        </div>
-      </div>
       <div class="menu-section">
         <span class="menu-label" data-i18n="theme">Theme</span>
         <div class="menu-theme-row">
@@ -4702,8 +4733,13 @@ function setUILang(code) {
   if (ta) ta.placeholder = code === 'en' ? 'Paste any text here — an article, a quote, a paragraph…' :
     ({es:'Pega cualquier texto aquí — un artículo, una cita, un párrafo…', fr:'Collez votre texte ici — un article, une citation, un paragraphe…', de:'Fügen Sie Ihren Text hier ein — einen Artikel, ein Zitat, einen Absatz…', it:"Incolla il tuo testo qui — un articolo, una citazione, un paragrafo…", pt:'Cole seu texto aqui — um artigo, uma citação, um parágrafo…', nl:'Plak uw tekst hier — een artikel, een citaat, een alinea…', ru:'Вставьте текст сюда — статью, цитату, абзац…', zh:'在此粘贴任何文本——文章、引文、段落…', ja:'テキストをここに貼り付けてください — 記事、引用、段落など…', ko:'여기에 텍스트를 붙여넣으세요 — 기사, 인용문, 단락…'}[code] || ta.placeholder);
   document.documentElement.lang = code;
-  const sel = document.getElementById('ui-lang-select');
-  if (sel) sel.value = code;
+  // Sync header lang picker label
+  const lbl = document.getElementById('lang-hdr-label');
+  const _langLabels = { en:'EN', es:'ES', fr:'FR', de:'DE', it:'IT', pt:'PT', nl:'NL', ru:'RU', zh:'中文', ja:'日本語', ko:'한국어' };
+  if (lbl) lbl.textContent = _langLabels[code] || code.toUpperCase();
+  document.querySelectorAll('.lang-hdr-item').forEach(el =>
+    el.classList.toggle('selected', el.dataset.code === code)
+  );
 }
 
 function setLang(lang) {
@@ -5690,6 +5726,37 @@ function closeMenu() {
   document.getElementById('menu-dropdown').classList.add('hidden');
   document.getElementById('menu-btn').classList.remove('active');
 }
+
+/* ── Header language picker ─────────────────────────────────── */
+let langPickerOpen = false;
+const LANG_LABELS = { en:'EN', es:'ES', fr:'FR', de:'DE', it:'IT', pt:'PT', nl:'NL', ru:'RU', zh:'中文', ja:'日本語', ko:'한국어' };
+
+function toggleLangPicker() {
+  langPickerOpen = !langPickerOpen;
+  document.getElementById('lang-hdr-drop').classList.toggle('hidden', !langPickerOpen);
+  document.getElementById('lang-hdr-btn').classList.toggle('active', langPickerOpen);
+  document.getElementById('lang-hdr-btn').setAttribute('aria-expanded', langPickerOpen);
+  if (menuOpen) closeMenu();
+}
+function closeLangPicker() {
+  langPickerOpen = false;
+  const drop = document.getElementById('lang-hdr-drop');
+  if (drop) drop.classList.add('hidden');
+  const btn = document.getElementById('lang-hdr-btn');
+  if (btn) { btn.classList.remove('active'); btn.setAttribute('aria-expanded', 'false'); }
+}
+function pickUILang(code) {
+  setUILang(code);
+  closeLangPicker();
+  // Mark selected
+  document.querySelectorAll('.lang-hdr-item').forEach(el =>
+    el.classList.toggle('selected', el.dataset.code === code)
+  );
+  document.getElementById('lang-hdr-label').textContent = LANG_LABELS[code] || code.toUpperCase();
+}
+document.addEventListener('click', e => {
+  if (langPickerOpen && !e.target.closest('.lang-hdr-wrap')) closeLangPicker();
+});
 function updateMenuTheme() {
   const cur = document.body.dataset.theme;
   document.querySelectorAll('.menu-theme-btn').forEach(b =>
@@ -6333,7 +6400,10 @@ try {
 try {
   const savedUILang = localStorage.getItem('lexio_ui_lang');
   if (savedUILang && savedUILang !== 'en') setUILang(savedUILang);
-  else document.getElementById('ui-lang-select').value = 'en';
+  // Mark current language in the header picker
+  document.querySelectorAll('.lang-hdr-item').forEach(el =>
+    el.classList.toggle('selected', el.dataset.code === (savedUILang || 'en'))
+  );
 } catch {}
 
 // Follow system dark-mode changes when Auto theme is active
@@ -6346,7 +6416,7 @@ inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key===
 document.addEventListener('keydown', e => {
   const tag = document.activeElement?.tagName;
   if (tag==='TEXTAREA'||tag==='INPUT') return;
-  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); closeLangPicker(); if(shortcutsOpen) toggleShortcuts(); }
   if (e.key==='?')  toggleShortcuts();
   if (e.key==='b'||e.key==='B') openWordBank();
 });
