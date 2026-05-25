@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Readers — Who Lexio is Built For, and How It Compares</title>
+  <meta name="description" content="One contextual dictionary, built for eight kinds of reader — literature students, ESL learners, law and philosophy readers, polyglots, classics lovers, writers, and anyone with a PDF and a phone. Plus an honest comparison with regular dictionaries, Google Translate, and ChatGPT." />
+  <link rel="canonical" href="https://lexio.site/for-readers.html" />
+  <link rel="alternate" hreflang="en" href="https://lexio.site/for-readers.html" />
+  <link rel="alternate" hreflang="x-default" href="https://lexio.site/for-readers.html" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <meta name="theme-color" content="#f3ead8" />
+  <meta name="keywords" content="contextual dictionary, AI dictionary for readers, dictionary for literature students, ESL reading tool, dictionary for law students, dictionary for philosophy readers, polyglot reading tool, AI dictionary vs Google Translate, ChatGPT vs dictionary, chrome dictionary extension, PDF dictionary" />
+  <meta name="author" content="Lexio" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Lexio" />
+  <meta property="og:title" content="For Readers — Who Lexio is Built For" />
+  <meta property="og:description" content="One contextual dictionary, eight kinds of reader. And how Lexio compares to a regular dictionary, Google Translate, and ChatGPT." />
+  <meta property="og:url" content="https://lexio.site/for-readers.html" />
+  <meta property="og:image" content="https://lexio.site/og-image.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="For Readers — Who Lexio is Built For" />
+  <meta name="twitter:description" content="One contextual dictionary, eight kinds of reader. And how Lexio compares to a regular dictionary, Google Translate, and ChatGPT." />
+  <meta name="twitter:image" content="https://lexio.site/og-image.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=2" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ── Structured data ──────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "For Readers — Who Lexio is Built For, and How It Compares",
+    "description": "A guide to who Lexio is built for (literature, ESL, law, philosophy, polyglots, classics, writers, OCR readers) and how it compares to the obvious alternatives.",
+    "url": "https://lexio.site/for-readers.html",
+    "datePublished": "2026-05-25",
+    "dateModified": "2026-05-25",
+    "inLanguage": "en",
+    "image": "https://lexio.site/og-image.png",
+    "author": { "@type": "Organization", "name": "Lexio", "url": "https://lexio.site/" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Lexio",
+      "url": "https://lexio.site/",
+      "logo": { "@type": "ImageObject", "url": "https://lexio.site/favicon-512.png" }
+    },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://lexio.site/for-readers.html" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Lexio", "item": "https://lexio.site/" },
+      { "@type": "ListItem", "position": 2, "name": "For Readers", "item": "https://lexio.site/for-readers.html" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "How Lexio compares to a regular dictionary, Google Translate, and AI chatbots",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Lexio vs. a regular dictionary", "description": "Dictionaries list every possible sense of a word; Lexio returns only the sense that fits the sentence in front of you, plus a note on why the author chose this word." },
+      { "@type": "ListItem", "position": 2, "name": "Lexio vs. Google Translate", "description": "Translate produces a flat target-language equivalent of whole sentences; Lexio keeps the original text intact and explains what each word is doing in context — better for serious readers and language learners working through real books." },
+      { "@type": "ListItem", "position": 3, "name": "Lexio vs. ChatGPT or Claude", "description": "General chatbots are good for open-ended literary discussion; Lexio is a single click on the word you're reading, returning a focused contextual definition in under two seconds — no prompt to write." }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           oklch(96.5% 0.012 75);
+      --surface:      oklch(99.2% 0.006 75);
+      --border:       oklch(89%   0.014 75);
+      --accent:       oklch(58%   0.17  54);
+      --accent-mid:   oklch(90%   0.08  70);
+      --text:         oklch(18%   0.015 65);
+      --text-mid:     oklch(35%   0.012 65);
+      --muted:        oklch(58%   0.01  65);
+      --radius:       14px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+    html, body { background: var(--bg); color: var(--text); min-height: 100%; }
+    body { line-height: 1.55; }
+
+    /* ── Header ──────────────────────────────────────────────── */
+    .page-header {
+      height: 60px; padding: 0 28px;
+      display: flex; align-items: center; gap: 18px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo {
+      font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600;
+      letter-spacing: -0.01em; color: var(--text);
+      text-decoration: none;
+    }
+    .logo em { font-style: italic; color: var(--accent); }
+    .tagline {
+      font-size: 0.78rem; font-style: italic; color: var(--muted);
+      border-left: 1px solid var(--border); padding-left: 14px;
+    }
+    .header-spacer { flex: 1; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.88rem; font-weight: 500; color: var(--text-mid);
+      text-decoration: none;
+      padding: 8px 14px; border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .back-link:hover { background: var(--accent-mid); color: var(--text); }
+
+    /* ── Page intro ──────────────────────────────────────────── */
+    .page-hero {
+      padding: 64px 32px 28px;
+      max-width: 880px; margin: 0 auto;
+      text-align: center;
+    }
+    .page-hero .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-family: 'Lora', serif; font-size: clamp(2rem, 4vw, 2.6rem);
+      font-weight: 600; letter-spacing: -0.015em; line-height: 1.15;
+      color: var(--text); margin-bottom: 16px;
+    }
+    .page-hero h1 em { font-style: italic; color: var(--accent); }
+    .page-hero p.lead {
+      font-size: 1.06rem; line-height: 1.75; color: var(--text-mid);
+      max-width: 680px; margin: 0 auto;
+    }
+    .page-hero p.lead em { font-style: italic; color: var(--text); }
+
+    /* Anchor jump menu */
+    .jumpnav {
+      max-width: 880px; margin: 8px auto 0; padding: 0 32px;
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    }
+    .jumpnav a {
+      font-size: 0.82rem; font-weight: 500;
+      color: var(--text-mid); text-decoration: none;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--border);
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .jumpnav a:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── Section: audience cards ─────────────────────────────── */
+    .section {
+      padding: 56px 32px;
+      max-width: 1180px; margin: 0 auto;
+    }
+    .section-eyebrow {
+      display: block; text-align: center;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: 'Lora', serif; font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 600; letter-spacing: -0.01em; line-height: 1.2;
+      color: var(--text); text-align: center; margin-bottom: 12px;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+    .section-sub {
+      font-size: 0.98rem; line-height: 1.75; color: var(--text-mid);
+      max-width: 680px; margin: 0 auto 32px; text-align: center;
+    }
+    .section-sub em { font-style: italic; color: var(--text); }
+
+    .audience-grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    .audience-card {
+      padding: 22px 22px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      display: flex; flex-direction: column; gap: 8px;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .audience-card:hover {
+      border-color: var(--accent-mid); transform: translateY(-2px);
+      box-shadow: 0 12px 28px -16px color-mix(in oklch, var(--accent) 40%, transparent);
+    }
+    .audience-icon {
+      width: 38px; height: 38px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      background: color-mix(in oklch, var(--accent) 12%, var(--surface));
+      color: var(--accent); margin-bottom: 4px;
+    }
+    .audience-card h3 {
+      font-family: 'Lora', serif; font-size: 1.12rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.005em;
+    }
+    .audience-card p {
+      font-size: 0.92rem; color: var(--text-mid); line-height: 1.65;
+    }
+    .audience-card p em { font-style: italic; color: var(--text); }
+    .audience-card p strong { color: var(--text); font-weight: 600; }
+    .audience-meta {
+      margin-top: 4px; padding-top: 8px;
+      font-size: 0.78rem !important; color: var(--muted) !important;
+      font-style: italic;
+      border-top: 1px dashed var(--border);
+    }
+
+    /* ── Section: comparison cards ───────────────────────────── */
+    .section.compare {
+      background: linear-gradient(180deg, var(--bg), color-mix(in oklch, var(--accent) 3%, var(--bg)));
+      max-width: none;
+    }
+    .compare-inner { max-width: 1180px; margin: 0 auto; }
+    .compare-grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .compare-card {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 24px 22px 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .compare-head {
+      display: flex; align-items: baseline; gap: 8px;
+      padding-bottom: 10px; margin-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-vs {
+      font-family: 'Lora', serif; font-style: italic;
+      color: var(--muted); font-size: 0.9rem;
+    }
+    .compare-card h3 {
+      font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.005em;
+    }
+    .compare-card p {
+      font-size: 0.92rem; color: var(--text-mid); line-height: 1.65;
+    }
+    .compare-best::before { content: "✓ "; color: var(--accent); font-weight: 700; }
+    .compare-worst::before { content: "✗ "; color: color-mix(in oklch, var(--text-mid) 50%, transparent); font-weight: 700; }
+    .compare-card p em { font-style: italic; color: var(--text); }
+    .compare-card p strong { color: var(--text); font-weight: 600; }
+    .compare-verdict {
+      margin-top: 6px; padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.88rem !important; color: var(--text) !important;
+    }
+
+    /* ── Section: long-form essay ────────────────────────────── */
+    .section.longform { max-width: 760px; }
+    .longform-body {
+      display: flex; flex-direction: column; gap: 16px;
+      margin-top: 8px;
+    }
+    .longform-body p {
+      font-family: 'Lora', serif;
+      font-size: 1.04rem; line-height: 1.78; color: var(--text-mid);
+    }
+    .longform-body p em { font-style: italic; color: var(--text); }
+    .longform-body p strong { color: var(--text); font-weight: 600; }
+
+    /* ── Closing CTA ─────────────────────────────────────────── */
+    .closing-cta {
+      max-width: 880px; margin: 12px auto 80px; padding: 40px 32px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .closing-cta h2 {
+      font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 600;
+      color: var(--text); margin-bottom: 12px; letter-spacing: -0.01em;
+    }
+    .closing-cta p {
+      font-size: 0.98rem; line-height: 1.7; color: var(--text-mid);
+      max-width: 560px; margin: 0 auto 24px;
+    }
+    .closing-cta .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; background: var(--accent); color: white;
+      font-size: 0.98rem; font-weight: 600; text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.15s, transform 0.15s;
+      box-shadow: 0 8px 20px -6px color-mix(in oklch, var(--accent) 50%, transparent);
+    }
+    .closing-cta .btn:hover { transform: translateY(-1px); }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .page-footer {
+      max-width: 880px; margin: 0 auto; padding: 0 32px 48px;
+      text-align: center;
+      font-size: 0.84rem; color: var(--muted); font-style: italic;
+    }
+    .page-footer a { color: var(--text-mid); text-decoration: none; }
+    .page-footer a:hover { color: var(--accent); }
+
+    @media (max-width: 760px) {
+      .page-header { padding: 0 16px; gap: 12px; }
+      .tagline { display: none; }
+      .page-hero { padding: 40px 20px 20px; }
+      .section { padding: 36px 20px; }
+      .audience-grid, .compare-grid { gap: 12px; grid-template-columns: 1fr; }
+      .audience-card, .compare-card { padding: 18px; }
+      .audience-card h3, .compare-card h3 { font-size: 1.05rem; }
+      .audience-card p, .compare-card p, .longform-body p { font-size: 0.92rem; line-height: 1.6; }
+      .longform-body p { font-size: 0.96rem; line-height: 1.72; }
+      .closing-cta { padding: 32px 20px; margin-bottom: 48px; }
+    }
+
+    /* Smooth scroll anchor offset for sticky header */
+    html { scroll-behavior: smooth; }
+    .section, .closing-cta { scroll-margin-top: 72px; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <a class="logo" href="/">Le<em>x</em>io</a>
+  <span class="tagline">Contextual definitions for serious readers</span>
+  <div class="header-spacer"></div>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Lexio
+  </a>
+</header>
+
+<div class="page-hero">
+  <span class="eyebrow">For readers</span>
+  <h1>Who Lexio is for, and why <em>not</em> the dictionary you already have.</h1>
+  <p class="lead">A short guide. First, eight kinds of reader Lexio is built for — and whether you're one of them. Then an honest comparison with a regular dictionary, Google Translate, and ChatGPT, so you can see when Lexio is the right tool and when it isn't.</p>
+</div>
+
+<nav class="jumpnav" aria-label="Jump links">
+  <a href="#audience">Who it's for</a>
+  <a href="#compare">How it compares</a>
+  <a href="#longform">Why contextual</a>
+</nav>
+
+<!-- ── Audience / use cases ───────────────────────────────────── -->
+<section class="section" id="audience" aria-labelledby="audience-title">
+  <span class="section-eyebrow">Built for everyone who reads</span>
+  <h2 class="section-title" id="audience-title">One dictionary. Eight kinds of <em>reader</em>.</h2>
+  <p class="section-sub">A generic dictionary tells you what a word means. Lexio tells you what it means <em>here</em> — in this sentence, on this page, in this book. Which is exactly what every reader below actually needs.</p>
+
+  <div class="audience-grid">
+
+    <article class="audience-card">
+      <div class="audience-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <h3>For literature students</h3>
+      <p>Reading Joyce, Woolf, Faulkner, or Pynchon and watching the page turn into syntax soup? Lexio reads the surrounding sentence and tells you why this exact word — not its synonym — is doing the work. Stop bouncing between Wikipedia tabs.</p>
+      <p class="audience-meta">Best on: modernist fiction, Shakespeare, the canonical novel.</p>
+    </article>
+
+    <article class="audience-card">
+      <div class="audience-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>For ESL &amp; language learners</h3>
+      <p>Reading English fiction in your second language? Paste a passage — Lexio defines any word using the sentence around it, so phrasal verbs and idioms finally make sense. Available in 11 languages, both directions.</p>
+      <p class="audience-meta">Translates and explains: English ⇄ Spanish, French, German, Russian, Japanese, Chinese, Arabic, Portuguese, Italian, Dutch.</p>
+    </article>
+
+    <article class="audience-card">
+      <div class="audience-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4"/><path d="M3 18l9 4 9-4"/></svg>
+      </div>
+      <h3>For law students &amp; professionals</h3>
+      <p>Latin maxims, terms of art, courtroom Anglicisms — legal prose is dense and ambiguous on purpose. Lexio's Deep mode (Claude Sonnet 4.5) reads the passage and tells you whether <em>consideration</em> means what you think it means in this contract.</p>
+      <p class="audience-meta">Tested on: case law, statutes, contracts, common-law textbooks.</p>
+    </article>
+
+    <article class="audience-card">
+      <div class="audience-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>
+      </div>
+      <h3>For philosophy readers</h3>
+      <p>Kant's <em>noumenon</em>, Heidegger's <em>Dasein</em>, Wittgenstein's <em>language-game</em> — terms whose dictionary definition is useless without the system around them. Lexio reads the surrounding paragraph and tells you which sense the author is invoking right now.</p>
+      <p class="audience-meta">Strongest on: continental philosophy, ancient Greek thought, analytic philosophy of language.</p>
+    </article>
+
+    <article class="audience-card">
+      <div class="audience-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <h3>For polyglots &amp; translators</h3>
+      <p>You read in three languages a week and own four dictionaries you never open. Lexio collapses all of them into one click and saves every lookup to a personal word bank you can export. Toggle the answer language anytime.</p>
+      <p class="audience-meta">Designed for: comparative literature, multilingual research, working translators.</p>
+    </article>
+
+    <article class="audience-card">
+      <div class="audience-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-4z"/></svg>
+      </div>
+      <h3>For classics &amp; history readers</h3>
+      <p>Reading Gibbon, Plutarch, the King James Bible, or a Victorian three-decker novel? Lexio knows that <em>spleen</em> in Baudelaire is not <em>spleen</em> in Hippocrates, and that <em>discover</em> in Shakespeare means something very different from what it does today.</p>
+      <p class="audience-meta">Handles: archaic English, Latinisms, period-specific senses, dated idiom.</p>
+    </article>
+
+    <article class="audience-card">
+      <div class="audience-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>
+      </div>
+      <h3>For writers &amp; screenwriters</h3>
+      <p>You're not looking up the word — you're checking that the word means what you want it to mean before you commit it to a sentence. Lexio shows the precise shade of meaning a word carries in context, plus why this word and not its near-synonyms.</p>
+      <p class="audience-meta">Pairs well with: novelists, poets, dramatists, copywriters, editors.</p>
+    </article>
+
+    <article class="audience-card">
+      <div class="audience-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>
+      </div>
+      <h3>For anyone with a PDF &amp; a phone</h3>
+      <p>Found a paper page you can't paste? Snap it with your phone — Lexio's OCR scans the photo, lifts the text, and lets you click any word for a contextual definition. The book stays a book; Lexio reads it for you.</p>
+      <p class="audience-meta">Works on: photos of printed books, journal printouts, lecture handouts.</p>
+    </article>
+
+  </div>
+</section>
+
+<!-- ── Comparison: Lexio vs. the obvious alternatives ─────────── -->
+<section class="section compare" id="compare" aria-labelledby="compare-title">
+  <div class="compare-inner">
+    <span class="section-eyebrow">How is Lexio different</span>
+    <h2 class="section-title" id="compare-title">You already have a dictionary. Why <em>this</em>?</h2>
+    <p class="section-sub">Three honest comparisons with the tools you'd otherwise reach for. Lexio is not always the right answer — but it's the right answer more often than you'd guess.</p>
+
+    <div class="compare-grid">
+
+      <article class="compare-card">
+        <div class="compare-head">
+          <span class="compare-vs">vs.</span>
+          <h3>A regular dictionary</h3>
+        </div>
+        <p class="compare-best">Where a dictionary still wins: looking up a word you've never seen, in isolation, when you just need the headword.</p>
+        <p class="compare-worst">Where it fails: every time the word is doing something specific in <em>this</em> sentence. A dictionary lists ten possible senses; you guess; you usually guess wrong. Lexio reads the surrounding context and returns the one sense the author intended, plus the shade of meaning that distinguishes it from near-synonyms.</p>
+        <p class="compare-verdict"><strong>Verdict:</strong> keep your dictionary for vocabulary practice. Use Lexio for reading.</p>
+      </article>
+
+      <article class="compare-card">
+        <div class="compare-head">
+          <span class="compare-vs">vs.</span>
+          <h3>Google Translate</h3>
+        </div>
+        <p class="compare-best">Where Translate still wins: fast translation of whole sentences or paragraphs between languages, especially for travel and conversation.</p>
+        <p class="compare-worst">Where it fails: literary, philosophical, and legal texts. Translate produces a flat target-language equivalent that strips out register, irony, archaism, and the specific contextual sense. Lexio keeps the original text intact and explains what each word is <em>doing</em> in context — perfect for learners reading real books rather than memorising vocabulary lists.</p>
+        <p class="compare-verdict"><strong>Verdict:</strong> Translate for getting the gist. Lexio for actually understanding the sentence.</p>
+      </article>
+
+      <article class="compare-card">
+        <div class="compare-head">
+          <span class="compare-vs">vs.</span>
+          <h3>ChatGPT or Claude</h3>
+        </div>
+        <p class="compare-best">Where a general chatbot still wins: open-ended literary analysis, plot summaries, essay help. Lexio is not trying to be that.</p>
+        <p class="compare-worst">Where it fails as a reading companion: friction. You have to context-switch to a chat tab, type out the sentence, frame the question, wait for an essay-length reply, and find the answer inside it. Lexio is one click on the word you're already reading — a focused contextual definition in under two seconds, with no prompt to write.</p>
+        <p class="compare-verdict"><strong>Verdict:</strong> chatbots for thinking <em>about</em> texts. Lexio for thinking <em>with</em> them.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Long-form essay ────────────────────────────────────────── -->
+<section class="section longform" id="longform" aria-labelledby="longform-title">
+  <h2 class="section-title" id="longform-title">Why a contextual dictionary, and not the one you already have.</h2>
+  <div class="longform-body">
+    <p>Every dictionary you've ever opened lists definitions in order of frequency, not in order of <em>this sentence</em>. You meet the word <em>register</em> on the page; the dictionary hands you ten entries; you pick whichever one feels closest and move on. Most of the time you pick wrong, and the sentence stays slightly wrong with you for the rest of the chapter.</p>
+    <p>A contextual dictionary inverts the problem. It does not return a list. It returns the one meaning the author intended in the sentence in front of you — drawn from the words to the left and right, the tone of the passage, and the conventions of the genre. For literary prose, that means catching the difference between a word's literal sense and the figurative weight an author is leaning on. For technical reading, it means catching the term of art rather than the everyday word that happens to share its spelling.</p>
+    <p>Lexio runs three reading modes for a reason. <strong>Fast</strong> handles everyday reading — news, blogs, fiction in your daily rotation — and is free. <strong>Balanced</strong> mode brings in Gemini 2.5 Flash for prose that rewards a second pass: nineteenth-century novels, denser non-fiction, journalism with a load-bearing vocabulary. <strong>Deep</strong> mode uses Claude Sonnet 4.5 for the kind of reading where being almost-right is wrong: philosophy, law, classical literature, scholarly criticism. The three modes correspond to three kinds of reading, not three price tiers; the pricing is just the price of compute.</p>
+    <p>The Chrome extension brings the same thing to every page you already read. Select a word, choose <em>Define with Lexio</em>, and the contextual answer appears inline. It works on PDFs that Chrome can open, on Substack and Medium and JSTOR, on the Internet Archive's borrowable books, and on the long-tail of personal blogs where the writing you actually love lives. Nothing gets stored beyond what you choose to save to your word bank — only the word and a short context window leaves your machine.</p>
+    <p>If you spend any real fraction of your week reading, the question is not whether you want a contextual dictionary. It's how you read without one.</p>
+  </div>
+</section>
+
+<!-- ── Closing CTA ────────────────────────────────────────────── -->
+<div class="closing-cta">
+  <h2>Try Lexio on the next page you read.</h2>
+  <p>Free plan, no credit card. Install the Chrome extension, or paste a passage on the homepage and click any word.</p>
+  <a class="btn" href="/">
+    Start reading with Lexio
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</div>
+
+<footer class="page-footer">
+  <em>Read deeper. Understand everything.</em><br>
+  © 2026 Lexio · <a href="/">Home</a> · <a href="/glossary">Glossary</a> · <a href="/privacy.html">Privacy</a> · <a href="/credits.html">Credits</a>
+</footer>
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+</body>
+</html>
