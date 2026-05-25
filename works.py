@@ -1497,6 +1497,658 @@ story to transmit. Both true; neither sufficient.</p>
             "stream-of-consciousness",
         ],
     },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "romeo-and-juliet",
+        "title": "Romeo and Juliet — A Reader's Guide to Shakespeare's Vocabulary and Verse",
+        "h1": "Romeo and Juliet — themes, language, and dramatic structure",
+        "author": "William Shakespeare",
+        "year": "c. 1595",
+        "meta_description": "A reader's guide to Shakespeare's Romeo and Juliet — the sonnet structure of the prologue, oxymoron and paradox, dramatic irony, the language of love and feud, fate vs. choice.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p><em>Romeo and Juliet</em> is the most studied of Shakespeare's
+plays and the most commonly mis-staged. It is, on the surface, a
+play about teenagers in love and the obstacles their families
+make. Read more closely, it is a play structured by paradox at
+every level — verbal, dramatic, philosophical — and it announces
+its own ending in the first fourteen lines so that the audience
+has the unusual experience of watching a tragedy whose conclusion
+they already know. This guide collects the technical vocabulary
+you need to read the play as Shakespeare wrote it.</p>
+
+<h2>The prologue is a sonnet</h2>
+
+<p>Read the play's opening Chorus aloud. It is fourteen lines,
+in iambic pentameter, rhyming ABABCDCDEFEFGG — a Shakespearean
+sonnet. The form is doing argumentative work: a sonnet is the
+classical English love poem, and Shakespeare opens his love
+tragedy by handing us one. The sonnet form also lets him tell
+us, in its concluding couplet, exactly how the play ends:
+"A pair of star-cross'd lovers take their life." We know the
+ending before the play begins. The play is not about what
+happens; it is about why it happens.</p>
+
+<h2>The lovers' first meeting is also a sonnet</h2>
+
+<p>The single most virtuosic moment in the play is the first
+meeting of Romeo and Juliet (Act 1, Scene 5). Their first
+exchange — fourteen lines, divided between them, rhyming as a
+Shakespearean sonnet — is the form being used as a dramatic
+device. Two characters who have never met before
+<em>spontaneously co-author a sonnet</em>, completing each
+other's rhymes. The form is the play's argument that they belong
+together. The first kiss is the sonnet's concluding couplet.</p>
+
+<h2>The language of paradox</h2>
+
+<p>Romeo's vocabulary is built on
+<a href="/glossary/paradox-oxymoron"><strong>oxymoron and
+paradox</strong></a>. From his first scene:</p>
+
+<blockquote>
+Why, then, O brawling love! O loving hate!<br>
+O any thing of nothing first create!<br>
+O heavy lightness, serious vanity,<br>
+Misshapen chaos of well-seeming forms!<br>
+Feather of lead, bright smoke, cold fire, sick health…
+</blockquote>
+
+<p>The catalogue of contradictions is not decorative. It is the
+play's claim about the experience of love itself — love
+generates oxymoron because love yokes opposites together.
+Throughout the play, Juliet matches Romeo in this register:
+"My only love sprung from my only hate." "Beautiful tyrant!
+fiend angelical!" The paradoxes register the impossibility of
+the situation the lovers are inside.</p>
+
+<h2>Verbal vs. dramatic irony</h2>
+
+<p>The Chorus's announcement of the ending creates sustained
+<a href="/glossary/dramatic-irony"><strong>dramatic
+irony</strong></a> for the rest of the play. When Juliet says
+"If he be married, my grave is like to be my wedding bed," we
+hear the literal future the character cannot. When the Friar
+makes his plan with the sleeping potion, we know which
+contingencies will fail. The audience's privileged knowledge
+generates almost all of the play's pathos.</p>
+
+<p>Mercutio's wit is the play's other major irony source — verbal
+irony so dense it functions as armor. His Queen Mab speech is a
+sustained <a href="/glossary/personification">personification</a>
+that becomes, by its end, an attack on dreams themselves. His
+dying curse — "A plague o' both your houses!" — is the play's
+moral verdict, delivered by the character furthest from the
+families' quarrel.</p>
+
+<h2>The verse structure</h2>
+
+<p>The play is in <a href="/glossary/iambic-pentameter">iambic
+pentameter</a> (unrhymed blank verse) for most of its length,
+with deliberate departures:</p>
+
+<ul>
+  <li><strong>Prose</strong> for servants, the Nurse's prattle,
+      and Mercutio's bawdy.</li>
+  <li><strong>Rhyming couplets</strong> for moments of formal
+      emphasis — endings of scenes, Romeo and Juliet's most
+      conscious lyrical moments.</li>
+  <li><strong>The two sonnets</strong> (Prologue and first
+      meeting) for the play's most stylized claims.</li>
+</ul>
+
+<p>Hearing the metrical shift is half of hearing the play. When
+characters drop from verse into prose, they are usually moving
+from the world of formality and consequence into the world of
+the body and the joke.</p>
+
+<h2>Fate vs. choice</h2>
+
+<p>The Chorus calls the lovers "star-cross'd" — fated. Romeo
+agrees: "I am fortune's fool." The Friar disagrees: he believes
+his interventions can shape events. The Nurse believes in
+expedient compromise. The play does not resolve which view is
+right. Every character whose decisions accelerate the catastrophe
+— the Friar's plan, the messenger's delay, Romeo's haste,
+Juliet's stalling — could have decided otherwise. Yet the play
+opens by telling us they didn't. Whether the play is a tragedy
+of fate or of choice has been argued for four centuries.</p>
+
+<h2>The feud as backdrop</h2>
+
+<p>The play opens with two servants making bawdy jokes about the
+Capulet-Montague feud, then escalating to a brawl. Notice that
+even the lowest characters are pulled into the family quarrel —
+the feud is not aristocratic theatre, it is a social fact. The
+play's deepest political claim: a feud between two powerful
+houses corrupts an entire city. The deaths of the lovers are the
+cost the city pays for the feud's continuation.</p>
+
+<h2>The themes</h2>
+
+<ul>
+  <li><strong>Love as both transcendence and destruction.</strong>
+      The play does not idealize the lovers; it shows the love
+      doing what love does, including consuming everyone in its
+      path.</li>
+  <li><strong>The acceleration of time.</strong> The play takes
+      place over four days. Most stage productions slow this
+      down; readers should feel the original rush. The
+      catastrophe is partly caused by the speed.</li>
+  <li><strong>Generation and authority.</strong> Almost every
+      adult in the play makes a decision that hurts the lovers.
+      The play is partly an argument about parental authority and
+      the cost of its misapplication.</li>
+  <li><strong>Public vs. private speech.</strong> The lovers'
+      most intimate language is sonnet-form, almost public; the
+      family quarrels are in the streets. The collapsing
+      distinction between private and public is one of the
+      play's central concerns.</li>
+</ul>
+
+<h2>The ending</h2>
+
+<p>The Prince's closing speech — "For never was a story of more
+woe / Than this of Juliet and her Romeo" — is itself a rhymed
+couplet, the play closing its formal frame. The families
+reconcile over the bodies. The play asks whether the
+reconciliation was worth the cost. The Chorus opened with the
+ending; the Prince closes with the verdict. Between them,
+Shakespeare has shown us how it happened — and made the question
+of why unanswerable.</p>
+""",
+        "related_works": ["hamlet"],
+        "key_entries": [
+            "paradox-oxymoron", "dramatic-irony", "iambic-pentameter",
+            "personification", "foreshadowing", "soliloquy",
+            "theme-vs-motif",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "macbeth",
+        "title": "Macbeth — A Reader's Guide to Shakespeare's Shortest Tragedy",
+        "h1": "Macbeth — themes, supernatural, and tragic vocabulary",
+        "author": "William Shakespeare",
+        "year": "c. 1606",
+        "meta_description": "A reader's guide to Shakespeare's Macbeth — the witches as motif, equivocation and ambition, hamartia and hubris, blood and sleep as recurring images, the play's shortest tragedy.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Shakespeare's <em>Macbeth</em> is his shortest tragedy and his
+most concentrated. There is almost no subplot, almost no comic
+relief, almost no waste. The play moves with the inevitability of
+a thrown object. To read it well is to track three things: the
+language (which has its own dense music), the recurring images
+(blood, sleep, equivocation), and the way Shakespeare uses the
+Aristotelian tragic vocabulary at every turn.</p>
+
+<h2>The tragic frame</h2>
+
+<p>Like <a href="/works/hamlet"><em>Hamlet</em></a>,
+<em>Macbeth</em> is built on the classical tragic apparatus
+Aristotle described in the <em>Poetics</em>:</p>
+
+<ul>
+  <li><a href="/glossary/hamartia"><strong>Hamartia</strong></a>
+      — the tragic flaw. Macbeth's is famously
+      <em>"vaulting ambition, which o'erleaps itself"</em> — an
+      ambition that overshoots its target and destroys what it
+      aimed to take.</li>
+  <li><a href="/glossary/hubris"><strong>Hubris</strong></a> —
+      contemptuous overreach. Macbeth's belief, late in the play,
+      that he is invulnerable because "none of woman born" can
+      harm him is the play's hubristic climax.</li>
+  <li><a href="/glossary/peripeteia"><strong>Peripeteia</strong></a>
+      — the reversal of fortune. The march of Birnam Wood, the
+      revelation of Macduff's birth — each is a peripeteia in
+      Aristotle's strict sense.</li>
+  <li><a href="/glossary/anagnorisis"><strong>Anagnorisis</strong></a>
+      — the recognition. Macbeth's final speech ("Tomorrow, and
+      tomorrow, and tomorrow…") is the moment he sees what his
+      life has been.</li>
+  <li><a href="/glossary/catharsis-greek-tragedy"><strong>Catharsis</strong></a>
+      — the emotional purgation the play offers its audience.
+      Macbeth's death is meant to relieve the pressure the play
+      has built.</li>
+</ul>
+
+<h2>The witches as motif</h2>
+
+<p>The three witches are the play's signature
+<a href="/glossary/theme-vs-motif">motif</a>. They open the play
+in eleven lines of trochaic tetrameter (the only major characters
+not in iambic pentameter — Shakespeare gives them their own
+metre, marking them as outside the world's order). Their famous
+chiasmus — "Fair is foul, and foul is fair" — is the play's
+governing
+<a href="/glossary/paradox-oxymoron"><strong>paradox</strong></a>.
+The witches do not cause the murder; they articulate a
+possibility Macbeth was already entertaining. Critics still
+debate whether they are external evil, projections of Macbeth's
+ambition, or both.</p>
+
+<h2>Equivocation: the play's deepest theme</h2>
+
+<p>The play was written in the aftermath of the Gunpowder Plot
+(1605), and the Jesuit doctrine of <em>equivocation</em> — the
+moral defence of speaking ambiguously under oath — is woven
+through it. The witches equivocate ("none of woman born,"
+"until Birnam Wood do come to Dunsinane"). The Porter in his
+drunken speech jokes about an "equivocator" being damned. The
+play asks: what happens to a person who is misled by language
+that is technically true? Macbeth's tragedy is partly the
+tragedy of being defeated by his own literal reading of
+prophecy.</p>
+
+<h2>Blood as recurring image</h2>
+
+<p>Blood appears in every act. Some key occurrences:</p>
+
+<ul>
+  <li>Duncan's blood on Macbeth's hands: "Will all great
+      Neptune's ocean wash this blood / Clean from my hand? No,
+      this my hand will rather / The multitudinous seas incarnadine,
+      / Making the green one red."</li>
+  <li>Lady Macbeth's "A little water clears us of this deed" —
+      her early, false confidence. By Act 5 she sleepwalks washing
+      her hands: "Out, damned spot! out, I say!"</li>
+  <li>The Bloody Sergeant who narrates Macbeth's earlier
+      battlefield heroics in Act 1, scene 2 — establishing
+      Macbeth as a man whose business is blood, even before the
+      murder.</li>
+  <li>Banquo's ghost at the banquet, dripping blood, refusing to
+      stay hidden.</li>
+</ul>
+
+<p>The motif is doing thematic work: blood does not wash away;
+murder is not erasable; the play is partly an argument about the
+permanence of moral consequence.</p>
+
+<h2>Sleep as recurring image</h2>
+
+<p>The play's other great motif is sleep. Macbeth, immediately
+after the murder, hears a voice: "Sleep no more! Macbeth does
+murder sleep — the innocent sleep, / Sleep that knits up the
+ravell'd sleave of care." Lady Macbeth eventually loses her
+sleep entirely (the sleepwalking scene). The play sets up sleep
+as the symbol of conscience and innocence, then has Macbeth
+forfeit it.</p>
+
+<h2>Lady Macbeth and the inversion of gender</h2>
+
+<p>Lady Macbeth's "unsex me here" speech is one of Shakespeare's
+most discussed passages. She asks the spirits to take from her
+the gendered traits that would, she believes, prevent the
+murder — milk, gentleness, the "compunctious visitings of
+nature." Her later collapse is the play's argument that this
+inversion is not sustainable; the conscience she tried to repress
+returns in her sleep. Critics have read her as one of
+Shakespeare's most psychologically complex female characters and
+as a Jacobean version of the demonic-female archetype. The play
+supports both readings.</p>
+
+<h2>"Tomorrow, and tomorrow, and tomorrow"</h2>
+
+<p>Macbeth's response to news of his wife's death is one of the
+most famous nihilistic speeches in English:</p>
+
+<blockquote>
+Tomorrow, and tomorrow, and tomorrow,<br>
+Creeps in this petty pace from day to day<br>
+To the last syllable of recorded time;<br>
+And all our yesterdays have lighted fools<br>
+The way to dusty death. Out, out, brief candle!<br>
+Life's but a walking shadow, a poor player<br>
+That struts and frets his hour upon the stage<br>
+And then is heard no more: it is a tale<br>
+Told by an idiot, full of sound and fury,<br>
+Signifying nothing.
+</blockquote>
+
+<p>Read carefully, this is Macbeth's
+<a href="/glossary/anagnorisis">anagnorisis</a> — the
+recognition of what his life has been. The metaphors compound:
+life as candle, walking shadow, poor player, tale told by an
+idiot. Each is more dismissive than the last. The speech is the
+emotional centre of the play's final act, and one of the
+greatest concentrated expressions of nihilism in English
+literature.</p>
+
+<h2>Why it's shorter than the other tragedies</h2>
+
+<p>Most editors believe the surviving text has been cut — that
+the Folio version of 1623 represents an abridgment of an
+earlier, longer play. Whether or not that's true, the play we
+have is structured by compression: there is no subplot, no
+extended comic relief, no leisurely middle. Every scene is
+moving the catastrophe forward. The compression is part of why
+the play feels relentless.</p>
+""",
+        "related_works": ["hamlet"],
+        "key_entries": [
+            "hamartia", "hubris", "peripeteia", "anagnorisis",
+            "catharsis-greek-tragedy", "paradox-oxymoron",
+            "theme-vs-motif", "soliloquy",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "lord-of-the-flies",
+        "title": "Lord of the Flies — A Reader's Guide to William Golding's Allegory",
+        "h1": "Lord of the Flies — symbols, allegory, and the descent into savagery",
+        "author": "William Golding",
+        "year": "1954",
+        "meta_description": "A reader's guide to Golding's Lord of the Flies — the conch and the beast as symbols, the allegory of civilization and savagery, the boys as types, the postwar context.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>William Golding's <em>Lord of the Flies</em> is the most
+read English-language novel about how easily civilization breaks
+down. Written in the aftermath of the Second World War by a man
+who had served in the Royal Navy and seen what he could not
+unsee, the novel is at once an adventure story, a careful
+<a href="/glossary/allegory-vs-symbol"><strong>allegory</strong></a>,
+and an argument about human nature. To read it well, you need to
+hold all three registers at once.</p>
+
+<h2>The premise as inversion</h2>
+
+<p>Golding wrote the novel partly in response to R. M. Ballantyne's
+<em>The Coral Island</em> (1857), a Victorian boys' adventure
+story in which British schoolboys stranded on an island establish
+order, civilization, and Christian morality. Golding kept the
+premise — boys, an island, no adults — and inverted the
+conclusion. The argument: Ballantyne's vision is wishful thinking;
+the actual outcome would be more like what happens in this novel.
+The intertextual joke (the rescuing naval officer at the end is
+explicitly a <em>Coral Island</em> figure) is part of the book's
+deep critique.</p>
+
+<h2>The central allegory</h2>
+
+<p>The novel's surface is an adventure story; its depth is an
+allegory of human society and the institutions that hold it
+together. Each major character is, in the strict sense, a
+<em>type</em>:</p>
+
+<ul>
+  <li><strong>Ralph</strong> — democratic order, fragile
+      legitimacy, the rule-of-law impulse. He has authority
+      because of the conch; when the conch breaks, his authority
+      breaks with it.</li>
+  <li><strong>Piggy</strong> — reason, science, rational
+      argument. He has Mafia-glasses (used to start the fire) and
+      asthma (he cannot run from violence). He is murdered when
+      the rule of reason fails.</li>
+  <li><strong>Jack</strong> — charismatic authoritarianism, the
+      politics of fear and ritualized violence. He offers meat,
+      face-paint, and the dissolution of individual responsibility.</li>
+  <li><strong>Simon</strong> — the mystic, the prophet, the
+      Christ-figure. He is the only character who understands
+      what the "beast" actually is. He is killed by the others
+      while trying to deliver his message.</li>
+  <li><strong>Roger</strong> — sadism unconstrained. Where Jack
+      institutionalizes violence, Roger enjoys it.</li>
+</ul>
+
+<p>The novel is not subtle about its allegory, and Golding's
+later interviews confirm the design. Each character represents a
+force in human society; the plot is the story of which forces
+win when the institutional containers (school, family, law) are
+removed.</p>
+
+<h2>The conch as <a href="/glossary/allegory-vs-symbol">symbol</a></h2>
+
+<p>The conch shell is the novel's central
+<a href="/glossary/allegory-vs-symbol">symbol</a>. It is found
+in chapter one and used to summon the boys; whoever holds it has
+the right to speak; its blowing is the audible mark of
+collective decision-making. Its gradual loss of authority — and
+its eventual shattering by the boulder that kills Piggy — is the
+narrative line of the novel's central thesis. When the conch
+breaks, democracy on the island is over.</p>
+
+<h2>The beast as <a href="/glossary/theme-vs-motif">motif</a></h2>
+
+<p>The boys' fear of "the beast" runs through the novel. They
+believe it is an animal hiding on the island; some think it is a
+ghost; the reader's awareness, as the novel progresses, is that
+"the beast" is what they themselves are becoming. Simon's
+encounter with the rotting pig's head — the "Lord of the Flies"
+of the title — gives the novel its name and its thesis. The
+head, swarming with flies, tells Simon (in his hallucinated
+fever): "Fancy thinking the Beast was something you could hunt
+and kill!" The beast is inside.</p>
+
+<h2>The naming</h2>
+
+<p>"Lord of the Flies" is a literal translation of the Hebrew
+<em>Ba'al Zebub</em> (Beelzebub) — a name for the devil. Golding
+is not subtle about the religious frame either. The novel is, in
+one reading, a secular fall narrative: a paradise (the unspoiled
+island), an innocence (the boys before face-paint), a temptation,
+and a corruption. The garden's name is also the devil's.</p>
+
+<h2>The descent in stages</h2>
+
+<p>Track the novel's progression by what gets abandoned at each
+stage:</p>
+
+<ol>
+  <li><strong>Names</strong> — the boys retain their proper
+      names early, then become "hunters," then are addressed by
+      face-paint markings.</li>
+  <li><strong>Clothes</strong> — uniforms degrade, then are
+      shed.</li>
+  <li><strong>The signal fire</strong> — established as the
+      symbol of the desire to be rescued, gradually neglected,
+      eventually allowed to die.</li>
+  <li><strong>The conch's authority</strong> — initially
+      respected, increasingly ignored, finally shattered.</li>
+  <li><strong>Reason itself</strong> — Piggy's voice becomes
+      progressively less audible to the others.</li>
+</ol>
+
+<p>Golding's argument is that civilization is not a stable state
+but a thin layer of habit and institution; remove the
+institutions and the layer thins to nothing.</p>
+
+<h2>The naval officer ending</h2>
+
+<p>The novel ends with the boys being rescued by a British naval
+officer who has come ashore from a warship. The irony is sharp.
+The officer is appalled at the boys' "savagery." But he is
+himself in the middle of a war (the novel's background is a
+nuclear conflict). His own institution is doing, at industrial
+scale, the same thing the boys have just done at miniature
+scale. Ralph weeps "for the end of innocence, the darkness of
+man's heart" — and the officer turns away, embarrassed, to look
+at his cruiser. Golding's last move is to refuse the
+consolation of rescue.</p>
+
+<h2>Themes</h2>
+
+<ul>
+  <li><strong>The thinness of civilization.</strong> What we
+      think of as the natural state of human society is in fact
+      an artifact, sustainable only by institutional pressure.</li>
+  <li><strong>The role of charisma in authoritarianism.</strong>
+      Jack's rise is a study in how violence and ritualized
+      belonging defeat reasoned argument.</li>
+  <li><strong>The scapegoat.</strong> Simon's killing is a
+      ritualized murder of the truth-teller. The novel borrows
+      from anthropological accounts of scapegoating to make its
+      argument.</li>
+  <li><strong>The unreliability of progress.</strong> Written in
+      the shadow of Auschwitz and Hiroshima, the novel rejects
+      the Enlightenment story of progressive improvement. We are
+      not, the novel says, what we tell ourselves we are.</li>
+</ul>
+""",
+        "related_works": ["1984", "to-kill-a-mockingbird"],
+        "key_entries": [
+            "allegory-vs-symbol", "theme-vs-motif", "foreshadowing",
+            "satire-vs-parody", "dystopia", "personification",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "animal-farm",
+        "title": "Animal Farm — A Reader's Guide to Orwell's Allegory of the Russian Revolution",
+        "h1": "Animal Farm — allegory, satire, and the corruption of the revolution",
+        "author": "George Orwell",
+        "year": "1945",
+        "meta_description": "A reader's guide to George Orwell's Animal Farm — the allegory of the Russian Revolution, satire and fable, the seven commandments, and how the pigs become the men.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Orwell's <em>Animal Farm</em> is a short novel of about 30,000
+words and one of the most efficient pieces of political writing
+ever produced. It is a fable in the surface sense (animals
+speak, behave like humans, and the narrator addresses the reader
+as if telling a children's story) and a sustained political
+<a href="/glossary/allegory-vs-symbol"><strong>allegory</strong></a>
+in the deeper sense (the entire plot maps, scene by scene, onto
+the history of the Russian Revolution and the rise of Stalin).
+This guide collects the technical vocabulary for both layers.</p>
+
+<h2>The allegorical key</h2>
+
+<p>The mapping is meant to be transparent. Once you have it,
+every scene takes on a second meaning:</p>
+
+<ul>
+  <li><strong>Old Major</strong> — Karl Marx (or Lenin). His
+      dream of an animal utopia and his pre-revolutionary speech
+      are the founding ideology. He dies before the revolution
+      he inspires.</li>
+  <li><strong>Snowball</strong> — Leon Trotsky. The intellectual,
+      the strategist (Battle of the Cowshed = Russian Civil War),
+      eventually expelled and demonized.</li>
+  <li><strong>Napoleon</strong> — Joseph Stalin. The party boss
+      who consolidates power through purges, propaganda, and the
+      secret police (the dogs).</li>
+  <li><strong>Squealer</strong> — the regime's propaganda
+      apparatus. He explains every policy reversal in a way that
+      makes the animals accept it.</li>
+  <li><strong>Boxer</strong> — the Russian working class. His
+      slogan ("I will work harder") and his fate (sold to the
+      knacker) are Orwell's verdict on what the regime did to
+      the workers in whose name it claimed to act.</li>
+  <li><strong>The pigs</strong> — the Party. They gradually
+      acquire the privileges, then the literal posture, of the
+      humans they overthrew.</li>
+  <li><strong>The dogs</strong> — the secret police (NKVD).
+      Raised by Napoleon from puppies, loyal only to him,
+      instrument of internal terror.</li>
+  <li><strong>The sheep</strong> — the credulous masses. Their
+      bleated slogans (FOUR LEGS GOOD, TWO LEGS BAD; later TWO
+      LEGS BETTER) are the novel's account of how popular
+      opinion can be made to flip on command.</li>
+  <li><strong>Mr. Jones</strong> — Tsar Nicholas II.</li>
+  <li><strong>Mr. Frederick</strong> — Hitler (the Battle of the
+      Windmill = Operation Barbarossa).</li>
+  <li><strong>Mr. Pilkington</strong> — the Western Allies.</li>
+</ul>
+
+<h2>The Seven Commandments</h2>
+
+<p>The Commandments painted on the barn after the revolution are
+the novel's central running device. They are abridged, edited,
+and finally rewritten over the course of the book:</p>
+
+<ol>
+  <li>Whatever goes upon two legs is an enemy.</li>
+  <li>Whatever goes upon four legs, or has wings, is a friend.</li>
+  <li>No animal shall wear clothes.</li>
+  <li>No animal shall sleep in a bed.</li>
+  <li>No animal shall drink alcohol.</li>
+  <li>No animal shall kill any other animal.</li>
+  <li>All animals are equal.</li>
+</ol>
+
+<p>One by one, qualifying phrases are added to each
+("No animal shall sleep in a bed <em>with sheets</em>"), until
+the entire wall is replaced by the single sentence the regime
+needs: "ALL ANIMALS ARE EQUAL, BUT SOME ANIMALS ARE MORE EQUAL
+THAN OTHERS." This last line is one of the most quoted
+<a href="/glossary/paradox-oxymoron">paradoxes</a> in
+twentieth-century political literature — a sentence that is
+simultaneously logically impossible and bureaucratically
+unanswerable.</p>
+
+<h2>Satire and fable</h2>
+
+<p>The novel works at two levels of
+<a href="/glossary/satire-vs-parody"><strong>satire</strong></a>:</p>
+
+<ul>
+  <li><strong>Specific satire</strong> — of Stalinism. The
+      mappings above are too tight to be coincidence. Orwell was
+      writing a polemic.</li>
+  <li><strong>General satire</strong> — of revolution itself, or
+      of how power corrupts any ideology, or of the gap between
+      revolutionary rhetoric and post-revolutionary practice.
+      This is why the novel survives the Cold War context that
+      produced it: the form is general enough to apply.</li>
+</ul>
+
+<p>The fable form (talking animals, simple narration) lets
+Orwell make a serious political argument in a register that
+disarms the reader. The story can be read by a child; the
+argument can be defended by a political theorist.</p>
+
+<h2>The rhetorical work of Squealer</h2>
+
+<p>Squealer, the pigs' propaganda specialist, is one of Orwell's
+sharpest portraits of how political language reshapes thought.
+His method is consistent: when the regime needs to reverse a
+policy, Squealer arrives, explains that the policy hasn't
+actually changed, that any apparent change was misremembered,
+and that "Comrade Napoleon" never intended otherwise. Crucially,
+he often appends the threat: "Surely, comrades, you don't want
+Jones to come back?" The implicit choice — the current
+oppressor or the previous one — is the structural justification
+of every regime. Squealer is Orwell's argument that the worst
+threat to truth is not the lie but the
+<a href="/glossary/euphemism">euphemism</a> that makes the lie
+plausible.</p>
+
+<h2>The famous final scene</h2>
+
+<p>The novel ends with the animals looking through the farmhouse
+window at the pigs sitting down to dinner with human farmers.
+The pigs are dressed in human clothes, drinking, playing cards,
+arguing. Napoleon and Pilkington toast each other. The animals
+watch: "they looked from pig to man, and from man to pig, and
+from pig to man again; but already it was impossible to say
+which was which." It is the novel's last image and its closing
+verdict. The revolution that began by overthrowing the humans
+has, in its end-state, produced humans wearing pig faces. Orwell
+is making the strongest possible claim: post-revolutionary
+totalitarianism is not different in kind from what it
+overthrew.</p>
+
+<h2>The novel today</h2>
+
+<p>The novel is still taught everywhere not just because of the
+Russian Revolution mapping but because the structural argument
+— that revolutionary ideology can be hijacked by an organized
+minority, that propaganda will rewrite the historical record,
+that the people in whose name the revolution was made will be
+the first to be sacrificed — is depressingly general. Read
+without the Stalin key, the book still works. Read with it, it
+becomes one of the most precise political documents of its
+century.</p>
+""",
+        "related_works": ["1984", "brave-new-world"],
+        "key_entries": [
+            "allegory-vs-symbol", "satire-vs-parody", "paradox-oxymoron",
+            "dystopia", "euphemism", "theme-vs-motif",
+        ],
+    },
 ]
 
 _BY_SLUG: dict[str, dict] = {w["slug"]: w for w in WORKS}

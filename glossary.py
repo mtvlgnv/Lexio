@@ -8759,6 +8759,434 @@ the answer is usually the book's deepest argument.</p>
 """,
     },
 
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "imagery",
+        "term": "imagery",
+        "context": "figurative language",
+        "title": "What \"Imagery\" Means in Literature — Beyond \"Mental Pictures\"",
+        "meta_description": "Imagery is the use of vivid descriptive language that appeals to the senses — visual, auditory, tactile, olfactory, gustatory. Here's why \"mental pictures\" is a misleading definition.",
+        "h1": "What \"imagery\" means in literature",
+        "updated": "2026-05-25",
+        "related": ["personification", "simile-vs-metaphor", "pathetic-fallacy"],
+        "body_html": """
+<p><strong>Imagery</strong> is the use of vivid descriptive
+language that engages a reader's senses. It is one of the first
+literary terms taught in school and one of the most often
+misunderstood. The standard high-school definition — "imagery
+makes mental pictures" — covers only one of the five senses and
+misses what the term is actually doing.</p>
+
+<h2>The five kinds of imagery</h2>
+
+<p>Imagery is conventionally divided by the sense it engages:</p>
+
+<ul>
+  <li><strong>Visual imagery</strong> — appeals to sight. "The
+      green light at the end of Daisy's dock."</li>
+  <li><strong>Auditory imagery</strong> — appeals to hearing.
+      "The cracked church bell over the village." Onomatopoeia
+      is a special case of auditory imagery.</li>
+  <li><strong>Tactile imagery</strong> — appeals to touch. "The
+      rough wool of the army blanket."</li>
+  <li><strong>Olfactory imagery</strong> — appeals to smell.
+      Proust's madeleine, the entire opening of <em>Perfume</em>
+      by Süskind.</li>
+  <li><strong>Gustatory imagery</strong> — appeals to taste.
+      "The metallic tang of fear in her mouth."</li>
+</ul>
+
+<p>Two more sometimes added: <strong>kinesthetic imagery</strong>
+(appealing to bodily movement and tension) and
+<strong>organic imagery</strong> (appealing to internal sensations
+like hunger or nausea).</p>
+
+<h2>Why "mental pictures" is misleading</h2>
+
+<p>Reducing imagery to "mental pictures" makes three mistakes.
+First, it privileges sight over the other senses; many of the
+most powerful images in literature are not visual. Second, it
+makes imagery sound passive — a kind of mental slide projector —
+when in fact imagery is doing argumentative work. Third, it
+implies that the image is the goal, when usually the image is
+the vehicle for a feeling, an idea, or a thematic claim.</p>
+
+<h2>Imagery vs. figurative language vs. symbol</h2>
+
+<p>The relationships:</p>
+
+<ul>
+  <li><strong>Imagery</strong> is the broad term — any sensory
+      description.</li>
+  <li><strong>Figurative language</strong> (metaphor, simile,
+      personification) is one way to produce imagery, but not the
+      only way; a literal description can be imagistic too.</li>
+  <li><a href="/glossary/allegory-vs-symbol"><strong>Symbol</strong></a>
+      is an image with sustained, often allegorical meaning. The
+      green light in <em>Gatsby</em> is both an image and a
+      symbol; the rain in a battle scene might just be imagery.</li>
+</ul>
+
+<h2>The Imagist movement</h2>
+
+<p>In the 1910s, a group of Anglo-American poets — Ezra Pound,
+H. D., Amy Lowell, F. S. Flint — formed a school called
+<strong>Imagism</strong> with a manifesto-like commitment to
+direct treatment of the "thing," economy of language, and the
+musical phrase. Pound's famous "In a Station of the Metro" is the
+canonical Imagist poem:</p>
+
+<blockquote>
+The apparition of these faces in the crowd;<br>
+Petals on a wet, black bough.
+</blockquote>
+
+<p>Two lines, one juxtaposed image, no explanatory framework.
+The Imagists' commitment to spare, sensory writing reshaped
+twentieth-century poetry — even when later poets reacted against
+it.</p>
+
+<h2>Why writers use it</h2>
+
+<p>Imagery makes the abstract concrete. A philosopher arguing
+"alienation is the modern condition" requires the reader to
+believe the proposition. A novelist describing the protagonist
+sitting in an empty subway car at 4 a.m., watching her own
+reflection in the dark window, has communicated alienation
+without arguing for it. Imagery is the writer's way of making
+the reader experience the thing rather than be told about it.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a passage seems to be doing nothing but describing
+something at length, ask which senses are being engaged and why
+those particular ones. The selection of detail is the writer's
+argument. A war scene that emphasizes smell rather than sight is
+making a different claim than one that emphasizes the visual.
+Imagery is rarely neutral; the senses the writer chooses to
+foreground are the senses they want you to inhabit.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "allusion",
+        "term": "allusion",
+        "context": "literary technique",
+        "title": "What \"Allusion\" Means in Literature — Brief References, Compressed Meaning",
+        "meta_description": "An allusion is a brief, often indirect reference to a person, event, work, or text that the reader is expected to recognize. Here's how allusion works and why writers use it.",
+        "h1": "What \"allusion\" means in literature",
+        "updated": "2026-05-25",
+        "related": ["epithet", "metonymy", "trope"],
+        "body_html": """
+<p>An <strong>allusion</strong> is a brief, often passing
+reference to a person, event, place, work of art, or text that
+the writer expects the reader to recognize. The reference is not
+explained — its compression is part of its work. Allusion is one
+of literature's most economical devices: a single phrase can
+import the weight of an entire prior text into the sentence in
+front of you.</p>
+
+<h2>How allusion works</h2>
+
+<p>Consider one of T. S. Eliot's lines from <em>The Waste Land</em>:</p>
+
+<blockquote>
+These fragments I have shored against my ruins.
+</blockquote>
+
+<p>The line on its own is striking. Recognized as an allusion —
+to the speech of Hieronymo at the close of Thomas Kyd's
+<em>The Spanish Tragedy</em> ("I'll fit you" / "Why then I'll
+fit you") and to a longer tradition of literary fragments
+shoring up failing identities — it acquires a much larger
+resonance. Eliot is not just describing his speaker's mental
+state; he is placing his poem inside a four-century lineage of
+poetic ruin. The allusion does the placing.</p>
+
+<h2>Kinds of allusion</h2>
+
+<ul>
+  <li><strong>Literary allusion</strong> — to other works of
+      literature. The most common kind, and the most dependent
+      on shared reading.</li>
+  <li><strong>Biblical allusion</strong> — a special case of
+      literary allusion that carries unusual weight in
+      English-language writing because the Bible was, for
+      centuries, the one book most readers had read. Most
+      pre-twentieth-century English literature is dense with
+      biblical allusion.</li>
+  <li><strong>Mythological allusion</strong> — to Greek, Roman,
+      or other myth-systems. Joyce's <em>Ulysses</em> is the most
+      thoroughgoing modern example.</li>
+  <li><strong>Historical allusion</strong> — to a person or
+      event. "He had a Waterloo of his own that summer."</li>
+  <li><strong>Cultural allusion</strong> — to a song, film,
+      brand, internet phenomenon. The modern equivalent of
+      classical allusion; works only as long as the cultural
+      reference is alive.</li>
+</ul>
+
+<h2>The pleasure of recognition</h2>
+
+<p>Part of why writers use allusion is the cognitive pleasure
+the reader gets from catching it. The reader who recognizes the
+allusion is invited into a small private circle — the writer
+and the reader sharing a reference that less-prepared readers
+will miss. This is, depending on perspective, either generous
+(the writer trusts the reader's literacy) or snobbish (the
+writer is rewarding only those readers already inside the
+canon).</p>
+
+<h2>The risk: allusion that fails</h2>
+
+<p>Allusion is the technique most dependent on shared cultural
+context. An allusion that the reader doesn't catch is, for that
+reader, dead weight. Modernist literature — Eliot, Pound, Joyce
+— is famously dense with allusion, and its readability has
+depended, generation by generation, on whether readers still
+share the references. The footnoted editions of <em>The Waste
+Land</em> exist because the cultural context Eliot assumed has
+not survived the century.</p>
+
+<h2>Allusion vs. intertextuality</h2>
+
+<p>The two terms overlap but are not identical:</p>
+
+<ul>
+  <li><strong>Allusion</strong> is a discrete, identifiable
+      reference that the writer made deliberately. You can
+      footnote it.</li>
+  <li><strong>Intertextuality</strong> (Kristeva's term) is the
+      broader idea that all texts exist in a web of relationships
+      with other texts, whether the writer consciously intended
+      the references or not. Intertextuality includes allusion
+      but extends to unconscious echoes, shared conventions, and
+      structural inheritance.</li>
+</ul>
+
+<h2>How to read it in context</h2>
+
+<p>When a sentence carries a strange weight you can't quite
+account for — a phrase that sounds vaguely familiar, a name that
+seems to invoke more than it explains — suspect an allusion. The
+extra weight is the imported context. If you can identify the
+source, the line acquires the full meaning the writer was
+betting you'd see; if you can't, you've registered the gap,
+which is itself useful — every great writer is also, partly, a
+catalogue of the reading you have not yet done.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "diction",
+        "term": "diction",
+        "context": "literary style",
+        "title": "What \"Diction\" Means in Literature — Word Choice as Argument",
+        "meta_description": "Diction is the writer's choice of words and the resulting tone — formal or informal, abstract or concrete, plain or ornate. Here's how diction shapes meaning at every level.",
+        "h1": "What \"diction\" means in literature",
+        "updated": "2026-05-25",
+        "related": ["tone-vs-mood", "trope", "personification"],
+        "body_html": """
+<p><strong>Diction</strong> is the writer's choice of words — and,
+by extension, the cumulative effect that choice produces in the
+reader. Every word a writer picks excludes a thousand others; the
+specific selection creates the texture, the register, and the
+tone of the prose. Diction is to writing what brushwork is to
+painting: the granular, sentence-level surface that carries
+almost everything the larger work is doing.</p>
+
+<h2>The basic axes</h2>
+
+<p>Critics talk about diction along several axes:</p>
+
+<ul>
+  <li><strong>Formal vs. informal.</strong> "He passed away" is
+      formal; "he kicked the bucket" is informal. Same fact,
+      different register.</li>
+  <li><strong>Abstract vs. concrete.</strong> "Justice" is
+      abstract; "a man returning a wallet to its owner" is
+      concrete. Strong writers usually choose concrete diction
+      where they can.</li>
+  <li><strong>Latinate vs. Anglo-Saxon.</strong> English has a
+      double vocabulary — the Anglo-Saxon core (short, plain,
+      direct: <em>house, dog, eat</em>) and the Latinate
+      overlay (longer, more abstract: <em>residence, canine,
+      consume</em>). The choice between them shapes tone
+      enormously.</li>
+  <li><strong>Plain vs. ornate.</strong> Hemingway is plain;
+      Henry James is ornate. Neither is better; both are
+      choices.</li>
+  <li><strong>Standard vs. dialectal.</strong> Mark Twain in
+      <em>Huckleberry Finn</em>, Zora Neale Hurston in
+      <em>Their Eyes Were Watching God</em>, James Kelman in
+      <em>How Late It Was, How Late</em> — each insists on a
+      vernacular diction the reader must learn.</li>
+  <li><strong>Specialized vs. general.</strong> Medical, legal,
+      military, ecclesiastical — each profession has its own
+      diction, and writers who borrow from one are usually doing
+      so deliberately.</li>
+</ul>
+
+<h2>Diction at the sentence level</h2>
+
+<p>Two writers describing the same scene:</p>
+
+<blockquote>
+The old man walked slowly back to the boat. He was very tired.
+</blockquote>
+
+<p>Hemingway. Plain, Anglo-Saxon, mostly monosyllabic. The
+diction does almost no decorative work; the sentences want to
+disappear into the action.</p>
+
+<blockquote>
+The aged mariner traversed the strand with deliberate care, his
+limbs registering the accumulated fatigue of an unforgiving
+afternoon.
+</blockquote>
+
+<p>A parody of late-Victorian style. Latinate, polysyllabic,
+formal. The same event; a completely different reading
+experience. Notice that this prose does decorative work, and
+the work is now visible — which may be exactly what a particular
+piece of writing wants.</p>
+
+<h2>Diction and tone</h2>
+
+<p>Diction is the primary engine of
+<a href="/glossary/tone-vs-mood"><strong>tone</strong></a>. The
+same fact described in different diction produces different
+attitudes. A "lone hunter" is heroic; an "isolated assailant" is
+clinical; a "guy with a gun" is journalistic. Writers signal
+their stance through word choice before they make any explicit
+argument.</p>
+
+<h2>The reader's job: hearing the choice</h2>
+
+<p>Most diction is invisible to most readers most of the time —
+which is why diction is so powerful. The way a sentence is worded
+shapes how you feel about its content before you have a chance
+to evaluate the content. Skilled readers train themselves to
+notice the choice — to ask, "Why <em>this</em> word and not its
+synonym?" Once you start hearing it, the question doesn't shut
+off. (This is, incidentally, the question Lexio is built to
+answer.)</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a passage's effect is hard to name, look at the verbs,
+the adjectives, and the level of abstraction. The diction
+catalogue you build sentence by sentence will tell you what tone
+the writer is going for, what register the work inhabits, and
+what kind of reader it is asking you to be.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "mood-atmosphere",
+        "term": "mood (atmosphere)",
+        "context": "literary effect",
+        "title": "What \"Mood\" Means in Literature — Atmosphere vs. Tone, Explained",
+        "meta_description": "Mood (or atmosphere) is the emotional feeling a reader experiences from a work — distinct from tone (the writer's attitude). Here's how mood is built, and how it differs from tone.",
+        "h1": "What \"mood\" means in literature",
+        "updated": "2026-05-25",
+        "related": ["tone-vs-mood", "imagery", "pathetic-fallacy"],
+        "body_html": """
+<p><strong>Mood</strong> (also called <strong>atmosphere</strong>)
+is the emotional feeling a work of literature produces in the
+reader. It is what you would describe if asked, "What did it
+<em>feel</em> like to read that scene?" — eerie, oppressive,
+nostalgic, claustrophobic, hopeful, mournful. Mood is one of the
+most important and most under-taught literary concepts because it
+is usually confused with its near-cousin, tone.</p>
+
+<h2>Mood vs. tone</h2>
+
+<p>The clearest way to distinguish them:</p>
+
+<ul>
+  <li><strong>Tone</strong> is the <em>writer's</em> attitude
+      toward the subject — sympathetic, ironic, contemptuous,
+      reverent.</li>
+  <li><strong>Mood</strong> is the <em>reader's</em> emotional
+      experience of the work — eerie, claustrophobic, melancholic,
+      buoyant.</li>
+</ul>
+
+<p>A writer can adopt an ironic <em>tone</em> while producing a
+melancholic <em>mood</em>; a sympathetic tone can produce a
+hopeful mood, an oppressive one, or anything in between. The
+two are independent dimensions. For more on the distinction, see
+our entry on <a href="/glossary/tone-vs-mood">tone vs. mood</a>.</p>
+
+<h2>How mood is built</h2>
+
+<p>Mood is rarely created by a single device. It accumulates
+from many small choices:</p>
+
+<ul>
+  <li><strong><a href="/glossary/imagery">Imagery</a>.</strong>
+      A scene set at noon on a sunlit beach reads differently
+      from the same scene at dusk in a graveyard. The sensory
+      details establish the emotional weather before the
+      characters speak.</li>
+  <li><strong>Setting.</strong> The Gothic atmosphere of
+      <em>Wuthering Heights</em>, the suffocating heat of Camus's
+      Algiers in <em>The Stranger</em>, the relentless rain of
+      McCarthy's <em>The Road</em> — setting carries enormous
+      mood-creating weight.</li>
+  <li><strong><a href="/glossary/diction">Diction</a>.</strong>
+      Word choice at the sentence level. Latinate, abstract
+      vocabulary produces a different mood than Anglo-Saxon,
+      concrete vocabulary.</li>
+  <li><strong>Syntax.</strong> Short, fragmentary sentences
+      produce urgency. Long, periodic sentences produce
+      contemplation or exhaustion. The reader's breathing pattern
+      mirrors the syntax.</li>
+  <li><strong><a href="/glossary/pathetic-fallacy">Pathetic
+      fallacy</a>.</strong> Weather and landscape mirroring the
+      characters' emotional states is one of the oldest mood
+      devices in English literature.</li>
+  <li><strong>Pacing.</strong> A scene's mood is shaped by how
+      quickly or slowly the writer moves through it. A leisurely
+      scene of dread is different from a frantic one.</li>
+</ul>
+
+<h2>Mood as the reader's experience</h2>
+
+<p>The crucial thing about mood is that it is felt before it is
+analyzed. You walk into the opening of <em>The Castle of
+Otranto</em> and the air is suddenly heavier; you walk into the
+opening of <em>Pride and Prejudice</em> and the air is suddenly
+lighter. You haven't yet identified the techniques producing
+those effects; you've registered the effects directly. Mood is
+the layer of the reading experience closest to the body.</p>
+
+<h2>How writers control mood across a work</h2>
+
+<p>Skilled writers control mood across the arc of a work. The
+opening establishes one atmosphere; mid-book shifts adjust it;
+the ending often consolidates or pointedly disrupts it. The
+mood of <em>Macbeth</em> shifts in measurable ways from the
+witches' opening (uncanny) to the early military scenes (heroic)
+to the post-murder scenes (paranoid) to the final battle
+(elegiac). Tracking the mood as it moves is part of tracking
+the play's argument.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When you have an emotional response to a passage and don't
+yet know why, that response is the mood. The way to analyze it
+is to work backwards: what specific choices in setting, imagery,
+syntax, pacing, and diction are producing the feeling you have?
+Mood is never accidental in writing that matters; the writer has
+chosen each element to produce the atmosphere you are inhabiting.</p>
+""",
+    },
+
 
 ]
 
