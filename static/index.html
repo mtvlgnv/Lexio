@@ -128,6 +128,7 @@
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; padding: 0 28px; gap: 14px;
       flex-shrink: 0; transition: background 0.3s, border-color 0.3s;
+      position: relative;
     }
     .brand-group {
       display: inline-flex; align-items: baseline; gap: 6px;
@@ -2172,9 +2173,8 @@
 
     /* ── Landing nav (inside header) ────────────────────────── */
     .lp-header-nav {
+      position: absolute; left: 50%; transform: translateX(-50%);
       display: flex; align-items: center; gap: 2px;
-      border-left: 1px solid var(--border);
-      padding-left: 12px; margin-left: 6px;
     }
     body.in-app .lp-header-nav { display: none; }
     .lp-nav-link {
