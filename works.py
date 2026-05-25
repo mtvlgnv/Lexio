@@ -2149,6 +2149,613 @@ century.</p>
             "dystopia", "euphemism", "theme-vs-motif",
         ],
     },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-crucible",
+        "title": "The Crucible — A Reader's Guide to Arthur Miller's Allegory of McCarthyism",
+        "h1": "The Crucible — themes, allegory, and the politics of accusation",
+        "author": "Arthur Miller",
+        "year": "1953",
+        "meta_description": "A reader's guide to Arthur Miller's The Crucible — the Salem witch trials as allegory for McCarthyism, John Proctor as tragic hero, the politics of accusation, and the dramatic structure.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Arthur Miller's <em>The Crucible</em> is a play about the
+Salem witch trials of 1692 written in 1953 as a transparent
+<a href="/glossary/allegory-vs-symbol"><strong>allegory</strong></a>
+for the McCarthyist Congressional investigations Miller and his
+friends were living through. The play works at both levels at
+once: as a historical drama about a colonial Massachusetts crisis,
+and as a political document about mid-twentieth-century America.
+To read it well, you need to hold both registers together.</p>
+
+<h2>The historical Salem</h2>
+
+<p>In 1692, a group of girls in Salem Village began accusing
+local residents of witchcraft. The accusations spread. Over the
+course of a year, twenty people were executed (nineteen by
+hanging, one by being pressed to death) and many more imprisoned,
+before the colony's leadership lost confidence in the trials and
+shut them down. Miller's play compresses, recombines, and
+fictionalizes the historical record — most famously by raising
+the fictional Abigail Williams's age and making her the
+discarded lover of John Proctor. The play is a dramatic
+interpretation, not a documentary.</p>
+
+<h2>The McCarthyist allegory</h2>
+
+<p>Miller wrote the play during the height of the House Un-American
+Activities Committee's investigations of supposed Communist
+infiltration of American institutions, especially Hollywood. The
+parallels with Salem were precise:</p>
+
+<ul>
+  <li><strong>Accusation as proof.</strong> An accusation, once
+      made, was treated as evidence; the accused was required to
+      prove a negative.</li>
+  <li><strong>Naming names.</strong> The accused could clear
+      themselves only by identifying other suspects. The
+      mechanism was designed to expand.</li>
+  <li><strong>The refusal to confess.</strong> Those who refused
+      to confess and name names — Miller's John Proctor, the
+      Hollywood Ten in the 1947 hearings — were punished more
+      severely than those who collaborated.</li>
+  <li><strong>The destruction of reputation.</strong> The damage
+      was social and economic as much as legal. Careers were
+      ended; networks broken; the punishment lasted beyond any
+      court proceeding.</li>
+</ul>
+
+<p>Miller was himself called before HUAC in 1956, refused to
+name names, and was convicted of contempt of Congress (later
+overturned). The play that warned about the dynamic became part
+of its history.</p>
+
+<h2>John Proctor as tragic hero</h2>
+
+<p>Proctor is built on the classical tragic apparatus:</p>
+
+<ul>
+  <li><a href="/glossary/hamartia"><strong>Hamartia</strong></a>
+      — his affair with Abigail. The single moral failure that
+      gives Abigail her motive against Elizabeth and that breaks
+      Proctor's own sense of moral standing.</li>
+  <li><a href="/glossary/peripeteia"><strong>Peripeteia</strong></a>
+      — the courtroom scene where his confession of adultery,
+      meant to expose Abigail's motive, is undone by Elizabeth's
+      well-intentioned lie.</li>
+  <li><a href="/glossary/anagnorisis"><strong>Anagnorisis</strong></a>
+      — Proctor's final speech: "Because it is my name! Because
+      I cannot have another in my life!" His recognition that he
+      cannot sign the confession because the lie would unmake
+      him.</li>
+  <li><a href="/glossary/catharsis-greek-tragedy"><strong>Catharsis</strong></a>
+      — his hanging as the emotional release the play is
+      structured to deliver.</li>
+</ul>
+
+<p>The play borrows the form of Greek and Shakespearean
+tragedy to deliver a modern political argument — the
+seventeenth-century setting is itself an act of
+<a href="/glossary/allegory-vs-symbol">allegorical</a>
+displacement.</p>
+
+<h2>The mechanism of the accusation</h2>
+
+<p>Abigail's accusations work because the social environment is
+primed to believe them. The play is careful to show that the
+witch-hunt is enabled by:</p>
+
+<ul>
+  <li>Pre-existing land disputes (Putnam's grievances) that get
+      laundered into accusations.</li>
+  <li>Theological certainty that gives the accusations a frame
+      ("Where you find no fear, there you find no witch").</li>
+  <li>Institutional incentive (Danforth cannot reverse the
+      executions without admitting the court has been wrong).</li>
+  <li>The social capital granted to accusers, which inverts
+      normal status hierarchies.</li>
+</ul>
+
+<p>The witch-hunt is not a mob phenomenon; it is the rational
+behaviour of individual actors inside a corrupted institution.
+Miller's argument is that this is how political persecution
+always works.</p>
+
+<h2>The act structure</h2>
+
+<p>The play is in four acts, each progressively claustrophobic:</p>
+
+<ul>
+  <li><strong>Act I</strong> — the Parris household. Initial
+      accusations. The community's authority structure still
+      intact.</li>
+  <li><strong>Act II</strong> — the Proctor household. The
+      accusations have spread; Elizabeth is taken.</li>
+  <li><strong>Act III</strong> — the courtroom. The institutional
+      mechanism on full display.</li>
+  <li><strong>Act IV</strong> — the jail. Stripped of all outside
+      context. Proctor's final decision.</li>
+</ul>
+
+<p>The geographical compression mirrors the moral one — the play
+narrows toward Proctor's final, private decision.</p>
+
+<h2>The title</h2>
+
+<p>A <em>crucible</em> is a container used to heat substances to
+high temperatures, often to test them or to separate impurities.
+The play's title is doing two jobs: it names the literal trial
+Proctor and Elizabeth undergo, and it claims that such trials —
+McCarthyist or witch-hunt — are tests of the surrounding
+community as much as of the accused. Salem failed the test;
+Miller's argument was that mid-century America was failing it
+too.</p>
+
+<h2>Themes</h2>
+
+<ul>
+  <li><strong>The destruction of community by suspicion.</strong>
+      The play tracks the collapse of trust, neighbourliness,
+      and shared discourse — and argues that this is the deepest
+      cost of any persecution.</li>
+  <li><strong>The name as moral substance.</strong> Proctor's
+      final refusal to sign a false confession — "I have given
+      you my soul; leave me my name" — is the play's argument
+      about identity. The name is not separable from the self.</li>
+  <li><strong>Authority without honesty.</strong> Danforth, the
+      presiding judge, is intelligent, scrupulous within the
+      court's logic, and catastrophically wrong. The play is
+      uninterested in villains; it is interested in how
+      well-intentioned authorities produce evil.</li>
+  <li><strong>The role of confession.</strong> Confession is
+      offered as salvation and is the play's trap — to confess
+      is to lie; to refuse is to die.</li>
+</ul>
+""",
+        "related_works": ["1984", "animal-farm"],
+        "key_entries": [
+            "allegory-vs-symbol", "hamartia", "peripeteia",
+            "anagnorisis", "catharsis-greek-tragedy", "dramatic-irony",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "of-mice-and-men",
+        "title": "Of Mice and Men — A Reader's Guide to Steinbeck's Depression-Era Tragedy",
+        "h1": "Of Mice and Men — themes, structure, and the American dream broken",
+        "author": "John Steinbeck",
+        "year": "1937",
+        "meta_description": "A reader's guide to John Steinbeck's Of Mice and Men — the American dream as broken promise, foreshadowing, the dramatic structure as novella-as-play, and Lennie as tragic figure.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>John Steinbeck's <em>Of Mice and Men</em> is a short book —
+roughly 30,000 words — built like a play. Six chapters, each set
+in a single location, each opening with a description that reads
+like a stage direction. Steinbeck wrote it deliberately to be
+adaptable to the stage, and the structural decision shapes every
+page: the novella's compression, its claustrophobia, and its
+sense of inevitability are all consequences of its theatrical
+architecture.</p>
+
+<h2>The structure: novella as play</h2>
+
+<p>Each of the six chapters opens with a panoramic description of
+its setting — the riverbank, the bunkhouse, the harness room,
+Crooks's room, the barn, the riverbank again. These openings
+function as stage directions. Once the setting is established,
+the chapter is almost entirely dialogue, with characters
+entering and exiting as if cued. The novella was successfully
+adapted to the stage in 1937 with minimal changes, because the
+material was already shaped for performance.</p>
+
+<p>The form has thematic consequences. Each setting is closed,
+small, and overlooked by larger powers (the boss, the wider
+ranch economy). George and Lennie can never escape into the
+American landscape; the landscape is always already a stage on
+which their performance plays out.</p>
+
+<h2>The dream as <a href="/glossary/theme-vs-motif">recurring motif</a></h2>
+
+<p>George and Lennie's shared dream — a little house with a
+plot of land, rabbits, "the fatta the lan'" — is the novella's
+central recurring motif. The dream is repeated almost ritually
+throughout the book, often at moments of stress:</p>
+
+<ul>
+  <li>The opening campfire scene, where George recites the
+      dream to soothe Lennie.</li>
+  <li>The bunkhouse scene where Candy overhears and buys his
+      way in.</li>
+  <li>The barn scene where Crooks first mocks the dream, then
+      asks to join.</li>
+  <li>The final scene by the river, where George recites the
+      dream one last time as a kindness before the killing.</li>
+</ul>
+
+<p>The repetition makes the dream feel achievable, then
+progressively less so, then finally impossible. The structure
+of the novella is the structure of the dream's defeat.</p>
+
+<h2>Foreshadowing as design</h2>
+
+<p>Almost every event in the book is foreshadowed.
+<a href="/glossary/foreshadowing"><strong>Foreshadowing</strong></a>
+in Steinbeck is not subtle — it is part of the inevitability the
+novella is building:</p>
+
+<ul>
+  <li>Lennie kills the mouse in chapter one. He will kill the
+      puppy. He will kill Curley's wife.</li>
+  <li>Candy's dog is shot in the back of the head by Carlson —
+      "He won't even feel it." Lennie will be shot in the back
+      of the head by George.</li>
+  <li>George says, of the dream, "I never seen no piece of land
+      yet" — he never will.</li>
+  <li>The opening riverbank scene returns as the closing setting,
+      framing the entire novella inside one loop.</li>
+</ul>
+
+<p>The foreshadowing is so insistent that the ending is no
+surprise. The book's argument is not <em>what</em> will happen
+but <em>how</em> — and what that how reveals about the social
+order it depicts.</p>
+
+<h2>The characters as types</h2>
+
+<p>Each major character represents a kind of social marginality
+the Depression-era economy refused to accommodate:</p>
+
+<ul>
+  <li><strong>George</strong> — the small-stature wage laborer
+      whose only asset is his mobility. He cannot accumulate
+      anything because he must always move to the next job.</li>
+  <li><strong>Lennie</strong> — the intellectually disabled.
+      Strong, gentle, unable to control his strength, and (in
+      the play's logic) unable to survive in a world that has no
+      place for him.</li>
+  <li><strong>Candy</strong> — the aging worker, soon to be
+      discarded. His dog's killing prefigures his own coming
+      obsolescence.</li>
+  <li><strong>Crooks</strong> — the Black ranch hand, segregated
+      to the harness room. His isolation is the novella's
+      sharpest single image of racial caste.</li>
+  <li><strong>Curley's wife</strong> — unnamed, defined entirely
+      by her relationship to a man, dangerous because her
+      sexuality is the only currency she has.</li>
+  <li><strong>Slim</strong> — the prince of the ranch, the
+      only character with full social standing. The novella's
+      moral arbiter, who alone fully understands what George
+      has done in the final scene.</li>
+</ul>
+
+<p>Each is at the margin of a different fault line — class,
+ability, race, gender, age. Steinbeck's argument is that the
+ranch economy systematically excludes the people the dream is
+supposed to be available to.</p>
+
+<h2>The title</h2>
+
+<p>The title comes from Robert Burns's poem "To a Mouse"
+(1785): "The best laid schemes o' mice an' men / Gang aft
+agley" — the best-laid plans of mice and men often go awry. The
+allusion is structural. The book is a sustained argument that
+the plans George and Lennie make are mouse-scale plans in a
+landscape too large and indifferent to honour them.</p>
+
+<h2>The ending</h2>
+
+<p>George's killing of Lennie is the novella's tragic conclusion
+and its act of love at once. Steinbeck stages it carefully: he
+gives George the same words and gestures Carlson used on
+Candy's dog (a shot to the back of the head, while the victim
+is distracted), so that the parallel is unmistakable. George
+recites the dream one final time as Lennie listens. The reader
+is asked to register that this killing is mercy — that what
+Lennie escapes is worse than what George gives him.</p>
+
+<p>The book ends with Slim taking George for a drink, and
+Carlson asking what's eating those two guys. The novella's last
+beat is the world's incomprehension. Slim understands; the
+others do not; the system continues; the dream is gone.</p>
+""",
+        "related_works": ["the-catcher-in-the-rye", "to-kill-a-mockingbird"],
+        "key_entries": [
+            "foreshadowing", "theme-vs-motif", "allegory-vs-symbol",
+            "dramatic-irony", "tone-vs-mood",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "othello",
+        "title": "Othello — A Reader's Guide to Shakespeare's Tragedy of Jealousy",
+        "h1": "Othello — themes, Iago, and the rhetoric of insinuation",
+        "author": "William Shakespeare",
+        "year": "c. 1603",
+        "meta_description": "A reader's guide to Shakespeare's Othello — Iago as the great Shakespearean villain, the rhetoric of insinuation, race and outsider status, the handkerchief as symbol, the play's racism.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Shakespeare's <em>Othello</em> is the tragedy of how a great
+man is undone by a small lie, sustained at industrial scale by
+the most rhetorically gifted villain in English literature. The
+play is short, almost claustrophobic, and built on a single
+horrifying mechanism: Iago tells Othello something that is not
+true, and Othello believes it. To read the play well is to
+study how that belief is engineered.</p>
+
+<h2>Iago: the great Shakespearean villain</h2>
+
+<p>Iago has more lines than Othello himself — unusual for a
+play named after its title character. The structural decision
+is the play's argument: Iago is the protagonist of the action
+he sets in motion. He carries 32 percent of the play's dialogue
+and dominates its
+<a href="/glossary/soliloquy"><strong>soliloquies</strong></a>,
+addressing the audience directly seven times.</p>
+
+<p>The soliloquies are crucial. Iago tells us his plans before
+he executes them; we are his confidants. The
+<a href="/glossary/dramatic-irony">dramatic irony</a> this
+creates — we know exactly what is being done to Othello,
+Desdemona, Cassio, and Emilia, and we watch the plan unfold
+helpless — is one of the most sustained in any Shakespeare play.</p>
+
+<h2>Why Iago does it</h2>
+
+<p>Iago offers multiple motives — Othello passed him over for
+promotion, Othello may have slept with Iago's wife, Iago is
+attracted to Desdemona himself — but none of them quite stick.
+The character keeps inventing reasons after the action has
+started, as if the action came first and the motives had to be
+manufactured. Coleridge's famous phrase for this is
+<em>"motiveless malignity"</em> — the suggestion that Iago is
+evil for its own sake, that the rationalizations are decoration.
+The reading remains contested. Whether you take Iago as
+psychologically explicable or as an emblem of pure malice
+changes the play significantly.</p>
+
+<h2>The rhetoric of insinuation</h2>
+
+<p>Iago's method is never to assert. He plants suggestions and
+lets Othello convince himself:</p>
+
+<blockquote>
+IAGO: My noble lord —<br>
+OTHELLO: What dost thou say, Iago?<br>
+IAGO: Did Michael Cassio, when you wooed my lady, / Know of
+your love?<br>
+OTHELLO: He did, from first to last. Why dost thou ask?<br>
+IAGO: But for a satisfaction of my thought. / No further harm.<br>
+OTHELLO: Why of thy thought, Iago?<br>
+IAGO: I did not think he had been acquainted with her.
+</blockquote>
+
+<p>Iago has said nothing. He has only asked a question, then
+declined to elaborate. The space he leaves is the space Othello
+fills with the worst possible interpretation. The technique is
+the verbal counterpart to the
+<a href="/glossary/paradox-oxymoron">paradox</a> of saying-by-
+not-saying — the most powerful rhetorical move in the play.</p>
+
+<h2>The handkerchief as symbol</h2>
+
+<p>The handkerchief — a small piece of cloth Othello gave
+Desdemona as a love-token — is the play's most discussed
+<a href="/glossary/allegory-vs-symbol">symbol</a>. It is the
+prop on which the entire catastrophe turns: Desdemona drops it;
+Emilia picks it up; Iago plants it in Cassio's room; Othello
+sees it there; the trap closes.</p>
+
+<p>Critics have read the handkerchief as the symbol of
+Desdemona's chastity, of Othello's love, of the displaced
+female body, of the racial otherness Othello carries (the
+handkerchief was given to his mother by an Egyptian witch — a
+prop from his African past). The handkerchief is overdetermined
+on purpose; the play wants us to see how much weight a single
+object can be made to carry.</p>
+
+<h2>Race and outsider status</h2>
+
+<p>Othello is the play in the Shakespearean canon most directly
+about race. Othello is "the Moor" — a Black or North African
+soldier serving the Venetian state. The play opens with Iago
+and Roderigo waking Brabantio with racist invective ("an old
+black ram is tupping your white ewe"). The Venetian state needs
+Othello as a general but is uncomfortable with him as a
+son-in-law.</p>
+
+<p>How to read the play's racism has been debated for centuries.
+Is it a play that critiques the racism Othello faces? Or a play
+that, despite its sympathies for Othello, reinforces racist
+assumptions about jealousy and barbarism? Both readings have
+serious defenders. The play is morally ambiguous in a way that
+should be admitted rather than smoothed over.</p>
+
+<h2>The structure</h2>
+
+<p>The play is unusually compressed. The action takes place over
+roughly two days. There is almost no subplot. The tragic
+machinery is concentrated and relentless. By the end of Act V,
+Iago's plot has produced four corpses (Desdemona, Othello,
+Emilia, Roderigo) and one mutilation (Cassio's leg). The
+proportion of death to action is one of the highest in the
+canon.</p>
+
+<h2>The "Othello music"</h2>
+
+<p>G. Wilson Knight coined the phrase "the Othello music" for
+the protagonist's distinctive verse — grand, ceremonious,
+foreign-inflected, full of geographic specificity ("the
+Anthropophagi, and men whose heads / Do grow beneath their
+shoulders"). The voice is the play's argument that Othello is
+not merely a soldier but a man of inner grandeur — which is
+what makes his fall the play's central horror.</p>
+
+<h2>The ending</h2>
+
+<p>Othello's final speech, before he stabs himself, is one of
+Shakespeare's strangest closures. He asks to be remembered as
+"one that loved not wisely but too well" — which is generous
+to himself in a way the play does not quite endorse. He
+narrates a past military encounter ("Where a malignant and a
+turban'd Turk / Beat a Venetian and traduced the state, / I
+took by the throat the circumcised dog / And smote him, thus")
+— and as he says "thus," he stabs himself. He has become the
+infidel he once executed. The play closes on the image of a
+divided self destroying itself.</p>
+""",
+        "related_works": ["hamlet", "macbeth"],
+        "key_entries": [
+            "soliloquy", "dramatic-irony", "paradox-oxymoron",
+            "allegory-vs-symbol", "hamartia", "peripeteia",
+            "anagnorisis",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "heart-of-darkness",
+        "title": "Heart of Darkness — A Reader's Guide to Conrad's Novella of Empire",
+        "h1": "Heart of Darkness — frame narrative, the horror, and the critique of empire",
+        "author": "Joseph Conrad",
+        "year": "1899",
+        "meta_description": "A reader's guide to Joseph Conrad's Heart of Darkness — frame narrative, the politics of empire, Marlow as narrator, Kurtz's horror, and the long Achebe debate.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Joseph Conrad's <em>Heart of Darkness</em> is a short novella
+about a Belgian ivory company in the Congo, told by a Polish-
+born British merchant marine. It is one of the most influential
+prose works in English — both for its formal innovations and for
+the long argument it has generated about empire, race, and
+whether the novel's anti-colonial intent survives its
+representations. To read it now is to read it with that argument
+in view.</p>
+
+<h2>The frame narrative</h2>
+
+<p>Conrad's structural innovation is a deep
+<a href="/glossary/frame-narrative"><strong>frame narrative</strong></a>.
+The novella opens with an unnamed first-person narrator on a
+boat in the Thames, listening to another character, Marlow, tell
+the story of his trip up the Congo. Almost everything we read
+is Marlow's narration of events that happened years earlier,
+filtered through his memory and consciousness. The unnamed
+narrator occasionally intervenes to remind us we are still on
+the Thames; otherwise, we are inside Marlow's voice for almost
+the entire novella.</p>
+
+<p>The frame does formal work. It creates distance — we never
+quite have direct access to events; everything is mediated. It
+creates a parallel — the Thames was once, Marlow notes, also "one
+of the dark places of the earth" when Roman ships sailed up it.
+And it creates accountability — we are told a story rather than
+shown a world, and the telling is itself part of what the novel
+is interrogating.</p>
+
+<h2>Marlow as narrator</h2>
+
+<p>Marlow is one of the great
+<a href="/glossary/unreliable-narrator">narrators</a> in English
+fiction — not exactly unreliable, but unreliable-adjacent. He
+is reflective, often unsure, given to hedging ("perhaps,"
+"somehow," "the horror — what horror?"). His prose is dense
+with qualifications. The novella's argumentative texture comes
+from this hedging; Marlow is a man trying to articulate
+something he doesn't fully understand and isn't sure language
+can carry.</p>
+
+<p>Marlow is also visibly a man with biases — the racial
+assumptions of his class and era are in his voice. Whether
+Conrad endorses Marlow's biases or expects the reader to read
+through them is one of the novel's most contested questions.</p>
+
+<h2>The journey upriver</h2>
+
+<p>The plot is simple. Marlow takes a job piloting a Belgian
+trading-company steamer up the Congo River to recover an ailing
+ivory agent named Kurtz, who has gone strange in the interior.
+The journey is the novella's structure: each stage takes us
+further from the European outpost, deeper into what the novel
+calls "darkness," and closer to Kurtz. The further we go, the
+more the European institutional structures dissolve.</p>
+
+<p>The journey functions as descent — into the geographical
+interior, into Kurtz's psychology, into the novel's argument
+about what colonialism actually is. The river is, in this
+reading, the novella's central
+<a href="/glossary/allegory-vs-symbol">symbol</a>.</p>
+
+<h2>Kurtz and "the horror"</h2>
+
+<p>Kurtz, when Marlow finally reaches him, is a man who has
+abandoned every European pretense. He has set himself up as a
+godlike figure among the indigenous people, ringed his
+compound with severed heads, and acquired enormous quantities
+of ivory through methods the novel does not detail but makes
+clear. His final words — "The horror! The horror!" — are
+among the most famous closing phrases in English literature
+and the novel's most contested.</p>
+
+<p>What is the horror? The horror of what he has done? The
+horror of what colonialism is? The horror of recognising himself?
+The horror of what European civilization, stripped of its
+restraints, reveals itself to be? Conrad refuses to specify.
+The ambiguity is the entire point.</p>
+
+<h2>The critique of empire</h2>
+
+<p>The novel is, at one level, a sustained critique of Belgian
+colonialism — the ivory company is shown as a wasteful,
+murderous enterprise that produces nothing but suffering. The
+description of the "grove of death," where dying African workers
+are left to expire in the shade of trees, is one of the most
+direct anti-colonial passages in pre-twentieth-century English
+fiction. Conrad was writing in 1899, when reports of King
+Leopold's Congo Free State atrocities were beginning to reach
+Europe; the novella is partly a response.</p>
+
+<h2>The Achebe debate</h2>
+
+<p>In 1975, the Nigerian novelist Chinua Achebe delivered a
+lecture that has shaped Conrad criticism ever since. Achebe
+argued that <em>Heart of Darkness</em> is "an offensive and
+deplorable book" — that for all its anti-colonial argument, it
+treats Africa as a backdrop for European psychological drama,
+denies African characters interiority or language, and uses
+Black bodies as a screen onto which European darkness is
+projected.</p>
+
+<p>The argument has been answered, rejected, partially accepted,
+and re-stated for fifty years. Most readers today accept that
+both things are true: the novel is genuinely anti-colonial in
+intent, and it is also formally complicit in the racial
+representational economy it inhabits. The challenge is reading
+it with both recognitions in view.</p>
+
+<h2>The famous ending</h2>
+
+<p>Marlow returns to Europe and visits Kurtz's fiancée ("the
+Intended"). She asks for Kurtz's last words. Marlow lies:
+"The last word he pronounced was — your name." The lie is
+generous and dishonest at once; Marlow cannot bring himself to
+tell her the truth, and the novel ends on Marlow's
+acknowledgment that he has lied to spare her. We are returned
+to the Thames at dusk, where the novella began. The frame
+closes; the original first-person narrator describes the river
+as "leading into the heart of an immense darkness." The novel
+ends as it began — with the unnamed narrator looking at the
+Thames and registering that "darkness" is not a place far from
+Europe but the condition Europe carries with it.</p>
+""",
+        "related_works": ["1984", "beloved"],
+        "key_entries": [
+            "frame-narrative", "unreliable-narrator", "allegory-vs-symbol",
+            "free-indirect-discourse", "interior-monologue",
+            "theme-vs-motif",
+        ],
+    },
 ]
 
 _BY_SLUG: dict[str, dict] = {w["slug"]: w for w in WORKS}
