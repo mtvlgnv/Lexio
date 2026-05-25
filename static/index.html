@@ -146,6 +146,29 @@
       color:var(--text-mid); cursor:pointer; transition:background 0.15s, color 0.15s; white-space:nowrap;
     }
     .wb-header-btn:hover { background:var(--bg); color:var(--text); }
+
+    /* Direct-install CTA — one-click path to the Chrome Web Store */
+    .install-hdr-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent); color: white;
+      border: 1px solid var(--accent);
+      border-radius: var(--radius-sm);
+      padding: 6px 13px;
+      font-family: 'DM Sans', inherit; font-size: 0.78rem; font-weight: 600;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 2px 8px -2px color-mix(in oklch, var(--accent) 45%, transparent);
+    }
+    .install-hdr-btn:hover {
+      background: var(--accent-dk);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px -3px color-mix(in oklch, var(--accent) 55%, transparent);
+    }
+    body.in-app .install-hdr-btn { display: none; }   /* hide while reading */
+    @media (max-width: 540px) {
+      .install-hdr-btn span { display: none; }        /* icon-only on tiny screens */
+      .install-hdr-btn { padding: 6px 8px; }
+    }
     .wb-badge {
       display:none; align-items:center; justify-content:center;
       background:var(--accent); color:#fff; font-size:0.65rem; font-weight:700;
@@ -2955,13 +2978,19 @@
     <a class="lp-nav-link" href="#lp-features"      data-section="lp-features">Features</a>
     <a class="lp-nav-link" href="#lp-pro"           data-section="lp-pro">Pricing</a>
     <a class="lp-nav-link" href="#lp-faq"           data-section="lp-faq">FAQ</a>
-    <a class="lp-nav-link" href="#lp-download"      data-section="lp-download">Download</a>
+    <a class="lp-nav-link" href="/chrome-extension.html">Chrome extension</a>
     <a class="lp-nav-link" href="/glossary">Glossary</a>
     <a class="lp-nav-link" href="/for-readers.html">For readers</a>
     <a class="lp-nav-link" href="/credits.html">Credits</a>
   </nav>
 
   <div class="header-spacer"></div>
+
+  <!-- Direct-install CTA (goes straight to the Chrome Web Store) -->
+  <a class="install-hdr-btn" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener" title="Install the Lexio Chrome extension">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="14.31" y1="8" x2="20.05" y2="17.94"/><line x1="9.69" y1="8" x2="21.17" y2="8"/><line x1="7.38" y1="12" x2="13.12" y2="2.06"/><line x1="9.69" y1="16" x2="3.95" y2="6.06"/><line x1="14.31" y1="16" x2="2.83" y2="16"/><line x1="16.62" y1="12" x2="10.88" y2="21.94"/></svg>
+    <span>Add to Chrome</span>
+  </a>
 
   <!-- Saved word bank -->
   <button class="wb-header-btn" onclick="openWordBank()">
@@ -3813,7 +3842,8 @@
     <span data-i18n="footerTagline">Built for curious readers.</span>
     <span style="display:flex;gap:16px;align-items:center;">
       <a href="/glossary">Glossary</a>
-      <a href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">Chrome Extension</a>
+      <a href="/for-readers.html">For readers</a>
+      <a href="/chrome-extension.html">Chrome extension</a>
       <a href="/privacy.html" data-i18n="privacyPolicy">Privacy Policy</a>
       <a href="/credits.html">Credits</a>
       <a href="https://github.com/mtvlgnv" target="_blank" rel="noopener" aria-label="GitHub" style="display:inline-flex;align-items:center;">
