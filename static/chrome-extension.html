@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lexio Chrome Extension — Contextual Dictionary for Any Web Page</title>
+  <meta name="description" content="A free Chrome dictionary extension that reads the sentence around the word and tells you what it means in context. Works on any web page, on PDFs in Chrome, on Substack, Medium, JSTOR, and more." />
+  <link rel="canonical" href="https://lexio.site/chrome-extension.html" />
+  <link rel="alternate" hreflang="en" href="https://lexio.site/chrome-extension.html" />
+  <link rel="alternate" hreflang="x-default" href="https://lexio.site/chrome-extension.html" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <meta name="theme-color" content="#f3ead8" />
+  <meta name="keywords" content="chrome dictionary extension, dictionary chrome extension, contextual dictionary chrome, AI dictionary chrome, chrome extension dictionary, define word chrome extension, dictionary for chrome, best dictionary chrome extension, vocabulary chrome extension, click to define chrome, dictionary popup chrome, PDF dictionary chrome" />
+  <meta name="author" content="Lexio" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Lexio" />
+  <meta property="og:title" content="Lexio Chrome Extension — Contextual Dictionary for Any Web Page" />
+  <meta property="og:description" content="Free Chrome dictionary extension that reads the surrounding sentence. Click any word on any page or PDF, get a contextual definition." />
+  <meta property="og:url" content="https://lexio.site/chrome-extension.html" />
+  <meta property="og:image" content="https://lexio.site/og-image.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lexio Chrome Extension — Contextual Dictionary" />
+  <meta name="twitter:description" content="Free Chrome dictionary that reads the sentence around the word. Click any word on any page or PDF." />
+  <meta name="twitter:image" content="https://lexio.site/og-image.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=2" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ── Structured data ──────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Lexio — Contextual Dictionary (Chrome Extension)",
+    "applicationCategory": "BrowserExtension",
+    "applicationSubCategory": "Dictionary",
+    "operatingSystem": "Chrome, Chromium, Edge, Brave",
+    "description": "A free contextual dictionary Chrome extension. Click any word on any web page or PDF and get the meaning that fits the surrounding sentence — not a generic dictionary entry.",
+    "url": "https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob",
+    "downloadUrl": "https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob",
+    "image": "https://lexio.site/og-image.png",
+    "screenshot": "https://lexio.site/og-image.png",
+    "inLanguage": ["en", "es", "fr", "de", "nl", "ru", "ja", "zh", "ar", "pt", "it"],
+    "featureList": [
+      "Click-to-define on any web page",
+      "Reads the surrounding sentence for context",
+      "Works on PDFs opened in Chrome",
+      "Works on Substack, Medium, JSTOR, news sites, blogs",
+      "11 supported reading languages",
+      "Three reading modes: Fast, Balanced, Deep",
+      "Personal word bank — saves every lookup",
+      "Right-click 'Define with Lexio' integration"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "name": "Free",
+      "description": "20 contextual lookups per month, no credit card."
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "37",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Lexio", "item": "https://lexio.site/" },
+      { "@type": "ListItem", "position": 2, "name": "Chrome Extension", "item": "https://lexio.site/chrome-extension.html" }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to install and use the Lexio Chrome extension",
+    "description": "Install the free Lexio extension from the Chrome Web Store and look up any word in any web page or PDF.",
+    "totalTime": "PT30S",
+    "step": [
+      { "@type": "HowToStep", "position": 1, "name": "Install from the Chrome Web Store", "text": "Visit the Chrome Web Store listing and click 'Add to Chrome'. Approve the permissions prompt.", "url": "https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" },
+      { "@type": "HowToStep", "position": 2, "name": "Visit any web page or PDF", "text": "Open any article, blog post, Substack, Medium piece, news site, or PDF opened in Chrome." },
+      { "@type": "HowToStep", "position": 3, "name": "Select a word and choose 'Define with Lexio'", "text": "Highlight a word or short phrase, right-click, and choose 'Define with Lexio'. The contextual definition appears inline in under two seconds." }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Is the Lexio Chrome extension free?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The free plan gives you 20 word lookups per month with no credit card required. Lexio Pro is $2.99/month and removes the limit, with a 3-day free trial." } },
+      { "@type": "Question", "name": "Does the Lexio Chrome extension work on PDFs?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Any PDF opened in Chrome (drag and drop, or visit a .pdf URL) works just like a regular page. Select a word, right-click, choose 'Define with Lexio'." } },
+      { "@type": "Question", "name": "Which sites does Lexio work on?", "acceptedAnswer": { "@type": "Answer", "text": "Any web page in Chrome — Substack, Medium, JSTOR, news sites, blogs, the Internet Archive's borrowable books, Wikipedia, and more. The extension does not work on the few system pages Chrome blocks (the Chrome Web Store itself, chrome:// pages)." } },
+      { "@type": "Question", "name": "What data does the Lexio Chrome extension send?", "acceptedAnswer": { "@type": "Answer", "text": "Only the word you click and a short surrounding context window (roughly the sentence) are sent to the AI provider. The full page text is never sent or stored." } },
+      { "@type": "Question", "name": "Does Lexio work in browsers other than Chrome?", "acceptedAnswer": { "@type": "Answer", "text": "Yes — any Chromium-based browser, including Microsoft Edge, Brave, Opera, and Arc, supports the Lexio extension installed from the Chrome Web Store. Firefox and Safari versions are on the roadmap." } }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           oklch(96.5% 0.012 75);
+      --surface:      oklch(99.2% 0.006 75);
+      --border:       oklch(89%   0.014 75);
+      --accent:       oklch(58%   0.17  54);
+      --accent-mid:   oklch(90%   0.08  70);
+      --text:         oklch(18%   0.015 65);
+      --text-mid:     oklch(35%   0.012 65);
+      --muted:        oklch(58%   0.01  65);
+      --radius:       14px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+    html, body { background: var(--bg); color: var(--text); min-height: 100%; line-height: 1.55; }
+
+    .page-header {
+      height: 60px; padding: 0 28px;
+      display: flex; align-items: center; gap: 18px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600; letter-spacing: -0.01em; color: var(--text); text-decoration: none; }
+    .logo em { font-style: italic; color: var(--accent); }
+    .tagline { font-size: 0.78rem; font-style: italic; color: var(--muted); }
+    .header-spacer { flex: 1; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.88rem; font-weight: 500; color: var(--text-mid);
+      text-decoration: none;
+      padding: 8px 14px; border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .back-link:hover { background: var(--accent-mid); color: var(--text); }
+
+    .page-hero {
+      padding: 64px 32px 28px;
+      max-width: 920px; margin: 0 auto;
+      text-align: center;
+    }
+    .page-hero .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-family: 'Lora', serif; font-size: clamp(2rem, 4vw, 2.7rem);
+      font-weight: 600; letter-spacing: -0.015em; line-height: 1.15;
+      color: var(--text); margin-bottom: 16px;
+    }
+    .page-hero h1 em { font-style: italic; color: var(--accent); }
+    .page-hero p.lead {
+      font-size: 1.06rem; line-height: 1.75; color: var(--text-mid);
+      max-width: 700px; margin: 0 auto 28px;
+    }
+    .page-hero p.lead em { font-style: italic; color: var(--text); }
+
+    .cta-row {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .btn-primary, .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; font-size: 0.98rem; font-weight: 600;
+      text-decoration: none; border-radius: 10px;
+      transition: background 0.15s, transform 0.15s, border-color 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent); color: white;
+      box-shadow: 0 8px 20px -6px color-mix(in oklch, var(--accent) 50%, transparent);
+    }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+    .cta-meta {
+      margin-top: 14px;
+      font-size: 0.82rem; color: var(--muted); font-style: italic;
+    }
+
+    .section {
+      padding: 56px 32px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .section-eyebrow {
+      display: block; text-align: center;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: 'Lora', serif; font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 600; letter-spacing: -0.01em; line-height: 1.2;
+      color: var(--text); text-align: center; margin-bottom: 12px;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+    .section-sub {
+      font-size: 0.98rem; line-height: 1.75; color: var(--text-mid);
+      max-width: 680px; margin: 0 auto 32px; text-align: center;
+    }
+    .section-sub em { font-style: italic; color: var(--text); }
+
+    /* How it works — 3 numbered steps */
+    .steps {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    .step {
+      padding: 24px 22px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'Lora', serif; font-size: 0.92rem; font-weight: 600;
+      color: var(--accent); background: color-mix(in oklch, var(--accent) 10%, var(--surface));
+      border-radius: 50%;
+      margin-bottom: 4px;
+    }
+    .step h3 {
+      font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.005em;
+    }
+    .step p { font-size: 0.92rem; color: var(--text-mid); line-height: 1.65; }
+    .step p em { font-style: italic; color: var(--text); }
+
+    /* Compatibility grid */
+    .compat {
+      display: grid; gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: 12px;
+    }
+    .compat-card {
+      padding: 18px 18px 16px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px;
+      text-align: left;
+    }
+    .compat-card h4 {
+      font-family: 'Lora', serif; font-size: 0.98rem; font-weight: 600;
+      color: var(--text); margin-bottom: 4px;
+    }
+    .compat-card p { font-size: 0.82rem; color: var(--text-mid); line-height: 1.55; }
+
+    /* FAQ */
+    .faq {
+      display: flex; flex-direction: column; gap: 0;
+      max-width: 760px; margin: 0 auto;
+    }
+    .faq-item {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-item h3 {
+      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .faq-item p {
+      font-size: 0.94rem; color: var(--text-mid); line-height: 1.7;
+    }
+    .faq-item p em { font-style: italic; color: var(--text); }
+
+    /* Long-form essay */
+    .longform-body {
+      display: flex; flex-direction: column; gap: 16px;
+      max-width: 720px; margin: 0 auto;
+    }
+    .longform-body p {
+      font-family: 'Lora', serif;
+      font-size: 1.02rem; line-height: 1.78; color: var(--text-mid);
+    }
+    .longform-body p em { font-style: italic; color: var(--text); }
+    .longform-body p strong { color: var(--text); font-weight: 600; }
+
+    /* Closing CTA */
+    .closing-cta {
+      max-width: 880px; margin: 12px auto 80px; padding: 40px 32px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .closing-cta h2 {
+      font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 600;
+      color: var(--text); margin-bottom: 12px; letter-spacing: -0.01em;
+    }
+    .closing-cta p {
+      font-size: 0.98rem; line-height: 1.7; color: var(--text-mid);
+      max-width: 560px; margin: 0 auto 24px;
+    }
+
+    .page-footer {
+      max-width: 880px; margin: 0 auto; padding: 0 32px 48px;
+      text-align: center;
+      font-size: 0.84rem; color: var(--muted); font-style: italic;
+    }
+    .page-footer a { color: var(--text-mid); text-decoration: none; }
+    .page-footer a:hover { color: var(--accent); }
+
+    @media (max-width: 760px) {
+      .page-header { padding: 0 16px; gap: 12px; }
+      .tagline { display: none; }
+      .page-hero { padding: 40px 20px 20px; }
+      .section { padding: 36px 20px; }
+      .steps, .compat { gap: 12px; grid-template-columns: 1fr; }
+      .step h3 { font-size: 1.02rem; }
+      .step p { font-size: 0.9rem; }
+      .longform-body p { font-size: 0.96rem; line-height: 1.72; }
+      .closing-cta { padding: 32px 20px; margin-bottom: 48px; }
+      .btn-primary, .btn-secondary { padding: 12px 22px; font-size: 0.92rem; }
+    }
+
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <a class="logo" href="/">Le<em>x</em>io</a>
+  <span class="tagline">Contextual definitions for serious readers</span>
+  <div class="header-spacer"></div>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Lexio
+  </a>
+</header>
+
+<div class="page-hero">
+  <span class="eyebrow">Chrome extension</span>
+  <h1>A Chrome dictionary that reads the <em>sentence</em> first.</h1>
+  <p class="lead">Lexio is a free Chrome extension that puts a contextual dictionary one click away on every page. Highlight a word, choose <em>Define with Lexio</em>, and get the meaning that fits this exact sentence — not a generic dictionary entry. Works on web pages, on PDFs opened in Chrome, on Substack, Medium, JSTOR, and the long tail of personal blogs.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">
+      Install from Chrome Web Store
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <a class="btn-secondary" href="/">
+      Try it on the web first
+    </a>
+  </div>
+  <p class="cta-meta">Free · 20 lookups / month · No credit card · Works in 11 languages</p>
+</div>
+
+<!-- How it works -->
+<section class="section" id="how">
+  <span class="section-eyebrow">How it works</span>
+  <h2 class="section-title">From install to first lookup in 30 seconds.</h2>
+  <p class="section-sub">No setup, no account, no configuration. Install once and the dictionary is everywhere you read.</p>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">1</span>
+      <h3>Install from the Chrome Web Store</h3>
+      <p>Click <em>Add to Chrome</em> on the Web Store listing. The extension requests minimal permissions — only the active tab when you trigger a lookup. No background tracking, no telemetry on what you read.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <h3>Open any page or PDF</h3>
+      <p>News article, novel on the Internet Archive, academic paper, contract, foreign-language Wikipedia, PDF you dragged into Chrome — all of them work. The extension doesn't care what kind of page you're on.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <h3>Select a word, choose Define with Lexio</h3>
+      <p>Highlight a word or short phrase, right-click, choose <em>Define with Lexio</em>. The popup appears inline with the contextual definition, etymology, and a note on why the author used this exact word rather than its near-synonyms.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Compatibility -->
+<section class="section" id="works-on">
+  <span class="section-eyebrow">Compatibility</span>
+  <h2 class="section-title">Works where you actually <em>read</em>.</h2>
+  <p class="section-sub">If Chrome can render it, Lexio can read it. A non-exhaustive list of places people have used it well:</p>
+
+  <div class="compat">
+    <div class="compat-card">
+      <h4>News & magazines</h4>
+      <p>The Atlantic, The New York Times, The London Review of Books, The Economist, The Guardian, FT.</p>
+    </div>
+    <div class="compat-card">
+      <h4>Long-form essays</h4>
+      <p>Substack, Medium, personal blogs, n+1, The Paris Review, The New Yorker.</p>
+    </div>
+    <div class="compat-card">
+      <h4>Academic papers</h4>
+      <p>JSTOR, Project Muse, arXiv, university open-access PDFs, Google Scholar full-text views.</p>
+    </div>
+    <div class="compat-card">
+      <h4>Books in the browser</h4>
+      <p>The Internet Archive's borrowable books, Project Gutenberg, Standard Ebooks, Google Books snippets.</p>
+    </div>
+    <div class="compat-card">
+      <h4>PDFs in Chrome</h4>
+      <p>Drag any PDF into Chrome and treat it like a page. Selectable text only — image-only scans need OCR (use Lexio's phone camera mode instead).</p>
+    </div>
+    <div class="compat-card">
+      <h4>Foreign-language sites</h4>
+      <p>Le Monde, Frankfurter Allgemeine, El País, Asahi Shimbun, Lenta.ru. Lexio handles 11 reading languages and returns definitions in any of them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Long-form essay — keyword-rich body content -->
+<section class="section" id="why">
+  <span class="section-eyebrow">Why a Chrome extension at all</span>
+  <h2 class="section-title">The friction problem with reading on the web.</h2>
+  <div class="longform-body">
+    <p>The honest reason most people stop reading difficult prose on the web is friction. You hit a word you don't know. To look it up properly, you have to switch tabs, type the word into Google, scan a list of definitions, decide which one the author probably meant, and switch back. By the time you're back at the sentence, you've lost the thread. Do this ten times in an article and you've forgotten what the article was about.</p>
+    <p>A Chrome extension solves the friction at the layer where it actually lives: inside the page you're already on. No tab switching, no copy-paste, no guessing which definition fits. Lexio reads the surrounding sentence the same way you do, and gives you the one meaning the author intended — plus a short note on why that word and not its near-synonyms. Total time from problem to solution: under two seconds.</p>
+    <p>The contextual part matters more than people expect. A regular dictionary will tell you that <em>register</em> means a wide variety of things — a book of records, a vocal range, a level of formality, an electromechanical device for shop transactions. Reading a literary critic, the relevant sense is "level of formality," but the dictionary doesn't know that. Lexio does, because it has the sentence in front of it. Across an article-length piece of reading, the difference between always-right and usually-right adds up to a different reading experience.</p>
+    <p>The extension is free for the kind of reading most people do — 20 lookups a month, no card, no account required to test. Lexio Pro removes the limit and unlocks two more reading modes (Balanced and Deep, using Gemini 2.5 Flash and Claude Sonnet 4.5 respectively) for $2.99/month. The pricing is the price of compute, not a markup; the extension's goal is to put a real reading tool in front of as many readers as possible.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <span class="section-eyebrow">FAQ</span>
+  <h2 class="section-title">Frequently asked questions about the Chrome extension.</h2>
+
+  <div class="faq">
+
+    <div class="faq-item">
+      <h3>Is the Lexio Chrome extension free?</h3>
+      <p>Yes. The free plan gives you 20 word lookups per month, no credit card. Lexio Pro is $2.99/month and removes the limit, with a 3-day free trial. There is no separate price for the extension — it uses the same account as the website.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Does it work on PDFs?</h3>
+      <p>Yes — any PDF opened in Chrome (drag and drop, or visit a <code>.pdf</code> URL) works just like a regular web page. The only requirement is that the PDF has selectable text. For image-only scans, use Lexio's phone camera mode instead.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Which browsers besides Chrome are supported?</h3>
+      <p>Any Chromium-based browser: Microsoft Edge, Brave, Opera, Arc, Vivaldi. The Chrome Web Store extension installs identically on all of them. Firefox and Safari extensions are on the roadmap; both require separate builds because their extension APIs differ.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>What data does the extension send to your servers?</h3>
+      <p>Only the word you click and a short surrounding context window — roughly the sentence — are sent to the AI provider. The full page text is never sent. Lexio does not read pages in the background, does not log your browsing, and does not associate lookups with your identity beyond what is needed to enforce monthly limits.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>What languages does the extension handle?</h3>
+      <p>You can look up words in English, Spanish, French, German, Italian, Portuguese, Dutch, Russian, Japanese, Chinese, and Arabic. Definitions can be returned in any of those languages — so you can read in English and get the answer in your native language.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Are there sites where it doesn't work?</h3>
+      <p>Yes — Chrome blocks all extensions on a small number of system pages: the Chrome Web Store itself, <code>chrome://</code> internal pages, and a few app-internal pages. Everywhere else on the web works.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>How does the extension differ from the website?</h3>
+      <p>The website is for when you have a passage to paste — useful for testing, for OCR scans, or for text that lives in a context Chrome can't open. The extension is for when you're already reading something online and don't want to context-switch. Most active users install both and use them for different parts of their reading day.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- Closing CTA -->
+<div class="closing-cta">
+  <h2>Install Lexio. Read the next article without leaving the page.</h2>
+  <p>Free, takes 30 seconds, no account required to test. Works on every Chromium browser, every page you read, every PDF you open in the browser.</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">
+      Add to Chrome
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</div>
+
+<footer class="page-footer">
+  <em>Read deeper. Understand everything.</em><br>
+  © 2026 Lexio · <a href="/">Home</a> · <a href="/for-readers.html">For readers</a> · <a href="/glossary">Glossary</a> · <a href="/privacy.html">Privacy</a> · <a href="/credits.html">Credits</a>
+</footer>
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+</body>
+</html>

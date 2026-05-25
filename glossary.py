@@ -7599,65 +7599,6 @@ and what that swap quietly says.</p>
 
     # ──────────────────────────────────────────────────────────────────────
     {
-        "slug": "objective-correlative",
-        "term": "objective correlative",
-        "context": "T. S. Eliot's criticism",
-        "title": "What \"Objective Correlative\" Means — Eliot's Term Explained",
-        "meta_description": "T. S. Eliot coined \"objective correlative\" in his 1919 essay on Hamlet — a set of objects, events, or situations that must evoke a specific emotion in the reader.",
-        "h1": "What \"objective correlative\" means",
-        "updated": "2026-05-25",
-        "related": ["melancholy-hamlet", "stream-of-consciousness", "interior-monologue"],
-        "body_html": """
-<p><strong>Objective correlative</strong> is a phrase coined (or at least
-popularized) by <strong>T. S. Eliot</strong> in his 1919 essay
-<em>Hamlet and His Problems</em>. Eliot's claim, in his own words: the only
-way to express emotion in art is to find an "objective correlative" — a set
-of objects, a situation, a chain of events that, when presented, will
-automatically evoke that emotion in the reader.</p>
-
-<h2>The core idea</h2>
-
-<p>An emotion in a poem or play cannot just be <em>named</em>. If the speaker
-of a poem says "I felt sad," nothing has happened on the page. For the emotion
-to land, the poet must find an external — <em>objective</em> — equivalent for
-it: a specific room, a particular weather, a remembered gesture, a precise
-chain of events. The reader assembles the emotion from those objects, the way
-a chemist mixes reagents to produce a known reaction.</p>
-
-<h2>Eliot's example: <em>Macbeth</em> works, <em>Hamlet</em> doesn't</h2>
-
-<p>Eliot's controversial application of the idea is the reason the phrase
-became famous. He argues that <em>Macbeth</em> is artistically successful
-because Lady Macbeth's guilt is given a perfect objective correlative — the
-sleepwalking, the obsessively-washed hands, "out, damned spot." The objects
-on stage equal the feeling.</p>
-
-<p><em>Hamlet</em>, Eliot argues, fails because Hamlet's emotion — disgust at
-his mother, existential nausea, paralysis — is <em>in excess</em> of anything
-the play actually shows. There is no objective correlative adequate to the
-mood. The play's atmosphere overflows its plot.</p>
-
-<h2>Why the idea stuck</h2>
-
-<p>The phrase gave twentieth-century poets and critics a shorthand for a real
-craft problem: how to make a reader feel something without telling them to
-feel it. Imagist poetry, the "show don't tell" doctrine of creative-writing
-classrooms, and the impersonal-poet ideal of modernism all descend from this
-small section of one essay.</p>
-
-<h2>How to use it as a reader</h2>
-
-<p>When a poem moves you and you don't know why, look for the objective
-correlative — the concrete particular that is doing the emotional work.
-Williams's red wheelbarrow, Eliot's own evening "spread out against the sky
-like a patient etherized upon a table," Bishop's filling station — these are
-not decorations. They are the emotion's external form, the only way the
-feeling could be put on the page.</p>
-""",
-    },
-
-    # ──────────────────────────────────────────────────────────────────────
-    {
         "slug": "carpe-diem",
         "term": "carpe diem",
         "context": "Horace and the lyric tradition",
@@ -7864,170 +7805,284 @@ watching to see when, and how, it fires.</p>
 """,
     },
 
+
     # ──────────────────────────────────────────────────────────────────────
     {
-        "slug": "defamiliarization",
-        "term": "defamiliarization",
-        "context": "Russian Formalism (ostranenie)",
-        "title": "What \"Defamiliarization\" Means — Shklovsky's Ostranenie, Explained",
-        "meta_description": "Defamiliarization is the artistic technique of presenting familiar things as if seen for the first time, coined by Russian Formalist Viktor Shklovsky as \"ostranenie.\"",
-        "h1": "What \"defamiliarization\" means",
+        "slug": "logos-pathos-ethos",
+        "term": "logos, pathos, ethos",
+        "context": "Aristotle's rhetoric",
+        "title": "What \"Logos, Pathos, Ethos\" Mean — Aristotle's Three Modes of Persuasion",
+        "meta_description": "Aristotle's three modes of rhetorical persuasion — logos (reason), pathos (emotion), ethos (character) — explained with examples and how to spot them in modern argument.",
+        "h1": "What \"logos, pathos, ethos\" mean",
         "updated": "2026-05-25",
-        "related": ["stream-of-consciousness", "uncanny-literature", "interior-monologue"],
+        "related": ["anaphora", "hyperbole", "paradox-oxymoron"],
         "body_html": """
-<p><strong>Defamiliarization</strong> is the translation of the Russian word
-<em>ostranenie</em> (остранение) — literally "making strange" — coined by the
-Russian Formalist critic <strong>Viktor Shklovsky</strong> in his 1917 essay
-<em>Art as Technique</em>. Shklovsky proposed it as nothing less than the
-definition of art itself.</p>
+<p>In Book I of his <em>Rhetoric</em>, written around 350 BCE,
+<strong>Aristotle</strong> identified three modes by which a speaker
+persuades an audience. He gave each one a Greek name. Twenty-four
+centuries later, the framework is still the cleanest tool for analysing
+any argument — political, literary, advertising, or otherwise.</p>
 
-<h2>The argument</h2>
+<h2>Logos — the appeal to reason</h2>
 
-<p>Shklovsky observed that habitual perception is a kind of death. The objects
-we see every day stop registering: the sound of our partner's voice, the route
-to work, the taste of bread. Habit "devours objects, clothes, furniture, one's
-wife, and the fear of war."</p>
+<p><strong>Logos</strong> (λόγος, "word" or "reason") is persuasion
+through evidence and logic. A logos-based argument relies on facts,
+statistics, causal chains, syllogisms, and verifiable claims. When a
+prosecutor walks the jury through a timeline of phone records, that's
+logos. When a scientist publishes a meta-analysis, that's logos.</p>
 
-<p>The function of art, Shklovsky argued, is to break the crust of habit and
-make perception possible again. Art does this by presenting familiar things
-as if they were unfamiliar — slowing the reader's eye, lengthening the act
-of perception, restoring the stoniness of stone. "The technique of art is to
-make objects 'unfamiliar,' to make forms difficult, to increase the difficulty
-and length of perception."</p>
+<p>Logos is the mode our culture officially endorses. It is also, in
+practice, the least decisive — humans rarely change their minds because
+of evidence alone.</p>
 
-<h2>His example: Tolstoy</h2>
+<h2>Pathos — the appeal to emotion</h2>
 
-<p>Shklovsky's central case study is Tolstoy. In the short story "Kholstomer,"
-the narrator is a horse. The horse describes the institution of private
-property in human society without knowing the word — and the institution
-suddenly looks bizarre, arbitrary, almost obscene. The reader, who has been
-inside the institution all her life, sees it for the first time.</p>
+<p><strong>Pathos</strong> (πάθος, "suffering" or "experience") is
+persuasion through the audience's feelings. A pathos-based argument
+makes the audience angry, frightened, hopeful, ashamed, or moved. When
+a charity advert shows a single grieving child rather than a statistic
+about millions, that's pathos. When a closing argument asks the jury
+to imagine themselves as the victim, that's pathos.</p>
 
-<p>Tolstoy does the same with religious ritual in <em>Resurrection</em>,
-describing a Mass entirely from the outside — as a curious series of physical
-gestures by a man in costume. The reader who has attended Mass for decades
-suddenly cannot recognize it.</p>
+<p>Pathos is what most actually-effective persuasion runs on. It is
+also the mode most easily abused; demagogues are pathos specialists.</p>
 
-<h2>How writers achieve it</h2>
+<h2>Ethos — the appeal to character</h2>
 
-<ul>
-  <li><strong>Strange narrators</strong> — children, animals, foreigners,
-      Martians, the dead. The narrator's unfamiliarity with the world becomes
-      the reader's renewed attention to it.</li>
-  <li><strong>Naïve description</strong> — refusing the technical or
-      idiomatic word and describing the thing physically: not "applause" but
-      "the percussive sound of many flat hands striking each other."</li>
-  <li><strong>Difficult form</strong> — anything that slows the eye:
-      enjambment, fragmentation, syntactic inversion, dense allusion.</li>
-</ul>
+<p><strong>Ethos</strong> (ἦθος, "character") is persuasion through the
+speaker's credibility. Why should we believe <em>you</em> on this
+question? An expert citing their qualifications, a politician
+referencing their war record, a friend leaning on years of trust — all
+ethos. Brand-building is ethos at corporate scale.</p>
 
-<h2>The afterlife</h2>
+<p>Aristotle considered ethos the most powerful of the three. Long
+before the audience evaluates your argument, they have decided whether
+you are worth listening to.</p>
 
-<p>Defamiliarization passed from Shklovsky into nearly every twentieth-century
-account of literature. Brecht's <em>Verfremdungseffekt</em> ("alienation
-effect") in theatre is a direct cousin. Surrealism, the nouveau roman, Beckett,
-Borges, Calvino — all rely on making the familiar strange. The Anglophone
-phrase "to see with fresh eyes" is the same thought in popular form.</p>
+<h2>The three together</h2>
+
+<p>Great persuasion combines all three. The Gettysburg Address — 272
+words — is logos (a clear historical argument about the meaning of the
+Civil War), pathos (the language of birth, death, and new birth), and
+ethos (Lincoln speaking from the moral authority of the office and the
+sanctified ground) at once. Strip out any of the three and the speech
+collapses.</p>
 
 <h2>How to read it in context</h2>
 
-<p>When a passage describes an ordinary thing with conspicuous slowness or
-oddness — a phone described as a slab of glass that vibrates, a meal described
-as a sequence of chewing motions, a relationship described in geological time
-— Shklovsky's term is the one you want. The writer is breaking the crust.</p>
+<p>When you encounter a piece of rhetoric you find compelling — and
+especially one you find compelling and <em>don't trust</em> — ask which
+of the three modes it is working in. Naming the move is the first step
+to resisting it.</p>
+""",
+    },
+
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "apostrophe-literary",
+        "term": "apostrophe (literary device)",
+        "context": "rhetoric & poetry",
+        "title": "What \"Apostrophe\" Means in Literature — Addressing the Absent, Explained",
+        "meta_description": "In literature, apostrophe is a figure of speech where the speaker addresses an absent person, an abstract idea, or an inanimate object. Different from the punctuation mark.",
+        "h1": "What \"apostrophe\" means in literature",
+        "updated": "2026-05-25",
+        "related": ["anaphora", "hyperbole", "paradox-oxymoron"],
+        "body_html": """
+<p><strong>Apostrophe</strong> as a literary device has nothing to do
+with the punctuation mark. (Both come from the same Greek root —
+<em>apostrophē</em>, "turning away" — but they took different paths.)
+The rhetorical apostrophe is the moment when a speaker turns aside
+from the audience and addresses someone, or something, who is not
+there.</p>
+
+<h2>What gets addressed</h2>
+
+<p>Apostrophe can address:</p>
+
+<ul>
+  <li><strong>An absent person.</strong> "O Caesar, thou art mighty
+      yet…" (Brutus speaking to the dead Caesar in <em>Julius Caesar</em>).</li>
+  <li><strong>A dead person.</strong> Most elegies are sustained
+      apostrophes — the poet speaking directly to the dead.</li>
+  <li><strong>An abstract idea.</strong> "Hail to thee, blithe Spirit!"
+      (Shelley addressing the abstract idea of poetic inspiration in
+      "To a Skylark.")</li>
+  <li><strong>An inanimate object.</strong> "Roll on, thou deep and
+      dark blue Ocean, roll!" (Byron, <em>Childe Harold's Pilgrimage</em>).</li>
+  <li><strong>A divinity.</strong> Prayer in poetry is often a formal
+      apostrophe.</li>
+</ul>
+
+<h2>The signal word: "O"</h2>
+
+<p>Classical and Romantic apostrophes are often marked by the
+vocative "O" — "O wild West Wind…" (Shelley), "O Captain! my Captain!"
+(Whitman). The "O" tells you the speaker has stopped addressing the
+audience and pivoted to the absent addressee. Modern poets generally
+drop the "O" but the gesture remains.</p>
+
+<h2>Why poets use it</h2>
+
+<p>Apostrophe lets a poem do three things at once: dramatize the
+speaker's relationship with the absent thing, make the abstract feel
+present, and produce a strange double-channel — the words technically
+addressed to (say) the wind, but actually overheard by you. John
+Stuart Mill defined lyric poetry as "feeling confessing itself to
+itself in moments of solitude" — apostrophe is the formal mechanism
+that lets that happen.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a poem suddenly addresses a person, idea, or object by name —
+"O Death," "O Memory," "Sister, my sister, O fleet sweet swallow" —
+ask why the speaker needs that gesture. Apostrophe is rarely casual.
+It marks a turn in the poem's emotional centre of gravity, often the
+moment of greatest intensity.</p>
 """,
     },
 
     # ──────────────────────────────────────────────────────────────────────
     {
-        "slug": "enjambment",
-        "term": "enjambment",
-        "context": "poetry",
-        "title": "What \"Enjambment\" Means in Poetry — Line Breaks Without Pause, Explained",
-        "meta_description": "Enjambment is when a sentence runs over a line break without punctuation. It's one of the most expressive tools in poetry. Here's how it works, with examples from Milton to Bishop.",
-        "h1": "What \"enjambment\" means in poetry",
+        "slug": "mise-en-abyme",
+        "term": "mise en abyme",
+        "context": "narrative theory",
+        "title": "What \"Mise en Abyme\" Means — Stories Within Stories, Explained",
+        "meta_description": "Mise en abyme is the technique of placing a smaller copy of a story, image, or motif inside itself — a story within a story, a painting within a painting. Here's how it works.",
+        "h1": "What \"mise en abyme\" means",
         "updated": "2026-05-25",
-        "related": ["caesura", "alliteration", "assonance-consonance"],
+        "related": ["frame-narrative", "metafiction", "unreliable-narrator"],
         "body_html": """
-<p><strong>Enjambment</strong> (from the French <em>enjamber</em>, "to stride
-over") is the technique in poetry where a sentence or phrase continues past
-the end of a line without a pause — no comma, no period, no breath. The
-opposite is the <strong>end-stopped line</strong>, where the line ending
-coincides with a grammatical stop.</p>
+<p><strong>Mise en abyme</strong> (pronounced <em>meez ahn ah-BEEM</em>)
+is a French term, borrowed from heraldry, for the technique of placing
+a smaller version of an image, story, or motif <em>inside</em> itself.
+The original heraldic sense was a small shield placed in the centre
+of a larger shield bearing the same design — an infinite recursion
+in miniature. The French novelist <strong>André Gide</strong>
+borrowed the term for literature in his 1893 journal, and it has been
+a workhorse of literary theory ever since.</p>
 
-<h2>What it does to the reader</h2>
+<h2>The classic examples</h2>
 
-<p>Enjambment forces a small double-take. The eye reaches the end of the line
-and expects to rest; the syntax pulls it onward into the next line. That tiny
-hesitation — a pause that isn't really there, a momentum that isn't quite
-broken — is one of the most expressive resources in English verse.</p>
+<ul>
+  <li><strong>Hamlet's "Mousetrap."</strong> The play-within-the-play
+      in Act 3 of <em>Hamlet</em> stages, in miniature, the murder
+      that begins the larger play. The inner play mirrors and
+      comments on the outer.</li>
+  <li><strong>Don Quixote, Part II.</strong> In Cervantes's
+      second half (1615), the characters have read Part I and discuss
+      it. The novel contains itself.</li>
+  <li><strong>Velázquez's <em>Las Meninas</em></strong> (1656). The
+      painter paints himself painting the painting we are looking at,
+      reflected in a mirror at the back of the room.</li>
+  <li><strong>The screen in front of you.</strong> A movie inside a
+      movie (think <em>Synecdoche, New York</em> or <em>Adaptation</em>).
+      A novel whose protagonist is writing the novel we are reading
+      (<em>If on a winter's night a traveler</em>).</li>
+</ul>
 
-<h2>A famous example</h2>
+<h2>Why writers use it</h2>
 
-<p>From Milton's <em>Paradise Lost</em>:</p>
+<p>Mise en abyme does several things. It comments on its host work —
+the inner version often makes explicit what the outer version is
+half-saying. It self-reflects: a story that contains a story is
+necessarily a story about storytelling. It destabilizes: once the
+reader notices the recursion, the frame around the outer work starts
+to feel just as fragile, and the reader's own position becomes
+uncertain. Postmodern fiction is largely built on this destabilization.</p>
 
-<blockquote>
-Of Man's first disobedience, and the fruit<br>
-Of that forbidden tree, whose mortal taste<br>
-Brought death into the world, and all our woe…
-</blockquote>
+<h2>Related but distinct: frame narrative</h2>
 
-<p>"The fruit" hangs at the line break for a fraction of a second before
-"Of that forbidden tree" resolves it. The hesitation echoes the moment of
-plucking. Milton's verse is famous for enjambments that turn the line
-ending into a tiny moment of suspended meaning.</p>
+<p>A <em>frame narrative</em> (Boccaccio's <em>Decameron</em>,
+Chaucer's <em>Canterbury Tales</em>) is a story-within-a-story without
+the structural mirroring — the inner story doesn't have to echo the
+outer. Mise en abyme is the special case where the inner story is, in
+some way, a small copy of the outer. The frame is the container;
+mise en abyme is the recursion.</p>
 
-<h2>Modern examples</h2>
+<h2>How to read it in context</h2>
 
-<p>Elizabeth Bishop, "One Art":</p>
-
-<blockquote>
-the art of losing isn't hard to master;<br>
-so many things seem filled with the intent<br>
-to be lost that their loss is no disaster.
-</blockquote>
-
-<p>The enjambment after "intent" makes the line hover on a charged
-abstraction before the next line lands on the concrete word "lost."</p>
-
-<p>William Carlos Williams's "The Red Wheelbarrow" is almost entirely
-enjambed — every line ends in the middle of a phrase — and the poem's
-strange weight comes from how aggressively it refuses to let any line rest:</p>
-
-<blockquote>
-so much depends<br>
-upon<br><br>
-a red wheel<br>
-barrow…
-</blockquote>
-
-<p>He even splits the word "wheelbarrow" itself across two lines.</p>
-
-<h2>End-stopped lines vs. enjambment</h2>
-
-<p>Pope and the eighteenth-century heroic couplet are mostly end-stopped: the
-line is the unit of thought, closed by punctuation, often paired into a
-couplet that wraps up a small argument. Milton, Shakespeare's late blank verse,
-and most modern free verse are heavily enjambed: the line is one rhythm and
-the syntax is another, and the poem lives in the friction between the two.</p>
-
-<h2>Why it matters for reading</h2>
-
-<p>If you read enjambed poetry by stopping at the end of every line, you will
-hear it wrong. The line break is not a punctuation mark. It is an event in
-the rhythm — a held breath, a small lift of suspense — but the syntax does
-not stop. Good readers learn to <em>weight</em> the line ending without
-<em>breaking</em> it.</p>
-
-<h2>How to spot it</h2>
-
-<p>Look at the end of any line of verse. If there is no punctuation, and the
-sentence is clearly continuing, the line is enjambed. The more important
-question is: what does the enjambment isolate? The word held at the line end
-gets a faint extra emphasis. Ask why the poet wanted that word, in
-particular, to be the one your eye lingers on for that half-second.</p>
+<p>When a novel or film puts a smaller version of itself inside
+itself — a book about a book, a play within a play, a dream that
+matches the waking plot — the author is almost certainly using mise
+en abyme. Look at what the inner version emphasizes or distorts; that
+is the author's reading of their own work, hidden in plain sight.</p>
 """,
     },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "prolepsis-and-analepsis",
+        "term": "prolepsis and analepsis",
+        "context": "narrative theory",
+        "title": "What \"Prolepsis\" and \"Analepsis\" Mean — Flash-Forwards and Flashbacks",
+        "meta_description": "Prolepsis is a flash-forward, analepsis a flashback. Genette's terms for how narratives jump in time, with examples from Homer to The Sense of an Ending.",
+        "h1": "What \"prolepsis\" and \"analepsis\" mean",
+        "updated": "2026-05-25",
+        "related": ["frame-narrative", "interior-monologue", "unreliable-narrator"],
+        "body_html": """
+<p><strong>Prolepsis</strong> and <strong>analepsis</strong> are the
+technical terms from narrative theory for what readers call
+flash-forward and flashback. The French theorist <strong>Gérard
+Genette</strong> codified them in his 1972 study <em>Discours du
+récit</em> ("Narrative Discourse"), part of his systematic anatomy of
+how stories handle time.</p>
+
+<h2>Analepsis — the flashback</h2>
+
+<p><strong>Analepsis</strong> (from the Greek <em>analēpsis</em>,
+"taking back") is a narrative detour into the past. The story
+interrupts its forward motion to recount an earlier event. Almost
+every novel uses analepsis somewhere — a character remembers a
+childhood scene, a chapter opens with the protagonist's backstory, a
+trial recounts the crime.</p>
+
+<p>Homer opens the <em>Iliad</em> in the tenth year of the Trojan War
+and uses analepsis throughout to fill in what came before. The
+modernist novel turned analepsis into an organising principle — the
+whole of <em>To the Lighthouse</em> is structured around its
+interplay of present moment and remembered past.</p>
+
+<h2>Prolepsis — the flash-forward</h2>
+
+<p><strong>Prolepsis</strong> (Greek <em>prolēpsis</em>, "anticipation")
+is the opposite move: the narrative jumps <em>ahead</em> of itself,
+showing the reader something that hasn't happened yet in the story's
+present.</p>
+
+<p>García Márquez's <em>One Hundred Years of Solitude</em> opens with
+one of the most famous prolepses in literature: "Many years later, as
+he faced the firing squad, Colonel Aureliano Buendía was to remember
+that distant afternoon when his father took him to discover ice." We
+are told the colonel's fate in the first sentence; the novel takes
+four hundred pages to get there.</p>
+
+<h2>Why they matter</h2>
+
+<p>Genette's insight was that narrative order is one of the things a
+storyteller can choose. The same events can be told chronologically
+(a chronicle), with selective analepsis (a memoir), with structural
+prolepsis (a tragedy that opens at the funeral), or with both at once
+(a modernist novel where the present, the remembered past, and the
+foreshadowed future overlap on every page).</p>
+
+<p>The terms matter because they give you a vocabulary for what a
+narrative is <em>doing</em> with time, beyond "well, it's not linear."
+Once you can name a prolepsis, you can ask: what does the writer
+gain by telling me this now rather than later?</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a narrative loops back ("Years before, she had…") or shoots
+forward ("Three decades later, the boy would remember…"), notice the
+move and ask what changes because of it. Prolepsis usually trades
+suspense for dramatic irony — you now know what's coming and the
+question becomes <em>how</em>. Analepsis usually trades clarity for
+depth — the present scene gets richer once you know what's behind it.</p>
+""",
+    },
+
+
 ]
 
 
