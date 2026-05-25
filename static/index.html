@@ -4271,6 +4271,14 @@ function saveTweaks() {
 
 /* ── Word bank ──────────────────────────────────────────────── */
 function loadWordBank() {
+  // If the visitor isn't signed in, treat the word bank as empty and clear
+  // any stale entries left behind by a previous session on this device.
+  const _signedIn = !!localStorage.getItem('lexio_token');
+  if (!_signedIn) {
+    try { localStorage.removeItem(WB_KEY); } catch {}
+    wordBank = [];
+    return;
+  }
   try { wordBank = JSON.parse(localStorage.getItem(WB_KEY) || '[]'); } catch { wordBank = []; }
 }
 function saveWordBank() {
@@ -5693,6 +5701,9 @@ function updateAcctBtn() {
     btn.classList.remove('signed-in');
     btn.title = 'Sign in';
   }
+  // The word bank is an account feature — hide its header chip when signed out.
+  const wbBtn = document.querySelector('.wb-header-btn');
+  if (wbBtn) wbBtn.style.display = authUser ? '' : 'none';
 }
 
 function openAuthModal(fromAnalyze) {
@@ -5853,8 +5864,17 @@ async function submitAuth() {
 
 function signOut() {
   authToken = null; authUser = null;
-  try { localStorage.removeItem('lexio_token'); localStorage.removeItem('lexio_user'); } catch {}
+  try {
+    localStorage.removeItem('lexio_token');
+    localStorage.removeItem('lexio_user');
+    // Word bank is account-scoped — purge so the next user on this device
+    // doesn't inherit the previous user's saved words.
+    localStorage.removeItem(WB_KEY);
+  } catch {}
+  wordBank = [];
   updateAcctBtn();
+  updateWBBadge();
+  if (typeof renderWordBank === 'function') { try { renderWordBank(); } catch {} }
   closeAuthModal();
 }
 
