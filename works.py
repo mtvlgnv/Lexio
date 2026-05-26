@@ -5922,6 +5922,993 @@ it with this knowledge.</p>
             "tone-vs-mood", "subtext",
         ],
     },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "king-lear",
+        "title": "King Lear — A Reader's Guide to Shakespeare's Bleakest Tragedy",
+        "h1": "King Lear — themes, the storm, and the destruction of an old order",
+        "author": "William Shakespeare",
+        "year": "c. 1605",
+        "meta_description": "A reader's guide to Shakespeare's King Lear — the double plot of Lear and Gloucester, the storm and the heath, the Fool, the death of Cordelia, the play as cosmic tragedy.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Shakespeare's <em>King Lear</em> is the bleakest of his
+tragedies and, by many critics' reckoning, the deepest single
+work in English. Written around 1605 — the same period as
+<a href="/works/macbeth"><em>Macbeth</em></a> — the play
+investigates the destruction of an old man, an old kingdom,
+and an old way of understanding the world's moral order. Its
+ending is so harsh that for a century and a half it was
+performed in a revised version (Nahum Tate's 1681 adaptation)
+that gave it a happy ending. The original was restored in
+1838. Almost no modern audience finds it consoling.</p>
+
+<h2>The double plot</h2>
+
+<p>The play is structured around two parallel
+<a href="/glossary/foil-character">plot lines</a>, both about
+old fathers betrayed by ungrateful children, the loyal
+children rejected:</p>
+
+<ul>
+  <li><strong>King Lear and his daughters.</strong> Lear
+      divides his kingdom among his three daughters based on
+      their public declarations of love for him. Goneril and
+      Regan flatter; the youngest, Cordelia, refuses to
+      flatter and is disinherited. Goneril and Regan
+      progressively strip Lear of his retinue, his dignity,
+      and finally his sanity.</li>
+  <li><strong>The Earl of Gloucester and his sons.</strong>
+      Gloucester's illegitimate son Edmund deceives his father
+      into believing the legitimate son Edgar is plotting
+      against him. Edgar flees, disguises himself as a mad
+      beggar ("Poor Tom"). Edmund eventually betrays
+      Gloucester to the cruel Cornwall, who blinds him.</li>
+</ul>
+
+<p>The two plots run in parallel and intersect at the heath.
+The doubling is doing argumentative work: this is not one
+foolish king's misfortune; it is something happening to two
+old men simultaneously, in the same kingdom, suggesting a
+systemic moral catastrophe.</p>
+
+<h2>The opening: Lear's test</h2>
+
+<p>The play opens with Lear's love-test. He asks his three
+daughters which of them loves him most, intending to give the
+largest portion of the kingdom to the winner. Goneril and
+Regan deliver flowery declarations of total devotion. Cordelia
+says simply: "I love your majesty / According to my bond, no
+more nor less." Lear, enraged, disinherits her on the spot.</p>
+
+<p>The opening is the play's central error. Lear has confused
+love with its public performance; Cordelia's refusal to
+perform is the play's deepest moral statement, made in the
+first scene. The whole tragedy follows from Lear's inability
+to hear it.</p>
+
+<h2>The storm and the heath</h2>
+
+<p>The play's central sequence — Lear on the heath in the
+storm, accompanied by the Fool and disguised Edgar — is among
+the greatest stretches of writing in any language. Stripped of
+his daughters' loyalty, his retinue, his shelter, eventually
+his clothes, Lear loses his mind in a literal storm that the
+play uses as <a href="/glossary/pathetic-fallacy">pathetic
+fallacy</a> on a cosmic scale.</p>
+
+<p>On the heath, the play's hierarchy collapses. The king is
+mad; the Fool is wise; Edgar is disguised as a beggar; the
+disinherited Cordelia is far away. The conventional social
+order — which Lear partially destroyed by dividing his kingdom
+— has been ripped open, and the play examines what is
+underneath.</p>
+
+<h2>The Fool</h2>
+
+<p>The Fool, who appears only in the play's middle, is one of
+Shakespeare's most distinctive comic-tragic creations. He
+speaks in
+<a href="/glossary/paradox-oxymoron">paradoxes</a>,
+<a href="/glossary/aphorism">aphorisms</a>, and songs. He
+tells Lear the truth Lear's daughters won't tell — that the
+king has made himself foolish, given away what should have
+been kept, mistaken the world's nature.</p>
+
+<p>The Fool disappears halfway through the play, with no
+explanation. His last line is "And I'll go to bed at noon" —
+itself an unsolvable riddle. The disappearance has been
+interpreted variously: the Fool dies in the storm, Lear
+abandons him in his madness, the role doubles with Cordelia
+in the original company. The mystery is part of the play's
+texture.</p>
+
+<h2>Gloucester's blinding</h2>
+
+<p>The play's most physically shocking scene — Cornwall's
+on-stage gouging of Gloucester's eyes — is unprecedented in
+Shakespeare. The brutality is meant to be felt. The line
+"Out, vile jelly!" as Cornwall completes the blinding is one
+of the most quoted lines in English drama for the wrong
+reasons: it is shocking, and the shock is structural.</p>
+
+<p>Gloucester's blinding is the play's argument that, in this
+world, the visible has become the means of cruelty. The
+blinded Gloucester's later observation that he "stumbled when
+I saw" — that he had not really seen anything important
+before — is the play's deepest claim about ordinary
+perception.</p>
+
+<h2>The death of Cordelia</h2>
+
+<p>The play's most devastating moment is the death of
+Cordelia, hanged in prison shortly before she could be saved.
+Lear enters carrying her body. His grief is delivered in
+one of Shakespeare's most concentrated speeches:</p>
+
+<blockquote>
+Howl, howl, howl, howl! O, you are men of stones:<br>
+Had I your tongues and eyes, I'ld use them so<br>
+That heaven's vault should crack. She's gone for ever.
+</blockquote>
+
+<p>The four "howls" — a single word repeated as if grammar has
+broken down — registers grief beyond the play's other
+language. Lear then dies, possibly believing Cordelia is alive
+("Look on her, look, her lips, / Look there, look there!").
+The deliberate non-redemption of the ending — Cordelia dies
+for nothing, Lear dies in delusion — is the play's central
+horror.</p>
+
+<h2>The cosmic register</h2>
+
+<p>The play's vocabulary is constantly cosmic. Characters
+appeal to "the heavens," to "the gods," to "Nature," to
+"thunder." The play asks, repeatedly, whether there is any
+order beyond the human. The answers are not consoling.
+Gloucester's line — "As flies to wanton boys are we to the
+gods; / They kill us for their sport" — is the closest the
+play comes to a theology. Most modern readers find the play
+shorter on hope than any other major Shakespeare.</p>
+
+<h2>The play as <a href="/glossary/dystopia">dystopia</a></h2>
+
+<p>It is worth noting that <em>King Lear</em> functions
+structurally like a dystopia avant la lettre. The world
+depicted is one in which conventional social order has failed,
+in which the worst characters succeed (until they don't), in
+which the loyal die for nothing, in which the moral
+catastrophe is systemic rather than personal. Modern dystopias
+(<a href="/works/1984">Orwell</a>, Atwood) inherit some of
+this register.</p>
+
+<h2>Why the play matters</h2>
+
+<p>Critics from Samuel Johnson (who couldn't bear the ending)
+to G. Wilson Knight to modern readers have agreed on one
+thing: <em>King Lear</em> takes serious questions about human
+existence further than any other Shakespeare play. Whether the
+universe is just; whether love can be spoken; whether age has
+any wisdom to offer; whether suffering produces meaning. The
+play does not answer these questions consolingly. It is, in
+many readings, the play that closes the door on the consoling
+answers Shakespeare's earlier work permitted.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>The unreliability of speech.</strong> The
+      flattering daughters lie; the truthful daughter is
+      banished; the play's deepest claim is that public
+      language is structurally untrustworthy.</li>
+  <li><strong>Madness as clarity.</strong> Lear sees most
+      clearly when he is mad; the Fool speaks truth as a
+      court-licensed clown; Edgar's pretended madness gives
+      him access to truths sanity couldn't reach.</li>
+  <li><strong>Generational conflict.</strong> The play's
+      central political subject. Children inherit; parents
+      lose authority; the transfer is brutal.</li>
+  <li><strong>Nothing.</strong> The word "nothing" recurs
+      through the play — Cordelia has "nothing" to say,
+      Lear says "Nothing will come of nothing," the play
+      ends with a series of bodies and the word's
+      negation made literal. The word is the play's
+      undermining principle.</li>
+</ul>
+""",
+        "related_works": ["hamlet", "macbeth"],
+        "key_entries": [
+            "hamartia", "pathetic-fallacy", "paradox-oxymoron",
+            "foil-character", "soliloquy", "theme-vs-motif",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "julius-caesar",
+        "title": "Julius Caesar — A Reader's Guide to Shakespeare's Roman Political Tragedy",
+        "h1": "Julius Caesar — themes, rhetoric, and the politics of assassination",
+        "author": "William Shakespeare",
+        "year": "c. 1599",
+        "meta_description": "A reader's guide to Shakespeare's Julius Caesar — Brutus's tragic flaw, Antony's funeral oration as masterclass in rhetoric, the assassination and its aftermath, fate vs. free will.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Shakespeare's <em>Julius Caesar</em> is the canonical
+school-text Shakespeare, partly because it is shorter and
+more accessible than the great tragedies and partly because
+its third-act funeral orations are the most-studied piece of
+rhetorical writing in English. The play stages a political
+assassination — Caesar, killed by Brutus and the conspirators
+— and then tracks the consequences across the rest of its
+action. The deepest interest of the play is in
+<em>aftermath</em>: what the assassination produced, who
+controlled the meaning of it, and how rhetoric became the
+weapon that decided the political outcome.</p>
+
+<h2>The historical material</h2>
+
+<p>Shakespeare's source was Plutarch's <em>Lives</em> in Thomas
+North's 1579 English translation. The historical Caesar was
+assassinated on 15 March 44 BCE; Brutus and Cassius were
+defeated at the Battle of Philippi in 42 BCE; Mark Antony and
+Octavian (later Augustus) divided the Roman world before
+turning on each other. Shakespeare compresses, rearranges, and
+heightens, but the basic shape is historical.</p>
+
+<h2>The play's actual protagonist</h2>
+
+<p>Despite the title, the play's
+<a href="/glossary/protagonist-and-antagonist">protagonist</a>
+is not Caesar (who dies in Act 3, Scene 1) but Brutus. The
+play is structured as Brutus's tragedy. He is the noble
+republican drawn into the conspiracy by Cassius; he wrestles
+publicly with the decision; he kills Caesar; he loses
+everything; he dies on his own sword. The arc is
+recognisably tragic in the Aristotelian sense, with Brutus
+carrying the
+<a href="/glossary/hamartia">hamartia</a> — his belief that
+public good can be served by murder, and that the people will
+understand.</p>
+
+<h2>The funeral orations</h2>
+
+<p>The most studied scene is Act 3, Scene 2: the rival
+speeches by Brutus and Mark Antony at Caesar's funeral. The
+contrast is the play's central masterclass in rhetoric.</p>
+
+<p><strong>Brutus speaks first.</strong> His speech is in
+prose, philosophical, controlled. He addresses the crowd as
+"Romans, countrymen, and lovers." He explains, in clear
+syllogistic terms, why the assassination was justified: he
+loved Caesar but loved Rome more; Caesar was ambitious;
+Brutus killed him for the good of Rome. The crowd is
+persuaded. Brutus leaves.</p>
+
+<p><strong>Antony speaks next.</strong> His speech is in
+verse, emotional, manipulative. He repeats the phrase
+"Brutus is an honourable man" with progressively heavier
+<a href="/glossary/irony-types">verbal irony</a> until the
+words become a sarcastic accusation. He shows the crowd
+Caesar's bloodied corpse. He reads them Caesar's will (or
+appears to). He turns the same crowd Brutus persuaded into a
+mob ready to burn the conspirators' houses.</p>
+
+<p>The two speeches are a study in why rhetorical mastery
+beats logical argument in mass politics. Brutus makes a
+sound case; Antony manipulates the emotions of the crowd; the
+emotions win. The play is interested in this asymmetry as a
+political fact, not as a moral one.</p>
+
+<h2>Antony's "Friends, Romans, countrymen"</h2>
+
+<p>The opening of Antony's speech — "Friends, Romans,
+countrymen, lend me your ears" — is one of the most quoted
+opening lines in literature. The technical work it is doing:</p>
+
+<ul>
+  <li><strong>Tricolon.</strong> Three terms in ascending
+      order of intimacy (friends ↓ countrymen). The descending
+      version (countrymen, Romans, friends) would land
+      differently; the ascending version is more inclusive.</li>
+  <li><strong>The borrowed metaphor.</strong> "Lend me your
+      ears" is body-part metonymy. Asking for ears, he gets
+      attention.</li>
+  <li><strong>The disavowal.</strong> "I come to bury Caesar,
+      not to praise him." A claim he immediately violates.
+      The disavowal is the rhetorical technique called
+      <em>apophasis</em> — pretending not to do what one is
+      doing.</li>
+</ul>
+
+<p>The whole speech is a technical exercise. Reading it with
+attention to the rhetorical devices is one of the best
+introductions to the rhetorical tradition in English.</p>
+
+<h2>The conspirators as <a href="/glossary/foil-character">foils</a></h2>
+
+<p>Brutus and Cassius are the play's central
+foil-pair. Brutus is high-minded, principled, slightly naive;
+Cassius is shrewd, calculating, politically experienced.
+Brutus's principles repeatedly defeat Cassius's better
+political instincts: Brutus refuses to kill Antony along with
+Caesar (Cassius wanted to); Brutus insists on letting Antony
+speak at the funeral; Brutus refuses to use political
+compromise. Each principle costs the conspirators.</p>
+
+<p>The play's argument is partly that political effectiveness
+and ethical purity are not the same. Brutus is the
+better man; Cassius is the better politician; the cause
+required both, and Brutus's veto destroyed the chances of
+the second.</p>
+
+<h2>Fate vs. free will</h2>
+
+<p>The play is full of omens: the soothsayer's "Beware the
+Ides of March," the storm, the lioness in the streets,
+Calpurnia's dream. The characters disagree about how to read
+these. Caesar dismisses them; the conspirators read them as
+calls to act. Cassius famously declares: "The fault, dear
+Brutus, is not in our stars, / But in ourselves, that we are
+underlings."</p>
+
+<p>The play does not settle the question of how much human
+agency operates against fate. The omens prove accurate; the
+characters' choices still seem to matter. The play's
+metaphysical openness is itself the position.</p>
+
+<h2>The play's structure</h2>
+
+<p>The play has an unusual five-act structure. The climax
+(Caesar's death) is at the very centre — Act 3, Scene 1 — not
+toward the end as in most Shakespeare tragedies. This is
+because the play is interested in what happens
+<em>after</em> the assassination at least as much as in the
+assassination itself. The second half is the falling out of
+the conspirators' plans; the play's deepest claim is that the
+political act and its meaning are different things, and that
+the latter is what determines outcomes.</p>
+
+<h2>"Et tu, Brute?"</h2>
+
+<p>The famous Latin line — "And you, Brutus?" — that Caesar
+speaks as he is stabbed is one of the most quoted in
+literature. Historically uncertain (Suetonius reports it as
+Greek; other sources have him speaking different last words),
+the line in Shakespeare's play does specific work: it
+registers the personal betrayal underneath the political
+killing. Caesar's love for Brutus is what makes the
+assassination tragic; the line is what makes the betrayal
+land.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>The public and the private.</strong> Brutus
+      kills Caesar for Rome but does so against personal
+      affection. Almost every relationship in the play is
+      caught between the two registers.</li>
+  <li><strong>The mob.</strong> Shakespeare's portrait of the
+      crowd is unsparing. The plebeians are easily turned in
+      either direction; the play's pessimism about mass
+      politics is one of its most modern features.</li>
+  <li><strong>Honour as motivation.</strong> Brutus's
+      principles are the engine of his actions; the play
+      respects them while showing their political
+      catastrophes.</li>
+  <li><strong>Words as weapons.</strong> The play's
+      central insight: in politics, rhetoric is the
+      instrument that decides outcomes more often than
+      arms.</li>
+</ul>
+""",
+        "related_works": ["hamlet", "macbeth"],
+        "key_entries": [
+            "hamartia", "irony-types", "foil-character",
+            "soliloquy", "theme-vs-motif", "rhetorical-question",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-tempest",
+        "title": "The Tempest — A Reader's Guide to Shakespeare's Last Romance",
+        "h1": "The Tempest — themes, the island, and the play as Shakespeare's farewell",
+        "author": "William Shakespeare",
+        "year": "c. 1611",
+        "meta_description": "A reader's guide to Shakespeare's The Tempest — Prospero on the island, Caliban and the colonial reading, Ariel and the spirit world, the masque, and the play as Shakespeare's farewell.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Shakespeare's <em>The Tempest</em> is the last play he is
+believed to have written alone, performed at court in 1611 and
+published posthumously in the 1623 First Folio as the opening
+play of the collection. It is short, formally tight (almost
+unique in Shakespeare for observing the classical unities of
+time and place), and built around an exiled magician's
+revenge that turns, in the play's central pivot, into
+forgiveness. The play has been read as a fairy-tale comedy, as
+Shakespeare's farewell to the stage, and — in the last fifty
+years — as a meditation on colonialism that Shakespeare may
+not have intended but did write.</p>
+
+<h2>The plot, briefly</h2>
+
+<p>Twelve years before the play's action, Prospero, the
+rightful Duke of Milan, was deposed by his brother Antonio
+with the help of King Alonso of Naples. Prospero and his
+infant daughter Miranda were set adrift in a boat; they
+washed ashore on a remote island, where Prospero has lived
+since, mastering magical arts. The play opens with Prospero
+summoning a storm to wreck the ship carrying Antonio, Alonso,
+and their courtiers past the island. The court party
+struggles ashore; over the course of a single afternoon,
+Prospero engineers their education and his reconciliation.</p>
+
+<p>The play's classical unities matter: events take place in
+roughly the same time as the performance (four hours), on
+one island. The compression gives the play a fairy-tale
+clarity.</p>
+
+<h2>The island and its inhabitants</h2>
+
+<p>The island has three inhabitants before the shipwreck:</p>
+
+<ul>
+  <li><strong>Prospero.</strong> The exiled magician,
+      master of the others, controller of the play's
+      events.</li>
+  <li><strong>Miranda.</strong> Prospero's fifteen-year-old
+      daughter, who has seen no man other than her father and
+      the indigenous Caliban. Her first sight of the courtly
+      men produces the play's most-quoted line: "O brave new
+      world / That has such people in't!" — a line Aldous
+      Huxley borrowed for the title of
+      <a href="/works/brave-new-world">his novel</a>.</li>
+  <li><strong>Caliban.</strong> The island's original
+      inhabitant, son of the witch Sycorax. Enslaved by
+      Prospero, who teaches him language. Caliban's
+      famous response: "You taught me language; and my
+      profit on't / Is, I know how to curse."</li>
+  <li><strong>Ariel.</strong> A spirit Prospero freed from
+      imprisonment in a tree (where Sycorax had bound him).
+      Ariel serves Prospero in exchange for the promise of
+      eventual freedom.</li>
+</ul>
+
+<p>The relationships among these four — the colonial
+hierarchy, the parent-child bond, the master-servant
+exchange — are what the play examines.</p>
+
+<h2>The colonial reading</h2>
+
+<p>Since the 1960s, the most influential reading of
+<em>The Tempest</em> has emphasised its colonial dimension.
+Prospero arrives at an inhabited island, dispossesses its
+native inhabitant, teaches him the colonisers' language,
+exploits his labour, calls him "thing of darkness,"
+imprisons him in a rock. Caliban's resistance — including the
+plot with Stephano and Trinculo to overthrow Prospero — is
+the colonised's resistance.</p>
+
+<p>This reading is anachronistic in the strict sense — the
+play was not written as a colonial allegory in the modern
+sense — but Shakespeare drew on the available reports of New
+World colonisation (the 1609 Bermuda shipwreck of the
+<em>Sea Venture</em>; Montaigne's essay "Of Cannibals,"
+which Shakespeare clearly knew). The colonial elements are in
+the text, regardless of authorial intent.</p>
+
+<p>Aimé Césaire's <em>Une Tempête</em> (1969) rewrites the
+play with Caliban as the protagonist, an explicit
+postcolonial revision. The colonial reading is now
+unavoidable.</p>
+
+<h2>Prospero as Shakespeare</h2>
+
+<p>The autobiographical reading — Prospero as Shakespeare,
+the island as the stage, Prospero's renunciation of magic at
+the end as Shakespeare's farewell to playwriting — has been
+the dominant reading for centuries. Prospero's famous "Our
+revels now are ended" speech (Act 4) is read as Shakespeare's
+own statement on art:</p>
+
+<blockquote>
+We are such stuff<br>
+As dreams are made on, and our little life<br>
+Is rounded with a sleep.
+</blockquote>
+
+<p>The reading is biographically uncertain (Shakespeare went
+on to collaborate on at least two more plays after <em>The
+Tempest</em>) but emotionally persuasive. The play's farewell
+register is unmistakable; the reader can either accept the
+biographical frame or take the farewell as the play's own
+internal claim.</p>
+
+<h2>The masque</h2>
+
+<p>The play's fourth act contains a wedding masque — a
+performance Prospero stages for Miranda and Ferdinand. The
+masque is an early-17th-century courtly art form combining
+allegorical figures, music, and elaborate stage machinery.
+Shakespeare's choice to embed one in <em>The Tempest</em> is
+deliberate: the masque is a play-within-the-play, a
+<a href="/glossary/mise-en-abyme">mise en abyme</a> that
+reflects the larger play's interest in performance, illusion,
+and the magic that produces both.</p>
+
+<p>The masque is interrupted by Prospero's sudden remembering
+of Caliban's conspiracy. The interruption is what produces
+the famous "revels" speech. The interruption itself is the
+play's argument: even the most beautiful illusion has the
+world's demands waiting just outside it.</p>
+
+<h2>The forgiveness pivot</h2>
+
+<p>The play's deepest moral move is in Act 5. Prospero, having
+the conspirators completely in his power, chooses
+forgiveness over revenge. Ariel reports that the courtiers
+are weeping in their distress, and Prospero says:</p>
+
+<blockquote>
+Though with their high wrongs I am struck to the quick,<br>
+Yet with my nobler reason 'gainst my fury<br>
+Do I take part: the rarer action is<br>
+In virtue than in vengeance.
+</blockquote>
+
+<p>The reversal is one of the most quiet and least theatrical
+turning points in Shakespeare. Most tragedies and revenge
+plays escalate; this play steps off the escalator. The
+"rarer action" is the new principle. Whether Prospero
+genuinely achieves it (he still says "this thing of darkness
+I acknowledge mine" about Caliban — acknowledgment but not
+full release) is another of the play's open questions.</p>
+
+<h2>The epilogue</h2>
+
+<p>The play ends with Prospero stepping forward to address
+the audience directly. His final speech asks for the
+audience's applause as the release that will let him sail
+back to Milan. The convention of the epilogue is being used
+to make the audience complicit: we cannot complete the play
+without releasing the magician. The fourth wall, never very
+solid in Shakespeare, is here explicitly dismantled. We are
+in the play; the play has been about us.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Magic and its limits.</strong> Prospero's
+      magic is total in the play's interior, but he chooses
+      to give it up at the end. The play asks what kind of
+      power is renounced rather than used.</li>
+  <li><strong>Forgiveness over revenge.</strong> The play's
+      defining moral choice.</li>
+  <li><strong>The colonial encounter.</strong> Whether
+      Shakespeare intended it or not, the dynamic between
+      Prospero, Caliban, and the island is the play's most
+      politically live element today.</li>
+  <li><strong>Performance and illusion.</strong> The masque,
+      the magic, the play itself — all are forms of staged
+      performance whose relationship to truth the play
+      interrogates.</li>
+</ul>
+""",
+        "related_works": ["macbeth", "a-midsummer-nights-dream"],
+        "key_entries": [
+            "mise-en-abyme", "allegory-vs-symbol",
+            "soliloquy", "theme-vs-motif", "foil-character",
+            "personification",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-importance-of-being-earnest",
+        "title": "The Importance of Being Earnest — A Reader's Guide to Wilde's Comedy of Manners",
+        "h1": "The Importance of Being Earnest — themes, paradox, and the Wildean epigram",
+        "author": "Oscar Wilde",
+        "year": "1895",
+        "meta_description": "A reader's guide to Oscar Wilde's The Importance of Being Earnest — the comedy of manners, Bunburying, the muffin scene, the epigrammatic style, and the play's subtitle 'A Trivial Comedy for Serious People.'",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Oscar Wilde's <em>The Importance of Being Earnest</em> is
+the masterpiece of the late-Victorian comedy of manners and
+the most quotable play in English. Subtitled "A Trivial Comedy
+for Serious People," it was first performed at the St James's
+Theatre on 14 February 1895 — three months before the trials
+that would destroy Wilde's life and end his career. The play
+is at once a perfect example of its genre and a sustained
+quiet attack on the moral seriousness of its audience.</p>
+
+<h2>The premise</h2>
+
+<p>Two young Victorian gentlemen, Jack Worthing and Algernon
+Moncrieff, each maintain a fictional alter ego they can
+"become" when they wish to escape social obligations. Jack,
+who lives in the country as a responsible guardian, has
+invented a wicked younger brother "Ernest" who lives in
+London and requires occasional supervisory visits. Algernon,
+who lives in London, has invented an invalid friend "Bunbury"
+who lives in the country and requires periodic care.</p>
+
+<p>Both young women in the play — Gwendolen and Cecily —
+have, independently, declared that they could only marry a
+man named Ernest. The plot is the unfolding of the men's lies
+and the women's improbable matching attachment to the name.</p>
+
+<h2>The comedy of manners</h2>
+
+<p>The play is the late-period perfection of the comedy of
+manners — a genre dating back to Restoration England
+(Congreve, Wycherley) that satirises the conventions of
+upper-class social life. The genre's conventions:</p>
+
+<ul>
+  <li>Witty dialogue as the primary instrument.</li>
+  <li>Romantic plot complications resolved by recognition or
+      coincidence.</li>
+  <li>Servants who comment on their masters.</li>
+  <li>Characters as exemplars of social types.</li>
+  <li>The standing satirical claim that the gentility behaves
+      worse than the people they look down on.</li>
+</ul>
+
+<p>Wilde mastered every convention and tilted each into
+something slightly more extreme. The verbal precision is
+greater; the characters are more obviously preposterous; the
+moral satire is less hidden.</p>
+
+<h2>The Wildean epigram</h2>
+
+<p>The play's dialogue is built almost entirely of
+<a href="/glossary/aphorism">epigrams</a> and
+<a href="/glossary/paradox-oxymoron">paradoxes</a>. The
+density is unusual:</p>
+
+<ul>
+  <li>"All women become like their mothers. That is their
+      tragedy. No man does. That's his."</li>
+  <li>"I never travel without my diary. One should always
+      have something sensational to read in the train."</li>
+  <li>"To lose one parent, Mr. Worthing, may be regarded as a
+      misfortune; to lose both looks like carelessness."</li>
+  <li>"I can resist everything except temptation."</li>
+  <li>"The truth is rarely pure and never simple."</li>
+  <li>"In matters of grave importance, style, not sincerity,
+      is the vital thing."</li>
+</ul>
+
+<p>Each is a polished
+<a href="/glossary/antithesis">antithesis</a> or
+<a href="/glossary/paradox-oxymoron">paradox</a>. The structural
+joke: the moral substance of late-Victorian respectability has
+been replaced, in this society, by the polished surface of
+how things are said. The play is criticising the substitution
+while exploiting it.</p>
+
+<h2>Lady Bracknell</h2>
+
+<p>Lady Bracknell — Gwendolen's formidable mother and the
+play's great comic monster — is one of the most performed
+character roles in English drama. Her interrogation of Jack
+about his suitability to marry her daughter is the play's
+most quoted scene: Jack reveals that he was found in a
+handbag at Victoria Station, and Lady Bracknell delivers her
+famous line: "A handbag?"</p>
+
+<p>The character is the play's portrait of the late-Victorian
+upper class's reduction of all human qualities to
+marketable assets. She approves of Jack's smoking ("a man
+should always have an occupation of some kind"); she approves
+of his ignorance ("ignorance is like a delicate exotic fruit
+— touch it and the bloom is gone"); she disapproves of his
+mysterious parentage. The character is funny because she is
+internally consistent; her values are perfectly clear and
+perfectly horrible.</p>
+
+<h2>The muffin scene</h2>
+
+<p>Act 2's most famous comic scene — Jack and Algernon arguing
+about who has the moral right to eat the muffins — is the
+play's signature high-low collision. Two grown men are
+sincerely arguing over teacakes while their entire romantic
+prospects are collapsing offstage. The collision of trivial
+subject and theatrical seriousness is the play's central
+comic device, miniaturised.</p>
+
+<h2>The subtitle and what it claims</h2>
+
+<p>The subtitle — "A Trivial Comedy for Serious People" — is
+the play's quiet manifesto. The trivial is the comedy's
+surface (cucumber sandwiches, the lost handbag, the muffin
+fight); the serious are the audience members who are meant to
+recognise themselves in the satire. The play claims to be
+trivial; the claim is itself the play's deepest
+self-protection.</p>
+
+<p>Wilde was famously suspicious of moral seriousness as a
+literary virtue. His preface to <a href="/works/the-picture-of-dorian-gray">
+<em>The Picture of Dorian Gray</em></a> says it directly:
+"There is no such thing as a moral or an immoral book." The
+play's subtitle is the dramatic version of the same claim.</p>
+
+<h2>The double meaning of "earnest"</h2>
+
+<p>The play's central pun depends on "earnest" being both a
+name and an adjective. The women claim to love only a man
+named Ernest. The play's title puts the trait — earnestness,
+moral seriousness, sincerity — in italicised opposition to
+the trivial comedy that follows. The pun is the play's
+entire thesis: that in this society, the name matters more
+than the trait, and the trait itself has become a kind of
+public performance.</p>
+
+<p>This is itself the same critique Wilde made in
+<em>Dorian Gray</em> — surfaces have replaced substance — but
+delivered as comedy rather than horror.</p>
+
+<h2>The 1895 context</h2>
+
+<p>The play opened on 14 February 1895. The Marquess of
+Queensberry, father of Wilde's lover Lord Alfred Douglas,
+attempted to disrupt the opening night with a bouquet of
+rotten vegetables; he was prevented. Within three months,
+Queensberry's libel suit against Wilde, and Wilde's
+subsequent prosecution for "gross indecency," had destroyed
+Wilde's career. The play was withdrawn after eighty-three
+performances. It was Wilde's last major work; he died in 1900
+in exile in Paris.</p>
+
+<p>The biographical frame is unavoidable for modern readers.
+The play that mocks the moral seriousness of its audience
+was, within months, used by that audience to destroy its
+author. There is no extra-textual meaning the play didn't
+contain — the play was always making the case — but
+historical context changes the texture of how it reads now.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>The trivial as the substance.</strong> The
+      play's deepest argument: in this society, the surface
+      really is the depth. Manners aren't the cover of
+      morality; they have replaced it.</li>
+  <li><strong>Identity as performance.</strong> Both men
+      construct fictional alter egos to escape social
+      obligation. The play takes this as ordinary, not
+      pathological.</li>
+  <li><strong>The marriage market.</strong> Lady Bracknell's
+      interview is the comic version of the same economic
+      pressure Austen took seriously in
+      <a href="/works/pride-and-prejudice"><em>Pride and
+      Prejudice</em></a>. Wilde finds it comic where Austen
+      found it agonised.</li>
+  <li><strong>The matter of names.</strong> What you are
+      called determines what you are. The play makes this
+      claim absurdly literal.</li>
+</ul>
+""",
+        "related_works": ["the-picture-of-dorian-gray", "pride-and-prejudice"],
+        "key_entries": [
+            "aphorism", "paradox-oxymoron", "antithesis",
+            "satire-vs-parody", "theme-vs-motif", "irony-types",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "things-fall-apart",
+        "title": "Things Fall Apart — A Reader's Guide to Chinua Achebe's Postcolonial Novel",
+        "h1": "Things Fall Apart — themes, Igbo culture, and the writing back to empire",
+        "author": "Chinua Achebe",
+        "year": "1958",
+        "meta_description": "A reader's guide to Chinua Achebe's Things Fall Apart — the Igbo society Achebe depicts, Okonkwo as tragic hero, the colonial encounter, Achebe's response to Conrad, the title's source.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Chinua Achebe's <em>Things Fall Apart</em> is the
+foundational novel of modern African literature in English.
+Published in 1958 — two years before Nigerian independence —
+it has sold over twenty million copies in fifty languages and
+remains the most widely read African novel in the world.
+Achebe wrote it partly as a response to the European
+literary tradition's treatment of Africa: he was specifically
+responding to
+<a href="/works/heart-of-darkness">Conrad's <em>Heart of
+Darkness</em></a>, which he had encountered as a student and
+which he found unbearable in its representation of African
+people as backdrop to European psychology.</p>
+
+<h2>The plot, briefly</h2>
+
+<p>The novel is set in an Igbo village in southeastern
+Nigeria in the 1890s. Its protagonist, Okonkwo, is a
+respected warrior and yam farmer who has built his standing
+through hard work and stoic discipline, driven by his
+desperate determination not to resemble his lazy,
+musical, "effeminate" father Unoka. Over the novel's three
+parts, Okonkwo's life is increasingly disrupted by: an
+accidental killing that leads to his seven-year exile; the
+arrival of European Christian missionaries; the imposition
+of British colonial administration. The novel ends with
+Okonkwo's suicide after he kills a colonial messenger and
+realises his village will not rise with him.</p>
+
+<h2>The Igbo society Achebe depicts</h2>
+
+<p>The first two-thirds of the novel are dedicated to a
+careful, detailed depiction of Igbo culture as it functioned
+before the European arrival:</p>
+
+<ul>
+  <li><strong>A complex political system.</strong> Decisions
+      made by councils of elders and titled men; consensus
+      sought; no centralised monarchy.</li>
+  <li><strong>A sophisticated religion.</strong> The supreme
+      god Chukwu, the spirits of ancestors (egwugwu), the
+      personal chi (one's life-force), the goddess of the
+      earth (Ani). Achebe presents these without
+      condescension.</li>
+  <li><strong>A legal and ethical system.</strong> Detailed
+      customs about property, marriage, conflict, hospitality.
+      The system is internally coherent and capable of
+      self-correction.</li>
+  <li><strong>An aesthetic culture.</strong> Proverbs ("the
+      palm-oil with which words are eaten"), songs, dances,
+      masquerades, intricate kinship terminology.</li>
+  <li><strong>Cruelties and contradictions.</strong> The
+      treatment of twins (abandoned in the Evil Forest); the
+      ritualised killing of Ikemefuna; the position of women.
+      Achebe does not idealise the society he is depicting.</li>
+</ul>
+
+<p>The detail is doing argumentative work. Conrad and the
+European tradition had treated African societies as if
+nothing existed in them worth representing. Achebe's novel
+shows that something did exist — and that it had the
+complexity, the rituals, the ethical disputes, the comic
+moments, the small jealousies, the philosophical disagreements
+that any society does.</p>
+
+<h2>Okonkwo as <a href="/glossary/hamartia">tragic hero</a></h2>
+
+<p>Okonkwo is built on the classical tragic apparatus, with
+modifications. He has a
+<a href="/glossary/hamartia">hamartia</a> — his terror of
+being seen as soft, which produces his stoic harshness,
+which alienates him from his son Nwoye, which produces some
+of the actions that lead to his fall. He has a
+<a href="/glossary/peripeteia">reversal</a> — the accidental
+killing that exiles him from his village. He has
+<a href="/glossary/anagnorisis">recognition</a> — his slow
+awareness, after his return from exile, that the world he
+had ruled has changed beyond his ability to navigate.</p>
+
+<p>What Achebe adds: Okonkwo's tragedy is not just personal.
+It is also the tragedy of a culture that produced the kind of
+man Okonkwo became — and that the colonial intervention
+prevents from producing his kind of man any longer. The
+individual and the collective tragedies coincide.</p>
+
+<h2>The title's source</h2>
+
+<p>The title comes from W. B. Yeats's poem "The Second
+Coming" (1919):</p>
+
+<blockquote>
+Turning and turning in the widening gyre<br>
+The falcon cannot hear the falconer;<br>
+Things fall apart; the centre cannot hold;<br>
+Mere anarchy is loosed upon the world…
+</blockquote>
+
+<p>Achebe's choice of Yeats is significant. Yeats was an
+Irish modernist writing about the collapse of the post-WWI
+European order. Achebe was taking Yeats's metaphor and
+applying it to the colonial intrusion into Africa — making
+the same image work for an event Yeats had not been
+imagining. The novel is, in this respect, an exercise in
+postcolonial reframing: the European poet's vocabulary used
+to name the moment from a different vantage.</p>
+
+<h2>The arrival of the missionaries</h2>
+
+<p>The novel's third part begins with the missionaries'
+arrival. Achebe is careful in his depiction: the missionaries
+are not uniformly cruel. Mr Brown, the first missionary,
+attempts to understand local custom; he wins converts
+through patience. Mr Smith, his successor, is uncompromising
+and aggressive. The colonial machinery, however, runs the
+same way regardless of which individual administers it — the
+District Commissioner and his court messengers replace the
+clan's authority with British law.</p>
+
+<p>Achebe's argument is structural: the colonial intervention
+is not primarily about good or bad individual Europeans.
+It is about the systematic replacement of one form of
+authority with another, and what that replacement does to a
+people whose previous authority no longer has any standing.</p>
+
+<h2>The famous ending</h2>
+
+<p>The novel's last paragraph is one of the most discussed
+endings in twentieth-century fiction. After Okonkwo's
+suicide, the District Commissioner — who has narrated little
+of what we have just read — reflects on the case:</p>
+
+<blockquote>
+The story of this man who had killed a messenger and hanged
+himself would make interesting reading. One could almost write
+a whole chapter on him. Perhaps not a whole chapter but a
+reasonable paragraph, at any rate. There was so much else to
+include, and one must be firm in cutting out details. He had
+already chosen the title of the book, after much thought:
+<em>The Pacification of the Primitive Tribes of the Lower
+Niger</em>.
+</blockquote>
+
+<p>The novel's final move is to reveal that everything we
+have read — the whole, detailed, complex story of
+Okonkwo's life and his community's destruction — will be
+reduced, in the colonial historical record, to a paragraph
+in a book titled "Pacification of the Primitive Tribes." The
+juxtaposition is the novel's argument: the colonial archive
+will reduce the lived reality to a footnote in a story whose
+title is itself an act of
+<a href="/glossary/euphemism">euphemism</a>. The novel we
+have just read is the recovery of what that footnote
+covered.</p>
+
+<h2>Writing back to Conrad</h2>
+
+<p>Achebe's 1975 lecture "An Image of Africa: Racism in
+Conrad's <em>Heart of Darkness</em>" is one of the most
+influential pieces of postcolonial criticism ever delivered.
+Achebe argued that Conrad's novel is unreadable as serious
+literature given its treatment of African people. The
+lecture is famous; the novel is the prior, more durable
+response. <em>Things Fall Apart</em> represents the
+interior life that Conrad's novel had refused to acknowledge
+existed. The novel itself is the rebuttal.</p>
+
+<h2>Achebe's prose</h2>
+
+<p>The novel is written in English — the colonial language —
+but in a register inflected with Igbo proverbs, rhythms, and
+patterns of thought. Achebe's argument: the African writer
+must use the colonial language because it is the language of
+education and access, but must remake it in the writing.
+The English of <em>Things Fall Apart</em> is, in his phrase,
+"the English of his ancestors" remade.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>The recovered interior.</strong> The novel's
+      basic argument: African societies had interiors, had
+      complexity, had culture. The colonial archive
+      pretended otherwise.</li>
+  <li><strong>Masculinity and its costs.</strong>
+      Okonkwo's tragedy is partly the tragedy of an over-
+      rigid masculine ideal — one his culture produced and
+      he intensified.</li>
+  <li><strong>The collapse of certainty.</strong> The
+      Yeatsian "centre cannot hold" works at the cultural
+      level. The novel tracks the moment when an entire way
+      of organising reality stops working.</li>
+  <li><strong>The colonial archive.</strong> The final
+      paragraph's reveal of the colonial book the
+      Commissioner will write is the novel's deepest
+      political argument.</li>
+</ul>
+""",
+        "related_works": ["heart-of-darkness", "beloved"],
+        "key_entries": [
+            "hamartia", "peripeteia", "anagnorisis",
+            "allegory-vs-symbol", "theme-vs-motif", "tone-vs-mood",
+        ],
+    },
 ]
 
 _BY_SLUG: dict[str, dict] = {w["slug"]: w for w in WORKS}
