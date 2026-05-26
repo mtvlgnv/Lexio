@@ -4155,6 +4155,884 @@ matters.</p>
             "theme-vs-motif", "soliloquy", "personification",
         ],
     },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "crime-and-punishment",
+        "title": "Crime and Punishment — A Reader's Guide to Dostoevsky's Novel of Conscience",
+        "h1": "Crime and Punishment — themes, the divided self, and the Petersburg of the mind",
+        "author": "Fyodor Dostoevsky",
+        "year": "1866",
+        "meta_description": "A reader's guide to Dostoevsky's Crime and Punishment — Raskolnikov's split self, the Ubermensch theory, polyphonic narration, the Petersburg setting, the redemption arc.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Dostoevsky's <em>Crime and Punishment</em> is the
+psychological novel at its most ambitious. Published as a
+serial in <em>The Russian Messenger</em> in 1866, it is the
+first major fictional study of a murderer's interior — written
+not from a comfortable distance but from inside the murderer's
+consciousness, almost in real time. To read it well is to
+follow how Dostoevsky engineers our identification with a
+character we should not want to identify with.</p>
+
+<h2>The plot, briefly</h2>
+
+<p>Rodion Romanovich Raskolnikov, a poor former law student in
+St. Petersburg, conceives and executes the murder of an old
+pawnbroker, partly for her money but mostly to test a theory:
+that "extraordinary" men have the right to step over moral law
+in pursuit of higher ends. He also kills the pawnbroker's
+half-sister, who walks in. The rest of the novel — the longer
+remaining four-fifths — is the working-out of his guilt, his
+evasion, and his eventual confession.</p>
+
+<h2>The Ubermensch theory</h2>
+
+<p>Raskolnikov has published an article arguing that humanity
+divides into two classes: the ordinary, who must follow the
+law, and the extraordinary (Napoleon, Lycurgus, Mahomet), who
+have the right to transgress in pursuit of historical
+greatness. The murder is his test of which class he belongs to.
+The novel's central
+<a href="/glossary/dramatic-irony">dramatic irony</a> is that
+he is decisively in the first class — he is destroyed by the
+guilt his theory said should not affect him — but spends the
+entire novel resisting that recognition.</p>
+
+<p>Dostoevsky anticipated Nietzsche's <em>Übermensch</em> by
+twenty years, and rejected it before Nietzsche formulated it.
+The novel is partly a polemic against the secular
+rationalist morality the Russian intelligentsia was importing
+from Western Europe. Dostoevsky's argument: conscience cannot
+be reasoned out of; the human is constituted morally; theory
+that denies this will destroy whoever tries to live by it.</p>
+
+<h2>Raskolnikov's divided self</h2>
+
+<p>The novel's deepest structural feature is the protagonist's
+divided consciousness. Raskolnikov is constantly two people
+at once — the theorist who can defend the murder, and the
+guilty man who cannot live with it. Dostoevsky represents this
+through:</p>
+
+<ul>
+  <li><strong>Fevered <a href="/glossary/interior-monologue">interior
+      monologue</a></strong> that swings violently between
+      self-justification and self-loathing within a single
+      paragraph.</li>
+  <li><strong>The dreams</strong> — particularly the dream of
+      the beaten horse (which precedes the murder) and the
+      dream of the plague (which precedes the epilogue's
+      conversion). Both bypass the conscious mind and deliver
+      the truth Raskolnikov cannot say to himself.</li>
+  <li><strong>The <a href="/glossary/foil-character">foils</a></strong>
+      — characters who externalize aspects of Raskolnikov.
+      Svidrigailov is the Ubermensch theory fully lived out
+      (and self-destructively suicidal). Razumikhin is the
+      same intelligence put to ordinary moral use. Sonya is
+      the suffering conscience Raskolnikov has tried to deny.</li>
+</ul>
+
+<h2>Sonya and the religious frame</h2>
+
+<p>Sonya Marmeladov, the young woman driven into prostitution
+to support her starving family, is the novel's moral anchor.
+Her reading of the Lazarus story to Raskolnikov — Dostoevsky
+spends nearly a full chapter on this scene — is the novel's
+central religious argument: that resurrection from the
+spiritual dead is possible, that confession and suffering are
+the route, that the path to it runs through humiliation rather
+than around it. Raskolnikov's eventual confession is
+catalyzed by Sonya; his epilogue conversion happens with her
+beside him.</p>
+
+<h2>The polyphonic novel</h2>
+
+<p>The Russian critic Mikhail Bakhtin developed his concept of
+the polyphonic novel — a novel in which different
+consciousnesses speak with full independent authority,
+without being subordinated to a single authorial voice —
+largely from his readings of Dostoevsky. <em>Crime and
+Punishment</em> is the prototype. Marmeladov, Svidrigailov,
+Porfiry Petrovich, Razumikhin, Sonya, Raskolnikov's mother —
+each speaks at length in their own register, each with their
+own moral coherence. The novel does not reconcile their
+positions. It stages them.</p>
+
+<p>This is the formal achievement that makes the novel modern.
+Earlier nineteenth-century fiction usually subordinated all
+characters to the narrator's understanding; Dostoevsky's
+characters argue past the narrator and against him.</p>
+
+<h2>Porfiry's interrogation</h2>
+
+<p>The detective Porfiry Petrovich knows Raskolnikov is the
+murderer almost immediately, and the novel's central tension
+is not whether he will be caught but whether he will confess.
+The three interview scenes between Porfiry and Raskolnikov are
+among the great extended chess matches in fiction. Porfiry is
+psychologically subtle, patient, and explicit about his
+strategy. He is not trying to extract a confession by
+intimidation; he is trying to lead Raskolnikov to the
+self-recognition that will produce it.</p>
+
+<h2>The Petersburg setting</h2>
+
+<p>The novel's St. Petersburg is one of the most evocative
+literary cities ever written. Hot, dusty, claustrophobic,
+swarming with the desperate poor — the city is a participant
+in Raskolnikov's psychology, not a backdrop to it. He commits
+the murder in July, in the airless top-floor apartment of the
+pawnbroker; the narrow staircases, the suffocating heat, the
+crowd's noise all reach his interior. This is the
+<a href="/glossary/mood-atmosphere">atmosphere</a> of his
+crisis.</p>
+
+<h2>The epilogue</h2>
+
+<p>The epilogue — Raskolnikov in a Siberian prison, slowly
+opening to Sonya's love and to faith — has divided critics for
+160 years. Some read it as the novel's necessary religious
+resolution; others as a too-clean ending tacked onto an
+otherwise harder book. Either way, the epilogue is not part of
+the main novel's psychological texture; the conversion happens
+in summary, not in dramatic enactment. Whether this is a
+limitation or a deliberate restraint is one of the most argued
+questions in Dostoevsky criticism.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Theory vs. lived experience.</strong> The novel's
+      central argument: rational systems that contradict the
+      moral structure of human consciousness cannot be lived.</li>
+  <li><strong>Suffering as the path to redemption.</strong>
+      Dostoevsky's most Christian theme, and his most foreign
+      to contemporary secular readers.</li>
+  <li><strong>The double.</strong> Raskolnikov has multiple
+      doubles (Svidrigailov, the bourgeois Luzhin); the novel
+      is constantly showing him versions of who he might
+      become.</li>
+  <li><strong>Poverty and crime.</strong> The novel is also a
+      social novel — the systemic poverty of Petersburg is
+      shown to deform every character it touches, including
+      the murderer.</li>
+</ul>
+""",
+        "related_works": ["1984", "wuthering-heights"],
+        "key_entries": [
+            "interior-monologue", "foil-character", "dramatic-irony",
+            "hamartia", "theme-vs-motif", "mood-atmosphere",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-picture-of-dorian-gray",
+        "title": "The Picture of Dorian Gray — A Reader's Guide to Oscar Wilde's Decadent Novel",
+        "h1": "The Picture of Dorian Gray — themes, decadence, and the portrait as symbol",
+        "author": "Oscar Wilde",
+        "year": "1890",
+        "meta_description": "A reader's guide to Oscar Wilde's The Picture of Dorian Gray — decadence as movement, the portrait as symbol, Lord Henry's epigrams, the aestheticist creed, and the novel's moral ambiguity.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Oscar Wilde's <em>The Picture of Dorian Gray</em> is the
+English Decadent movement's central novel and the most polished
+piece of long-form fiction Wilde produced. Published in
+<em>Lippincott's Monthly Magazine</em> in 1890 and expanded to
+book form the following year, it is part Gothic horror, part
+aesthetic manifesto, part dark Bildungsroman, and part trial-by-
+implication of the culture that would, five years later,
+convict its author of "gross indecency." To read it well is to
+hear all of these registers at once.</p>
+
+<h2>The premise</h2>
+
+<p>Dorian Gray, a beautiful young man, sits for a portrait by
+the painter Basil Hallward. He wishes — half-jokingly, in a
+single sentence — that the portrait could grow old while he
+remained young. The wish is granted. Over the next eighteen
+years, Dorian remains physically perfect while the portrait,
+locked in a sealed room, records every act of moral corruption
+in his face. The novel ends when Dorian, in a final crisis,
+tries to destroy the portrait — and kills himself instead.</p>
+
+<h2>The portrait as <a href="/glossary/allegory-vs-symbol">symbol</a></h2>
+
+<p>The portrait is one of the most direct symbols in English
+fiction — a figure for the soul made visible. The conceit is
+borrowed loosely from Goethe's Faust (a bargain with
+supernatural consequences) and made literal: Dorian's
+appearance is unchanged, his portrait carries the moral
+damage, the equation is one-to-one. The simplicity is part of
+the novel's power; the metaphor doesn't need decoding.</p>
+
+<p>The deeper move is what the portrait makes possible
+narratively. Because Dorian's outward appearance never
+reveals his inner state, the novel can examine social
+hypocrisy at a depth realist fiction usually couldn't reach.
+We see how a community treats a beautiful young man even when
+he is, by any moral standard, a monster. The novel's argument
+is partly about what aesthetic appearance buys in society.</p>
+
+<h2>The decadent movement</h2>
+
+<p>The novel is the central English-language artifact of the
+<a href="/glossary/decadence-literature"><strong>decadence</strong></a>
+movement — the late nineteenth-century European aesthetic that
+prized artifice over nature, refinement over health, style
+over substance, and the cultivation of sensation as the
+proper vocation of the artist. The Decadents were responding
+to Huysmans's <em>À rebours</em> (1884), which appears in the
+novel as the "yellow book" that corrupts Dorian. Wilde was
+making the lineage explicit; the novel is the next move in a
+European argument.</p>
+
+<h2>Lord Henry Wotton's <a href="/glossary/aphorism">aphorisms</a></h2>
+
+<p>Lord Henry Wotton — the corrupting older friend who supplies
+Dorian with the philosophy of self-indulgence — speaks almost
+entirely in epigrams and
+<a href="/glossary/aphorism">aphorisms</a>. The dialogue is
+unrealistic in the strict sense (no one actually talks like
+this) but is doing structural work. Lord Henry's mode of
+speech is the rhetorical equivalent of the aesthetic creed he
+articulates: every sentence polished, surface privileged,
+substance held at ironic distance.</p>
+
+<p>Some examples:</p>
+
+<ul>
+  <li>"The only way to get rid of a temptation is to yield to
+      it."</li>
+  <li>"I can resist everything except temptation."</li>
+  <li>"It is only shallow people who do not judge by
+      appearances."</li>
+  <li>"Nowadays people know the price of everything and the
+      value of nothing."</li>
+</ul>
+
+<p>Each is a polished
+<a href="/glossary/paradox-oxymoron">paradox</a> that
+substitutes wit for moral content. Wilde's joke: the
+philosophy and the rhetoric are the same thing.</p>
+
+<h2>The three central men as <a href="/glossary/foil-character">foils</a></h2>
+
+<p>The novel is structured around three figures who present
+different relationships to art and ethics:</p>
+
+<ul>
+  <li><strong>Basil Hallward</strong> — the painter, the
+      believer in art as moral seriousness, the man who
+      treats Dorian's beauty as a sacred subject. Killed by
+      Dorian when he asks Dorian to reform.</li>
+  <li><strong>Lord Henry Wotton</strong> — the philosopher of
+      pleasure, who articulates ideas he doesn't have the
+      courage (or the inclination) to live by. He corrupts
+      Dorian by talking; he himself remains personally
+      conventional.</li>
+  <li><strong>Dorian Gray</strong> — the man who actually
+      lives Lord Henry's philosophy. The
+      hypothesis tested in practice.</li>
+</ul>
+
+<p>The novel's argument is partly that this division is
+unsustainable. Aestheticism as theory (Lord Henry) is one
+thing; aestheticism as conduct (Dorian) is another. The
+distance between them is what destroys Dorian.</p>
+
+<h2>The preface and its claims</h2>
+
+<p>Wilde added a preface to the book edition consisting of
+twenty-three aphorisms — a small aesthetic manifesto in the
+voice of his most provocative public persona. "All art is
+quite useless." "There is no such thing as a moral or an
+immoral book. Books are well written, or badly written. That
+is all." "Books should not aim at moral instruction."</p>
+
+<p>These are partly genuine aesthetic claims and partly
+defensive armor — the original 1890 publication had been
+attacked as immoral, and Wilde was responding. Reading the
+preface alongside the novel produces a productive tension:
+the novel is morally serious in ways the preface denies.</p>
+
+<h2>The Goth/horror dimension</h2>
+
+<p>The novel borrows heavily from
+<a href="/glossary/gothic-fiction">Gothic fiction</a> — the
+sealed room, the secret kept from family and servants, the
+ageless figure with a hidden corruption, the double, the
+final scene of horror. The Gothic frame lets Wilde explore
+themes (homosexual subtext, sexual corruption, drug use) that
+realist fiction could not have published. The Gothic was the
+license.</p>
+
+<h2>The trial subtext</h2>
+
+<p>The novel was used as evidence against Wilde in his 1895
+trials for "gross indecency." The prosecution read passages
+aloud. Wilde defended the novel against literal-minded readings
+("the book is poisonous, if you will"). The novel exists now
+within the shadow of those trials — every modern reader
+encounters it knowing that the culture the novel critiqued
+went on to destroy its author. This is not the novel's
+intent but is now part of its meaning.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Surface vs. depth.</strong> The novel's central
+      structural opposition. Dorian's surface and the
+      portrait's depth are split at the start; the climax is
+      when they reunite.</li>
+  <li><strong>The cost of beauty.</strong> The novel is partly
+      a horror story about what a beautiful person can get
+      away with — and what that latitude does to them.</li>
+  <li><strong>Aestheticism as ethics.</strong> Lord Henry's
+      claim that the only ethic is the aesthetic is tested
+      and, in the novel's verdict, fails.</li>
+  <li><strong>The double.</strong> Dorian and the portrait are
+      doubles; the novel is in the Gothic tradition of the
+      doppelgänger story.</li>
+</ul>
+""",
+        "related_works": ["frankenstein", "wuthering-heights"],
+        "key_entries": [
+            "decadence-literature", "allegory-vs-symbol",
+            "aphorism", "paradox-oxymoron", "foil-character",
+            "gothic-fiction",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-handmaids-tale",
+        "title": "The Handmaid's Tale — A Reader's Guide to Margaret Atwood's Theocratic Dystopia",
+        "h1": "The Handmaid's Tale — themes, voice, and the dystopia of reproductive control",
+        "author": "Margaret Atwood",
+        "year": "1985",
+        "meta_description": "A reader's guide to Margaret Atwood's The Handmaid's Tale — the Gileadean dystopia, Offred's first-person voice, the historical sources, ritualised reproductive slavery, the Historical Notes ending.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Margaret Atwood's <em>The Handmaid's Tale</em> is the most
+formally ambitious of the late twentieth century's major
+<a href="/glossary/dystopia">dystopias</a> and the most
+quoted political novel of its decade. Set in a near-future
+American theocracy that has stripped women of legal personhood
+and forced fertile women into a system of ritualised
+reproductive slavery, the book is at once Atwood's response to
+the rising religious right of the 1980s United States and a
+broader investigation of how quickly liberal societies can
+move toward authoritarian ones. Atwood's famous claim — that
+she included nothing in the novel that hadn't already happened
+in some society somewhere — is the methodological signature of
+the book.</p>
+
+<h2>The Gileadean dystopia</h2>
+
+<p>The Republic of Gilead, formed after a violent coup that
+suspended the U.S. Constitution, has organised itself around a
+biblical literalist Christianity. Plummeting fertility (a
+result of pollution and disease in the prior era) has made
+fertile women a state resource. The novel's nominal
+"Handmaids" are fertile women assigned to elite men's
+households for forced reproduction; the act is rebranded as
+biblical (the Old Testament story of Rachel and Bilhah is
+cited as precedent) but the underlying mechanic is rape.</p>
+
+<p>The novel is careful to show that the regime did not arise
+ex nihilo. The flashbacks make clear that the warning signs
+were dismissed, that women's rights eroded incrementally, that
+"it can't happen here" was the operating consensus until it
+had happened. The dystopia's history is its
+political argument.</p>
+
+<h2>Offred's voice</h2>
+
+<p>The novel is told in
+<a href="/glossary/first-person-narration">first person</a> by
+a woman whose actual name we never learn — she is "Offred"
+("of Fred"), her assigned name as Handmaid in Commander
+Fred's household. Her voice is one of the great achievements
+of the contemporary dystopian novel: hedging, self-aware,
+literary in flashes, deliberately fragmentary in others.</p>
+
+<p>The narration moves between Offred's present (in the
+Commander's house) and her past (her life before, her marriage
+to Luke, her daughter, her training in the Red Center). Atwood
+uses the same fragmented analeptic technique that
+<a href="/works/beloved">Morrison's <em>Beloved</em></a> uses
+— and for similar reasons. Trauma fractures linear narration;
+the formal technique enacts the experience.</p>
+
+<h2>The historical sources</h2>
+
+<p>Atwood drew on real precedents for almost every feature of
+Gilead. Some explicit ones:</p>
+
+<ul>
+  <li><strong>Puritan New England</strong> — the geographical
+      setting (the novel is set in what was Cambridge, MA) is
+      not accidental. Atwood, who studied with Perry Miller
+      at Harvard, was writing about the original site of
+      American theocracy.</li>
+  <li><strong>The Romanian Decree 770</strong> — Ceauşescu's
+      1966 ban on contraception and abortion, intended to
+      raise the Romanian birthrate.</li>
+  <li><strong>Iranian women under the early Islamic
+      Republic</strong> — the rapid imposition of dress codes
+      and restrictions Atwood watched unfold in 1979.</li>
+  <li><strong>The Reagan-era American religious right</strong>
+      — the political coalition that was, at the time of
+      writing, advocating for the criminalization of abortion
+      and the restoration of "traditional" gender roles.</li>
+  <li><strong>The history of slavery in the United
+      States</strong> — Handmaids' costumes, the public
+      "salvagings," the use of biblical justification for
+      forced reproductive labour. Atwood was explicit about
+      these parallels.</li>
+</ul>
+
+<p>The novel's force is partly cumulative — each detail of
+Gilead is calibrated to a real historical antecedent, so the
+total invention feels less like science fiction than like
+worst-case historical projection.</p>
+
+<h2>The Ceremony and ritualised obscenity</h2>
+
+<p>The novel's most discussed set piece is "the Ceremony" —
+the monthly forced sex between Handmaid, Commander, and Wife,
+ritualised as a reading of the Old Testament passage about
+Rachel giving her handmaid to Jacob. Atwood's prose during
+these scenes is deliberately flat, dissociated, almost
+documentary. Offred narrates from a position of psychological
+distance from her own body — which is, the novel argues, the
+only way the participants can endure what is happening.</p>
+
+<p>The technique is itself a form of
+<a href="/glossary/euphemism">euphemism</a>: Gilead has
+disguised forced reproduction as religious observance, and
+Offred's narration must move through the euphemism without
+quite naming what it conceals.</p>
+
+<h2>The Historical Notes ending</h2>
+
+<p>The novel's closing section — "Historical Notes on
+<em>The Handmaid's Tale</em>" — is one of the most discussed
+features of the book. Set centuries after the events of the
+novel, it presents a transcribed academic conference on
+Gileadean studies. Professor Pieixoto introduces Offred's
+narrative (which we have just read) as a recovered set of
+audio tapes whose authenticity he debates. He makes mildly
+sexist jokes. He pronounces uncertainty about whether Offred
+ever escaped.</p>
+
+<p>The Historical Notes do several things at once. They confirm
+that Gilead eventually fell. They distance the reader from
+Offred's experience by reframing it as scholarly object. They
+suggest that the future, even when freer than Gilead, has not
+solved the casual misogyny that helped produce Gilead. And
+they leave the central question of the novel open: did Offred
+escape, or didn't she? The book ends on her stepping into a
+vehicle, "into the darkness within; or else the light." The
+Historical Notes don't resolve this. The deliberate
+withholding is the novel's last move.</p>
+
+<h2>The Hulu series and the book's afterlife</h2>
+
+<p>The 2017 Hulu adaptation made the novel newly central to
+political conversation in ways Atwood did not predict. The red
+Handmaid costume became a protest symbol used at abortion-
+rights demonstrations in the United States, Argentina, Ireland,
+and Poland. The novel's afterlife is now inseparable from this
+political iconography; readers encountering the book today read
+it through the costume.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>The gradual erosion of rights.</strong> Atwood's
+      flashbacks track how women's legal personhood was
+      stripped step by step, with each step plausible in
+      isolation. The novel's clearest political argument.</li>
+  <li><strong>Language as resistance.</strong> Offred's
+      narration is her one private space; the novel argues
+      that the capacity to tell one's own story is a residual
+      form of freedom.</li>
+  <li><strong>Complicity at every level.</strong> The Wives,
+      the Aunts, the Eyes — Gilead is not a system the men
+      have imposed on the women; it is a system many women
+      participate in maintaining. Atwood's harshest
+      analysis.</li>
+  <li><strong>The body as state property.</strong> The novel's
+      central insight: regimes that wish to control women
+      typically begin with the legal status of their
+      bodies.</li>
+</ul>
+""",
+        "related_works": ["1984", "brave-new-world", "beloved"],
+        "key_entries": [
+            "dystopia", "first-person-narration", "euphemism",
+            "prolepsis-and-analepsis", "theme-vs-motif",
+            "allegory-vs-symbol",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "beowulf",
+        "title": "Beowulf — A Reader's Guide to the Old English Epic",
+        "h1": "Beowulf — themes, structure, and Anglo-Saxon poetic conventions",
+        "author": "Anonymous",
+        "year": "c. 700–1000 CE",
+        "meta_description": "A reader's guide to Beowulf — the Anglo-Saxon epic, kenning and caesura, the three monsters as structural pattern, the elegiac tone, comparison with the Odyssey.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p><em>Beowulf</em> is the longest surviving epic poem in Old
+English and the foundation of the Anglo-Saxon literary
+tradition. Composed by an anonymous poet sometime between the
+8th and 11th centuries CE, surviving in a single manuscript
+that was almost destroyed in a 1731 fire, the poem is at once
+a Christian elegy for a vanished pagan world, a heroic
+narrative of three monster-fights, and a meditation on
+mortality, kingship, and the cost of glory. The opening word
+— "Hwæt!" ("Listen!" or "So!") — has been translated dozens of
+ways; every translator's choice signals what they think the
+poem is doing.</p>
+
+<h2>The basic structure</h2>
+
+<p>The poem divides into three monster-fights:</p>
+
+<ol>
+  <li><strong>Beowulf vs. Grendel</strong> (lines 1–1250) —
+      the young Geatish warrior crosses to Denmark to help the
+      aged king Hrothgar, whose hall Heorot has been raided by
+      the monster Grendel for twelve years. Beowulf fights
+      Grendel unarmed and tears off his arm.</li>
+  <li><strong>Beowulf vs. Grendel's mother</strong> (lines
+      1251–1924) — Grendel's mother comes for revenge.
+      Beowulf descends into her mere — a journey into a kind
+      of underworld — and kills her with a giant sword found
+      in her hall.</li>
+  <li><strong>Beowulf vs. the dragon</strong> (lines 2200–end)
+      — fifty years later. Beowulf is now an old king of the
+      Geats. A dragon, woken by a thief stealing from its
+      hoard, threatens the kingdom. Beowulf, with his young
+      kinsman Wiglaf, kills the dragon — and dies of his
+      wounds.</li>
+</ol>
+
+<p>The three-fight structure is the poem's spine. The first
+two fights are Beowulf as a young hero; the third is Beowulf
+as an old king. The pattern is the poem's argument about a
+heroic life.</p>
+
+<h2>Anglo-Saxon poetic conventions</h2>
+
+<p>The poem uses a verse form with specific technical features:</p>
+
+<ul>
+  <li><strong>Alliterative verse.</strong> Each line has four
+      stressed syllables; alliteration on the stressed
+      syllables links the line's two halves. Modern English
+      translations approximate this with varying success.</li>
+  <li><strong>Heavy <a href="/glossary/caesura">caesura</a>.</strong>
+      A strong pause divides every line into two half-lines.
+      The pause is the verse's organising unit, not the
+      end-stop. Read aloud, the rhythm is one of pulsed
+      pairs.</li>
+  <li><strong>The kenning.</strong> A compound metaphorical
+      phrase substituted for a simple noun: "whale-road" for
+      the sea, "bone-house" for the body, "battle-light" for
+      a sword, "ring-giver" for a king. Kennings are the
+      poem's signature linguistic feature; they are dense,
+      condensed metaphors that make ordinary nouns strange.</li>
+  <li><strong>Variation.</strong> The same thing is named
+      multiple times in succession, each name slightly
+      different. "Beowulf, the strong man, kinsman of Hygelac,
+      mailed warrior, gold-friend of his people." The
+      variation is not redundancy; it is a way of approaching
+      the named thing from different angles.</li>
+  <li><strong>The formulaic epithet.</strong> Like Homer
+      (see <a href="/glossary/epithet">epithet</a>), the
+      <em>Beowulf</em> poet uses prefabricated phrases that
+      attach to characters — "hardy in war," "shepherd of his
+      people."</li>
+</ul>
+
+<h2>The elegiac tone</h2>
+
+<p>The poem's signature
+<a href="/glossary/mood-atmosphere">mood</a> is elegiac — a
+sustained sense that all the brightness it celebrates is
+already in the past. The Anglo-Saxon poetic vocabulary has a
+specific word for this — <em>wyrd</em>, often translated as
+fate but closer to "what happens" or "the way things go." The
+poem accepts mortality with a clarity that modern readers
+sometimes find bracing and sometimes find bleak. Bishop
+Hugh Magennis's translation captures it: "Fate goes ever as
+fate must."</p>
+
+<p>The poem's most elegiac sections are not the fights
+themselves but the digressions — the funeral of Scyld
+Scefing at the start, the lament of the Last Survivor whose
+people have all died, the elegiac meditation on Hrothgar's
+hall. These are the moments when the poem stops to register
+that everything it values is dying.</p>
+
+<h2>Pagan world, Christian frame</h2>
+
+<p>The poem's central interpretive crux is its religious
+texture. The narrative world is pagan — Beowulf and his
+companions belong to a heroic culture predating the conversion
+of England. But the surviving manuscript is the work of a
+Christian poet, and the narrator regularly intrudes with
+Christian commentary on the pagan world. Grendel is the
+"kin of Cain"; the deeds of the warriors are framed by an
+external Christian providence.</p>
+
+<p>How to read this tension is contested. J. R. R. Tolkien's
+famous 1936 lecture "Beowulf: The Monsters and the Critics"
+made the case that the Christian frame is not an awkward
+afterthought but a structural feature — the poem mourns a
+heroic world from a position outside it, and the mourning is
+the work the poem is doing.</p>
+
+<h2>Comparison with the <a href="/works/the-odyssey">Odyssey</a></h2>
+
+<p>Both poems are foundational epics of their traditions.
+Both are oral-formulaic (built from prefabricated phrases
+that fit the metre). Both use
+<a href="/glossary/epithet">epithets</a> and extended similes.
+Both have heroes who descend into a kind of underworld
+(Odysseus to the dead, Beowulf to Grendel's mere).</p>
+
+<p>Differences: the <em>Odyssey</em>'s hero returns; Beowulf
+dies at the poem's end. The <em>Odyssey</em> is a poem of
+nostos (homecoming); <em>Beowulf</em> is a poem of mortality.
+The Greek epic ends with the household restored; the
+Anglo-Saxon ends with the king's funeral pyre and the
+prediction of the kingdom's fall.</p>
+
+<h2>Translation matters</h2>
+
+<p>Reading <em>Beowulf</em> in English means reading it in
+translation, and the translation choice shapes the poem
+significantly. Seamus Heaney's 1999 verse translation is the
+most popular contemporary version — accessible, alliterative,
+modern in idiom but rhythmically faithful. Roy Liuzza's
+translation is closer to a scholarly literal. Maria Dahvana
+Headley's 2020 translation ("Bro!") makes the poem
+deliberately vernacular and provocative. Each is a different
+poem; the best practice is to read at least two.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Heroism and its costs.</strong> The poem
+      celebrates Beowulf's courage and also tracks its price.
+      Heroism is not free.</li>
+  <li><strong>Generations and inheritance.</strong> The poem
+      is full of digressions about ancestors, lost
+      generations, kings whose deeds the present is judged
+      against.</li>
+  <li><strong>The mead-hall as image of civilization.</strong>
+      Heorot stands for the social bond — kingship, gift-
+      giving, song, the company of warriors. Grendel attacks
+      Heorot specifically; the poem's deepest
+      <a href="/glossary/allegory-vs-symbol">symbol</a> is the
+      hall.</li>
+  <li><strong>Fame as the only afterlife.</strong> In the
+      pagan frame, what survives is what is remembered. The
+      poem itself is the act of remembering.</li>
+</ul>
+""",
+        "related_works": ["the-odyssey", "hamlet"],
+        "key_entries": [
+            "epithet", "caesura", "alliteration",
+            "allegory-vs-symbol", "mood-atmosphere", "theme-vs-motif",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-adventures-of-huckleberry-finn",
+        "title": "The Adventures of Huckleberry Finn — A Reader's Guide to Mark Twain's American Vernacular Novel",
+        "h1": "Huckleberry Finn — voice, the raft as moral space, and the long debate about race",
+        "author": "Mark Twain",
+        "year": "1884",
+        "meta_description": "A reader's guide to Mark Twain's The Adventures of Huckleberry Finn — the vernacular first-person voice, the raft on the Mississippi, Jim's relationship to Huck, the controversial ending, the racial slur debate.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Mark Twain's <em>The Adventures of Huckleberry Finn</em> is
+one of the most influential and most controversial American
+novels. Hemingway said in 1935: "All modern American literature
+comes from one book by Mark Twain called <em>Huckleberry
+Finn</em>. There was nothing before. There has been nothing as
+good since." The claim has been argued ever since. The novel
+inaugurated the American vernacular first-person voice as
+serious literary instrument, and it is also a novel whose
+treatment of race produces ongoing, legitimate critical
+disagreement.</p>
+
+<h2>The vernacular voice</h2>
+
+<p>The novel's formal innovation is Huck's voice — the first
+sustained
+<a href="/glossary/first-person-narration">first-person
+narration</a> in a major American novel told in a
+non-standard, regional, working-class vernacular. The opening
+sentence sets it: "You don't know about me, without you have
+read a book by the name of <em>The Adventures of Tom Sawyer</em>;
+but that ain't no matter."</p>
+
+<p>This was not how American novels were supposed to sound in
+1884. Twain's argument was that the vernacular could carry
+literary weight — that a thirteen-year-old's voice, with
+ungrammatical syntax and frontier idiom, was capable of moral
+sophistication, comic precision, and lyrical observation. The
+form has been imitated by almost every major American novelist
+since: Hemingway, Faulkner, Salinger, Hurston, Bellow, Toni
+Morrison, Cormac McCarthy. The vernacular voice is the central
+American novelistic resource, and Twain made it usable.</p>
+
+<h2>The raft as moral space</h2>
+
+<p>Almost every important moral moment of the novel happens on
+the raft — the small wooden platform on which Huck and the
+escaped slave Jim travel down the Mississippi. The raft is the
+novel's <a href="/glossary/allegory-vs-symbol">symbolic</a>
+space, the place outside the social order where Huck and Jim
+can be friends across the racial line their society absolutely
+forbids. When they step onto the shore — at any town, in any
+state — the social order reasserts itself, with violence.</p>
+
+<p>The raft does the same work that the wood does in
+<a href="/works/a-midsummer-nights-dream">Shakespeare's
+<em>Dream</em></a> or that the island does in <em>Lord of the
+Flies</em> — it is the space where the rules are suspended.
+The novel's deepest argument is that humane relationship
+across the racial line is possible — but only outside the
+society that prohibits it.</p>
+
+<h2>Huck's moral education</h2>
+
+<p>The novel's central moral arc is Huck's slow recognition that
+his pre-Civil-War Southern conscience — which tells him that
+helping Jim escape is the worst sin he could commit — is
+wrong. The famous moment in Chapter 31, when Huck tears up the
+letter he had written turning Jim in:</p>
+
+<blockquote>
+It was a close place. I took it up, and held it in my hand. I
+was a-trembling, because I'd got to decide, forever, betwixt
+two things, and I knowed it. I studied a minute, sort of
+holding my breath, and then says to myself: "All right, then,
+I'll go to hell" — and tore it up.
+</blockquote>
+
+<p>Huck believes, sincerely, that he is choosing damnation. The
+novel's
+<a href="/glossary/dramatic-irony">dramatic irony</a> — that
+the reader sees the choice as moral while Huck sees it as
+sinful — is the deepest formal device of the book. The reader
+is asked to feel both Huck's moral grandeur and his cultural
+ignorance simultaneously.</p>
+
+<h2>Jim as character</h2>
+
+<p>Jim is the novel's most difficult character. He is, at
+moments, the moral centre of the book — wiser than Huck, more
+loving than any white character, the only adult in the novel
+who consistently exercises mature judgment. He is also, at
+other moments, presented in language and patterns drawn from
+the minstrel-show tradition — given a stage dialect that
+exaggerates his speech, treated as the butt of jokes by Huck
+and Tom in the final chapters.</p>
+
+<p>This contradiction is the novel's central problem.
+Different readers, different decades, have weighted it
+differently. The most defensible contemporary reading: the
+novel succeeds and fails in its representation of Jim, and any
+honest reading must hold both judgments together.</p>
+
+<h2>The ending problem</h2>
+
+<p>The novel's final eight chapters — the "evasion" sequence, in
+which Tom Sawyer arrives and orchestrates an elaborate fake
+escape for Jim (who, unbeknownst to Tom, is already legally
+free) — has divided critics since Hemingway. Hemingway said
+the ending was "cheating" and that "the rest is just
+cheating." Many subsequent critics have agreed: the moral
+seriousness Huck has earned on the river is dissipated in
+slapstick.</p>
+
+<p>Defenders argue that the ending is doing structural work —
+showing that the social order Huck escaped on the river
+reasserts itself the moment he returns to society, that
+freedom on the raft was always provisional. The argument is
+unresolved.</p>
+
+<h2>The racial-slur debate</h2>
+
+<p>The novel contains the racial slur for African Americans
+more than 200 times. Various editors and publishers have
+periodically released versions with the word removed or
+replaced; this has been controversial. The most common
+position among contemporary teachers: the word should not be
+removed (its historical accuracy is part of the novel's
+critical force) but should be carefully framed and contextually
+discussed.</p>
+
+<p>The novel is no longer routinely taught in many American
+schools, partly because of the slur and partly because the
+classroom dynamic the slur creates is genuinely difficult.
+This is its own debate. It is also a reminder that the novel's
+legacy is contested in ways most American canonical novels
+are not.</p>
+
+<h2>The Mississippi as setting</h2>
+
+<p>The Mississippi is the novel's second protagonist. The
+river's movement, its currents, the way it carries the raft
+and forces decisions, the towns it passes — Twain wrote the
+river with the precision of a former steamboat pilot.
+American literature is full of rivers — Faulkner's Yoknapatawpha
+streams, Eliot's wasteland river — but Twain's Mississippi is
+the original.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Conscience vs. social conditioning.</strong>
+      Huck's "deformed conscience" (Twain's term) is the
+      novel's central moral subject.</li>
+  <li><strong>The con and the small town.</strong> The
+      Duke and the King — the two con men who join Huck and
+      Jim's raft — are Twain's portrait of the rural American
+      capacity for fraud. The novel is partly a sustained
+      catalogue of small-town American types.</li>
+  <li><strong>Freedom and its limits.</strong> Both Huck and
+      Jim are running from forms of unfreedom (Huck from his
+      abusive father, Jim from slavery). The novel asks what
+      freedom actually consists of.</li>
+  <li><strong>The American novel as picaresque.</strong> The
+      novel borrows from the
+      <a href="/glossary/picaresque-novel">picaresque</a>
+      tradition (a rogue traveling through a corrupt
+      society), and made the form a permanent option for
+      American fiction.</li>
+</ul>
+""",
+        "related_works": ["the-catcher-in-the-rye", "to-kill-a-mockingbird"],
+        "key_entries": [
+            "first-person-narration", "dramatic-irony",
+            "allegory-vs-symbol", "picaresque-novel",
+            "theme-vs-motif", "tone-vs-mood",
+        ],
+    },
 ]
 
 _BY_SLUG: dict[str, dict] = {w["slug"]: w for w in WORKS}
