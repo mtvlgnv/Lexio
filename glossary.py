@@ -10241,6 +10241,691 @@ writing.</p>
 """,
     },
 
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "exposition",
+        "term": "exposition",
+        "context": "narrative structure",
+        "title": "What \"Exposition\" Means in Literature — Setting the Stage Without Boring the Reader",
+        "meta_description": "Exposition is the part of a narrative that supplies background information — who the characters are, what the situation is, what has happened before the story starts. Here's how it works and how it gets done badly.",
+        "h1": "What \"exposition\" means in literature",
+        "updated": "2026-05-26",
+        "related": ["in-medias-res", "climax-and-denouement", "frame-narrative"],
+        "body_html": """
+<p><strong>Exposition</strong> is the part of a narrative that
+supplies background information — who the characters are, what
+the situation is, what has happened before the story begins,
+where and when it takes place. It is the literary equivalent of
+clearing one's throat before speaking. In Freytag's classical
+pyramid it is the first stage, preceding rising action, climax,
+falling action, and denouement.</p>
+
+<h2>What exposition has to deliver</h2>
+
+<p>Conventionally, exposition does at least four jobs:</p>
+
+<ul>
+  <li><strong>Setting.</strong> Where and when does the story
+      take place? London 1820, Mars 2147, an unnamed Eastern
+      European village in the 1930s.</li>
+  <li><strong>Characters.</strong> Who are the principal
+      figures, and what should the reader know about them
+      coming in?</li>
+  <li><strong>Backstory.</strong> What happened before the
+      story starts that the reader needs to know to understand
+      what is happening now?</li>
+  <li><strong>Stakes.</strong> What is at risk, what is being
+      pursued, what would constitute success or failure?</li>
+</ul>
+
+<p>Skilled writers deliver these without the reader noticing.
+Unskilled writers stop the story to deliver them in a chunk,
+and the reader feels the gear-shift.</p>
+
+<h2>The "exposition problem"</h2>
+
+<p>Exposition is the hardest narrative task because the reader
+arrives knowing nothing and the writer cannot start the
+interesting events until enough has been established. The
+recurring failure mode is the "info-dump": a paragraph or
+chapter in which the narrator (or, worse, a character) tells
+the reader everything they need to know.</p>
+
+<p>The classic info-dump in the wrong hands is the conversation
+between two characters who already know what they are
+discussing — written purely for the reader's benefit. ("As you
+know, John, ever since the war with the Drakons in 2087,
+our colony has been short of titanium.") No real conversation
+works this way; the prose immediately feels artificial.</p>
+
+<h2>Strategies for delivering exposition</h2>
+
+<p>The best writers use several techniques to avoid the
+info-dump:</p>
+
+<ul>
+  <li><strong><a href="/glossary/in-medias-res">In medias res</a>.</strong>
+      Open in the middle of the action, and supply backstory
+      gradually as it becomes relevant. The reader is engaged
+      before the explanation arrives.</li>
+  <li><strong>Dramatic exposition.</strong> Deliver background
+      through a scene that is itself dramatically interesting.
+      A trial scene that requires the lawyer to summarise the
+      case is exposition; a job interview that establishes the
+      character's history is exposition.</li>
+  <li><strong>The new arrival.</strong> A character who is new
+      to the situation can be told the things the reader needs
+      to know without artifice — they actually need the
+      information too.</li>
+  <li><strong>Frame narratives.</strong> A
+      <a href="/glossary/frame-narrative">frame narrative</a>
+      provides an external context that lets the inner story
+      start with less explanatory weight.</li>
+  <li><strong>Showing not telling.</strong> A photograph on a
+      character's desk does the work of two paragraphs of
+      character history.</li>
+  <li><strong>The unreliable / partial narrator.</strong> A
+      first-person narrator who doesn't yet understand their
+      situation can supply exposition gradually as they figure
+      things out.</li>
+</ul>
+
+<h2>Modernist resistance</h2>
+
+<p>The modernist novel was suspicious of conventional
+exposition. Joyce, Woolf, and Faulkner often plunged the reader
+into a consciousness without the usual orientation — names
+mentioned without introduction, places unspecified, the
+backstory withheld for hundreds of pages. The reader's
+disorientation became part of the reading experience. This is
+not a refusal of exposition but a redistribution of it;
+information arrives, but on a schedule designed to keep the
+reader off balance.</p>
+
+<h2>Television exposition</h2>
+
+<p>The dramatic problem of exposition is especially visible in
+television. Long-running shows have to remind newer viewers of
+events from previous seasons without losing the original
+audience's patience. The "previously on…" recap is the most
+direct solution; characters delivering "as you know" speeches
+are the worst; the best shows weave the necessary refreshers
+into scenes that have their own dramatic momentum.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When you can feel a writer working — when a passage seems
+to exist to teach you something rather than to do anything in
+itself — you are reading exposition that hasn't been
+sufficiently integrated. When you don't notice you are
+learning, the writer has done their job. Tracking the
+exposition consciously is a useful exercise in understanding
+narrative craft: how much you know at any moment, and how the
+writer arranged for you to know it.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "third-person-narration",
+        "term": "third-person narration",
+        "context": "narrative point of view",
+        "title": "What \"Third-Person Narration\" Means — Omniscient, Limited, and Free Indirect",
+        "meta_description": "Third-person narration tells the story from outside the characters using he/she/they. Includes omniscient (godlike) and limited (one character's perspective) modes, plus free indirect discourse.",
+        "h1": "What \"third-person narration\" means",
+        "updated": "2026-05-26",
+        "related": ["first-person-narration", "free-indirect-discourse", "unreliable-narrator"],
+        "body_html": """
+<p><strong>Third-person narration</strong> is the mode in which
+the narrator stands outside the story and refers to characters
+as "he," "she," or "they." The narrator is not a character in
+the events; they are an observer (sometimes godlike, sometimes
+deliberately limited). Third person is by far the most common
+narrative mode in published fiction, partly because it solves
+problems first-person can't and partly because it offers the
+broadest range of stylistic options.</p>
+
+<h2>The three main sub-types</h2>
+
+<p>Third-person narration is conventionally divided by what the
+narrator is allowed to know:</p>
+
+<ul>
+  <li><strong>Third-person omniscient.</strong> The narrator
+      knows everything — every character's interior, future
+      events, parts of the world no character has visited. The
+      narrator can comment, judge, and intervene. Tolstoy's
+      <em>War and Peace</em>, George Eliot's
+      <em>Middlemarch</em>, most nineteenth-century novels
+      generally.</li>
+  <li><strong>Third-person limited.</strong> The narrator stays
+      tightly bound to one character at a time, accessing only
+      that character's perceptions and thoughts. The character
+      may change (third-person limited can rotate between
+      characters chapter by chapter), but at any given moment
+      we are inside one consciousness. Henry James, much of
+      contemporary literary fiction.</li>
+  <li><strong>Third-person objective.</strong> The narrator
+      reports only what could be observed externally — speech,
+      action, appearance — without entering any character's
+      thoughts. Hemingway's "Hills Like White Elephants" is the
+      classic short example.</li>
+</ul>
+
+<h2>The omniscient narrator's range</h2>
+
+<p>The classical omniscient narrator can do things no other
+mode can:</p>
+
+<ul>
+  <li>Show simultaneous events in different places.</li>
+  <li>Compare two characters' inner lives directly.</li>
+  <li>Provide historical, social, or philosophical commentary.</li>
+  <li>Foreshadow with information no character has.</li>
+  <li>Pass moral judgment in the narrative voice.</li>
+</ul>
+
+<p>The cost is intimacy. Omniscient narration can feel
+philosophical, panoramic, or judgmental — but it has trouble
+producing the closeness to a single consciousness that
+first-person and limited-third do effortlessly. Mid-twentieth-
+century fiction largely abandoned omniscient narration for
+this reason; recent literary fiction has been returning to it.</p>
+
+<h2>Limited third-person and its near-miracle</h2>
+
+<p>Third-person limited — sometimes called "close third" — is
+the dominant mode of contemporary literary fiction. The narrator
+is grammatically outside the character but adheres so closely
+to their consciousness that the reader experiences the world
+through their perception. Joyce, Woolf, Mansfield, James, and
+their inheritors made this mode into one of the most precise
+instruments in fiction.</p>
+
+<p>The technique that makes close third work is
+<a href="/glossary/free-indirect-discourse"><strong>free
+indirect discourse</strong></a> — the merging of narrator's
+voice with character's thought, without quotation marks. Free
+indirect discourse is the technique that gives third-person
+limited its intimacy.</p>
+
+<h2>Third-person vs. <a href="/glossary/first-person-narration">first-person</a></h2>
+
+<p>The trade-offs:</p>
+
+<ul>
+  <li><strong>First-person</strong> wins on voice, intimacy,
+      reliability-as-drama (the unreliable narrator effect),
+      and the performance-of-self.</li>
+  <li><strong>Third-person omniscient</strong> wins on scope,
+      authority, philosophical range, comparative analysis of
+      characters.</li>
+  <li><strong>Third-person limited</strong> tries to combine
+      first-person's intimacy with third-person's flexibility,
+      and at its best, succeeds.</li>
+</ul>
+
+<p>The choice of mode is one of the writer's deepest decisions.
+A novel told in first person and the same novel told in close
+third are different novels.</p>
+
+<h2>The unreliable third-person</h2>
+
+<p>Most discussions of
+<a href="/glossary/unreliable-narrator">unreliable narration</a>
+focus on first person. But third-person limited can also be
+unreliable, in two ways: the focal character can be unreliable,
+and the narrator's voice can be subtly aligned with the
+character in ways the reader is meant to question. Henry
+James's <em>The Turn of the Screw</em> is the famous case —
+the governess's perceptions, given to us in close third, may
+or may not be reliable. The novel's whole interest is in the
+ambiguity.</p>
+
+<h2>Second person and other rarities</h2>
+
+<p>Just for completeness:</p>
+
+<ul>
+  <li><strong>Second person</strong> — "You walk into the
+      bar." Rare and usually conspicuous. Jay McInerney's
+      <em>Bright Lights, Big City</em>; Tom Robbins; choose-
+      your-own-adventure books.</li>
+  <li><strong>First-person plural</strong> — "We watched
+      her." Jeffrey Eugenides's <em>The Virgin Suicides</em>.</li>
+  <li><strong>Third-person plural</strong> — "They moved as
+      one." Almost always limited to specific scenes; a whole
+      novel in this mode is rare.</li>
+</ul>
+
+<h2>How to read it in context</h2>
+
+<p>When opening a novel, identify the point of view in the
+first paragraph. Then check: how strict is it? Does the
+narration move between characters? Are there moments when the
+narrator seems to know something the characters cannot? Does
+the prose ever shift into a character's voice mid-paragraph
+(free indirect discourse)? The texture of third-person
+narration is created by these decisions, and noticing them
+sharpens both reading and writing.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "conflict-types",
+        "term": "types of conflict",
+        "context": "narrative structure",
+        "title": "Types of Conflict in Literature — Man vs. Man, Self, Nature, Society, Fate",
+        "meta_description": "The classical types of literary conflict: man vs. man, man vs. self, man vs. nature, man vs. society, man vs. fate or supernatural. Here's what each one looks like, with examples.",
+        "h1": "Types of conflict in literature",
+        "updated": "2026-05-26",
+        "related": ["protagonist-and-antagonist", "climax-and-denouement", "foil-character"],
+        "body_html": """
+<p><strong>Conflict</strong> is the engine of narrative.
+Every story is, at some level, the story of a
+protagonist trying to do or get something and being opposed.
+The classical taxonomy of conflict — sometimes credited to
+Arthur Quiller-Couch, sometimes to high school textbooks of
+indeterminate origin — divides conflicts into five
+(occasionally six or seven) basic types. The categories are
+not mutually exclusive; most serious literature combines
+several.</p>
+
+<h2>1. Person vs. person</h2>
+
+<p>The most direct form: the protagonist is opposed by another
+individual character. Hamlet vs. Claudius. Sherlock Holmes vs.
+Moriarty. Beatrice vs. Benedick. Most plot-driven fiction —
+thrillers, detective stories, much of comedy — runs on this
+type of conflict.</p>
+
+<p>The trap with person-vs-person stories is moral
+simplification: making the antagonist evil enough that the
+protagonist's victory becomes morally easy. The most
+sophisticated person-vs-person stories give the antagonist
+real claims (Othello's Iago, Le Carré's Karla, Milton's Satan).</p>
+
+<h2>2. Person vs. self</h2>
+
+<p>The protagonist is divided against themselves. The conflict
+is internal — an addiction, a moral choice, a divided identity,
+a depression. Examples:</p>
+
+<ul>
+  <li>Hamlet's indecision and revenge.</li>
+  <li>Raskolnikov in <em>Crime and Punishment</em>.</li>
+  <li>Holden Caulfield in <em>The Catcher in the Rye</em>.</li>
+  <li>Conrad's Lord Jim and the question of cowardice.</li>
+</ul>
+
+<p>Modernist fiction is mostly person-vs-self. The interior
+turn of literary modernism — Joyce, Woolf, Faulkner — moved the
+main action from the external world to the inside of a
+consciousness.</p>
+
+<h2>3. Person vs. nature</h2>
+
+<p>The antagonist is a non-human, non-moral force —
+the sea, the mountain, the storm, the wilderness, an animal.
+The conflict is meaningful precisely because nature is
+indifferent. Examples:</p>
+
+<ul>
+  <li><a href="/works/the-old-man-and-the-sea"><em>The Old Man
+      and the Sea</em></a> — Santiago, the marlin, the
+      sharks.</li>
+  <li>Jack London's "To Build a Fire" — the cold.</li>
+  <li>Defoe's <em>Robinson Crusoe</em> — the island.</li>
+  <li>McCarthy's <em>The Road</em> — the post-apocalyptic
+      landscape.</li>
+</ul>
+
+<p>Person-vs-nature stories often double as
+person-vs-self stories: the external opponent's indifference
+makes the protagonist's interior crisis visible.</p>
+
+<h2>4. Person vs. society</h2>
+
+<p>The opponent is the social order — the institution, the
+state, the community, the dominant ideology. Examples:</p>
+
+<ul>
+  <li>Winston Smith in <a href="/works/1984"><em>1984</em></a>
+      — the Party.</li>
+  <li>John Proctor in <a href="/works/the-crucible"><em>The
+      Crucible</em></a> — the Salem authorities.</li>
+  <li>Hester Prynne in <a href="/works/the-scarlet-letter"><em>The
+      Scarlet Letter</em></a> — Puritan Boston.</li>
+  <li>Janie in <a href="/works/their-eyes-were-watching-god"><em>Their
+      Eyes Were Watching God</em></a> — both white and Black
+      respectability cultures.</li>
+</ul>
+
+<p>Person-vs-society stories are usually political in
+some form. Their protagonists often lose; the genre survives
+on its argument about what defeat by a corrupt system looks
+like.</p>
+
+<h2>5. Person vs. fate / supernatural / God</h2>
+
+<p>The opponent is a transcendent force — divine intention,
+fate, a prophecy, the curse on a family. Examples:</p>
+
+<ul>
+  <li>Oedipus in <em>Oedipus Rex</em> — the prophecy.</li>
+  <li><a href="/works/macbeth"><em>Macbeth</em></a> — the
+      witches' equivocating prophecy.</li>
+  <li>Job — God.</li>
+  <li>Frankenstein's monster — arguably the creature's
+      tragic logic.</li>
+</ul>
+
+<p>This category overlaps with person-vs-society in
+many cultures where the divine and the social are
+indistinguishable.</p>
+
+<h2>6 and 7: technology, the unknown</h2>
+
+<p>Modern taxonomies sometimes add:</p>
+
+<ul>
+  <li><strong>Person vs. technology</strong> — a relatively
+      modern category. <em>Frankenstein</em> is its first major
+      example; cyberpunk and dystopian fiction continue it.</li>
+  <li><strong>Person vs. the unknown</strong> — cosmic horror,
+      Lovecraft, much existentialist fiction. The opponent
+      cannot be fully named or understood.</li>
+</ul>
+
+<p>These often function as variants of nature or fate.</p>
+
+<h2>Combinations</h2>
+
+<p>Almost no serious novel uses only one type of conflict.
+<em>Hamlet</em> is person-vs-person (Claudius),
+person-vs-self (indecision), and person-vs-fate (the ghost).
+<em>1984</em> is person-vs-society and person-vs-self
+(O'Brien's interrogation produces both at once). The
+classification is useful not as a sorting exercise but as a
+way of seeing which kinds of opposition are layered into a
+work.</p>
+
+<h2>Internal vs. external</h2>
+
+<p>The deepest distinction is between internal conflict
+(person-vs-self) and external conflict (everything else). The
+modern novel's signature move has been to make external
+conflicts also do internal work — the protagonist's external
+opponent reveals something about the protagonist's interior. A
+story in which the external conflict is fully external — a
+chase, a duel, a war — feels less "literary" to contemporary
+taste; the internal dimension is what serious modern reviewers
+look for.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When tracking a narrative, ask: what is the protagonist
+opposed by, and at how many levels? The richest stories
+combine three or four types. A book that uses only one is
+either deliberately stripped-down (Hemingway) or thin.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "antithesis",
+        "term": "antithesis",
+        "context": "rhetoric",
+        "title": "What \"Antithesis\" Means in Literature — Balanced Opposites for Argumentative Force",
+        "meta_description": "Antithesis is the rhetorical figure that places two contrasting ideas in balanced, parallel grammatical structure. \"It was the best of times, it was the worst of times.\" Here's how it works.",
+        "h1": "What \"antithesis\" means in literature",
+        "updated": "2026-05-26",
+        "related": ["paradox-oxymoron", "juxtaposition", "chiasmus"],
+        "body_html": """
+<p><strong>Antithesis</strong> is the rhetorical figure that
+places two contrasting ideas in a balanced, parallel
+grammatical structure. From the Greek <em>antithesis</em>,
+"opposition" or "setting against." The figure is one of the
+most powerful tools in persuasive writing because it lets a
+speaker compress an argument into a memorable, rhythmically
+satisfying form.</p>
+
+<h2>Classic examples</h2>
+
+<ul>
+  <li><strong>Dickens</strong>, opening <em>A Tale of Two
+      Cities</em>: "It was the best of times, it was the worst
+      of times, it was the age of wisdom, it was the age of
+      foolishness…" Five consecutive antitheses in twenty
+      words.</li>
+  <li><strong>Neil Armstrong</strong>: "That's one small step
+      for [a] man, one giant leap for mankind." The whole
+      sentence is engineered antithesis — small/giant,
+      individual/species — built to be quotable.</li>
+  <li><strong>Patrick Henry</strong>: "Give me liberty, or give
+      me death."</li>
+  <li><strong>Pope</strong>, in <em>An Essay on Criticism</em>:
+      "To err is human, to forgive divine."</li>
+  <li><strong>John F. Kennedy</strong>: "Ask not what your
+      country can do for you — ask what you can do for your
+      country."</li>
+</ul>
+
+<p>Each pairs opposites in parallel grammar. The opposition
+plus the parallelism is what makes the figure recognisable.</p>
+
+<h2>Why antithesis is so powerful</h2>
+
+<p>Three reasons:</p>
+
+<ol>
+  <li><strong>Compression.</strong> Antithesis compresses an
+      argument into a single sentence. "Ask not what your
+      country can do for you" alone is a banal observation;
+      the antithesis turns it into a moral demand.</li>
+  <li><strong>Memorability.</strong> The balanced structure is
+      easy to remember. Politicians and preachers have used
+      antithesis for thousands of years for exactly this
+      reason.</li>
+  <li><strong>Implied symmetry.</strong> By presenting two
+      ideas in identical grammatical form, antithesis subtly
+      claims that the two ideas are commensurate — they belong
+      in the same conceptual frame. This is sometimes the
+      speaker's deepest move: forcing apparently incompatible
+      ideas into the same rhetorical shape.</li>
+</ol>
+
+<h2>Antithesis vs. <a href="/glossary/paradox-oxymoron">paradox</a>
+vs. <a href="/glossary/juxtaposition">juxtaposition</a></h2>
+
+<p>Three closely related figures:</p>
+
+<ul>
+  <li><strong>Antithesis</strong> — balanced opposites in
+      parallel grammar. The opposition is asserted, not
+      reconciled.</li>
+  <li><strong>Paradox</strong> — a statement that contradicts
+      itself but reveals a deeper truth. "Less is more."</li>
+  <li><strong>Juxtaposition</strong> — any placing of
+      contrasting things side by side, without the requirement
+      of parallel grammar.</li>
+  <li><strong>Oxymoron</strong> — a compressed paradox in two
+      adjacent words. "Bittersweet," "deafening silence."</li>
+</ul>
+
+<p>An antithesis can also be a paradox; a paradox is rarely a
+clean antithesis. The categories overlap.</p>
+
+<h2>Antithesis vs. <a href="/glossary/chiasmus">chiasmus</a></h2>
+
+<p>A related figure: chiasmus uses inverted parallel structure
+(ABBA) where antithesis usually uses straight parallel
+structure (ABAB). "Ask not what your country can do for you;
+ask what you can do for your country" is both antithetical and
+chiastic. The chiasmus is the X-shape: the antithesis is the
+opposing meanings. Many of the most quoted antitheses are also
+chiastic, because the X-shape adds memorability to the
+opposition.</p>
+
+<h2>Antithesis in dialogue</h2>
+
+<p>Antithesis is the favoured figure of characters who think in
+balanced oppositions — politicians, lawyers, preachers,
+moralists. When a character speaks in antitheses ("In peace
+prepare for war; in war, prepare for peace"), the writer is
+giving them a certain kind of authority and a certain kind of
+limitation. Antithesis sounds wise, and it can also conceal
+that the speaker hasn't actually thought past the rhetorical
+shape.</p>
+
+<h2>The risks</h2>
+
+<p>Used badly, antithesis becomes sloganeering. A series of
+antitheses can give a speech rhythm without giving it content.
+The figure is so memorable that a writer can produce it
+mechanically, and audiences will applaud — even when the
+underlying ideas don't quite hold. Suspicious of an unusually
+quotable politician, look at whether their content survives
+the rhetorical pattern being removed.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a sentence reads with a striking balance — when two
+clauses seem to mirror each other in grammar but oppose each
+other in meaning — you are reading antithesis. The figure is
+usually the writer's argument compressed into a recognisable
+shape. Ask whether the argument can survive being put into
+ordinary prose. The best antitheses survive; the worst depend
+entirely on the form.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "rhetorical-question",
+        "term": "rhetorical question",
+        "context": "rhetoric",
+        "title": "What \"Rhetorical Question\" Means — A Question That Doesn't Want an Answer",
+        "meta_description": "A rhetorical question is asked for effect, not for an answer — to make a point, persuade, or invite reflection. Here's how it works, from Cicero to modern political speech.",
+        "h1": "What \"rhetorical question\" means",
+        "updated": "2026-05-26",
+        "related": ["antithesis", "paradox-oxymoron", "hyperbole"],
+        "body_html": """
+<p>A <strong>rhetorical question</strong> is a question asked
+for effect rather than for an answer. The speaker is not
+seeking information; they are using the form of a question to
+make a point, persuade an audience, register an emotion, or
+invite reflection. The expected answer (when there is one) is
+either obvious, already known to the audience, or pointedly
+withheld.</p>
+
+<h2>The four main kinds</h2>
+
+<p>Rhetorical questions perform several different jobs:</p>
+
+<ul>
+  <li><strong>Persuasive</strong> — the answer is obvious and
+      the speaker wants you to confirm it silently to yourself.
+      "Have we not given enough already?"</li>
+  <li><strong>Indignant / sarcastic</strong> — the question
+      expresses outrage at the implied wrongness of the
+      situation. "Is this what we fought for?"</li>
+  <li><strong>Reflective / meditative</strong> — the question
+      invites the audience to think alongside the speaker
+      without expecting resolution. "What is the value of a
+      single life?"</li>
+  <li><strong>Hypothetical / framing</strong> — the question
+      sets up the speaker's next sentence. "What is
+      democracy, really? It is…"</li>
+</ul>
+
+<h2>Classic examples</h2>
+
+<ul>
+  <li><strong>Shakespeare</strong>, <em>The Merchant of
+      Venice</em>: "Hath not a Jew eyes? Hath not a Jew hands,
+      organs, dimensions, senses, affections, passions?" The
+      cascade of rhetorical questions is Shylock's argument
+      that he is a person.</li>
+  <li><strong>Jesus</strong>, in the Sermon on the Mount: "Is
+      not life more than food, and the body more than
+      clothing?" The Gospels rely heavily on rhetorical
+      questioning as a teaching mode.</li>
+  <li><strong>Sojourner Truth</strong>, "Ain't I a Woman?"
+      (1851): the entire speech is structured around the
+      rhetorical question.</li>
+  <li><strong>Robert Browning</strong>, "Andrea del Sarto":
+      "Ah, but a man's reach should exceed his grasp, / Or
+      what's a heaven for?"</li>
+</ul>
+
+<h2>Why writers use it</h2>
+
+<p>Three reasons:</p>
+
+<ol>
+  <li><strong>Audience involvement.</strong> A question forces
+      the audience into mental participation. Even when the
+      answer is obvious, the audience has to internally answer
+      it. The rhetorical question is a way of recruiting the
+      audience's thinking.</li>
+  <li><strong>Compression.</strong> A rhetorical question can
+      make an argument that would otherwise require several
+      sentences. "Why should we trust a man who has already
+      lied to us twice?" is a complete piece of reasoning.</li>
+  <li><strong>Emotional register.</strong> Statements feel
+      neutral; questions feel personal. A speaker asking
+      rhetorical questions signals investment in a way
+      declarative statements often cannot.</li>
+</ol>
+
+<h2>Erotema and other Greek terms</h2>
+
+<p>Classical rhetoric had a precise vocabulary for rhetorical
+questions:</p>
+
+<ul>
+  <li><strong>Erotema</strong> — the generic term for
+      rhetorical question.</li>
+  <li><strong>Aporia</strong> — a rhetorical question that
+      expresses doubt or uncertainty. "What shall I do? Where
+      shall I turn?"</li>
+  <li><strong>Anacoenosis</strong> — a rhetorical question
+      that invites the audience to share in the speaker's
+      judgment. "What would you have done in my place?"</li>
+  <li><strong>Hypophora</strong> — a rhetorical question
+      followed immediately by the speaker's own answer.
+      "What is the value of literature? It is…"</li>
+</ul>
+
+<h2>The risks</h2>
+
+<p>Two failure modes:</p>
+
+<ul>
+  <li><strong>The unanswered or wrongly-answered
+      question.</strong> A rhetorical question whose answer
+      is not as obvious as the speaker assumed leaves the
+      audience either confused or unconvinced.</li>
+  <li><strong>The overused form.</strong> A speech with too
+      many rhetorical questions becomes hectoring. The
+      audience starts answering them silently in the
+      opposite direction the speaker intends.</li>
+</ul>
+
+<h2>How to read it in context</h2>
+
+<p>When a passage poses a question that no character will
+literally answer, you are reading a rhetorical question. Ask:
+what answer does the speaker assume? What happens if you supply
+a different answer? The rhetorical question is the figure most
+dependent on the audience agreeing with the speaker's premise.
+Disagreeing with the premise is a fast way to find what the
+speaker was quietly trying to take for granted.</p>
+""",
+    },
+
 
 ]
 

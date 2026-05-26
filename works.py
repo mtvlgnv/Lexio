@@ -3369,6 +3369,792 @@ not stay buried.</p>
             "gothic-fiction", "theme-vs-motif", "foil-character",
         ],
     },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "jane-eyre",
+        "title": "Jane Eyre — A Reader's Guide to Charlotte Brontë's First-Person Gothic",
+        "h1": "Jane Eyre — voice, Gothic conventions, and the female bildungsroman",
+        "author": "Charlotte Brontë",
+        "year": "1847",
+        "meta_description": "A reader's guide to Charlotte Brontë's Jane Eyre — the first-person voice, Gothic conventions, Bertha Mason and the colonial unconscious, Jane as bildungsroman heroine.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Charlotte Brontë's <em>Jane Eyre</em> is the foundational
+female bildungsroman in English. Published the same year as her
+sister Emily's <em>Wuthering Heights</em> (1847), the novel
+inaugurated several enduring forms — the first-person female
+narrator with a distinct moral voice, the Gothic mansion as
+psychological landscape, the small heroine whose interiority is
+the novel's argument. Generations of subsequent fiction owe more
+to <em>Jane Eyre</em> than to almost any other Victorian novel.</p>
+
+<h2>The first-person voice</h2>
+
+<p>The novel's signature achievement is its
+<a href="/glossary/first-person-narration">first-person
+narration</a>. Jane addresses the reader directly ("Reader, I
+married him"), interrupts herself, justifies her choices,
+reveals her doubts. The voice is at once confidential and
+self-controlled. It is the voice of a woman who has been told
+all her life she has no right to speak, and who speaks anyway.</p>
+
+<p>Brontë's structural innovation was making this voice carry
+an entire novel. Before <em>Jane Eyre</em>, women in fiction
+were usually objects of male-narrated interest; here, a woman
+holds the narrative and the moral authority for five hundred
+pages. The novel's influence is partly the influence of that
+formal choice.</p>
+
+<h2>The bildungsroman structure</h2>
+
+<p>The novel is built as a five-stage
+<a href="/glossary/bildungsroman-genre">bildungsroman</a>,
+each stage set in a different location:</p>
+
+<ol>
+  <li><strong>Gateshead</strong> — Jane's childhood with the
+      Reeds, her cruel cousin John, the red-room episode. The
+      novel's first Gothic image: a small girl locked in a
+      haunted room.</li>
+  <li><strong>Lowood School</strong> — Jane's brutal education
+      under Mr. Brocklehurst, the friendship with Helen Burns,
+      the typhus outbreak that establishes the institution's
+      hypocrisy.</li>
+  <li><strong>Thornfield</strong> — Jane as governess to
+      Rochester's ward; the novel's central romantic and
+      Gothic drama; Bertha Mason in the attic; the aborted
+      wedding.</li>
+  <li><strong>Moor House</strong> — Jane in flight, sheltered
+      by St. John Rivers and his sisters; the inheritance
+      revelation; St. John's marriage proposal.</li>
+  <li><strong>Ferndean</strong> — Jane's return to a blinded,
+      humbled Rochester; the marriage that closes the novel.</li>
+</ol>
+
+<p>Each stage strips away a layer of dependency or false
+authority. The bildungsroman's classical pattern — formation
+through trial — is followed precisely.</p>
+
+<h2>The Gothic in Jane Eyre</h2>
+
+<p>The novel borrows the
+<a href="/glossary/gothic-fiction">Gothic</a> conventions —
+the imposing house with a hidden room, the laughter in the
+night, the madwoman in the attic, the storm at the moment of
+emotional crisis — but transforms them. Where Gothic novels
+usually treat the supernatural and the female protagonist's
+fear as their primary horror, Brontë makes the Gothic
+psychological. The threats in Thornfield are real, but Jane's
+fear is anatomized in detail; we see her thinking through it,
+not just feeling it.</p>
+
+<h2>Bertha Mason: the long debate</h2>
+
+<p>Bertha Mason, Rochester's first wife confined in the
+Thornfield attic, has been the subject of one of the longest
+running arguments in literary criticism. Different readings:</p>
+
+<ul>
+  <li><strong>Madwoman in the attic</strong> — Gilbert and
+      Gubar's famous 1979 reading saw Bertha as Jane's
+      <em>doppelgänger</em>, expressing the rage Jane cannot
+      voice. Bertha burns the marriage bed; Jane wants to.</li>
+  <li><strong>Colonial unconscious</strong> — Jean Rhys's
+      novel <em>Wide Sargasso Sea</em> (1966) retells the
+      story from Bertha's perspective as a Creole woman from
+      Jamaica. Rhys's reading: Bertha is the colonial figure
+      the English novel cannot represent except as horror.</li>
+  <li><strong>Plot device</strong> — older readings simply
+      took Bertha as the obstacle to Jane's happiness, narrated
+      in the conventions of the period's racism and
+      psychopathologization.</li>
+</ul>
+
+<p>The novel itself is uncomfortable with Bertha — the
+descriptions of her use racialized and dehumanizing language
+that modern readers can't ignore. Reading the novel honestly
+means holding both its formal achievement and its colonial
+investments together.</p>
+
+<h2>Rochester as <a href="/glossary/antihero">Byronic hero</a></h2>
+
+<p>Rochester is the Byronic hero in late form: brooding,
+secretive, scarred by a past he won't discuss, contemptuous of
+convention, possessed of a wild charisma. Brontë's modification:
+she puts him through real consequences. He cannot marry Jane
+while Bertha lives; his deception, when revealed, costs him her;
+the fire in which he tries to save Bertha blinds and maims him.
+By the novel's end, he is humbled in ways most Byronic heroes
+are not. The marriage that closes the novel is, in Jane's
+words, between equals — because Rochester has had his power
+literally taken from him.</p>
+
+<h2>Religion and the rejection of St. John Rivers</h2>
+
+<p>St. John Rivers, Jane's cousin and missionary suitor, is the
+novel's representative of self-denying Protestant religion. His
+proposal is not romantic; he wants Jane as a missionary
+helpmeet, useful for her competence rather than loved for
+herself. Jane's refusal is one of the novel's quiet feminist
+moments. "If I were to marry you, you would kill me. You are
+killing me now." The line refuses the Victorian assumption that
+a woman should welcome any reasonable marriage offer; Jane
+demands something more.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Independence as moral foundation.</strong> Jane
+      refuses to be Rochester's mistress, refuses St. John's
+      marriage of convenience, returns to Rochester only when
+      she is independently wealthy. The novel's argument is
+      that love is only possible between equals — and that
+      equality cannot be claimed; it must be earned.</li>
+  <li><strong>Voice and being heard.</strong> Almost every
+      stage of Jane's life is about her right to speak. The
+      novel ends with her marrying a man who has been blinded
+      and so must listen.</li>
+  <li><strong>The body and the soul.</strong> Brontë was a
+      clergyman's daughter, and the novel's religious
+      framework is serious. Jane's choices are repeatedly
+      framed in terms of what her soul will survive.</li>
+  <li><strong>Class and confined possibility.</strong> Jane is
+      a governess — a marginal class position, neither servant
+      nor family. The novel's deepest social work is its
+      sympathy for this class of women.</li>
+</ul>
+""",
+        "related_works": ["wuthering-heights", "frankenstein"],
+        "key_entries": [
+            "first-person-narration", "bildungsroman-genre",
+            "gothic-fiction", "antihero", "theme-vs-motif",
+            "foil-character",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "fahrenheit-451",
+        "title": "Fahrenheit 451 — A Reader's Guide to Ray Bradbury's Anti-Book Dystopia",
+        "h1": "Fahrenheit 451 — themes, the book as symbol, Bradbury's prose-poetry",
+        "author": "Ray Bradbury",
+        "year": "1953",
+        "meta_description": "A reader's guide to Ray Bradbury's Fahrenheit 451 — the book-burning dystopia, the title temperature, Montag's awakening, the parlor walls as proto-internet, Bradbury's stylistic intensity.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Ray Bradbury's <em>Fahrenheit 451</em> is a short
+<a href="/glossary/dystopia"><strong>dystopia</strong></a> —
+under 50,000 words — that has accumulated decades of
+prophetic-seeming readings about screens, censorship, and the
+slow death of attention. The novel sits alongside
+<a href="/works/1984"><em>1984</em></a> and
+<a href="/works/brave-new-world"><em>Brave New World</em></a>
+as one of the three canonical mid-century anti-utopias, and it
+has a different argument from either.</p>
+
+<h2>The title</h2>
+
+<p>451 degrees Fahrenheit is, Bradbury claimed, the temperature
+at which paper auto-ignites. (The actual figure is closer to
+450°F, which Bradbury treated as close enough.) The title is
+literal: in this society, "firemen" set fires rather than
+extinguishing them. Their job is to burn books, which are
+illegal. The premise turns the most established public-good
+profession into the regime's enforcement arm.</p>
+
+<h2>The dystopian mechanism</h2>
+
+<p>Bradbury's dystopia is different from Orwell's and Huxley's.
+The state has not banned books primarily through political
+ideology. It has banned them because the population, over
+decades, stopped wanting them. The pace of consumer life
+accelerated; attention shortened; books — which require
+sustained attention and produce uncomfortable thoughts —
+became socially obstructive. The state's role was largely to
+ratify a popular preference.</p>
+
+<p>This is the novel's most pointed argument: dystopia need not
+be imposed. It can be the cumulative result of choices nobody
+quite remembers making. Beatty, the fire-chief, articulates the
+position clearly in his speech to Montag: "It didn't come from
+the Government down. There was no dictum, no declaration, no
+censorship, to start with, no!"</p>
+
+<h2>The parlor walls</h2>
+
+<p>Bradbury's prophetic image is the "parlor wall" — wall-sized
+screens broadcasting interactive entertainment. Citizens spend
+their days surrounded by what they call their "family" — the
+characters in the screen shows. Mildred, Montag's wife, asks
+him to install a fourth wall so the parlor can be "all family."
+The "family" doesn't know her name. The image, written in 1953,
+has been read as a forecast of television, then of social media,
+then of streaming, depending on the decade. Each generation
+recognises its own technology in the parlor walls.</p>
+
+<h2>Books as <a href="/glossary/allegory-vs-symbol">symbol</a></h2>
+
+<p>Books in the novel are not just books. They are the symbol
+for sustained attention, for difficulty, for the inheritance of
+human thought, for the kind of citizen the dystopia cannot
+produce. When the old woman at the start of the novel chooses
+to burn with her books rather than leave, the gesture is the
+novel's central moral image. Bradbury's argument: a society
+that no longer values difficult reading will eventually become
+a society that has to burn the books to enforce the
+not-reading.</p>
+
+<h2>Montag's awakening</h2>
+
+<p>Guy Montag's arc is a classical
+<a href="/glossary/bildungsroman-genre">bildungsroman</a>
+of late-onset awakening:</p>
+
+<ol>
+  <li>Montag in conformity, comfortable in his work.</li>
+  <li>Encounter with Clarisse, the strange neighbour who asks
+      the question "Are you happy?"</li>
+  <li>Mildred's overdose and revival — the novel's first sign
+      that the comfort is concealing a population already
+      half-dead.</li>
+  <li>The book-burning of the old woman, who chooses death over
+      surrender of the books.</li>
+  <li>Montag's secret hoarding of books, contact with Faber,
+      eventual confrontation with Beatty.</li>
+  <li>His flight from the city, the encounter with the
+      "book people" living in the woods — each of whom has
+      memorised an entire book to preserve it.</li>
+  <li>The destruction of the city by nuclear war.</li>
+</ol>
+
+<p>The arc moves from comfortable participation to
+expensive resistance. The novel ends with the book people
+walking back toward the destroyed city to rebuild it. Bradbury
+declined to make the ending either triumphant or hopeless; it is
+deliberately open.</p>
+
+<h2>Bradbury's prose</h2>
+
+<p>The novel's prose is more stylized than either Orwell or
+Huxley. Bradbury was, by training, a short-story writer and a
+poet; sentences in <em>Fahrenheit 451</em> are dense with
+<a href="/glossary/imagery">imagery</a>,
+<a href="/glossary/personification">personification</a>, and
+sound-patterning. The opening line — "It was a pleasure to
+burn" — is a six-word
+<a href="/glossary/paradox-oxymoron">paradox</a> doing
+deceptively much work. Reading the novel for its prose is
+worth the time; Bradbury wrote dystopia as if it were poetry.</p>
+
+<h2>The book people</h2>
+
+<p>The novel's most haunting invention is the community of
+exiles in the forest, each of whom has memorised an entire
+book. One man is the Book of Ecclesiastes; another is Plato's
+<em>Republic</em>; another is Marcus Aurelius. They have given
+up the books themselves to keep them alive. The image is the
+novel's deepest argument about cultural preservation: that
+when institutions fail, transmission becomes a body-by-body
+project, and that the value of the books was always in their
+being held in minds, not on shelves.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Attention as endangered resource.</strong> The
+      novel was prophetic about screens, but its deeper claim
+      is about the kind of mental life screens displace. The
+      argument is about reading, not television specifically.</li>
+  <li><strong>Conformity as self-imposed.</strong> The state
+      enforces; the population already wants what the state
+      enforces. The novel's pessimism is partly about how
+      little force is needed.</li>
+  <li><strong>The role of war.</strong> The bombs the novel
+      ends with arrive almost incidentally — the regime has not
+      noticed they are coming. The dystopia is too distracted
+      to defend itself.</li>
+  <li><strong>Memory as resistance.</strong> Memorizing the
+      book is the form resistance takes when institutions fail.
+      Bradbury's small, durable hope.</li>
+</ul>
+""",
+        "related_works": ["1984", "brave-new-world", "animal-farm"],
+        "key_entries": [
+            "dystopia", "bildungsroman-genre", "allegory-vs-symbol",
+            "satire-vs-parody", "imagery", "paradox-oxymoron",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "their-eyes-were-watching-god",
+        "title": "Their Eyes Were Watching God — A Reader's Guide to Zora Neale Hurston's Novel of Voice",
+        "h1": "Their Eyes Were Watching God — voice, dialect, and Janie's coming into speech",
+        "author": "Zora Neale Hurston",
+        "year": "1937",
+        "meta_description": "A reader's guide to Zora Neale Hurston's Their Eyes Were Watching God — the doubled narrative voice, African American Vernacular English, Janie's three marriages, the pear tree.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Zora Neale Hurston's <em>Their Eyes Were Watching God</em> is
+the masterpiece of the Harlem Renaissance's most formally
+ambitious novelist. It is a small novel — fewer than 200 pages —
+that does several things no novel before it had done: it uses
+African American Vernacular English (AAVE) as serious literary
+medium throughout, it tells a Black woman's coming-into-self
+story in a register that refuses both white expectation and
+respectability politics, and it makes the act of speaking the
+novel's central subject. To read it well is to read it for the
+voice.</p>
+
+<h2>The doubled narrative voice</h2>
+
+<p>The novel is told in two voices interlaced. A formal,
+literary, third-person narrator opens and frames the book:</p>
+
+<blockquote>
+Ships at a distance have every man's wish on board. For some
+they come in with the tide. For others they sail forever on the
+horizon, never out of sight, never landing, until the Watcher
+turns his eyes away in resignation…
+</blockquote>
+
+<p>This narrator's prose is high-literary and conscious of its
+tradition. But once Janie begins to tell her own story to her
+friend Pheoby, the narration moves into a register closer to
+AAVE — though still using the third-person framing. The novel
+shifts between the two voices without comment. Hurston's
+argument is structural: there is no contradiction between
+literary command and Black vernacular; the novel can move
+between them as freely as a person actually does.</p>
+
+<h2>African American Vernacular English as literary medium</h2>
+
+<p>Most pre-Hurston Black characters in American fiction had
+spoken dialect (often clumsily transcribed by white writers),
+but the dialect was used as marker — to signal class, region,
+or race — not as full literary instrument. Hurston, trained as
+an anthropologist, did fieldwork in Florida and the Caribbean
+in the 1920s and 30s and brought back a fully developed sense
+of AAVE as a complete language with its own grammar, idiom,
+poetic resources, and registers. In <em>Their Eyes Were
+Watching God</em>, AAVE is the language of the deepest emotion
+the novel reaches. The famous closing line — "She pulled in
+her horizon like a great fish-net… so much of life in its
+meshes" — is in the literary register; many of the novel's
+most insightful moments are in the vernacular.</p>
+
+<h2>Janie's three marriages</h2>
+
+<p>The novel's plot is structured around Janie's three
+marriages, each of which advances her self-understanding:</p>
+
+<ul>
+  <li><strong>Logan Killicks</strong> — the older, secure
+      farmer her grandmother arranges. Janie marries him for
+      practical reasons; he treats her as a labourer. She
+      leaves.</li>
+  <li><strong>Joe ("Jody") Starks</strong> — the ambitious,
+      eloquent entrepreneur who takes her to the all-Black town
+      of Eatonville and becomes mayor. He confines her to the
+      back of his store and silences her in public. The
+      marriage lasts seventeen years; the novel's middle
+      section is a study in slow domestic erasure.</li>
+  <li><strong>Tea Cake (Vergible Woods)</strong> — younger,
+      poorer, charismatic, dangerous. He treats her as an equal
+      in a way the previous men did not. He also (the novel
+      makes clear) hits her once, jealously. He dies of rabies
+      after saving her from a rabid dog.</li>
+</ul>
+
+<p>The novel does not romanticise Tea Cake. He is the love of
+Janie's life and he is also, briefly, a man who hits his wife.
+Hurston refuses to soften the contradiction. The marriage is
+the truest of the three because Janie has learned to choose,
+not because Tea Cake is morally pure.</p>
+
+<h2>The pear tree as <a href="/glossary/allegory-vs-symbol">symbol</a></h2>
+
+<p>The novel's central image — Janie under the blooming pear
+tree in her grandmother's yard, watching a bee work the
+blossoms — is the novel's symbol for the fully integrated life
+of body and spirit she spends the rest of the book seeking. The
+image returns at intervals; each return measures how far Janie
+has moved toward or away from it. Joe Starks's marriage is the
+distance from the pear tree; Tea Cake's marriage is closer to
+it; the closing solitude is where she has finally arrived at
+something the tree promised.</p>
+
+<h2>The hurricane</h2>
+
+<p>The hurricane sequence — Janie and Tea Cake in the
+Everglades when the storm hits — is one of the great set-pieces
+of American fiction. The chapter's title sentence ("They seemed
+to be staring at the dark, but their eyes were watching God") is
+the novel's title and its theological centre. In the storm,
+the question of who is watching whom is the only question that
+matters. Hurston is making a specific religious argument: in
+extremity, the watchful relationship between human and God is
+the relationship that survives.</p>
+
+<h2>The frame narrative</h2>
+
+<p>The novel opens with Janie returning to Eatonville after
+Tea Cake's death and ends with her finishing the story she has
+told her friend Pheoby. The whole novel is, in this sense, a
+single conversation between two women on a porch at sunset.
+The frame is doing political work: the novel insists that the
+story of Janie's life is the kind of story that gets told
+between Black women, in private, in vernacular — and asks the
+reader to listen in.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Voice as freedom.</strong> The novel tracks
+      Janie's recovery of speech — her right to talk back,
+      to tell her own story, to be heard.</li>
+  <li><strong>The risks of black communal respectability.</strong>
+      Hurston is willing to depict Black community as
+      surveilling and judgmental in ways more politically
+      cautious novelists would not. Eatonville's gossip is one
+      of Janie's antagonists.</li>
+  <li><strong>Land, work, and the Everglades.</strong> The
+      novel's geographical movement from white-owned land
+      through the all-Black town to the muck of the
+      Everglades is the novel's map of where freedom lives.</li>
+  <li><strong>The relationship to God.</strong> The title's
+      ambiguity (their eyes were watching God, or God was
+      watching them) is the novel's deepest theological note.</li>
+</ul>
+""",
+        "related_works": ["beloved", "to-kill-a-mockingbird"],
+        "key_entries": [
+            "first-person-narration", "free-indirect-discourse",
+            "allegory-vs-symbol", "theme-vs-motif", "bildungsroman-genre",
+            "tone-vs-mood",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-old-man-and-the-sea",
+        "title": "The Old Man and the Sea — A Reader's Guide to Hemingway's Late Parable",
+        "h1": "The Old Man and the Sea — minimalism, iceberg theory, and the marlin as symbol",
+        "author": "Ernest Hemingway",
+        "year": "1952",
+        "meta_description": "A reader's guide to Ernest Hemingway's The Old Man and the Sea — the iceberg theory, Santiago as Christ-figure, man vs. nature as conflict, the marlin as multivalent symbol.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Ernest Hemingway's <em>The Old Man and the Sea</em> is a
+short novella — fewer than 30,000 words — that revived
+Hemingway's reputation after a decade of decline, won him the
+Pulitzer in 1953 and contributed to his Nobel Prize in 1954,
+and remains the cleanest demonstration of his "iceberg theory"
+in extended form. The novella is also a parable, a fishing
+story, a meditation on dignity, a religious allegory, and a
+sustained study in the conflict between a single man and the
+sea. To read it well is to read it for all of these registers
+at once.</p>
+
+<h2>The iceberg theory in action</h2>
+
+<p>Hemingway described his prose theory as the iceberg:
+seven-eighths of meaning should be below the surface, with the
+visible portion supported by everything left unsaid. The
+novella is the late, mature demonstration of this principle.
+The surface is straightforward: an old Cuban fisherman, hooks a
+giant marlin, fights it for three days, kills it, lashes it to
+his skiff, and watches sharks eat it on the way back to shore.
+That summary is almost the whole plot.</p>
+
+<p>Beneath the surface, the novella supports readings as a
+religious allegory (Santiago's hands torn like Christ's, his
+walk up the hill carrying the mast like the cross), as an
+existentialist parable (the meaningless effort sustained
+beautifully), as a meditation on aging and dignity, as
+Hemingway's veiled response to his own critical decline. The
+prose holds all of these without naming any.</p>
+
+<h2>Man vs. nature as conflict</h2>
+
+<p>The novella is the most often cited example of the
+"man vs. nature" conflict in literature — the
+<a href="/glossary/protagonist-and-antagonist">protagonist's</a>
+antagonist is the marlin, then the sharks, then the sea
+itself, none of which is morally evil. Each is doing what its
+nature requires; Santiago's dignity is in his recognition of
+this. The novella's most quoted line — "A man can be destroyed
+but not defeated" — articulates the position. The defeat is
+inevitable; the destruction is meaningful only because the
+struggle was undertaken without protest.</p>
+
+<h2>Santiago as Christ-figure</h2>
+
+<p>The religious allegory is unmistakable, though Hemingway
+denied it. Signals:</p>
+
+<ul>
+  <li>Santiago's hands cut and bleeding from the line — stigmata
+      imagery.</li>
+  <li>His three-day struggle with the marlin — the resurrection
+      timeline.</li>
+  <li>Carrying the mast up the hill to his shack at the
+      novella's end — direct visual echo of Christ carrying the
+      cross.</li>
+  <li>The phrase "Ay" he utters when the sharks attack —
+      Hemingway tells us it is what a man might say if he were
+      "feeling the nail go through his hands and into the wood."</li>
+  <li>His name — Santiago, Saint James the fisherman.</li>
+</ul>
+
+<p>The allegory is calibrated to be visible without being
+mandatory. A reader can register the religious dimension and
+still read the novella as a story about a man and a fish.</p>
+
+<h2>The marlin as multivalent <a href="/glossary/allegory-vs-symbol">symbol</a></h2>
+
+<p>The marlin is one of the most carefully constructed symbols
+in American fiction. Santiago calls it his "brother." He
+addresses it directly. He loves it and is killing it; he kills
+it because his profession requires him to. The marlin
+represents, depending on the reader, the worthy adversary, the
+beloved enemy, the ideal the artist destroys in trying to
+capture it, the work of art itself. The novella's deepest
+emotional moment is not the catch but Santiago's relationship
+with the fish during the three days of struggle.</p>
+
+<h2>Manolin and the parental relationship</h2>
+
+<p>The boy Manolin frames the novella. The book opens with him
+returning from another boat to bring Santiago coffee; it ends
+with him weeping at Santiago's bedside. The forbidden
+relationship between the old man and the boy — Manolin's
+parents have made him fish on a "lucky boat" instead of with
+Santiago — is the novella's quiet emotional centre. Santiago
+has nothing to teach Manolin except how to lose with dignity.
+The novella is partly about whether that is enough.</p>
+
+<h2>The structure</h2>
+
+<p>The novella divides into clear sections:</p>
+
+<ol>
+  <li>The opening shore scenes — Santiago and Manolin, the
+      sense of Santiago's long unsuccess (84 days without a
+      fish).</li>
+  <li>The day at sea, the hooking of the marlin.</li>
+  <li>The three-day struggle, mostly Santiago's interior
+      monologue, addressed to the marlin, to himself, to the
+      absent Manolin, to God.</li>
+  <li>The killing of the marlin, the strapping of it to the
+      boat, the long return.</li>
+  <li>The shark attacks, one by one, each more difficult to
+      resist.</li>
+  <li>The return to shore at night, the carrying of the mast,
+      the closing image of Santiago dreaming of lions on the
+      African beaches of his youth.</li>
+</ol>
+
+<p>The pacing is deliberate. The middle is interior; the
+external action is concentrated at the two ends.</p>
+
+<h2>Hemingway's late style</h2>
+
+<p>The prose is at its most distilled here. Short sentences,
+plain words, a refusal of metaphor in the sentences themselves
+(while the larger structure is heavily symbolic). The
+<a href="/glossary/diction">diction</a> is mostly Anglo-Saxon;
+the syntax mostly declarative. The technique is sometimes
+called "telegraphic" but is more accurately just the careful
+removal of everything ornamental. The novella is what's left
+after Hemingway has subtracted what didn't have to be there.</p>
+
+<h2>The closing dream</h2>
+
+<p>The novella ends with Santiago, exhausted, sleeping in his
+shack while Manolin watches. He is dreaming of lions on the
+beaches of Africa — the dream he had as a young man, repeated
+throughout the novella. The lions are not explained; the
+dream is the novella's final image. The interpretation is
+left to the reader: youth recovered? Worthy strength
+remembered? The world before disappointment? The closing
+gesture is consistent with the iceberg principle. The novella
+ends on what's not said.</p>
+""",
+        "related_works": ["the-great-gatsby", "of-mice-and-men"],
+        "key_entries": [
+            "allegory-vs-symbol", "protagonist-and-antagonist",
+            "theme-vs-motif", "diction", "subtext", "interior-monologue",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "a-midsummer-nights-dream",
+        "title": "A Midsummer Night's Dream — A Reader's Guide to Shakespeare's Comedy of the Wood",
+        "h1": "A Midsummer Night's Dream — themes, structure, and the play within the play",
+        "author": "William Shakespeare",
+        "year": "c. 1595",
+        "meta_description": "A reader's guide to Shakespeare's A Midsummer Night's Dream — the four interlaced plots, the wood as transformative space, Bottom's translation, the mechanicals' play within the play.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Shakespeare's <em>A Midsummer Night's Dream</em> is the most
+formally complex of his comedies. Four parallel plot-strands —
+the Athenian court, the lovers' quarrels, the fairy
+sovereigns, the rude mechanicals — intertwine, exchange
+characters, and finally converge on a single wedding feast. The
+play is also one of Shakespeare's most thematically rich
+investigations of the gap between waking and dream, art and
+life, reason and desire. To read it well is to follow how the
+four plots illuminate each other.</p>
+
+<h2>The four plots</h2>
+
+<p>The four plot-lines run in parallel:</p>
+
+<ol>
+  <li><strong>The Athenian court.</strong> Duke Theseus prepares
+      for his marriage to Hippolyta, queen of the Amazons whom
+      he conquered. The court frames the play.</li>
+  <li><strong>The four young lovers.</strong> Hermia loves
+      Lysander, but her father Egeus wants her to marry
+      Demetrius. Helena loves Demetrius, who scorns her. They
+      flee into the wood; chaos ensues.</li>
+  <li><strong>The fairy court.</strong> Oberon and Titania,
+      king and queen of the fairies, quarrel over a changeling
+      boy. Oberon arranges for Titania to fall in love with a
+      ridiculous object through the juice of a magical flower.</li>
+  <li><strong>The mechanicals.</strong> A group of Athenian
+      craftsmen (Bottom the weaver, Quince the carpenter, etc.)
+      rehearse a play, <em>Pyramus and Thisbe</em>, to be
+      performed at the royal wedding.</li>
+</ol>
+
+<p>Each plot interferes with the others. The fairies meddle
+with the lovers. Bottom is transformed and ends up briefly
+married to Titania. The mechanicals stage their play at the
+wedding feast that closes the frame. Shakespeare's structural
+control of four simultaneous plots — each moving toward the
+single final scene — is one of the play's signature
+achievements.</p>
+
+<h2>The wood as transformative space</h2>
+
+<p>Almost every important action of the play happens in the
+wood outside Athens. The wood is the play's
+<a href="/glossary/allegory-vs-symbol">symbolic</a> space — a
+place where the rules of Athens (paternal authority, the law
+that would marry Hermia against her will, the social hierarchy
+that keeps lovers in line) are suspended. In the wood,
+identities are unstable, lovers swap partners, queens love
+asses, kings hide behind trees. The wood is Shakespeare's
+recurring symbol of comic possibility: the space outside the
+city's order where transformation becomes possible.</p>
+
+<p>The play returns its characters to Athens once the wood has
+done its work. The wood is not a permanent home; it is the
+laboratory where the social problems are reconfigured.</p>
+
+<h2>The four lovers</h2>
+
+<p>The four lovers — Hermia, Helena, Lysander, Demetrius — are
+written as <a href="/glossary/foil-character">foils</a> to each
+other, deliberately interchangeable. Hermia is short, dark,
+Helena tall, fair. Lysander and Demetrius are nearly
+indistinguishable young Athenian men. The play makes a small
+philosophical point: in matters of romantic preference, the
+particulars matter much less than we tell ourselves they do.
+The fairies' magic doesn't violate the lovers' nature; it just
+reshuffles preferences that were never as firmly grounded as
+the lovers thought.</p>
+
+<h2>Bottom and translation</h2>
+
+<p>Bottom the weaver is the play's great comic character and
+the figure who moves most freely between the four plots. Given
+an ass's head by Puck, he becomes the lover of Titania, queen
+of the fairies. Bottom's response to his metamorphosis — he
+takes it in stride, asking only for hay and a haircut — is the
+play's argument about the dignity of the ordinary. He is not
+flustered by being changed into an ass. He is not flustered by
+being loved by a fairy queen. The play's hierarchy
+(court > mortal > tradesman) is undone by Bottom's complete
+equanimity at every level.</p>
+
+<p>Bottom's word for his transformation is "translation"
+("Bless thee, Bottom, bless thee! Thou art translated"). The
+word is doing serious work: translation in Shakespeare meant
+moving something from one form into another, which is what
+the play does to all its characters in turn.</p>
+
+<h2>Pyramus and Thisbe: the play within the play</h2>
+
+<p>The mechanicals' production of <em>Pyramus and Thisbe</em>
+at the closing wedding feast is one of Shakespeare's most
+careful examples of <a href="/glossary/mise-en-abyme">mise en
+abyme</a> — a small version of the play embedded inside it.
+<em>Pyramus and Thisbe</em> is the source story of
+<em>Romeo and Juliet</em> — young lovers from feuding families
+who die for love. The mechanicals butcher the tragic material
+into farce. The court laughs at it.</p>
+
+<p>The joke is not just at the workers' expense.
+Shakespeare wrote <a href="/works/romeo-and-juliet"><em>Romeo
+and Juliet</em></a> around the same time as <em>Dream</em>;
+the embedded comedy is, in part, a wry comment on his own
+serious treatment of the same plot. The play is meta-aware in
+ways scholars are still working through.</p>
+
+<h2>Theseus on imagination</h2>
+
+<p>The play's most quoted speech is Theseus's on imagination
+in Act 5:</p>
+
+<blockquote>
+The lunatic, the lover, and the poet,<br>
+Are of imagination all compact…<br>
+The poet's eye, in a fine frenzy rolling,<br>
+Doth glance from heaven to earth, from earth to heaven;<br>
+And as imagination bodies forth<br>
+The forms of things unknown, the poet's pen<br>
+Turns them to shapes…
+</blockquote>
+
+<p>The speech is Theseus's, but it functions as Shakespeare's
+quiet self-commentary. The play has just shown all four kinds
+of imagination — the lunatic's (Bottom transformed), the
+lover's (the swapped affections), the poet's (the mechanicals'
+play), and the playwright's (the entire frame). Theseus
+dismisses these as the same kind of unreliable production.
+The play has shown them to be the engine of everything that
+matters.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Reason vs. desire.</strong> Athens stands for law
+      and reason; the wood for desire and disorder. The play
+      tests both.</li>
+  <li><strong>Love as arbitrary.</strong> The fairies' juice
+      can make anyone love anyone. The play's deflationary
+      claim about romantic seriousness.</li>
+  <li><strong>Dreaming and waking.</strong> The play closes with
+      Puck telling the audience that what they have seen may
+      have been a dream. The boundary between play and dream,
+      art and life, is permeable.</li>
+  <li><strong>Order restored, but knowingly.</strong> The
+      comedies end in marriage and social restoration, but
+      this one ends with the explicit recognition that the
+      restoration is provisional — the dream may resume.</li>
+</ul>
+""",
+        "related_works": ["romeo-and-juliet", "hamlet"],
+        "key_entries": [
+            "mise-en-abyme", "allegory-vs-symbol", "foil-character",
+            "theme-vs-motif", "soliloquy", "personification",
+        ],
+    },
 ]
 
 _BY_SLUG: dict[str, dict] = {w["slug"]: w for w in WORKS}
