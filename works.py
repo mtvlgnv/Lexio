@@ -2756,6 +2756,619 @@ Europe but the condition Europe carries with it.</p>
             "theme-vs-motif",
         ],
     },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "death-of-a-salesman",
+        "title": "Death of a Salesman — A Reader's Guide to Arthur Miller's Tragedy of the Common Man",
+        "h1": "Death of a Salesman — themes, expressionism, and the American Dream",
+        "author": "Arthur Miller",
+        "year": "1949",
+        "meta_description": "A reader's guide to Arthur Miller's Death of a Salesman — Willy Loman as tragic hero, the corruption of the American Dream, expressionist staging, the flashback structure.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Arthur Miller's <em>Death of a Salesman</em> is the canonical
+American twentieth-century tragedy. It is also a deliberate
+formal experiment: the play moves freely between Willy Loman's
+present and his past, with no scene change to mark the
+transition, using staging and lighting rather than dialogue to
+shift the time-frame. Miller's subtitle — <em>Certain Private
+Conversations in Two Acts and a Requiem</em> — points to both
+the play's intimate scope and its tragic register.</p>
+
+<h2>Willy Loman as tragic hero</h2>
+
+<p>Miller wrote an essay alongside the play — "Tragedy and the
+Common Man" — arguing that classical tragedy could be written
+about ordinary people, not just kings. Willy is the test case.
+He is a sixty-three-year-old travelling salesman whose career
+is collapsing, whose sons disappoint him, and whose belief
+system is incompatible with the world as it actually is. The
+play asks us to take this small life with the same seriousness
+Sophocles asked us to take Oedipus.</p>
+
+<p>Willy carries the Aristotelian tragic apparatus, with
+modifications:</p>
+
+<ul>
+  <li><a href="/glossary/hamartia"><strong>Hamartia</strong></a>
+      — his belief that being "well-liked" is the foundation of
+      success. A misreading of the world that has organised his
+      entire life.</li>
+  <li><a href="/glossary/peripeteia"><strong>Peripeteia</strong></a>
+      — his firing by Howard, his son Howard's son, in the
+      same office where Willy worked for thirty-four years.</li>
+  <li>The play's
+      <a href="/glossary/anagnorisis">anagnorisis</a> is
+      partial: Willy never quite sees what we see. Only Biff
+      gets the full recognition ("Pop! I'm a dime a dozen, and
+      so are you!"). Miller's modification of Aristotle: in
+      modern tragedy, the recognition may pass through the
+      hero rather than into him.</li>
+</ul>
+
+<h2>The flashback structure</h2>
+
+<p>The play's signature formal innovation is its handling of
+time. Willy's memories of the past — usually of his sons as
+younger and full of promise, of his brother Ben, of the moment
+in Boston that broke his relationship with Biff — interrupt the
+present action without warning. The original Broadway
+production staged this with lighting changes and shifts in the
+set; characters from the past entered through walls. Miller
+called it "the work of imagination" and resisted calling it
+"flashback" — though the term is structurally accurate.</p>
+
+<p>In terms of narrative theory, the play is sustained
+<a href="/glossary/prolepsis-and-analepsis">analepsis</a>
+woven into the present scene, with no clear marker of where the
+past ends and the present resumes. The technique is doing
+thematic work: Willy is a man who cannot keep present and past
+separated, and the play makes us experience that confusion
+directly.</p>
+
+<h2>The American Dream as broken promise</h2>
+
+<p>The play's central
+<a href="/glossary/theme-vs-motif">theme</a> is the corruption
+of the American Dream — the gap between what the dream promises
+and what it actually delivers. Willy believes in the dream
+absolutely: he believes that effort is rewarded, that being
+liked is currency, that his sons will succeed because they are
+his sons. The play is the systematic destruction of every one
+of these beliefs.</p>
+
+<p>The dream as Willy holds it is also a generational document.
+He inherited it from his father, an uncle, a brother named Ben
+who "walked into the jungle when he was seventeen and walked
+out at twenty-one, by God, and he was rich." Ben is the
+play's mythic figure of dream-fulfilment — and Ben is also dead
+before the play begins. The dream's avatars are ghosts.</p>
+
+<h2>Biff and Happy as foils</h2>
+
+<p>Willy's two sons are
+<a href="/glossary/foil-character">foils</a> for each other and
+for Willy. Biff (the older, the football star, the disappointed
+one) finally rejects the dream: "Will you take that phony dream
+and burn it before something happens?" Happy (the younger, the
+salesman in his father's image, the womanizer) cannot reject
+it: "I'm gonna show you and everybody else that Willy Loman
+did not die in vain." The play's bitterest irony — that the
+son closest to Willy understands him least.</p>
+
+<h2>The requiem</h2>
+
+<p>The play ends with a scene called "Requiem" — Willy's
+funeral, attended by Linda, Biff, Happy, Charley, and Bernard,
+in the cemetery. Only five mourners. Willy died believing his
+funeral would bring buyers from all his old territories
+("they'll come from Maine, Massachusetts, Vermont, New Hampshire!
+All the old-timers with the strange license plates"). The
+emptiness of the cemetery is the play's verdict on the dream
+Willy gave his life to.</p>
+
+<p>Linda's final speech — "We're free… We're free…" — is one
+of the most painful curtain lines in American drama. The
+freedom is the freedom from the mortgage Willy's life insurance
+has finally paid off. The cost is Willy himself.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Identity as success.</strong> Willy cannot
+      separate who he is from how well he is doing. When the
+      sales fail, his identity collapses with them.</li>
+  <li><strong>Memory as evasion.</strong> Willy uses the past
+      to escape the present. The flashback structure is the
+      formal embodiment of his refusal.</li>
+  <li><strong>Fatherhood and inheritance.</strong> Willy gives
+      his sons the dream and nothing else. The dream turns out
+      to be the wrong inheritance.</li>
+  <li><strong>The body and the suitcase.</strong> Willy carries
+      sample cases up and down the East Coast for decades. His
+      body wears out. His employer regards the body as an
+      input. The play is partly about what work does to a body
+      over time.</li>
+</ul>
+""",
+        "related_works": ["the-great-gatsby", "the-crucible"],
+        "key_entries": [
+            "hamartia", "peripeteia", "anagnorisis",
+            "prolepsis-and-analepsis", "foil-character", "theme-vs-motif",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "a-streetcar-named-desire",
+        "title": "A Streetcar Named Desire — A Reader's Guide to Tennessee Williams's Southern Tragedy",
+        "h1": "A Streetcar Named Desire — themes, symbolism, and the destruction of Blanche",
+        "author": "Tennessee Williams",
+        "year": "1947",
+        "meta_description": "A reader's guide to Tennessee Williams's A Streetcar Named Desire — the streetcar as symbol, Southern Gothic, the destruction of Blanche, Stanley as new South, plastic theatre.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Tennessee Williams's <em>A Streetcar Named Desire</em> is the
+most influential American play of its mid-century. It is short,
+formally daring, and built around the slow destruction of one
+character by another — a destruction the play insists on making
+beautiful and terrible at once. Reading it well means hearing
+both the surface (a domestic drama in a hot New Orleans
+apartment) and the deeper register of cultural and class collapse
+the play is staging.</p>
+
+<h2>The plastic theatre</h2>
+
+<p>Williams coined a term for his theatrical method —
+<em>plastic theatre</em> — in the production notes to <em>The
+Glass Menagerie</em>. The idea: a theatre that uses light,
+sound, music, and stage design as essential expressive elements
+alongside dialogue. In <em>Streetcar</em>, the plastic theatre is
+visible everywhere:</p>
+
+<ul>
+  <li><strong>The Varsouviana polka</strong> — the music that
+      plays in Blanche's head when she remembers her young
+      husband's suicide. The audience hears it; the other
+      characters don't. The play's auditory representation of
+      her interiority.</li>
+  <li><strong>The lighting</strong> — Blanche cannot be seen in
+      direct light; she covers the naked bulb with a paper
+      lantern. The literal aversion is symbolic: she cannot
+      bear to be seen for what she is.</li>
+  <li><strong>The blue piano</strong> — the New Orleans jazz
+      bleeding through the walls, locating the play culturally
+      and emotionally.</li>
+  <li><strong>The Mexican woman selling flowers for the
+      dead</strong> — appearing at moments of Blanche's
+      psychological collapse, calling "Flores para los
+      muertos."</li>
+</ul>
+
+<p>None of these are decorative. Each carries thematic weight
+the dialogue alone cannot.</p>
+
+<h2>The streetcar as symbol</h2>
+
+<p>The play's title points to the New Orleans streetcar lines
+Blanche names in her opening monologue: "They told me to take
+a streetcar named Desire, and then transfer to one called
+Cemeteries, and ride six blocks and get off at — Elysian
+Fields!" The geography is allegorical. Desire leads to
+Cemeteries leads to the Elysian Fields (the afterlife). Blanche's
+whole life is in that sequence: desire has produced loss, loss
+has produced the strange limbo of her arrival at her sister's.
+The play's central
+<a href="/glossary/allegory-vs-symbol">symbol</a> is announced
+in the first lines.</p>
+
+<h2>Blanche and Stanley as historical types</h2>
+
+<p>The conflict is structured as the collision of two
+historical Americas:</p>
+
+<ul>
+  <li><strong>Blanche DuBois</strong> — the dying aristocracy of
+      the antebellum South. The DuBois plantation, "Belle
+      Reve," has been lost to mortgage and decay. Blanche has
+      no money, no remaining family, and a past that has caught
+      up with her. She carries the South's literary inheritance
+      — its formality, its self-deception, its sense of beauty
+      as a defence against the world.</li>
+  <li><strong>Stanley Kowalski</strong> — the immigrant
+      working-class new American. Polish, urban, physically
+      vital, contemptuous of the genteel pretense Blanche
+      represents. He is the future the South is being overtaken
+      by.</li>
+</ul>
+
+<p>The play's tragedy is partly historical: the new America
+will not tolerate the old. Stanley's destruction of Blanche is,
+in this reading, the working-out of a social transition through
+the bodies of two specific people.</p>
+
+<h2>Light as recurring image</h2>
+
+<p>The play's most insistent
+<a href="/glossary/theme-vs-motif">motif</a> is light. Blanche
+cannot bear direct light — she covers lamps, takes long baths,
+appears only at dusk or in shadow. When Mitch tears the paper
+lantern off the bulb in the climactic scene to "get a real look
+at her," the violence is not just romantic; it is the
+exposure she has been organising her life to avoid. Light is
+truth, in the play's emblematic system, and Blanche cannot
+survive truth.</p>
+
+<h2>The destruction of Blanche</h2>
+
+<p>The play tracks Blanche's collapse in measured stages:</p>
+
+<ol>
+  <li>Her arrival, already fragile, already lying about her
+      reasons for coming.</li>
+  <li>The revelation of her dismissal from her teaching job
+      (statutory rape of a student).</li>
+  <li>The collapse of her engagement to Mitch when Stanley
+      tells him the truth.</li>
+  <li>The rape by Stanley, which the play does not show but
+      cannot escape representing.</li>
+  <li>Her commitment to a mental institution.</li>
+</ol>
+
+<p>Each stage strips another layer. By the final scene Blanche
+is reduced to her line "I have always depended on the kindness
+of strangers" — one of the most quoted closing lines in American
+theatre, and one of the saddest, because the most recent
+"stranger" has destroyed her.</p>
+
+<h2>The Stanley problem</h2>
+
+<p>Marlon Brando's original performance as Stanley made the
+character physically magnetic in ways subsequent productions
+have struggled with. The play wants Stanley to be both brutal
+and attractive — the audience must feel his pull at the same
+time we recognise his cruelty. This is the play's most
+difficult balance, and it is the source of the recurring
+critical question: does <em>Streetcar</em> partly endorse the
+energy it depicts? Williams's answer was complicated; most
+contemporary productions emphasise the brutality more than
+mid-century ones did.</p>
+
+<h2>The closing scene</h2>
+
+<p>Blanche is led out by the doctor; Stanley returns to Stella
+on the porch; the men resume their poker game. Life, the play
+shows, will continue. The world that has destroyed Blanche
+does not particularly notice. The blue piano plays. The
+streetcar runs. The plastic theatre is doing its final work —
+showing us how thin a layer human catastrophe makes in the
+larger fabric.</p>
+""",
+        "related_works": ["the-great-gatsby", "death-of-a-salesman"],
+        "key_entries": [
+            "allegory-vs-symbol", "theme-vs-motif", "foil-character",
+            "dramatic-irony", "tone-vs-mood", "gothic-fiction",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-scarlet-letter",
+        "title": "The Scarlet Letter — A Reader's Guide to Nathaniel Hawthorne's Puritan Allegory",
+        "h1": "The Scarlet Letter — symbolism, Puritan setting, and Hawthorne's romance",
+        "author": "Nathaniel Hawthorne",
+        "year": "1850",
+        "meta_description": "A reader's guide to Nathaniel Hawthorne's The Scarlet Letter — the A as multivalent symbol, Puritan settlement as setting, Hawthorne's 'romance' genre, Dimmesdale and Chillingworth as foils.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Nathaniel Hawthorne's <em>The Scarlet Letter</em> is the
+foundational American novel about hypocrisy, public shame, and
+the long psychic life of private sin. Set in seventeenth-century
+Puritan Boston, it was written two hundred years after the events
+it describes — a historical novel written by a man whose own
+ancestor was a judge at the Salem witch trials. Hawthorne knew
+exactly what kind of culture he was writing about, and his
+ambivalence toward it shapes every page.</p>
+
+<h2>The "romance" genre</h2>
+
+<p>Hawthorne distinguished, in his prefaces, between the
+<em>novel</em> and the <em>romance</em>. A novel was an attempt
+at probable representation of ordinary life. A romance, as he
+defined it, was free to introduce a "latitude" of the marvelous
+and the symbolic — to use the realistic surface as a vehicle for
+moral and psychological investigation that strict realism could
+not deliver. <em>The Scarlet Letter</em> is announced as a
+romance, and the announcement matters: the novel's coincidences,
+its hyper-symbolic A, its supernatural elements, all sit
+comfortably inside the form Hawthorne names.</p>
+
+<h2>The A as multivalent <a href="/glossary/allegory-vs-symbol">symbol</a></h2>
+
+<p>The scarlet letter A pinned to Hester's chest is the most
+analyzed
+<a href="/glossary/allegory-vs-symbol"><strong>symbol</strong></a>
+in American literature. Critically, what makes it interesting is
+its <em>shift</em>. It does not mean one thing:</p>
+
+<ul>
+  <li><strong>Adultery</strong> — the original meaning the
+      community has assigned.</li>
+  <li><strong>Able</strong> — the meaning Hester earns through
+      her years of dignified labour and care for the sick.</li>
+  <li><strong>Angel</strong> — appearing in the sky over the
+      Governor's deathbed, possibly imagined by the community.</li>
+  <li><strong>Art</strong> — Hester's elaborate embroidery of
+      the letter (sealed with gold thread) transforms it from
+      punishment into work.</li>
+  <li>And finally, <strong>America</strong> — Hester's identity
+      as a Puritan exile in the New World, the symbol the
+      colony has put on her chest becoming her identity-marker
+      in a way the community did not intend.</li>
+</ul>
+
+<p>Hawthorne never fixes the meaning. The novel's argument is
+that symbols change as the communities reading them change.</p>
+
+<h2>The four central characters</h2>
+
+<ul>
+  <li><strong>Hester Prynne</strong> — the wearer of the
+      letter. The novel's moral centre. Her dignity, her
+      labour, her refusal to name Dimmesdale all shape the
+      story.</li>
+  <li><strong>Pearl</strong> — Hester's daughter, named for
+      the "pearl of great price." Wild, mercurial,
+      symbol-attentive in a way the adults are not. She is the
+      novel's living scarlet letter.</li>
+  <li><strong>Reverend Dimmesdale</strong> — Hester's lover and
+      Pearl's father. Holds the community's most prestigious
+      pulpit. His failure to confess is the novel's central
+      moral question.</li>
+  <li><strong>Roger Chillingworth</strong> — Hester's husband,
+      thought lost, who arrives to find his wife on the
+      scaffold. Becomes the novel's
+      <a href="/glossary/foil-character">foil</a>: where
+      Dimmesdale is destroyed by his sin's concealment,
+      Chillingworth is destroyed by his pursuit of revenge.</li>
+</ul>
+
+<p>The novel's deepest argument: the public sin (Hester's)
+heals through public confession; the private sins (Dimmesdale's
+concealment, Chillingworth's vengeance) destroy their bearers.</p>
+
+<h2>The Puritan setting</h2>
+
+<p>Hawthorne uses the Puritan setting both historically and
+emblematically. Historically, he is precise: the laws, the
+sermon culture, the relationship of clergy and magistracy, the
+typology of sin. Emblematically, he is using Puritanism as a
+laboratory for studying what happens when a community organises
+itself around the visible marking of moral transgression — a
+question that, written in 1850 in mid-century America, was not
+just historical.</p>
+
+<h2>The scaffold scenes</h2>
+
+<p>The novel's structure pivots on three scaffold scenes:</p>
+
+<ol>
+  <li><strong>Chapter 2</strong> — Hester on the scaffold with
+      Pearl, exposed to public shame.</li>
+  <li><strong>Chapter 12</strong> — Dimmesdale, alone at
+      midnight, attempting a private penance no one witnesses.
+      The meteor A blazes in the sky overhead.</li>
+  <li><strong>Chapter 23</strong> — Dimmesdale's final
+      confession on the scaffold, with Hester and Pearl,
+      followed immediately by his death.</li>
+</ol>
+
+<p>The geographical repetition is the novel's formal spine.
+Each scaffold scene reframes the original one. The novel's
+final movement makes the private scene (midnight) public
+(midday), and the secret sinner finally joins the public one.
+The structure is the argument.</p>
+
+<h2>The narrator's introduction</h2>
+
+<p>The novel opens not with the story but with a long
+autobiographical sketch ("The Custom-House") in which Hawthorne
+describes finding the manuscript of <em>The Scarlet Letter</em>
+in the attic of the Salem Custom House where he worked. The
+device is a
+<a href="/glossary/frame-narrative">frame narrative</a>
+borrowing from the eighteenth-century novel's tradition of
+"discovered manuscripts." It distances Hawthorne from
+authorship, locates the story in a real Massachusetts
+geography, and gives him permission to call what follows a
+romance. Most modern editions reprint "The Custom-House" with
+the novel; read it before the story to see how the frame is
+doing its work.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Public vs. private sin.</strong> The novel's
+      central question, structured by the scaffold scenes.</li>
+  <li><strong>The community's complicity.</strong> Hester is
+      shamed for an offence the entire community has secretly
+      participated in (the gossiping crowds, Chillingworth's
+      vengeance, Dimmesdale's silence). The novel asks who is
+      really being judged.</li>
+  <li><strong>Nature vs. settlement.</strong> The forest is
+      where the lovers can speak truth; the town is where they
+      cannot. The novel's geographical morality is consistent
+      and ancient.</li>
+  <li><strong>The labour of meaning.</strong> Hester reshapes
+      the A's meaning through years of work. The novel argues
+      that public meanings can be rewritten by individual
+      practice, slowly, over time.</li>
+</ul>
+""",
+        "related_works": ["the-crucible", "to-kill-a-mockingbird"],
+        "key_entries": [
+            "allegory-vs-symbol", "foil-character", "frame-narrative",
+            "theme-vs-motif", "hamartia", "gothic-fiction",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "wuthering-heights",
+        "title": "Wuthering Heights — A Reader's Guide to Emily Brontë's Gothic Romance",
+        "h1": "Wuthering Heights — frame narrative, doubled families, and Heathcliff",
+        "author": "Emily Brontë",
+        "year": "1847",
+        "meta_description": "A reader's guide to Emily Brontë's Wuthering Heights — frame narrative, the Earnshaw-Linton doubling, Heathcliff as antihero, the moors as setting, and the novel's structural symmetry.",
+        "updated": "2026-05-25",
+        "body_html": """
+<p>Emily Brontë's <em>Wuthering Heights</em> is the strangest of
+the major Victorian novels — formally innovative in ways its
+contemporaries found incomprehensible, narratively brutal,
+philosophically unsentimental. Brontë published it under the
+pseudonym Ellis Bell and died the year after; she never saw it
+recognised as one of the canonical English novels. Reading it
+now means working through its layered narration, its tightly
+structured family genealogy, and its refusal to deliver the moral
+comfort the Victorian novel was expected to provide.</p>
+
+<h2>The frame narrative</h2>
+
+<p>The novel is a sophisticated
+<a href="/glossary/frame-narrative"><strong>frame
+narrative</strong></a>. Lockwood, a city gentleman who has rented
+Thrushcross Grange, narrates the outer frame. He hears the inner
+story from Nelly Dean, the housekeeper, who tells him about the
+Earnshaw and Linton families. Inside Nelly's narration, other
+characters give nested first-person accounts — Heathcliff
+quoting Catherine, Catherine's diary read by Lockwood, Isabella's
+letter recounting her marriage.</p>
+
+<p>The layering is not decorative. Every event we learn about
+has been filtered through multiple consciousnesses, each with
+its own biases (Lockwood is bewildered; Nelly is judgmental).
+The novel does not provide an authoritative voice. The reader
+has to work out what happened from the partial accounts.</p>
+
+<h2>Nelly and Lockwood as <a href="/glossary/unreliable-narrator">unreliable
+narrators</a></h2>
+
+<p>Both narrators have their blind spots. Lockwood is a fop, an
+outsider who consistently misreads situations (his opening
+encounter with Heathcliff, his interpretation of the dream of
+Catherine's ghost). Nelly is a participant in events she also
+narrates; she has interests, dislikes, judgments. Her
+description of Heathcliff as a child shapes our view of him in
+ways we should be suspicious of.</p>
+
+<p>The novel's formal sophistication is in this distance
+between narration and event. Whatever happened at the Heights
+happened; what we get is filtered, partial, distorted. The
+deepest claims about the characters — what Catherine and
+Heathcliff actually were to each other — are made through gaps
+in the available evidence.</p>
+
+<h2>The doubled families</h2>
+
+<p>The novel is built around the symmetrical doubling of two
+houses, two families, two generations:</p>
+
+<ul>
+  <li><strong>Wuthering Heights</strong> — the Earnshaws, the
+      moors, wildness, the elemental. Old Mr. Earnshaw,
+      Hindley, Catherine, the foundling Heathcliff.</li>
+  <li><strong>Thrushcross Grange</strong> — the Lintons,
+      sheltered, civilized, refined. Mr. and Mrs. Linton,
+      Edgar, Isabella.</li>
+</ul>
+
+<p>The novel's first generation marries across the houses
+(Catherine to Edgar, Heathcliff to Isabella, in his vengeance).
+The second generation marries across again (the younger
+Catherine to Linton Heathcliff, then to Hareton Earnshaw). The
+geometry of the novel is precise. Brontë's structural
+imagination — the symmetry of names, marriages, deaths, the
+mirror-arrangement of the family trees — is one of the most
+striking architectural features of any English novel.</p>
+
+<h2>Heathcliff as <a href="/glossary/antihero">antihero</a></h2>
+
+<p>Heathcliff is one of the great antiheroes in English fiction
+— compelling, dangerous, charismatic, and cruel. He revenges
+himself on the Earnshaw and Linton families with patient,
+methodical violence: he beggars Hareton, abuses his own son
+Linton to maturity, orchestrates the marriage of his son to the
+younger Catherine, and treats his wife Isabella with such
+sustained cruelty that she escapes.</p>
+
+<p>The reader is asked to feel his attractiveness alongside his
+brutality. The novel does not resolve this. Critics still divide
+between those who read Heathcliff as a Byronic Romantic
+protagonist whose violence is the cost of his intensity, and
+those who read the novel as a sustained critique of that
+Romantic figure. Both readings have support in the text.</p>
+
+<h2>The Catherine-Heathcliff bond</h2>
+
+<p>Catherine's famous speech to Nelly — "I am Heathcliff" —
+is one of the most quoted lines in English literature. Critics
+have variously read it as the deepest romantic statement in the
+language, as the cry of a particular kind of childhood-formed
+identification that the adult world cannot accommodate, and as
+the novel's argument that the love it depicts is not really
+romantic but something stranger: a kind of mutual identity
+that the categories of love and friendship don't fit.</p>
+
+<p>Notice that the bond is not consummated. Catherine marries
+Edgar; Heathcliff marries Isabella. The relationship between
+the two of them is the novel's gravitational centre and its
+constant absence; it never quite happens in any
+conventional sense.</p>
+
+<h2>The moors as setting</h2>
+
+<p>The Yorkshire moors are not background. They are the novel's
+fundamental
+<a href="/glossary/theme-vs-motif">motif</a> — the landscape
+that produces the kind of people the Earnshaws are, the place
+Catherine and Heathcliff escape to as children, the ground
+Heathcliff cannot leave even after Catherine's death. The
+moors' weather, their indifference, their refusal of
+cultivation, are all the novel's argument about what kind of
+moral universe the Heights inhabits. Compare to the manicured
+grounds of Thrushcross Grange and you have the novel's
+geography of feeling in one image.</p>
+
+<h2>The second generation</h2>
+
+<p>The novel's second half — often skipped by readers in love
+with the first half — is critical. The younger Catherine and
+Hareton's slow movement toward each other is the novel's only
+sustained healing arc. Where Catherine and Heathcliff destroyed
+each other, the younger generation repairs the damage their
+parents made. The structural rhyme is the novel's tentative
+hope: the second generation may not be doomed to repeat the
+first.</p>
+
+<h2>The ending</h2>
+
+<p>Heathcliff dies in a posture of strange ecstasy, after
+months of refusing food. The novel suggests, without ever
+quite saying, that he has joined Catherine's ghost on the
+moors. Lockwood, returning to visit the graves at the close,
+"wondered how anyone could ever imagine unquiet slumbers for
+the sleepers in that quiet earth." The line is the novel's
+final ambiguity. The earth is quiet; the sleepers are quiet;
+but the novel has just told us a story in which the dead would
+not stay buried.</p>
+""",
+        "related_works": ["frankenstein", "pride-and-prejudice"],
+        "key_entries": [
+            "frame-narrative", "unreliable-narrator", "antihero",
+            "gothic-fiction", "theme-vs-motif", "foil-character",
+        ],
+    },
 ]
 
 _BY_SLUG: dict[str, dict] = {w["slug"]: w for w in WORKS}

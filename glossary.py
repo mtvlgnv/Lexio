@@ -9707,6 +9707,540 @@ make you feel.</p>
 """,
     },
 
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "onomatopoeia",
+        "term": "onomatopoeia",
+        "context": "sound and language",
+        "title": "What \"Onomatopoeia\" Means — Words That Sound Like What They Mean",
+        "meta_description": "Onomatopoeia is the formation of words that imitate the sounds they describe — buzz, hiss, clang, splash. Here's how it works, with examples from comics to Tennyson.",
+        "h1": "What \"onomatopoeia\" means",
+        "updated": "2026-05-26",
+        "related": ["alliteration", "assonance-consonance", "imagery"],
+        "body_html": """
+<p><strong>Onomatopoeia</strong> (pronounced
+<em>on-uh-MAT-uh-PEE-uh</em>) is the formation of words that
+imitate the sounds they describe. From the Greek
+<em>onoma</em> ("name") + <em>poiein</em> ("to make"). The
+buzz of a bee, the hiss of a snake, the clang of a bell, the
+splash of a stone in water — all words whose sound is, more or
+less, the thing they name.</p>
+
+<h2>The everyday examples</h2>
+
+<p>English is full of onomatopoeia. Some categories:</p>
+
+<ul>
+  <li><strong>Animal sounds:</strong> meow, woof, oink, cluck,
+      neigh, roar, hiss, buzz, chirp.</li>
+  <li><strong>Impact and collision:</strong> crash, bang, smack,
+      thud, whack, pop, clank, thump.</li>
+  <li><strong>Water and liquid:</strong> splash, drip, gush,
+      slosh, trickle, drizzle, splat.</li>
+  <li><strong>Air and breath:</strong> whoosh, whisper, sigh,
+      huff, puff, gasp, wheeze.</li>
+  <li><strong>Mechanical:</strong> tick-tock, click, beep,
+      whir, hum, screech.</li>
+  <li><strong>Speech sounds:</strong> mutter, murmur, babble,
+      stutter, mumble.</li>
+</ul>
+
+<h2>Cross-linguistic onomatopoeia</h2>
+
+<p>One of the most interesting facts about onomatopoeia is how
+much it varies across languages. The same physical sound is
+imitated differently in different tongues:</p>
+
+<ul>
+  <li><strong>A dog barks:</strong> English <em>woof-woof</em>,
+      Spanish <em>guau-guau</em>, Japanese <em>wan-wan</em>,
+      Korean <em>meong-meong</em>, Russian <em>gav-gav</em>.</li>
+  <li><strong>A rooster crows:</strong> English
+      <em>cock-a-doodle-doo</em>, French <em>cocorico</em>,
+      Italian <em>chicchirichì</em>, German <em>kikeriki</em>,
+      Japanese <em>kokekokko</em>.</li>
+  <li><strong>A cat meows:</strong> English <em>meow</em>,
+      Japanese <em>nyaa</em>, French <em>miaou</em>, Korean
+      <em>yaong</em>.</li>
+</ul>
+
+<p>The variation tells us that onomatopoeia is not a direct
+copy of sound — it is the way each language's phonetic
+inventory shapes what a sound can be heard as. The dog has not
+changed; the language has.</p>
+
+<h2>Onomatopoeia in poetry</h2>
+
+<p>Poets use onomatopoeia for effects far beyond cataloguing
+animal noises. Tennyson is famous for it; his "Come Down, O
+Maid" closes with one of the most cited examples in English:</p>
+
+<blockquote>
+The moan of doves in immemorial elms,<br>
+And murmuring of innumerable bees.
+</blockquote>
+
+<p>The "m" sounds, the long vowels, the bumping rhythm — the
+line performs the sound it describes. Notice that the
+onomatopoeia is not just in individual words ("murmuring") but
+in the cumulative texture of the line. Poetic onomatopoeia is
+usually more about the line's overall sound-pattern than about
+individual words.</p>
+
+<h2>Comic-book onomatopoeia</h2>
+
+<p>Comic books made onomatopoeia visual. <em>BAM! POW! ZAP!
+KAPOW!</em> — the lettering of impact sounds as graphic elements
+on the page. The 1960s Batman TV series and Lichtenstein's pop
+art both built on this convention. The convention itself was a
+1930s American comics innovation; before that, comic-book
+violence was largely silent on the page.</p>
+
+<h2>Onomatopoeia vs. <a href="/glossary/alliteration">alliteration</a></h2>
+
+<p>The two are often confused but are different:</p>
+
+<ul>
+  <li><strong>Onomatopoeia</strong> — a word's sound imitates
+      its meaning. A property of <em>specific words</em>.</li>
+  <li><a href="/glossary/alliteration"><strong>Alliteration</strong></a>
+      — repeated initial sounds across multiple words. A
+      property of <em>arrangement</em>.</li>
+</ul>
+
+<p>"The bees buzzed" is onomatopoeic in "buzzed." "Bees buzz
+between buds" is both onomatopoeic (in "buzz") and alliterative
+(in the b-sounds across all five words).</p>
+
+<h2>Why writers use it</h2>
+
+<p>Onomatopoeia is one of the most direct ways to engage a
+reader's auditory imagination. It bypasses denotation and goes
+straight to sound. A description of a sword fight that uses
+<em>clang, clash, crash</em> sounds different from one that
+uses <em>strike, hit, blow</em> — even though the second set is
+denotatively just as accurate. The sound-level of word choice
+is a writer's quietest expressive resource.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a passage's sound seems to mirror its meaning — when
+saying the words aloud produces the action they describe —
+look for the onomatopoeia. It may be a single word, or it may
+be a sustained pattern across a sentence or stanza. Reading
+poetry aloud is the easiest way to hear it; on the silent page
+the effect is muted but still present.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "protagonist-and-antagonist",
+        "term": "protagonist and antagonist",
+        "context": "narrative structure",
+        "title": "What \"Protagonist\" and \"Antagonist\" Mean — Beyond \"Hero\" and \"Villain\"",
+        "meta_description": "The protagonist is the central figure whose story we follow; the antagonist is the force opposing them. Here's why those definitions are subtler than 'hero' and 'villain'.",
+        "h1": "What \"protagonist\" and \"antagonist\" mean",
+        "updated": "2026-05-26",
+        "related": ["antihero", "foil-character", "archetype"],
+        "body_html": """
+<p>The <strong>protagonist</strong> is the central figure of a
+narrative — the character whose story the narrative is telling,
+whose pursuit of a goal organises the plot, and whose
+consciousness (in most modern fiction) we are closest to. The
+<strong>antagonist</strong> is the force that opposes the
+protagonist's pursuit. Both terms are subtler than the common
+substitutes "hero" and "villain," and getting the distinction
+right matters for any serious literary analysis.</p>
+
+<h2>The Greek origin</h2>
+
+<p>Both words are Greek. <em>Protagonist</em> comes from
+<em>protos</em> ("first") + <em>agonistes</em> ("contestant" or
+"actor"). In Greek tragedy, the protagonist was literally the
+first actor — the lead in the choral performance. The role
+predates moral judgement: the protagonist is the one whose
+story is being told, regardless of whether they are admirable.</p>
+
+<p><em>Antagonist</em> is <em>anti-</em> + <em>agonistes</em> —
+the opposing contestant. The Greek did not assume the antagonist
+was evil; the antagonist was the obstacle to the protagonist's
+goal, whatever shape that obstacle took.</p>
+
+<h2>Protagonist vs. hero</h2>
+
+<p>The two are not synonyms. A hero is a morally admirable
+protagonist; many protagonists are not heroes. Consider:</p>
+
+<ul>
+  <li><strong>Macbeth</strong> is the protagonist of
+      <em>Macbeth</em>. He is not the hero. He is a tragic
+      figure — a king-killer whose ambition destroys him.</li>
+  <li><strong>Humbert Humbert</strong> in <em>Lolita</em> is
+      the protagonist. He is a child rapist whose narration we
+      are forced to read. The novel's discomfort is partly that
+      it gives him the protagonist's chair.</li>
+  <li><strong>Walter White</strong> in <em>Breaking Bad</em> is
+      the protagonist. The show's first act presents him as
+      heroic; the rest of the series shows what he actually is.</li>
+</ul>
+
+<p>An <a href="/glossary/antihero">antihero</a> is a protagonist
+who lacks the conventional heroic virtues. A villain protagonist
+is a protagonist who is, by the story's own values,
+straightforwardly evil. Both are protagonists; neither is a
+hero.</p>
+
+<h2>Antagonist vs. villain</h2>
+
+<p>An antagonist opposes the protagonist; a villain is morally
+evil. The two often overlap but not always. Possible antagonists:</p>
+
+<ul>
+  <li><strong>A villain.</strong> The simplest case. Sauron in
+      <em>The Lord of the Rings</em>, Voldemort in
+      <em>Harry Potter</em>.</li>
+  <li><strong>A non-evil opposing character.</strong> Javert in
+      <em>Les Misérables</em> is the antagonist; he is not
+      evil. He is a man of principle whose principles oppose
+      Valjean's freedom.</li>
+  <li><strong>A society or institution.</strong> The Party in
+      <em>1984</em>. The town of Maycomb in
+      <em>To Kill a Mockingbird</em>. Often the most
+      sophisticated antagonists are not individuals.</li>
+  <li><strong>Nature or fate.</strong> In <em>The Old Man and
+      the Sea</em>, the marlin and the sea function as the
+      antagonist. In Greek tragedy, fate itself.</li>
+  <li><strong>The protagonist themselves.</strong> In a story
+      of internal struggle, the protagonist's own divided self
+      can function as antagonist. Hamlet's hesitation, Holden
+      Caulfield's depression.</li>
+</ul>
+
+<h2>Multiple protagonists</h2>
+
+<p>Many works have multiple protagonists. <em>War and Peace</em>
+has at least five. <em>A Song of Ice and Fire</em> has dozens
+through its point-of-view structure. Modern television
+ensemble shows (<em>The Wire</em>, <em>Succession</em>) are
+deliberately multi-protagonist. The framework of single
+protagonist + single antagonist is one common architecture,
+not a requirement.</p>
+
+<h2>Protagonist vs. <a href="/glossary/foil-character">foil</a> vs.
+deuteragonist</h2>
+
+<p>Three adjacent terms:</p>
+
+<ul>
+  <li><strong>Protagonist</strong> — the central figure.</li>
+  <li><strong>Deuteragonist</strong> — the second-most-important
+      character. The Greek deuteragonist was literally the
+      second actor in the chorus. Watson is Holmes's
+      deuteragonist; Sam is Frodo's.</li>
+  <li><strong>Foil</strong> — a character whose qualities
+      contrast with another's, often the protagonist's. A foil
+      is usually a deuteragonist (Mercutio to Romeo, Laertes to
+      Hamlet) but the categories don't always overlap.</li>
+</ul>
+
+<h2>How to identify the protagonist</h2>
+
+<p>Three diagnostic questions:</p>
+
+<ol>
+  <li><strong>Whose story is being told?</strong> The
+      protagonist is the figure whose arc gives the narrative
+      its shape.</li>
+  <li><strong>Whose consciousness do we share?</strong> In
+      most modern fiction, the protagonist is the character
+      whose interior we are inside (or closest to).</li>
+  <li><strong>Whose decisions drive the plot?</strong> If the
+      character's choices materially change what happens
+      next, they are likely the protagonist.</li>
+</ol>
+
+<p>When these three answers point to different characters, the
+work is doing something interesting structurally —
+<em>The Great Gatsby</em> tells Gatsby's story (question 1) but
+through Nick's consciousness (question 2). Both have a claim to
+the protagonist's chair; the novel benefits from the tension.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a work feels morally complicated, check whether you
+have been quietly conflating "protagonist" with "hero." The
+protagonist's chair is structural; the values of the chair's
+occupant are a separate question. Many of the most morally
+serious novels of the last hundred years work by separating
+the two.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "first-person-narration",
+        "term": "first-person narration",
+        "context": "narrative point of view",
+        "title": "What \"First-Person Narration\" Means — Voice, Limit, and Reliability",
+        "meta_description": "First-person narration tells the story through an 'I' — a character inside the story. Here's how voice, limited knowledge, and reliability all change when a character is the narrator.",
+        "h1": "What \"first-person narration\" means",
+        "updated": "2026-05-26",
+        "related": ["unreliable-narrator", "interior-monologue", "stream-of-consciousness"],
+        "body_html": """
+<p><strong>First-person narration</strong> is the mode in which
+the story is told by an "I" — a character inside the story who
+is also its narrator. The reader has access only to what that
+character knows, perceives, remembers, and chooses to report.
+This sounds like a limitation, and it is; the limitation is also
+the form's deepest source of expressive power.</p>
+
+<h2>What first-person can do</h2>
+
+<p>The form has signature capabilities other points of view
+struggle to match:</p>
+
+<ul>
+  <li><strong>Voice.</strong> A distinctive narrator can carry a
+      novel by voice alone. Huck Finn, Holden Caulfield, Janie
+      Crawford, Humbert Humbert — each is a voice you would
+      recognise out of context after a paragraph.</li>
+  <li><strong>Intimacy.</strong> The reader is inside one
+      consciousness, with the protective layer of authorial
+      omniscience removed. The relationship between reader and
+      narrator becomes confidential, often uncomfortably so.</li>
+  <li><strong>Unreliability.</strong> Because the narrator is
+      inside the story, their account can be partial, biased,
+      self-justifying, or actively deceptive. The novel can
+      make the gap between what the narrator says and what is
+      true into its central drama. See
+      <a href="/glossary/unreliable-narrator">unreliable
+      narrator</a>.</li>
+  <li><strong>Performance of self.</strong> The narrator is
+      not just describing the story; they are <em>performing
+      themselves</em> as they tell it. Holden's constant
+      self-corrections, Humbert's seductive prose, Nick
+      Carraway's claim to "reserve all judgments" — the narration
+      is always also a self-portrait the narrator is shaping for
+      the listener.</li>
+</ul>
+
+<h2>What first-person can't do</h2>
+
+<p>The form's limits are real:</p>
+
+<ul>
+  <li><strong>Restricted knowledge.</strong> The narrator
+      can't report what they didn't see, didn't think, didn't
+      hear about. Other characters' interiors are inaccessible
+      except by inference.</li>
+  <li><strong>The narrator must survive.</strong> If the
+      narrator is the protagonist, they generally have to live
+      through the events they describe. (Sebald, Faulkner, and
+      others have experimented with first-person narration by
+      the dead, but the experiment is conspicuous.)</li>
+  <li><strong>Compression problems.</strong> Multi-decade or
+      multi-continent stories are hard to tell through a single
+      consciousness without unwieldy contrivance.</li>
+</ul>
+
+<h2>Sub-types</h2>
+
+<p>Within first-person, several distinctions matter:</p>
+
+<ul>
+  <li><strong>First-person protagonist.</strong> The narrator
+      is also the main character. Holden in <em>Catcher</em>,
+      Huck in <em>Huckleberry Finn</em>, Pip in <em>Great
+      Expectations</em>.</li>
+  <li><strong>First-person peripheral / observer.</strong> The
+      narrator is in the story but is not the protagonist.
+      Nick Carraway in <em>Gatsby</em>; Marlow in <em>Heart of
+      Darkness</em>; Dr. Watson with Holmes.</li>
+  <li><strong>First-person plural ("we").</strong> Rare and
+      conspicuous. Jeffrey Eugenides's <em>The Virgin
+      Suicides</em> is told by a "we" of the neighbourhood
+      boys; Joshua Ferris's <em>Then We Came to the End</em>
+      uses the office's collective voice.</li>
+  <li><strong>Epistolary first-person.</strong> Letters,
+      diaries, blog posts. The narration is shaped by the
+      assumed addressee. <em>Frankenstein</em>'s letters,
+      <em>Dracula</em>'s diaries.</li>
+</ul>
+
+<h2>First-person retrospective vs. simultaneous</h2>
+
+<p>An important distinction: most first-person narration is
+<em>retrospective</em> — the narrator is looking back from
+some later vantage. This means the narrator usually knows how
+the story ends and is shaping the telling accordingly. Holden
+is telling the story months after; Nick Carraway after Gatsby
+is dead; Scout Finch decades after.</p>
+
+<p>A small subset is <em>simultaneous</em> — the narration
+happens at roughly the same time as the events, usually through
+journals or letters. This produces a very different effect: the
+narrator doesn't yet know what we are about to learn. Bram
+Stoker's <em>Dracula</em> works this way.</p>
+
+<h2>First-person vs. <a href="/glossary/interior-monologue">interior monologue</a></h2>
+
+<p>The two are related but not identical:</p>
+
+<ul>
+  <li><strong>First-person narration</strong> is a
+      <em>structural</em> choice about who tells the story. It
+      can be polished, conventional prose ("I was born in
+      Yorkshire in 1832…").</li>
+  <li><strong>Interior monologue</strong> is a
+      <em>stylistic</em> choice within first-person (or
+      occasionally close third) that tries to render the
+      unprocessed flow of thought. Molly Bloom's closing
+      soliloquy in <em>Ulysses</em>; the third chapter of
+      Morrison's <em>Beloved</em>.</li>
+</ul>
+
+<p>All interior monologue is in first person (or close-third);
+not all first-person is interior monologue.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When reading first-person, train yourself to ask: who is the
+narrator telling this story <em>to</em>, and why <em>now</em>?
+Even when not explicitly addressed, first-person narration is
+always shaped by an implied audience. Holden's narration is
+shaped by his being in a psychiatric facility; Nick's by his
+post-Gatsby self-disgust; Humbert's by his upcoming trial. The
+implied occasion of the telling is one of the most important
+things to figure out in any first-person novel.</p>
+""",
+    },
+
+    # ──────────────────────────────────────────────────────────────────────
+    {
+        "slug": "subtext",
+        "term": "subtext",
+        "context": "dialogue and dramatic writing",
+        "title": "What \"Subtext\" Means in Literature — What the Characters Aren't Saying",
+        "meta_description": "Subtext is the meaning beneath the surface of what characters say — the unspoken thought, the hidden motive, the truth the dialogue is avoiding. Here's how it works in fiction and drama.",
+        "h1": "What \"subtext\" means in literature",
+        "updated": "2026-05-26",
+        "related": ["dramatic-irony", "euphemism", "tone-vs-mood"],
+        "body_html": """
+<p><strong>Subtext</strong> is the meaning beneath the surface
+of what characters say or do — the unspoken thought, the
+concealed motive, the relationship neither party will name, the
+truth the dialogue is shaped to avoid. Surface dialogue handles
+the explicit; subtext carries everything the characters cannot
+or will not put into words.</p>
+
+<h2>The classic Hemingway example</h2>
+
+<p>Ernest Hemingway's short story "Hills Like White Elephants"
+(1927) is the textbook case. A man and a woman wait at a railway
+station in Spain. They drink. They argue, obliquely, about
+something the story never names. The reader figures out, slowly,
+that the "operation" being discussed is an abortion the man
+wants the woman to have. The word is never used. The pronoun
+"it" does enormous work. The story is almost entirely subtext;
+the surface dialogue is small talk that the situation has
+weaponized.</p>
+
+<p>Hemingway called this his iceberg theory: seven-eighths of
+the meaning is below the waterline. The reader supplies what the
+characters cannot say.</p>
+
+<h2>Why subtext matters more than dialogue</h2>
+
+<p>In life, people rarely say exactly what they mean,
+especially about things that matter. Love, fear, anger, shame,
+desire — the more central an emotion is to a situation, the
+less likely it is to be named directly. Dialogue that
+straightforwardly states what a character feels usually sounds
+fake. Dialogue that talks around what the character feels
+usually sounds true.</p>
+
+<p>Stanislavski's acting method built an entire theory of
+performance around this. The actor's job, in his system, was to
+identify the character's <em>objective</em> (what they want)
+and play that — even when the surface dialogue is doing other
+things. The dialogue is the surface action; the objective is
+the subtext. A talented actor saying "would you like some tea?"
+can mean "please don't leave me," "I am sorry," "I hate you," or
+"I love you," depending on what they are playing underneath.</p>
+
+<h2>Where subtext lives</h2>
+
+<p>Subtext is built into a scene by several devices:</p>
+
+<ul>
+  <li><strong>What characters notice.</strong> The detail a
+      character lingers on or looks away from carries weight
+      the explicit dialogue does not.</li>
+  <li><strong>What characters refuse to discuss.</strong>
+      Avoided topics, conspicuous changes of subject, repeated
+      euphemisms — all signal that something has been pushed
+      below the surface.</li>
+  <li><strong>The mismatch between words and gesture.</strong>
+      A character who says "I'm fine" while gripping the edge of
+      a table is communicating in two channels at once. The
+      gesture is the subtext.</li>
+  <li><strong><a href="/glossary/euphemism">Euphemism</a>.</strong>
+      A particular kind of subtext at the word level. The
+      euphemism is on the surface; the brutal reality is
+      underneath.</li>
+  <li><strong>Silences and pauses.</strong> Pinter's plays make
+      whole arguments out of pauses; the unspoken is the most
+      eloquent line.</li>
+</ul>
+
+<h2>Subtext vs. <a href="/glossary/dramatic-irony">dramatic irony</a></h2>
+
+<p>The two are different but adjacent:</p>
+
+<ul>
+  <li><strong>Subtext</strong> is meaning hidden inside what is
+      being said — usually accessible to the audience if they
+      read carefully.</li>
+  <li><strong>Dramatic irony</strong> is the gap between what
+      the characters know and what the audience knows.</li>
+</ul>
+
+<p>The two often combine. When Macbeth hosts the banquet and
+toasts the absent Banquo (whom he has just had murdered), the
+audience hears both the surface (a toast) and the subtext (a
+guilt-laden cover-up), and the gap between the host's words and
+the audience's knowledge is dramatic irony. Three layers
+working together.</p>
+
+<h2>Subtext in modern fiction</h2>
+
+<p>The modernist novel's signature achievement was to bring
+subtext into the texture of the prose itself. In
+<a href="/glossary/free-indirect-discourse">free indirect
+discourse</a>, the narrator's voice carries both the surface
+of a scene and the character's submerged feeling about it,
+without quoting either. Austen, Flaubert, Henry James, Woolf
+and their inheritors built their novels' deepest effects on
+this technique.</p>
+
+<p>Television writers from the 2000s on — particularly the
+writers behind <em>The Sopranos</em>, <em>Mad Men</em>, and
+<em>Succession</em> — became expert at subtext-heavy dialogue,
+where the characters are usually talking about the second-most-
+important thing in the room.</p>
+
+<h2>How to read it in context</h2>
+
+<p>When a scene's surface dialogue feels small but the
+emotional stakes feel large, you are reading subtext. Ask: what
+are the characters not saying? Why? What would they have to
+admit if they said it directly? The answers are usually what
+the scene is actually about — and what the writer was actually
+writing.</p>
+""",
+    },
+
 
 ]
 
