@@ -3086,10 +3086,10 @@ async def _country_from_ip(ip: str) -> str:
 def _price_for_country(country: str) -> tuple[str, str, str]:
     """Return (currency_code, symbol, monthly_amount) for the visitor's country."""
     if country in _GBP_COUNTRIES:
-        return "GBP", "£", "2.99"
+        return "GBP", "£", "3.99"
     if country in _EUR_COUNTRIES:
         return "EUR", "€", "3.99"
-    return "USD", "$", "3.99"
+    return "USD", "$", "4.99"
 
 
 def _yearly_price_for_country(country: str) -> str:
@@ -3101,10 +3101,10 @@ def _yearly_price_for_country(country: str) -> str:
     absolute worst-case AI cost), so the downside per user is bounded.
     """
     if country in _GBP_COUNTRIES:
-        return "23.99"   # £2.00 effective / month — ~33% off 12× £2.99
+        return "31.99"   # £2.66 effective / month — ~33% off 12× £3.99
     if country in _EUR_COUNTRIES:
         return "29.99"   # €2.50 effective / month — ~37% off 12× €3.99
-    return "29.99"       # $2.50 effective / month — ~37% off 12× $3.99
+    return "39.99"       # $3.33 effective / month — ~33% off 12× $4.99
 
 
 def _format_amount(amount: str, symbol: str) -> str:
