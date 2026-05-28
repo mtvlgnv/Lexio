@@ -1523,12 +1523,11 @@
     }
     .lp-trending-rank {
       width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-      background: #ffffff; color: var(--text-mid);
+      background: var(--accent-lt); color: var(--accent);
       font-size: 0.75rem; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
-      border: 1px solid #ffffff;
     }
-    .lp-trending-item:nth-child(1) .lp-trending-rank { background: #ffffff; color: var(--text); }
+    .lp-trending-item:nth-child(1) .lp-trending-rank { background: oklch(88% 0.12 75); color: oklch(45% 0.15 54); }
     .lp-trending-word {
       font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 500;
       color: var(--text); flex: 1; text-transform: capitalize;
@@ -1536,8 +1535,8 @@
     .lp-trending-bar-wrap { display: none; }
     .lp-trending-bar { display: none; }
     .lp-trending-count {
-      font-size: 0.72rem; font-weight: 700; color: var(--text-mid);
-      background: #ffffff; border: 1px solid #ffffff;
+      font-size: 0.72rem; font-weight: 700; color: var(--accent);
+      background: var(--accent-lt); border: 1px solid var(--accent-mid);
       padding: 2px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
     }
     /* Skeleton loading */
@@ -1811,7 +1810,9 @@
     .lp-twin .lp-section-title {
       text-align: left; width: 100%;
       font-size: 1.5rem; line-height: 1.2; margin: 0;
+      color: #ffffff;
     }
+    .lp-twin .lp-section-title em { color: #ffffff; }
     .lp-twin .lp-models-sub    { text-align: left; }
 
     .lp-features {
