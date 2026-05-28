@@ -1304,7 +1304,7 @@
                   opacity 0.3s ease,
                   margin 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    body.app-compact:not(.in-app) .lp-warm-divider {
+    body.app-compact:not(.in-app).is-scrolled .lp-warm-divider {
       max-height: 1px; opacity: 1; margin: 14px auto;
     }
 
@@ -6507,6 +6507,21 @@ initOAuthProviders();
 
 // Check for password reset token in URL
 _checkResetToken();
+
+// Show the warm-area divider only once the user has scrolled past the hero —
+// hides the faint line under the passage carousel on first paint.
+(function _initScrollDivider(){
+  const SCROLL_THRESHOLD = 60;
+  let ticking = false;
+  function update(){
+    document.body.classList.toggle('is-scrolled', window.scrollY > SCROLL_THRESHOLD);
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+})();
 
 // Init model selector
 initializeModelSelector();
