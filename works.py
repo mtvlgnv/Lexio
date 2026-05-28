@@ -6909,6 +6909,948 @@ The English of <em>Things Fall Apart</em> is, in his phrase,
             "allegory-vs-symbol", "theme-vs-motif", "tone-vs-mood",
         ],
     },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "a-dolls-house",
+        "title": "A Doll's House — A Reader's Guide to Ibsen's Feminist Drama",
+        "h1": "A Doll's House — themes, Nora's awakening, and the door that ended Victorian drama",
+        "author": "Henrik Ibsen",
+        "year": "1879",
+        "meta_description": "A reader's guide to Henrik Ibsen's A Doll's House — Nora's transformation, the tarantella scene, the famous door slam, and the play's impact on the history of European drama.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Henrik Ibsen's <em>A Doll's House</em> (<em>Et
+dukkehjem</em>) is the play that, by general consent, ended
+the Victorian era of European drama and inaugurated modern
+serious theatre. Premiered at the Royal Theatre in Copenhagen
+in December 1879, it produced an immediate scandal across
+Europe, was banned and bowdlerised in multiple countries, and
+established a kind of social-realist play that the next
+hundred years of drama would build on. Its closing door slam
+is, in George Bernard Shaw's phrase, the moment "that
+reverberated through the parlour."</p>
+
+<h2>The plot</h2>
+
+<p>Nora Helmer, the wife of a respectable Norwegian banker
+named Torvald, has secretly borrowed money some years earlier
+to pay for a recuperative trip that saved her husband's life.
+She forged her dying father's signature on the loan because
+women were not legally permitted to take loans in their own
+name. She has been paying off the debt secretly ever since,
+working at small tasks and saving from the household
+allowance.</p>
+
+<p>The play takes place over three days at Christmas. The
+moneylender Krogstad, threatened with losing his job, uses
+the forged loan to blackmail Nora. When Torvald finally
+discovers the truth, he reacts with horror at the social
+disgrace, not with gratitude for what she risked. Nora
+realises in this moment that her marriage has been a
+charade. She walks out — closing the front door behind her —
+to find herself.</p>
+
+<h2>The door</h2>
+
+<p>The play's last sound — Nora closing the door behind her as
+she leaves Torvald and her three children — is one of the most
+discussed stage moments in nineteenth-century drama. The
+sound has been read as the moment Victorian domestic ideology
+publicly broke. Ibsen rejected the more conventional ending
+audiences expected (Nora staying for the children, or being
+reconciled with Torvald). He had Nora walk out on her
+marriage and her motherhood, and made the sound of the door
+the play's final word.</p>
+
+<p>The German actress playing Nora in the Hamburg premiere
+refused to perform the ending. Ibsen reluctantly wrote a
+softer alternative ending for that production only, then
+disowned it permanently. He called the alternate ending a
+"barbaric outrage." The original ending, with the door slam,
+is now the only one performed.</p>
+
+<h2>Nora's transformation</h2>
+
+<p>The play's structural achievement is its representation of
+Nora's gradual transformation. The Nora of Act 1 — the
+"little squirrel," the "little skylark," in her husband's
+patronising vocabulary — is not the Nora of Act 3. Ibsen
+shows the transformation through small accumulating signals:
+her mention of having considered suicide; her serious
+conversation with the family friend Dr. Rank; the tarantella
+scene where she dances feverishly to distract Torvald; her
+moment alone after Torvald's first horrified reaction. By the
+time of the final confrontation, the doll has become a person
+— and the person was always there, repressed by the marriage's
+performance.</p>
+
+<h2>The tarantella</h2>
+
+<p>The play's most theatrical scene is Nora's frantic
+performance of the tarantella, an Italian folk dance Torvald
+has asked her to rehearse for a costume party. The dance, in
+folk belief, is supposed to be cured by frenzied dancing of
+its name's source — the tarantula spider's bite. Nora dances
+herself into exhaustion, ostensibly because she needs more
+practice but actually because she is trying to delay Torvald's
+opening of the mailbox where Krogstad's blackmail letter
+sits.</p>
+
+<p>The dance functions on multiple levels at once. It is the
+play's most physical
+<a href="/glossary/allegory-vs-symbol">symbol</a> — a woman
+literally dancing for her life, the husband providing the
+music, neither acknowledging the situation. It is also
+psychological: Nora's wild dancing externalises the
+desperation her composed surface has been concealing.</p>
+
+<h2>Torvald and the marriage's economy</h2>
+
+<p>Torvald is one of the most precisely observed husbands in
+nineteenth-century drama — not a villain, but a man whose
+view of his wife as a "doll-wife" is so taken for granted
+that he cannot recognise her as anything else. His pet names
+for her are not romantic; they are diminishing. His habit of
+addressing her as if she were a child or a small animal —
+"little skylark," "little squirrel," "my little spendthrift"
+— is the marriage's basic vocabulary. The play's argument:
+this is what Victorian marriage was, in its everyday
+texture.</p>
+
+<p>When Torvald finally learns of Nora's forgery and reacts
+with concern for his reputation rather than for her, the
+play's reveal is that he has not loved her at all in any
+sense she now requires of the word. He has loved his idea of
+her. The marriage's foundation is exposed in a single
+scene.</p>
+
+<h2>The dialogue of Act 3</h2>
+
+<p>The play's third-act conversation between Nora and Torvald
+— after the crisis has been resolved by Krogstad's withdrawal
+of the blackmail — is one of the great extended dialogues in
+modern drama. Nora delivers what amounts to a structured
+indictment of the marriage. She tells Torvald that she has
+been treated as his doll, that her father treated her the same
+way, that she has never been allowed to become a person, and
+that she must leave to discover who she is.</p>
+
+<p>Torvald responds with everything a Victorian husband
+might: appeals to her duties, threats about disgrace,
+invocations of the children, religion, social opinion. Nora
+counters each one calmly. The cumulative effect is the
+demolition, in real time, of the marriage's whole social
+framework.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>The female self under patriarchy.</strong>
+      Nora's question to herself — who am I, when I am not
+      what others want me to be? — is the play's central
+      question. The answer cannot be given inside the
+      marriage; it can only be sought outside.</li>
+  <li><strong>The economy of marriage.</strong> Money,
+      legality, and dependence run through the play. Nora's
+      forging the loan is the play's plot engine and its
+      deepest political point — the law of the period made
+      her literal economic person dependent.</li>
+  <li><strong>Truth-telling as catastrophe and
+      liberation.</strong> The truths that emerge in Act 3
+      destroy the household and free Nora. The play does not
+      pretend the two are separable.</li>
+  <li><strong>Sacrifice and the limits of love.</strong>
+      Nora believed Torvald would, in extremity, sacrifice
+      himself for her as she had for him. He won't. The
+      asymmetry is the marriage's exposed centre.</li>
+</ul>
+
+<h2>The play's afterlife</h2>
+
+<p><em>A Doll's House</em> changed European drama. Shaw,
+Strindberg, Chekhov, O'Neill, Brecht — all worked in modes
+Ibsen made possible. The "problem play" — drama that takes
+a serious social question seriously — became a genre. The
+first wave of feminism took up the play as inspiration.
+The closing door slam became cultural shorthand for the
+moment in which conventional domestic life cannot be
+sustained any longer.</p>
+""",
+        "related_works": ["the-handmaids-tale", "the-bell-jar"],
+        "key_entries": [
+            "allegory-vs-symbol", "theme-vs-motif", "foil-character",
+            "dramatic-irony", "tone-vs-mood", "subtext",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "a-raisin-in-the-sun",
+        "title": "A Raisin in the Sun — A Reader's Guide to Lorraine Hansberry's Family Play",
+        "h1": "A Raisin in the Sun — themes, the deferred dream, and the Youngers",
+        "author": "Lorraine Hansberry",
+        "year": "1959",
+        "meta_description": "A reader's guide to Lorraine Hansberry's A Raisin in the Sun — the deferred dream, the Youngers as family ensemble, Walter Lee's transformation, Beneatha's identity, the Hughes epigraph.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Lorraine Hansberry's <em>A Raisin in the Sun</em> was the
+first play by a Black woman to be produced on Broadway,
+opening at the Ethel Barrymore Theatre on 11 March 1959, when
+Hansberry was twenty-eight. The play ran for 530 performances,
+won the New York Drama Critics' Circle Award (Hansberry was
+the youngest American and the first Black playwright to win
+it), and was adapted into a 1961 film, a 1973 musical, and
+multiple stage revivals since. Its title comes from a line in
+Langston Hughes's poem "Harlem" (1951): "What happens to a
+dream deferred? / Does it dry up / like a raisin in the
+sun?" The play takes the question seriously.</p>
+
+<h2>The plot</h2>
+
+<p>The Younger family — three generations sharing a cramped
+South Side Chicago apartment in the 1950s — is about to
+receive a $10,000 life-insurance check after the death of the
+family patriarch. The play takes place over the days during
+which the family debates what to do with the money. Lena
+Younger (Mama) wants to buy a house. Walter Lee, her son,
+wants to invest in a liquor store. Beneatha, Walter's
+sister, wants money for medical school. Ruth, Walter's wife,
+is pregnant and considering an abortion the family cannot
+quite afford to refuse. The play's three acts work out the
+family's competing dreams and the cost of each.</p>
+
+<h2>The Hughes epigraph</h2>
+
+<p>The play takes its title from Hughes's "Harlem":</p>
+
+<blockquote>
+What happens to a dream deferred?<br><br>
+Does it dry up<br>
+like a raisin in the sun?<br>
+Or fester like a sore — <br>
+And then run?<br>
+Does it stink like rotten meat?<br>
+Or crust and sugar over —<br>
+like a syrupy sweet?<br><br>
+Maybe it just sags<br>
+like a heavy load.<br><br>
+Or does it explode?
+</blockquote>
+
+<p>The poem's catalogue of possible outcomes for deferred
+dreams structures the play. Each character carries a dream;
+each dream has been deferred by their circumstances; each
+risks one of Hughes's outcomes. Mama's dream of a house has
+sagged for decades. Walter Lee's dream of business success is
+festering. Beneatha's dream of becoming a doctor is at risk of
+drying up. The play asks which of Hughes's metaphors will
+describe each Younger by the end.</p>
+
+<h2>The Youngers as ensemble</h2>
+
+<p>The play's structural achievement is that it gives all
+five major characters — Lena, Walter, Beneatha, Ruth, and
+Travis — real interiority. None is reduced to a function.
+This was a deliberate corrective to the period's theatrical
+representation of Black families, which had usually
+reduced characters to single traits.</p>
+
+<ul>
+  <li><strong>Lena (Mama)</strong> — the matriarch, deeply
+      Christian, the moral centre. Her dream is a small house
+      with a garden, and she has been carrying it for forty
+      years.</li>
+  <li><strong>Walter Lee</strong> — the chauffeur and son
+      who feels he is suffocating in a world that won't let
+      him provide for his family. His arc is the play's most
+      sustained — from grandiose dreaming, through humiliating
+      failure, to the dignity of refusing the buy-out at the
+      end.</li>
+  <li><strong>Ruth</strong> — Walter's wife, the tired
+      working woman, pregnant and considering an abortion.
+      Hansberry treats her decision with seriousness rare in
+      1959 American drama.</li>
+  <li><strong>Beneatha</strong> — Walter's college-age
+      sister, in transit between identities (assimilationist
+      via George Murchison, Pan-Africanist via the Nigerian
+      Joseph Asagai). She is the play's voice of generational
+      change.</li>
+  <li><strong>Travis</strong> — Walter and Ruth's son. Small
+      but present throughout; the silent inheritor of
+      whatever the family becomes.</li>
+</ul>
+
+<h2>Walter Lee's transformation</h2>
+
+<p>Walter Lee carries the play's most extended character arc.
+He begins demanding the insurance money as his right, dreams
+of becoming a "big man" through his liquor store investment,
+loses most of the money to a swindler, and is brought to the
+play's lowest point — preparing to accept the white neighbour
+Karl Lindner's buy-out offer, which would have the family
+not move into the white neighbourhood Mama has bought a
+house in.</p>
+
+<p>In the play's climax, Walter Lee — with his son Travis
+beside him at Mama's insistence — refuses the buy-out and
+asserts the family's dignity. The transformation is the
+play's moral resolution. He has not become rich; he has not
+gotten the liquor store; he has, however, become a man whose
+self-respect his mother and his son can recognise.</p>
+
+<h2>Beneatha and the question of identity</h2>
+
+<p>Beneatha's plotline — caught between her white-assimilated
+suitor George Murchison and her African suitor Joseph
+Asagai — is the play's investigation of mid-twentieth-century
+Black American identity. George wants her to stop wearing her
+natural hair, to study less seriously, to conform to mainstream
+respectability. Asagai introduces her to Yoruba culture, to
+the possibility of going to Nigeria, to the broader Pan-African
+identity movement.</p>
+
+<p>The play does not resolve Beneatha's choice — she has not
+chosen by the final scene — but the question is the play's
+central younger-generation
+<a href="/glossary/theme-vs-motif">motif</a>. The future Black
+American identity, the play is asking, will be made by
+choices the previous generation could not predict.</p>
+
+<h2>The neighbourhood</h2>
+
+<p>The Youngers' eventual move to the all-white
+Clybourne Park — and Karl Lindner's visit to discourage
+them — is based on Hansberry's own family's experience. The
+Hansberrys had moved to a white neighbourhood in Chicago in
+1937; the resulting legal case (<em>Hansberry v. Lee</em>,
+1940) reached the Supreme Court. Hansberry was eight at the
+time. The play's setting is autobiographical at the deepest
+level.</p>
+
+<p>The play also makes clear that the move is not triumph.
+The Youngers are walking into a neighbourhood that does not
+want them. The play ends before they get there. The deeper
+political claim is that the move is necessary anyway.</p>
+
+<h2>The afterlife: Clybourne Park</h2>
+
+<p>Bruce Norris's 2010 play <em>Clybourne Park</em>, which
+won the Pulitzer Prize for Drama in 2011, is a direct
+response to <em>A Raisin in the Sun</em>. The first act is
+set in the Clybourne Park house in 1959, the day the white
+family sells it to the Youngers; the second act is set in
+2009 in the same house, now in a gentrifying Black
+neighbourhood about to be sold to a white family. The play
+works because <em>Raisin</em> exists and is part of the
+cultural foundation it is talking to.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>The deferred dream.</strong> Each major
+      character carries one. The play's central
+      Hughesian question is which dreams survive deferment.</li>
+  <li><strong>Family vs. individual.</strong> Walter Lee's
+      ambition is individual; the play argues that his
+      ambition cannot be separated from his obligations to
+      the family.</li>
+  <li><strong>Gender and Black family life.</strong> Mama,
+      Ruth, and Beneatha each occupy a different relation to
+      gender expectations. The play takes their experiences
+      seriously in ways American theatre had not previously.</li>
+  <li><strong>The moral economics of money.</strong> What
+      money is for, who decides, what it costs to acquire and
+      what to refuse — the $10,000 is the play's
+      catalyst.</li>
+</ul>
+""",
+        "related_works": ["to-kill-a-mockingbird", "their-eyes-were-watching-god"],
+        "key_entries": [
+            "theme-vs-motif", "foil-character", "allegory-vs-symbol",
+            "dramatic-irony", "subtext", "tone-vs-mood",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "walden",
+        "title": "Walden — A Reader's Guide to Thoreau's American Nature Book",
+        "h1": "Walden — themes, simplicity, and the experiment at the pond",
+        "author": "Henry David Thoreau",
+        "year": "1854",
+        "meta_description": "A reader's guide to Henry David Thoreau's Walden — the experiment at the pond, the chapter structure, transcendentalist context, the political claim of voluntary simplicity.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Henry David Thoreau's <em>Walden, or Life in the Woods</em>
+is the foundational American book of voluntary simplicity,
+nature observation, and political dissent against the
+emerging industrial order. Published in 1854, the book records
+Thoreau's two years (1845–47) of living in a small cabin he
+built himself on the shore of Walden Pond in Concord,
+Massachusetts. It is part memoir, part philosophy, part
+nature writing, part economics, and part political tract. To
+read it well is to follow how Thoreau handles all of these
+registers without subordinating any of them.</p>
+
+<h2>The experiment</h2>
+
+<p>Thoreau moved to the pond on 4 July 1845 — symbolically,
+American Independence Day — and lived in a one-room cabin he
+built himself on land owned by his friend Ralph Waldo
+Emerson. He stayed two years, two months, and two days. The
+experiment was not a wilderness retreat in the modern sense:
+the cabin was a mile and a half from Concord village; he
+visited the village frequently; he had visitors and held
+conversations. The "isolation" was largely social-spiritual
+rather than geographic.</p>
+
+<p>The experiment was a deliberate attempt to live, in
+Thoreau's phrase, "deliberately, to front only the essential
+facts of life, and see if I could not learn what it had to
+teach." He wanted to test whether a person could live well on
+very little, what was actually necessary versus
+conventionally assumed necessary, and what remained when the
+machinery of nineteenth-century American economic life was
+stripped away.</p>
+
+<h2>The chapter structure</h2>
+
+<p>The book is organised in eighteen chapters that
+compress the two-year stay into a single calendar year. Some
+of the major chapters:</p>
+
+<ul>
+  <li><strong>"Economy"</strong> (Chapter 1, almost a third
+      of the book) — Thoreau's accounting of what his
+      experiment cost and what it produced. The chapter is
+      part autobiography, part Stoic-influenced argument
+      against unnecessary consumption.</li>
+  <li><strong>"Where I Lived, and What I Lived For"</strong>
+      (Chapter 2) — Thoreau's most quoted chapter, including
+      the famous "I went to the woods because I wished to
+      live deliberately…"</li>
+  <li><strong>"Reading"</strong> (Chapter 3) — Thoreau's
+      argument for the deep study of canonical texts.</li>
+  <li><strong>"Solitude"</strong> (Chapter 5) and
+      <strong>"Visitors"</strong> (Chapter 6) — paired
+      chapters on the experience of being alone and the
+      experience of company.</li>
+  <li><strong>"The Bean-Field"</strong> (Chapter 7) — a
+      meditation on growing beans as labour, economics, and
+      meditation.</li>
+  <li><strong>"The Pond in Winter"</strong> (Chapter 16) —
+      one of the finest sustained pieces of nature
+      observation in American writing.</li>
+  <li><strong>"Spring"</strong> (Chapter 17) — the natural-
+      cycle climax, the ice breaking, the year completing.</li>
+  <li><strong>"Conclusion"</strong> (Chapter 18) — Thoreau
+      stepping back to articulate what the experiment was
+      for.</li>
+</ul>
+
+<h2>The famous opening claim</h2>
+
+<p>The Chapter 2 passage about going to the woods is one of
+the most often quoted in American literature:</p>
+
+<blockquote>
+I went to the woods because I wished to live deliberately,
+to front only the essential facts of life, and see if I could
+not learn what it had to teach, and not, when I came to die,
+discover that I had not lived. I did not wish to live what
+was not life, living is so dear; nor did I wish to practise
+resignation, unless it was quite necessary.
+</blockquote>
+
+<p>The passage compresses the book's argument: that most
+American lives are inattentive, that attention requires the
+removal of certain comforts, that the unexamined life is not
+just unphilosophical but actually not "life" in the full
+sense Thoreau cares about.</p>
+
+<h2>The transcendentalist context</h2>
+
+<p>Thoreau was the most important young writer in
+mid-nineteenth-century American Transcendentalism, the
+philosophical-religious movement centred on Concord and led
+by Emerson. The Transcendentalist claims relevant to
+<em>Walden</em>:</p>
+
+<ul>
+  <li>Nature is the visible expression of spiritual reality;
+      direct attention to nature can produce direct
+      religious experience.</li>
+  <li>Each individual has access to the divine without
+      institutional mediation.</li>
+  <li>Conventional society and its institutions are
+      obstacles to the deeper life.</li>
+  <li>Action — including political dissent — is required of
+      anyone who has perceived the deeper truth.</li>
+</ul>
+
+<p>Emerson's essays — especially <em>Nature</em> (1836) and
+<em>Self-Reliance</em> (1841) — were the movement's
+intellectual foundation. <em>Walden</em> is the literary
+masterpiece the movement produced.</p>
+
+<h2>The political dimension</h2>
+
+<p>The book is sometimes read as a purely contemplative
+nature memoir, which misses its argument. Thoreau is also
+making a political case. The detailed economic accounting in
+"Economy" is showing that the average American is working
+much more than is necessary for survival, and that the
+excess work supports a social order Thoreau finds morally
+indefensible (slavery, the war with Mexico, the bank).</p>
+
+<p>The book argues that voluntary simplicity is itself a
+political stance — a withdrawal of consent from systems that
+require continuous work to sustain. Thoreau's parallel essay
+<em>Civil Disobedience</em> (1849) makes the political claim
+explicit; <em>Walden</em> embeds it in the memoir.</p>
+
+<h2>The pond as <a href="/glossary/allegory-vs-symbol">symbol</a></h2>
+
+<p>Walden Pond is the book's central image and its symbolic
+centre. Thoreau measures it (claiming wrongly that no one had
+done so; he did, with a sounding line), describes its colours
+under varying light, watches it freeze and thaw. The pond
+becomes the book's emblem of clarity — water deep enough to
+reflect the sky, available to anyone who could see it. The
+pond is at once a literal place Thoreau walked to and the
+book's argument's central image.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Voluntary simplicity.</strong> Thoreau's
+      argument that fewer things produce more life.</li>
+  <li><strong>Attention as the central virtue.</strong> The
+      book's deepest claim: most people do not see what is
+      around them. The remedy is sustained attention.</li>
+  <li><strong>Political dissent through living
+      otherwise.</strong> Thoreau's argument that one's life
+      is itself a political statement.</li>
+  <li><strong>The natural year as moral teacher.</strong>
+      The book's structure follows a single year for a
+      reason: the seasons themselves carry the moral
+      argument.</li>
+</ul>
+
+<h2>The book's afterlife</h2>
+
+<p>The book's influence has been incalculable. Tolstoy and
+Gandhi read it as foundational; the American environmental
+movement traces its DNA to Thoreau; the back-to-the-land
+movements of the 1960s and 70s drew on him; the late
+twentieth-century cultural turn toward voluntary simplicity
+("less stuff, more life") is a direct descendant. Few
+American books have produced as many real-world experiments
+as <em>Walden</em>.</p>
+
+<p>The book is also frequently misread. Thoreau was not a
+recluse; he was a sociable Concord intellectual who walked
+to town often. He was not living off-grid permanently; the
+experiment ended after two years. The "simplicity" he
+preached was specific and philosophical, not the off-grid
+homesteading the book is sometimes conflated with. Read
+carefully, <em>Walden</em> is a more nuanced book than its
+cultural reception sometimes suggests.</p>
+""",
+        "related_works": ["the-old-man-and-the-sea", "the-great-gatsby"],
+        "key_entries": [
+            "theme-vs-motif", "allegory-vs-symbol", "tone-vs-mood",
+            "first-person-narration", "imagery", "subtext",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "a-christmas-carol",
+        "title": "A Christmas Carol — A Reader's Guide to Dickens's Ghost Story for Christmas",
+        "h1": "A Christmas Carol — themes, the three ghosts, and the social argument",
+        "author": "Charles Dickens",
+        "year": "1843",
+        "meta_description": "A reader's guide to Charles Dickens's A Christmas Carol — Scrooge's transformation, the three ghosts as structural device, the social argument, and why the novella has shaped Christmas itself.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Charles Dickens's <em>A Christmas Carol</em> is the most
+influential English-language work about Christmas, the most
+widely read of Dickens's shorter fiction, and one of the most
+adapted texts in the history of cinema. Published on 19
+December 1843, the novella sold out its first printing of
+6,000 copies by Christmas Eve. It has not gone out of print in
+the 180 years since. To read it well is to understand both its
+narrative compression (a Christmas Eve plot stretched across
+seven decades) and its specific social argument about
+mid-Victorian poverty.</p>
+
+<h2>The five-stave structure</h2>
+
+<p>Dickens called the novella's chapters "staves" rather than
+chapters — a stave is a unit of music, fitting the "carol"
+title. The five-stave structure mirrors the five-act
+structure of classical drama:</p>
+
+<ol>
+  <li><strong>"Marley's Ghost"</strong> — Scrooge's
+      establishing character. His refusal of Christmas; his
+      cruelty to his clerk Bob Cratchit and his nephew Fred.
+      Marley's ghost arrives.</li>
+  <li><strong>"The First of the Three Spirits"</strong> —
+      the Ghost of Christmas Past. Scrooge's childhood, his
+      apprenticeship, his lost love.</li>
+  <li><strong>"The Second of the Three Spirits"</strong> —
+      the Ghost of Christmas Present. The Cratchits'
+      Christmas dinner, including Tiny Tim. The Ignorance and
+      Want children.</li>
+  <li><strong>"The Last of the Spirits"</strong> — the Ghost
+      of Christmas Yet to Come. Scrooge's death foreshadowed;
+      Tiny Tim's death foreshadowed; Scrooge's name unread by
+      the world that will outlive him.</li>
+  <li><strong>"The End of It"</strong> — Christmas morning.
+      Scrooge's reformation. The novella's closing
+      benediction.</li>
+</ol>
+
+<p>The three ghosts are doing the structural work the
+classical chorus did in Greek tragedy: they comment on the
+protagonist's life, force his moral recognition, and produce
+the
+<a href="/glossary/anagnorisis">anagnorisis</a> that
+permits the action's reversal.</p>
+
+<h2>Scrooge as character study</h2>
+
+<p>Scrooge is Dickens's most psychologically efficient
+character creation. The novella's opening pages establish him
+in a few sentences that have become part of English
+vocabulary:</p>
+
+<blockquote>
+A squeezing, wrenching, grasping, scraping, clutching,
+covetous old sinner! Hard and sharp as flint, from which no
+steel had ever struck out generous fire; secret, and
+self-contained, and solitary as an oyster.
+</blockquote>
+
+<p>The catalogue of participles is doing
+<a href="/glossary/direct-vs-indirect-characterization">direct
+characterization</a>. But the novella also delivers indirect
+characterization in its first scene — Scrooge refusing
+charity, snapping at Bob Cratchit, rejecting his nephew's
+Christmas invitation. By the time Marley's ghost arrives,
+the reader has multiple kinds of evidence for who Scrooge is.</p>
+
+<p>The transformation is what the novella exists to deliver.
+Scrooge becomes, by the end, what the novella's argument
+about charity, family, and feeling required him to become.
+Whether the transformation is psychologically plausible — a
+single night undoes decades of accumulated character — is
+not really Dickens's question. The novella is a moral fable;
+the transformation's plausibility is internal to the fable's
+logic, not the realist novel's.</p>
+
+<h2>The social argument</h2>
+
+<p>The novella is often read as a sentimental Christmas tale.
+It is also a specific social argument about mid-Victorian
+England. Dickens had been studying the conditions of the
+urban poor — he visited a "Ragged School" earlier that year
+and was horrified by what he saw. His original plan was to
+write a pamphlet titled "An Appeal to the People of England,
+on behalf of the Poor Man's Child." He decided that fiction
+would land harder than argument, and wrote <em>A Christmas
+Carol</em> instead.</p>
+
+<p>The novella's most striking image of the social argument
+is in Stave 3, when the Ghost of Christmas Present reveals two
+emaciated children huddled beneath his robes:</p>
+
+<blockquote>
+"This boy is Ignorance. This girl is Want. Beware them both,
+and all of their degree, but most of all beware this boy, for
+on his brow I see that written which is Doom, unless the
+writing be erased."
+</blockquote>
+
+<p>The allegorical figures are the novella's bluntest moment.
+They are also the novella's deepest political claim: that
+ignorance and want are not natural conditions but products
+of a society that could have chosen otherwise, and that the
+prosperous have a specific responsibility.</p>
+
+<h2>Tiny Tim</h2>
+
+<p>The character Tiny Tim — Bob Cratchit's disabled
+youngest son, who dies in the Christmas-Future vision and is
+saved by Scrooge's transformation — has been criticised as
+the most sentimental element in the novella. The critique is
+fair, but the function is precise. Tiny Tim is the novella's
+externalised conscience: a specific, named child whose fate
+Scrooge's choices will determine. Without Tim, Scrooge is
+giving to "the poor" in the abstract. With Tim, he is giving
+to a child whose first name he knows. The novella's
+sentimental machinery is also its political machinery.</p>
+
+<h2>The transformation</h2>
+
+<p>Scrooge's transformation is the novella's central
+miracle. He wakes on Christmas morning, asks a small boy
+outside his window what day it is, sends a prize turkey to
+the Cratchits, doubles Bob Cratchit's salary, and becomes
+"as good a friend, as good a master, and as good a man, as
+the good old city knew, or any other good old city, town,
+or borough, in the good old world." The final sentence — the
+piling-up of "good" — is doing a small comic dance with the
+novella's earlier blunt vocabulary about Scrooge's
+hardness.</p>
+
+<h2>The novella's invention of Christmas</h2>
+
+<p>One of the most discussed afterlives of <em>A Christmas
+Carol</em> is its effect on the holiday itself. The novella
+helped create the modern English-speaking Christmas — the
+emphasis on family gathering, the goose or turkey dinner, the
+sharing with the poor, the warm domestic interior, the
+specific seasonal sentimentality. Some of these features were
+already present in English Christmas custom; many were
+gathered and elevated by Dickens's prose. The novella did not
+invent Christmas, but it gave the modern Anglophone version
+its template.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Money as moral test.</strong> The novella's
+      central claim: what one does with one's resources is
+      the most important moral question.</li>
+  <li><strong>Past, present, and future as moral
+      mirrors.</strong> The three ghosts each give Scrooge
+      a different angle on his own life. The three-time
+      structure is doing serious philosophical work.</li>
+  <li><strong>The body politic in the family figure.</strong>
+      The Cratchits are the novella's portrait of mid-
+      Victorian urban poverty made domestic and specific.</li>
+  <li><strong>Transformation as Christian grace.</strong>
+      The novella is, in its deepest argument, a secular
+      conversion narrative.</li>
+</ul>
+""",
+        "related_works": ["a-tale-of-two-cities", "the-great-gatsby"],
+        "key_entries": [
+            "direct-vs-indirect-characterization", "anagnorisis",
+            "allegory-vs-symbol", "theme-vs-motif", "foil-character",
+            "tone-vs-mood",
+        ],
+    },
+
+    # ─────────────────────────────────────────────────────────────────────
+    {
+        "slug": "the-glass-menagerie",
+        "title": "The Glass Menagerie — A Reader's Guide to Tennessee Williams's Memory Play",
+        "h1": "The Glass Menagerie — themes, the memory play form, and the Wingfield family",
+        "author": "Tennessee Williams",
+        "year": "1944",
+        "meta_description": "A reader's guide to Tennessee Williams's The Glass Menagerie — Tom as narrator, the memory-play form, the unicorn as symbol, Amanda as Southern relic, the play's autobiographical core.",
+        "updated": "2026-05-26",
+        "body_html": """
+<p>Tennessee Williams's <em>The Glass Menagerie</em> (1944) is
+the play that established him as a major American dramatist.
+It is also his most personal — a "memory play," as Williams
+called it, based directly on his own family. The play opened
+in Chicago in December 1944, moved to Broadway in March 1945,
+and won the New York Drama Critics' Circle Award. Williams
+was thirty-four. The play introduced both the "plastic
+theatre" he would refine in
+<a href="/works/a-streetcar-named-desire"><em>A Streetcar
+Named Desire</em></a> and the family-trauma material he would
+return to throughout his career.</p>
+
+<h2>The memory-play form</h2>
+
+<p>Williams calls the play a "memory play" in its opening
+stage directions. Tom Wingfield, the narrator, addresses the
+audience directly and announces the convention:</p>
+
+<blockquote>
+The play is memory. Being a memory play, it is dimly
+lighted, it is sentimental, it is not realistic. In memory
+everything seems to happen to music.
+</blockquote>
+
+<p>The convention does several things at once:</p>
+
+<ul>
+  <li>Tom is both inside the play (as a character in the
+      family scenes) and outside it (as the narrator who
+      frames them).</li>
+  <li>The play's events can be subjective — Tom is
+      remembering them, possibly inaccurately, with the
+      partiality of grief and guilt.</li>
+  <li>The staging can use lighting, music, and projected
+      images more freely than a strict realist convention
+      would permit. Williams's "plastic theatre" is
+      explicitly authorised by the memory-play frame.</li>
+  <li>The play's emotional register is openly tinged by
+      regret and longing in ways realist drama would
+      struggle to justify.</li>
+</ul>
+
+<h2>The Wingfield family</h2>
+
+<p>The play has four characters:</p>
+
+<ul>
+  <li><strong>Amanda Wingfield</strong> — the mother, a
+      faded Southern belle who once received "seventeen
+      gentleman callers" in one Sunday afternoon and now
+      lives in a St. Louis tenement, working at a department
+      store after the father abandoned the family. Her
+      relationship to her own past is the play's deepest
+      psychological subject.</li>
+  <li><strong>Tom Wingfield</strong> — the son, a poet who
+      works in a shoe warehouse to support the family. He
+      narrates the play from the future, after he has done
+      what his father did: abandoned them.</li>
+  <li><strong>Laura Wingfield</strong> — the daughter,
+      shy to the point of paralysis. Slightly disabled (a
+      childhood illness left her with one leg shorter than
+      the other). She collects little glass animals. She has
+      dropped out of business school because she could not
+      cope with the social pressure.</li>
+  <li><strong>Jim O'Connor</strong> — the "gentleman caller,"
+      a coworker of Tom's whom Tom brings home for dinner at
+      Amanda's insistence. The play's only character from
+      outside the family.</li>
+</ul>
+
+<h2>The unicorn as <a href="/glossary/allegory-vs-symbol">symbol</a></h2>
+
+<p>The play's central symbol is one of Laura's glass animals
+— a small unicorn she shows Jim during their conversation in
+Scene 7. The unicorn is, she tells him, her favourite. It is
+unique among horses because of its horn.</p>
+
+<p>During the conversation, Jim accidentally knocks the
+unicorn off the table; the horn breaks. The unicorn has
+become an ordinary horse. Laura's reaction — surprisingly
+calm — has been read as her recognising that the unicorn is
+now less unusual, more able to fit in. The breaking is
+ambiguous: damage or liberation. The symbol is doing
+characteristic Williams work — the small physical object
+carrying the emotional weight of the scene.</p>
+
+<p>After Jim has revealed that he is already engaged and
+leaves, Laura quietly gives him the broken unicorn as a
+"souvenir." The gesture is the play's most heartbreaking
+moment. Laura is giving away the symbol of her own
+uniqueness, broken.</p>
+
+<h2>Tom as narrator and traitor</h2>
+
+<p>The play's framing device — Tom narrating from the future,
+after he has abandoned his mother and sister — gives the play
+its peculiar register. Tom's affection for Laura and his
+guilt about leaving her are the emotional substance of every
+narrating moment. The final speech is among the most
+quoted in twentieth-century American drama:</p>
+
+<blockquote>
+I didn't go to the moon, I went much further — for time is
+the longest distance between two places. … Oh, Laura, Laura,
+I tried to leave you behind me, but I am more faithful than
+I intended to be!
+</blockquote>
+
+<p>The speech makes explicit what the play has been
+performing throughout: Tom's narration is the form his guilt
+takes. The play exists because he cannot leave his sister
+behind even after he has physically left her.</p>
+
+<h2>Amanda and the lost South</h2>
+
+<p>Amanda is the first of Williams's great portraits of the
+displaced Southern woman. Her register — the floridity of her
+speech, her romantic memories of Blue Mountain and the
+gentleman callers, her insistence on her daughter's marriage
+prospects — is the South of legend transplanted into a St.
+Louis tenement, where it cannot survive. Like Blanche DuBois
+in <em>Streetcar</em>, Amanda is a woman whose conceptual
+universe no longer matches her economic reality.</p>
+
+<p>The play does not present Amanda only sympathetically. Her
+demands on her children — her constant pressure on Laura to
+overcome her shyness, her constant demands on Tom to provide
+— are part of what is making the family unhappy. Williams
+gives her both the pathos of her displaced position and the
+weight of her demanding character.</p>
+
+<h2>The play's autobiographical core</h2>
+
+<p>The Wingfields are the Williamses. Tennessee Williams's
+mother Edwina was Amanda; Tennessee's older sister Rose was
+Laura; Tennessee himself was Tom. The "Mr. Wingfield" who
+abandoned the family was modelled on Cornelius Williams,
+who was actually still present in Tennessee's life but who
+the family largely could not bear.</p>
+
+<p>The most painful autobiographical element: Rose Williams
+was lobotomised in 1943, the year Tennessee was working on
+the play. The play's gentleness toward Laura, its insistence
+on her preciousness, its grief over what happens to her, are
+Williams's working-out of his guilt about his sister, whom
+he had been unable to protect. The play's protective
+sentimentality is not random; it is targeted at a real
+person.</p>
+
+<h2>The plastic theatre devices</h2>
+
+<p>Williams uses lighting and music as expressive elements:</p>
+
+<ul>
+  <li><strong>Music</strong> — "The Glass Menagerie" theme
+      that recurs around Laura, like an aural
+      <a href="/glossary/leitmotif">leitmotif</a>.</li>
+  <li><strong>Lighting</strong> — soft, dim, often
+      foregrounded. Williams asks for specific colours and
+      effects rather than naturalistic light.</li>
+  <li><strong>Projections</strong> — Williams's original
+      script called for projected captions and images on a
+      screen during scenes. Most productions omit these, but
+      Williams considered them part of the design.</li>
+</ul>
+
+<p>The plastic theatre is doing what realist staging cannot:
+making the play's memorial register continuously
+perceptible.</p>
+
+<h2>Themes worth tracking</h2>
+
+<ul>
+  <li><strong>Memory as form of love.</strong> Tom's
+      narration is the form his abandonment-guilt takes. The
+      play argues that to remember is to love, even when one
+      could not stay.</li>
+  <li><strong>The fragility of the protected.</strong>
+      Laura's glass animals are the play's image of what
+      cannot survive contact with the world.</li>
+  <li><strong>Displacement.</strong> Each Wingfield is
+      displaced — Amanda from her Southern past, Tom from
+      his poetic vocation, Laura from any possible social
+      role.</li>
+  <li><strong>Escape and its costs.</strong> Tom's eventual
+      escape is the play's tragic decision. He gets away;
+      he carries them with him forever.</li>
+</ul>
+""",
+        "related_works": ["a-streetcar-named-desire", "death-of-a-salesman"],
+        "key_entries": [
+            "allegory-vs-symbol", "foil-character", "theme-vs-motif",
+            "first-person-narration", "tone-vs-mood", "subtext",
+        ],
+    },
 ]
 
 _BY_SLUG: dict[str, dict] = {w["slug"]: w for w in WORKS}
