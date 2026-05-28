@@ -3678,7 +3678,10 @@
           <li>Unlimited OCR scans</li>
           <li>Fast, Balanced &amp; Deep modes</li>
           <li>Word bank sync across devices</li>
-          <li>Priority support</li>
+          <li>Anki export — review what you save</li>
+          <li class="lp-annual-only" hidden>Annual reading recap</li>
+          <li class="lp-annual-only" hidden>Founder badge</li>
+          <li>Priority support from Matvei</li>
         </ul>
         <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Start 3-day free trial</button>
         <button class="lp-pro-cta" id="lp-manage-btn" onclick="handleManageSub()" style="display:none;background:var(--bg);color:var(--text);border:1.5px solid var(--border)">Manage subscription →</button>
@@ -4340,6 +4343,7 @@
       <span class="wb-count" id="wb-count"></span>
       <div class="wb-header-spacer"></div>
       <button class="wb-action-btn" onclick="openFlashcards()">Review →</button>
+      <button class="wb-action-btn" onclick="exportAnki()" title="Two-column Anki TSV (front/back, ready to import)">Export to Anki</button>
       <button class="wb-action-btn" onclick="exportCSV()">Export TSV</button>
       <button class="wb-close-btn" onclick="closeWordBank()">×</button>
     </div>
@@ -5870,6 +5874,51 @@ function exportCSV() {
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='lexio-wordbank.tsv'; a.click();
 }
 
+/* Anki TSV export — uses the server endpoint (Pro-gated). Falls back to the
+   local word-bank for free users so they can still export, just without the
+   server-side Pro-only field enrichment. */
+async function exportAnki() {
+  const tok = localStorage.getItem('lexio_token');
+  if (tok) {
+    try {
+      const r = await fetch('/wordbank/anki', { headers: { 'Authorization': 'Bearer ' + tok } });
+      if (r.status === 402) {
+        if (typeof showProModal === 'function') showProModal('lookup', 0, 20);
+        return;
+      }
+      if (r.ok) {
+        const blob = await r.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'lexio-anki-' + new Date().toISOString().slice(0,10) + '.tsv';
+        a.click();
+        return;
+      }
+    } catch {}
+  }
+  // Fallback: build the same TSV client-side from localStorage
+  if (!wordBank.length) return;
+  const lines = ['Front\tBack'];
+  for (const e of wordBank) {
+    const w = (e.word || '').replace(/\t/g, ' ').trim();
+    const ctx = (e.context || '').replace(/\t/g, ' ').trim();
+    const def = (e.contextual || e.definition || '').replace(/\t/g, ' ').trim();
+    const why = (e.why || '').replace(/\t/g, ' ').trim();
+    const etym = (e.etymology || '').replace(/\t/g, ' ').trim();
+    if (!w || !def) continue;
+    const front = '<b>' + w + '</b>' + (ctx ? '<br><br>' + ctx : '');
+    let back = def;
+    if (why)  back += '<br><br><i>Why this word:</i> ' + why;
+    if (etym) back += '<br><br><i>Etymology:</i> ' + etym;
+    lines.push(front.replace(/\n/g, '<br>') + '\t' + back.replace(/\n/g, '<br>'));
+  }
+  const blob = new Blob([lines.join('\n')], { type: 'text/tab-separated-values' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'lexio-anki-' + new Date().toISOString().slice(0,10) + '.tsv';
+  a.click();
+}
+
 /* ── Pronounce ──────────────────────────────────────────────── */
 const LANG_BCP47 = { English:'en-US', Spanish:'es-ES', French:'fr-FR', German:'de-DE', Italian:'it-IT', Portuguese:'pt-PT', Dutch:'nl-NL', Russian:'ru-RU', Chinese:'zh-CN', Japanese:'ja-JP', Korean:'ko-KR' };
 function sayWord() {
@@ -6349,7 +6398,17 @@ async function syncWordBank() {
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` },
       body:    JSON.stringify({ entries: wordBank }),
     });
+    // 402 = free-tier user — sync is now Pro-only. Silently skip; the word
+    // bank still works locally. We don't pop the upgrade modal on background
+    // sync attempts (only on user-initiated actions).
+    if (res.status === 402) {
+      _wbSyncIsProOnly = true;
+      const ind = document.getElementById('wb-sync-indicator');
+      if (ind) ind.textContent = 'Local only';
+      return;
+    }
     if (!res.ok) return;
+    _wbSyncIsProOnly = false;
     const data = await res.json();
     // Merge: server is source of truth — always pull server words down even if local is empty
     if (data.entries && data.entries.length > 0) {
@@ -6359,11 +6418,14 @@ async function syncWordBank() {
       });
       saveWordBank(); updateWBBadge();
     }
+    const ind = document.getElementById('wb-sync-indicator');
+    if (ind) ind.textContent = 'Synced across devices';
     // Refresh word bank count in account panel if open
     const wbEl = document.getElementById('ap-wb-count');
     if (wbEl) wbEl.textContent = wordBank.length ? `${wordBank.length} word${wordBank.length !== 1 ? 's' : ''} →` : 'Empty →';
   } catch {}
 }
+let _wbSyncIsProOnly = false;
 
 /* ── Trending words ─────────────────────────────────────────── */
 (function loadTrending() {
@@ -6859,6 +6921,10 @@ function setProPlan(plan) {
   _proPlan = (plan === 'yearly') ? 'yearly' : 'monthly';
   document.querySelectorAll('#lp-pro-toggle .lp-pro-toggle-btn').forEach(btn => {
     btn.setAttribute('aria-pressed', btn.dataset.plan === _proPlan ? 'true' : 'false');
+  });
+  // Reveal the annual-only perks when the yearly tab is active
+  document.querySelectorAll('.lp-annual-only').forEach(el => {
+    el.hidden = (_proPlan !== 'yearly');
   });
   _renderProPrice();
 }
