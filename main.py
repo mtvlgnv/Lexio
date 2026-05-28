@@ -3471,6 +3471,7 @@ _stripe.api_key          = os.getenv("STRIPE_SECRET_KEY", "")
 _STRIPE_WEBHOOK_SECRET   = os.getenv("STRIPE_WEBHOOK_SECRET", "")
 _STRIPE_PRICE_ID         = os.getenv("STRIPE_PRICE_ID", "")           # monthly, multi-currency
 _STRIPE_PRICE_ID_YEARLY  = os.getenv("STRIPE_PRICE_ID_YEARLY", "")    # annual, multi-currency
+_STRIPE_PRICE_ID_FAMILY  = os.getenv("STRIPE_PRICE_ID_FAMILY", "")    # family (4 seats), multi-currency
 _SITE_URL                = os.getenv("SITE_URL", "https://lexio.site")
 
 # Statement descriptor (Gap 3) — what appears on the customer's credit card
@@ -3582,6 +3583,11 @@ async def stripe_price_info(request: Request):
         ),
         "yearly_savings_pct":    _savings_percent(monthly_amount, yearly_amount),
         "yearly_available":      bool(_STRIPE_PRICE_ID_YEARLY),
+        # Family-plan availability: the frontend hides the Family card until
+        # STRIPE_PRICE_ID_FAMILY is configured in the server's .env. Lets us
+        # ship the infrastructure without exposing an unpriced plan.
+        "family_available":      bool(_STRIPE_PRICE_ID_FAMILY),
+        "family_seats":          FAMILY_PLAN_SEATS,
         "country":               country,
     }
 
@@ -3595,7 +3601,7 @@ async def stripe_create_checkout(
     """Create a Stripe Checkout session and return its URL.
 
     Query params:
-      plan: "monthly" (default) or "yearly".
+      plan: "monthly" (default), "yearly", or "family".
     """
     if not _stripe.api_key:
         raise HTTPException(status_code=503, detail="Payments not configured")
@@ -3614,10 +3620,14 @@ async def stripe_create_checkout(
             },
         )
 
-    # Plan selection — yearly is opt-in, monthly is the default. Anything
-    # outside the two known values falls back to monthly rather than 400ing.
-    plan = "yearly" if plan == "yearly" else "monthly"
-    price_id = _STRIPE_PRICE_ID_YEARLY if plan == "yearly" else _STRIPE_PRICE_ID
+    # Plan selection. Unknown values fall back to monthly rather than 400ing.
+    if plan not in ("monthly", "yearly", "family"):
+        plan = "monthly"
+    price_id = {
+        "monthly": _STRIPE_PRICE_ID,
+        "yearly":  _STRIPE_PRICE_ID_YEARLY,
+        "family":  _STRIPE_PRICE_ID_FAMILY,
+    }[plan]
     if not price_id:
         raise HTTPException(
             status_code=503,
