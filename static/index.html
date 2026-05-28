@@ -1585,9 +1585,17 @@
     .lp-trending-compact-header {
       display: flex; align-items: baseline; justify-content: space-between;
       gap: 12px; width: 100%;
+      margin-bottom: 4px;
     }
     .lp-trending-compact-header .lp-section-title {
       width: auto; margin: 0; flex: 1 1 auto;
+    }
+    .lp-trending-eyebrow {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .lp-trending-h2 {
+      width: 100%; text-align: left !important; margin: 0 0 6px;
     }
     .lp-trending-compact-header .lp-trending-month {
       font-family: 'Lora', serif;
@@ -1879,6 +1887,83 @@
       gap: 10px; width: 100%;
     }
     @media (max-width: 640px) { .lp-models-grid { grid-template-columns: 1fr; } }
+
+    /* ── "Pick how you read" pills + detail card ───────────── */
+    .lp-mode-pills {
+      display: inline-flex; align-items: center;
+      background: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: 999px;
+      padding: 4px;
+      gap: 2px;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      align-self: flex-start;
+    }
+    .lp-mode-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 18px;
+      font-family: inherit; font-size: 0.88rem; font-weight: 600;
+      color: var(--text-mid); background: transparent; border: none;
+      border-radius: 999px; cursor: pointer; white-space: nowrap;
+      transition: background 0.15s, color 0.15s;
+    }
+    .lp-mode-pill:hover { color: var(--text); }
+    .lp-mode-pill.active {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 2px 10px -2px color-mix(in oklch, var(--accent) 50%, transparent);
+    }
+    .lp-mode-pill-check { display: none; }
+    .lp-mode-pill.active .lp-mode-pill-check { display: inline-block; }
+    [data-theme="dark"] .lp-mode-pills {
+      background: color-mix(in oklch, var(--surface) 55%, transparent);
+      border-color: color-mix(in oklch, var(--border) 45%, transparent);
+    }
+
+    .lp-mode-detail {
+      width: 100%;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.6);
+      border-radius: var(--radius);
+      padding: 22px 22px 20px;
+      display: flex; flex-direction: column; gap: 10px;
+      margin-top: 14px;
+    }
+    [data-theme="dark"] .lp-mode-detail {
+      background: color-mix(in oklch, var(--surface) 55%, transparent);
+      border-color: color-mix(in oklch, var(--border) 45%, transparent);
+    }
+    .lp-mode-detail-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .lp-mode-detail-name {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text);
+    }
+    .lp-mode-detail-name svg { color: var(--accent); flex-shrink: 0; }
+    .lp-mode-detail-name strong { font-weight: 600; }
+    .lp-mode-detail-provider {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.78rem; font-weight: 600; color: var(--text-mid);
+    }
+    .lp-mode-detail-provider svg { flex-shrink: 0; }
+    .lp-mode-detail-engine {
+      font-size: 0.82rem; font-weight: 500; color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+    .lp-mode-detail-desc {
+      font-size: 0.95rem; line-height: 1.6; color: var(--text-mid);
+      margin-top: 2px;
+    }
+    .lp-mode-detail-best {
+      margin-top: 4px; font-size: 0.85rem; color: var(--text-mid);
+    }
+    .lp-mode-detail-best em { font-style: italic; color: var(--text); }
+    @media (max-width: 540px) {
+      .lp-mode-pill { padding: 7px 12px; font-size: 0.82rem; }
+      .lp-mode-detail { padding: 18px; }
+      .lp-mode-detail-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+    }
     .lp-model-card {
       padding: 18px 16px;
       background: rgba(255,255,255,0.55);
@@ -3626,44 +3711,41 @@
     </div>
   </div>
 
-  <!-- AI Models comparison -->
+  <!-- Pick how you read — interactive mode picker -->
   <div class="lp-models" id="lp-models" style="position:relative;z-index:1;">
-    <h2 class="lp-section-title">Three modes. One seamless switch.</h2>
+    <h2 class="lp-section-title">Pick how you read.</h2>
 
-    <div class="lp-models-grid">
-      <div class="lp-model-card">
-        <div class="lp-model-header">
-          <span class="lp-model-badge lp-model-badge-openai">OpenAI</span>
-          <span class="lp-model-speed">GPT-4o Mini</span>
-        </div>
-        <h3>Fast</h3>
-        <p>Near-instant lookups. Concise and accurate — best for high-frequency reading when you don't want to break flow.</p>
+    <div class="lp-mode-pills" role="tablist" aria-label="Reading modes">
+      <button class="lp-mode-pill" data-mode="fast" type="button" onclick="previewMode('fast')" role="tab" aria-selected="false">Fast</button>
+      <button class="lp-mode-pill active" data-mode="balanced" type="button" onclick="previewMode('balanced')" role="tab" aria-selected="true">
+        Balanced
+        <svg class="lp-mode-pill-check" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
+      <button class="lp-mode-pill" data-mode="deep" type="button" onclick="previewMode('deep')" role="tab" aria-selected="false">Deep</button>
+    </div>
+
+    <div class="lp-mode-detail" id="lp-mode-detail" role="tabpanel">
+      <div class="lp-mode-detail-head">
+        <span class="lp-mode-detail-name">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <strong id="lp-mode-name">Balanced</strong>
+        </span>
+        <span class="lp-mode-detail-provider" id="lp-mode-provider">
+          <svg id="lp-mode-provider-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>
+          <span id="lp-mode-provider-name">Google</span>
+        </span>
       </div>
-      <div class="lp-model-card lp-model-card-featured">
-        <div class="lp-model-header">
-          <span class="lp-model-badge lp-model-badge-google">Google</span>
-          <span class="lp-model-speed">Gemini 2.5 Flash</span>
-        </div>
-        <h3>Balanced</h3>
-        <p>Smart and thorough — wide language coverage, strong contextual reasoning, and rich cultural nuance.</p>
-        <span class="lp-model-default-tag">Recommended</span>
-      </div>
-      <div class="lp-model-card">
-        <div class="lp-model-header">
-          <span class="lp-model-badge lp-model-badge-anthropic">Anthropic</span>
-          <span class="lp-model-speed">Claude Sonnet 4.5</span>
-        </div>
-        <h3>Deep</h3>
-        <p>Maximum depth — richer etymologies, literary-grade register, and the most precise "why this word" explanations.</p>
-      </div>
+      <div class="lp-mode-detail-engine" id="lp-mode-engine">Gemini 2.5 Flash</div>
+      <p class="lp-mode-detail-desc" id="lp-mode-desc">Smart and thorough — wide language coverage, strong contextual reasoning, and rich cultural nuance.</p>
+      <p class="lp-mode-detail-best"><em id="lp-mode-best">Best for: most readers, most of the time.</em></p>
     </div>
 
     <!-- Trending words (compact, inside modes column) -->
     <div class="lp-trending-compact">
       <div class="lp-trending-compact-header">
-        <h2 class="lp-section-title">What people are looking up</h2>
-        <span class="lp-trending-month" id="trending-month">This month</span>
+        <span class="lp-trending-eyebrow" id="trending-month">This month</span>
       </div>
+      <h2 class="lp-section-title lp-trending-h2">What people are looking up</h2>
       <p class="lp-trending-tagline">Real readers, real words — pulled from live lookups. What's stumping you today?</p>
       <div class="lp-trending-skeleton" id="trending-skeleton">
         <div class="skeleton-row"></div>
@@ -4476,6 +4558,46 @@ function _selectMode(model) {
     return;
   }
   onModelPillClick(model);
+}
+
+/* ── "Pick how you read" preview card on the landing page ─── */
+const MODE_PREVIEW = {
+  fast: {
+    name: 'Fast',
+    provider: 'OpenAI',
+    engine: 'GPT-4o Mini',
+    desc: 'Near-instant lookups. Concise and accurate — best for high-frequency reading when you don’t want to break flow.',
+    best: 'Best for: quick lookups while you’re skimming.'
+  },
+  balanced: {
+    name: 'Balanced',
+    provider: 'Google',
+    engine: 'Gemini 2.5 Flash',
+    desc: 'Smart and thorough — wide language coverage, strong contextual reasoning, and rich cultural nuance.',
+    best: 'Best for: most readers, most of the time.'
+  },
+  deep: {
+    name: 'Deep',
+    provider: 'Anthropic',
+    engine: 'Claude Sonnet 4.5',
+    desc: 'Maximum depth — richer etymologies, literary-grade register, and the most precise “why this word” explanations.',
+    best: 'Best for: literature, philosophy, legal prose.'
+  }
+};
+function previewMode(mode) {
+  const info = MODE_PREVIEW[mode];
+  if (!info) return;
+  document.querySelectorAll('.lp-mode-pill').forEach(b => {
+    const isActive = b.dataset.mode === mode;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-selected', String(isActive));
+  });
+  const $ = id => document.getElementById(id);
+  if ($('lp-mode-name'))     $('lp-mode-name').textContent     = info.name;
+  if ($('lp-mode-provider-name')) $('lp-mode-provider-name').textContent = info.provider;
+  if ($('lp-mode-engine'))   $('lp-mode-engine').textContent   = info.engine;
+  if ($('lp-mode-desc'))     $('lp-mode-desc').textContent     = info.desc;
+  if ($('lp-mode-best'))     $('lp-mode-best').textContent     = info.best;
 }
 // Close on outside click & on Escape
 document.addEventListener('click', (e) => {
