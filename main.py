@@ -3088,7 +3088,7 @@ def _price_for_country(country: str) -> tuple[str, str, str]:
     if country in _GBP_COUNTRIES:
         return "GBP", "£", "2.99"
     if country in _EUR_COUNTRIES:
-        return "EUR", "€", "2.99"
+        return "EUR", "€", "3.99"
     return "USD", "$", "3.99"
 
 
@@ -3101,10 +3101,10 @@ def _yearly_price_for_country(country: str) -> str:
     absolute worst-case AI cost), so the downside per user is bounded.
     """
     if country in _GBP_COUNTRIES:
-        return "23.99"   # £2.00 effective / month
+        return "23.99"   # £2.00 effective / month — ~33% off 12× £2.99
     if country in _EUR_COUNTRIES:
-        return "23.99"   # €2.00 effective / month
-    return "29.99"       # $2.50 effective / month
+        return "29.99"   # €2.50 effective / month — ~37% off 12× €3.99
+    return "29.99"       # $2.50 effective / month — ~37% off 12× $3.99
 
 
 def _format_amount(amount: str, symbol: str) -> str:
