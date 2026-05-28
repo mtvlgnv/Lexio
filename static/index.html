@@ -696,6 +696,21 @@
     .mode-menu-item:disabled {
       opacity:0.5 !important; cursor:not-allowed;
     }
+    /* Locked Pro-only mode pills — visible PRO badge instead of just dim opacity */
+    .mode-menu-pro-badge {
+      display:inline-flex; align-items:center; justify-content:center;
+      font-size:0.6rem; font-weight:700; letter-spacing:0.04em;
+      padding:1px 6px; border-radius:6px;
+      background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));
+      color:#fff; margin-left:6px; flex-shrink:0;
+    }
+    .mode-menu-pro-badge[hidden] { display:none; }
+    .mode-menu-item.locked {
+      opacity:0.6;
+      cursor:pointer;  /* still clickable — opens upgrade modal */
+    }
+    .mode-menu-item.locked:hover { opacity:0.85; }
+    .mode-menu-item.locked .mode-menu-credit { opacity:0.5; }
     @media (max-width: 520px) {
       .mode-menu { right:auto; left:0; min-width:240px; }
     }
@@ -3129,14 +3144,14 @@
             <span class="mode-menu-desc">Near-instant lookups · GPT-4o Mini</span>
           </button>
           <button class="model-pill mode-menu-item" data-model="balanced" onclick="_selectMode('balanced')" type="button" role="menuitem">
-            <span class="mode-menu-name">Balanced <span class="mode-menu-credit">2 credits</span></span>
+            <span class="mode-menu-name">Balanced <span class="mode-menu-credit">2 credits</span><span class="mode-menu-pro-badge" hidden>PRO</span></span>
             <span class="mode-menu-desc">Smart and thorough · Gemini 2.5 Flash</span>
           </button>
           <button class="model-pill mode-menu-item active" data-model="deep" onclick="_selectMode('deep')" type="button" role="menuitem">
-            <span class="mode-menu-name">Deep <span class="mode-menu-credit">3 credits</span></span>
+            <span class="mode-menu-name">Deep <span class="mode-menu-credit">3 credits</span><span class="mode-menu-pro-badge" hidden>PRO</span></span>
             <span class="mode-menu-desc">Maximum depth · Claude Sonnet 4.5</span>
           </button>
-          <div class="mode-menu-footer">
+          <div class="mode-menu-footer" id="mode-menu-footer">
             Pro budget · <strong>120 credits / hour</strong> · resets automatically.
           </div>
         </div>
@@ -4447,6 +4462,19 @@ function _closeModeDropdown() {
 }
 function _selectMode(model) {
   _closeModeDropdown();
+  // Gate Pro-only modes for non-Pro users.
+  if (model !== 'fast' && !_userIsPro) {
+    if (!localStorage.getItem('lexio_token')) {
+      // Anonymous — prompt sign-in first.
+      if (typeof openAuthModal === 'function') openAuthModal(true);
+    } else {
+      // Signed in but not Pro — show upgrade modal.
+      if (typeof showProModal === 'function') {
+        showProModal('lookup', 0, 20);
+      }
+    }
+    return;
+  }
   onModelPillClick(model);
 }
 // Close on outside click & on Escape
@@ -5983,8 +6011,19 @@ function signOut() {
     // Word bank is account-scoped — purge so the next user on this device
     // doesn't inherit the previous user's saved words.
     localStorage.removeItem(WB_KEY);
+    // Model preference too — Pro-only modes shouldn't persist across sign-outs.
+    localStorage.removeItem('lexio_model');
   } catch {}
   wordBank = [];
+  // Reset Pro state and re-lock Balanced / Deep
+  _userIsPro = false;
+  setModel('fast');
+  if (typeof _lockProModels === 'function') _lockProModels();
+  // Hide Pro/Trial header badges
+  const proBadge   = document.getElementById('pro-header-badge');
+  const trialBadge = document.getElementById('trial-header-badge');
+  if (proBadge)   proBadge.style.display   = 'none';
+  if (trialBadge) trialBadge.style.display = 'none';
   updateAcctBtn();
   updateWBBadge();
   if (typeof renderWordBank === 'function') { try { renderWordBank(); } catch {} }
@@ -6724,20 +6763,48 @@ async function handleProCta() {
 
 function _lockProModels() {
   document.querySelectorAll('.model-pill:not([data-model="fast"])').forEach(p => {
-    p.disabled = true;
+    // Don't use `disabled` — it suppresses clicks, but we still want clicks to
+    // open the upgrade modal. Mark with a class instead and let `_selectMode`
+    // gate the actual switch.
+    p.disabled = false;
+    p.classList.add('locked');
     p.title = 'Upgrade to Pro to unlock';
-    p.style.opacity = '0.4';
-    p.style.cursor = 'not-allowed';
+    p.style.opacity = '';
+    p.style.cursor = '';
+    // Reveal the inline PRO badge
+    const badge = p.querySelector('.mode-menu-pro-badge');
+    if (badge) badge.hidden = false;
   });
-  // Don't force-switch model here — wait for pro check to resolve first
+  // Update the dropdown footer to reflect free / anonymous tier limits
+  const footer = document.getElementById('mode-menu-footer');
+  if (footer) {
+    const hasToken = !!localStorage.getItem('lexio_token');
+    footer.innerHTML = hasToken
+      ? 'Free tier · <strong>20 credits / hour</strong> · upgrade to Pro for Balanced &amp; Deep + 120/hr.'
+      : 'Sign in for free credits, or upgrade to Pro for Balanced &amp; Deep + 120/hr.';
+  }
+  // Force fast for anonymous visitors immediately — covers the brief window
+  // before checkProStatus resolves and prevents the UI showing "Deep" selected
+  // from a stale localStorage entry.
+  if (!localStorage.getItem('lexio_token') && currentModel !== 'fast') {
+    setModel('fast');
+  }
 }
 function _unlockProModels() {
   document.querySelectorAll('.model-pill').forEach(p => {
     p.disabled = false;
+    p.classList.remove('locked');
     p.title = '';
     p.style.opacity = '';
     p.style.cursor = '';
+    const badge = p.querySelector('.mode-menu-pro-badge');
+    if (badge) badge.hidden = true;
   });
+  // Restore Pro-budget footer
+  const footer = document.getElementById('mode-menu-footer');
+  if (footer) {
+    footer.innerHTML = 'Pro budget · <strong>120 credits / hour</strong> · resets automatically.';
+  }
 }
 
 // Lock pills immediately — unlock only if Pro is confirmed
