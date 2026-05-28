@@ -1416,8 +1416,17 @@
       display: inline-block;
       height: 1.4em;
       overflow: hidden;
-      vertical-align: bottom;
+      vertical-align: baseline;
       min-width: 180px;
+    }
+    /* Invisible anchor that gives the box a real text baseline so the
+       sibling "Built for" lines up with the absolutely-positioned
+       rotating words above it. */
+    .lp-hero-rotator-words::before {
+      content: "\00a0";
+      display: inline-block;
+      width: 0;
+      visibility: hidden;
     }
     .lp-hero-rotator-word {
       position: absolute;
