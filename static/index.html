@@ -303,6 +303,54 @@
     .ap-plan-action { padding:8px 14px; border-radius:var(--radius-sm); font-family:inherit; font-size:0.82rem; font-weight:600; cursor:pointer; transition:background 0.15s,opacity 0.15s; border:none; }
     .ap-plan-action.upgrade { background:var(--accent); color:#fff; }
     .ap-plan-action.upgrade:hover { background:var(--accent-dk); }
+
+    /* Family panel */
+    .ap-family-seats { font-size:0.78rem; color:var(--text-mid); margin-bottom:10px; }
+    .ap-family-seats strong { color:var(--text); }
+    .ap-family-list { display:flex; flex-direction:column; gap:6px; }
+    .ap-family-row {
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; padding:8px 10px;
+      background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm);
+      font-size:0.82rem;
+    }
+    .ap-family-row.you { background:color-mix(in oklch, var(--accent-lt) 60%, transparent); }
+    .ap-family-row-email { color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; min-width:0; }
+    .ap-family-row-tag { font-size:0.65rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; }
+    .ap-family-remove {
+      border:none; background:transparent; color:var(--muted); cursor:pointer;
+      font-size:1.1rem; line-height:1; padding:2px 6px; border-radius:4px;
+      transition:background 0.12s, color 0.12s;
+    }
+    .ap-family-remove:hover { background:var(--surface); color:var(--danger); }
+    .ap-family-pending {
+      font-size:0.74rem; color:var(--muted); font-style:italic;
+      margin-top:6px;
+    }
+    .ap-family-invite-form { display:flex; gap:6px; margin-top:10px; }
+    .ap-family-invite-form input {
+      flex:1; min-width:0; padding:7px 10px;
+      font-family:inherit; font-size:0.82rem;
+      background:var(--surface); color:var(--text);
+      border:1px solid var(--border); border-radius:var(--radius-sm);
+      outline:none;
+    }
+    .ap-family-invite-form input:focus { border-color:var(--accent); }
+    .ap-family-invite-form button {
+      padding:7px 14px; border:none; border-radius:var(--radius-sm);
+      background:var(--accent); color:#fff; font-family:inherit;
+      font-size:0.82rem; font-weight:600; cursor:pointer;
+      transition:background 0.15s;
+    }
+    .ap-family-invite-form button:hover { background:var(--accent-dk); }
+    .ap-family-invite-form button:disabled { opacity:0.5; cursor:not-allowed; }
+    .ap-family-status { font-size:0.78rem; margin-top:6px; min-height:1em; }
+    .ap-family-status.ok { color:oklch(40% 0.18 145); }
+    .ap-family-status.err { color:var(--danger); }
+    .ap-family-member-note {
+      font-size:0.82rem; color:var(--text-mid); line-height:1.5;
+    }
+    .ap-family-member-note strong { color:var(--text); }
     .ap-plan-action.manage { background:transparent; border:1px solid var(--border); color:var(--text-mid); }
     .ap-plan-action.manage:hover { background:var(--bg); color:var(--text); }
     /* Usage bars */
@@ -3637,6 +3685,11 @@
         Yearly
         <span class="lp-pro-toggle-save" id="lp-pro-save-pct">save 33%</span>
       </button>
+      <button type="button" class="lp-pro-toggle-btn lp-family-toggle" role="tab" id="lp-family-toggle-btn" hidden
+              data-plan="family" aria-pressed="false" onclick="setProPlan('family')">
+        Family
+        <span class="lp-pro-toggle-save" id="lp-family-seats-label">4 seats</span>
+      </button>
     </div>
 
     <div class="lp-pro-grid" id="lp-pro-grid">
@@ -3681,6 +3734,8 @@
           <li>Anki export — review what you save</li>
           <li class="lp-annual-only" hidden>Annual reading recap</li>
           <li class="lp-annual-only" hidden>Founder badge</li>
+          <li class="lp-family-only" hidden><strong>4 Pro seats</strong> — share with family</li>
+          <li class="lp-family-only" hidden>Everyone keeps their own word bank</li>
           <li>Priority support from Matvei</li>
         </ul>
         <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Start 3-day free trial</button>
@@ -4218,6 +4273,14 @@
             <span class="ap-stat-name">Mode</span>
             <span class="ap-stat-val" id="ap-mode-val">—</span>
           </div>
+        </div>
+
+        <!-- Family plan panel — visible when the user is on Family or is a member.
+             Hidden by default; populated by loadFamilyPanel() when the account
+             modal opens. -->
+        <div class="ap-section ap-family" id="ap-family-section" style="display:none">
+          <div class="ap-section-label" id="ap-family-label">Family plan</div>
+          <div id="ap-family-content"></div>
         </div>
 
       </div>
@@ -6076,11 +6139,141 @@ function openAuthModal(fromAnalyze) {
     if (modeEl) modeEl.textContent = currentModel ? (currentModel.charAt(0).toUpperCase() + currentModel.slice(1)) : '—';
     // Fetch live plan + usage and populate
     _populateAccountPanel();
+    // Family-plan panel (silently no-op for solo users)
+    loadFamilyPanel();
   } else {
     document.getElementById('auth-signed-out').style.display = '';
     document.getElementById('auth-signed-in').style.display  = 'none';
     switchAuthTab(fromAnalyze ? 'register' : 'login');
   }
+}
+
+/* ── Family-plan panel inside the account modal ─────────────────────
+   Renders three states:
+     - solo  → hidden (user is on monthly/yearly Pro or free)
+     - owner → seat usage + member list + invite form
+     - member → "you're on X's family plan" note
+   The panel is silent for solo users; only owners and members see it. */
+async function loadFamilyPanel() {
+  const section = document.getElementById('ap-family-section');
+  const content = document.getElementById('ap-family-content');
+  if (!section || !content) return;
+  const token = localStorage.getItem('lexio_token');
+  if (!token) { section.style.display = 'none'; return; }
+  let info;
+  try {
+    const r = await fetch('/family/info', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!r.ok) { section.style.display = 'none'; return; }
+    info = await r.json();
+  } catch { section.style.display = 'none'; return; }
+
+  if (info.role === 'solo') {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = '';
+
+  if (info.role === 'member') {
+    const owner = info.owner_name || info.owner_email || 'the plan owner';
+    content.innerHTML =
+      '<p class="ap-family-member-note">You\'re on <strong>' +
+      _escape(owner) +
+      '</strong>\'s Lexio Family plan — Pro features are unlocked for you.</p>';
+    return;
+  }
+
+  // Owner view
+  const seats = info.seats || 4;
+  const used  = info.used  || 1;
+  const members = info.members || [];
+  const pending = info.pending || [];
+  const meEmail = (authUser && authUser.email) || '';
+
+  let html = '<div class="ap-family-seats"><strong>' + used + ' of ' + seats + '</strong> seats used</div>';
+  html += '<div class="ap-family-list">';
+  // Owner row
+  html += '<div class="ap-family-row you">' +
+    '<span class="ap-family-row-email">' + _escape(meEmail) + '</span>' +
+    '<span class="ap-family-row-tag">You · owner</span>' +
+    '</div>';
+  members.forEach(m => {
+    html += '<div class="ap-family-row">' +
+      '<span class="ap-family-row-email">' + _escape(m.email) + '</span>' +
+      '<button class="ap-family-remove" title="Remove from plan" onclick="removeFamilyMember(' + (m.id || 0) + ', \'' + _escape(m.email).replace(/\'/g, '\\\'') + '\')">×</button>' +
+      '</div>';
+  });
+  html += '</div>';
+
+  pending.forEach(p => {
+    html += '<p class="ap-family-pending">Invitation pending for ' + _escape(p.email) + '</p>';
+  });
+
+  const remaining = seats - used - (pending ? pending.length : 0);
+  if (remaining > 0) {
+    html +=
+      '<form class="ap-family-invite-form" onsubmit="return inviteFamilyMember(event)">' +
+        '<input type="email" id="ap-family-invite-email" placeholder="invite by email" required autocomplete="off">' +
+        '<button type="submit" id="ap-family-invite-btn">Invite</button>' +
+      '</form>';
+  }
+  html += '<div class="ap-family-status" id="ap-family-status"></div>';
+
+  content.innerHTML = html;
+}
+
+function _escape(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+async function inviteFamilyMember(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const input = document.getElementById('ap-family-invite-email');
+  const btn   = document.getElementById('ap-family-invite-btn');
+  const stat  = document.getElementById('ap-family-status');
+  const token = localStorage.getItem('lexio_token');
+  if (!input || !token) return false;
+  const email = (input.value || '').trim();
+  if (!email) return false;
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  if (stat) { stat.className = 'ap-family-status'; stat.textContent = ''; }
+  try {
+    const r = await fetch('/family/invite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ email }),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (r.ok) {
+      if (stat) { stat.className = 'ap-family-status ok'; stat.textContent = 'Invitation sent to ' + email; }
+      input.value = '';
+      // Refresh panel
+      setTimeout(loadFamilyPanel, 800);
+    } else {
+      const msg = (j.detail && j.detail.message) || (j.detail && j.detail.code) || 'Could not send the invitation.';
+      if (stat) { stat.className = 'ap-family-status err'; stat.textContent = msg; }
+    }
+  } catch {
+    if (stat) { stat.className = 'ap-family-status err'; stat.textContent = 'Network error.'; }
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Invite'; }
+  }
+  return false;
+}
+
+async function removeFamilyMember(memberId, email) {
+  if (!memberId) return;
+  if (!confirm('Remove ' + (email || 'this member') + ' from your family plan?')) return;
+  const token = localStorage.getItem('lexio_token');
+  if (!token) return;
+  try {
+    const r = await fetch('/family/member/' + memberId, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token },
+    });
+    if (r.ok) loadFamilyPanel();
+  } catch {}
 }
 
 async function _populateAccountPanel() {
@@ -6894,8 +7087,18 @@ function _renderProPrice() {
   const periodEl = document.getElementById('lp-pro-period');
   const eqEl     = document.getElementById('lp-pro-period-eq');
   const anchorEl = document.getElementById('lp-pro-anchor');
+  const ctaEl    = document.getElementById('lp-pro-btn');
   const sym = _proPriceInfo.symbol || '$';
-  if (_proPlan === 'yearly' && _proPriceInfo.yearly_amount) {
+  if (_proPlan === 'family' && _proPriceInfo.family_amount) {
+    if (amtEl)    amtEl.textContent    = sym + _proPriceInfo.family_amount;
+    if (periodEl) periodEl.textContent = '/month';
+    if (eqEl) { eqEl.textContent = ''; eqEl.hidden = true; }
+    if (anchorEl) {
+      const seats = _proPriceInfo.family_seats || 4;
+      anchorEl.textContent = 'Lexio Pro for ' + seats + ' people — one bill, one decision.';
+    }
+    if (ctaEl && !_userIsPro) ctaEl.textContent = 'Start family plan';
+  } else if (_proPlan === 'yearly' && _proPriceInfo.yearly_amount) {
     if (amtEl)    amtEl.textContent    = sym + _proPriceInfo.yearly_amount;
     if (periodEl) periodEl.textContent = '/year';
     if (eqEl) {
@@ -6904,11 +7107,13 @@ function _renderProPrice() {
       eqEl.hidden = !eq;
     }
     if (anchorEl) anchorEl.textContent = 'Two paperbacks a year — and you’ll actually finish them.';
+    if (ctaEl && !_userIsPro) ctaEl.textContent = 'Start 3-day free trial';
   } else {
     if (amtEl)    amtEl.textContent    = sym + (_proPriceInfo.monthly_amount || _proPriceInfo.amount || '');
     if (periodEl) periodEl.textContent = '/month';
     if (eqEl) { eqEl.textContent = ''; eqEl.hidden = true; }
     if (anchorEl) anchorEl.textContent = 'Less than one paperback a month — and you’ll actually finish them.';
+    if (ctaEl && !_userIsPro) ctaEl.textContent = 'Start 3-day free trial';
   }
   // Mirror the (non-toggleable) FAQ price to whichever cycle is selected
   document.querySelectorAll('.lp-pro-amount-dynamic').forEach(el => {
@@ -6918,13 +7123,17 @@ function _renderProPrice() {
 }
 
 function setProPlan(plan) {
-  _proPlan = (plan === 'yearly') ? 'yearly' : 'monthly';
+  if (plan === 'family' || plan === 'yearly') _proPlan = plan;
+  else _proPlan = 'monthly';
   document.querySelectorAll('#lp-pro-toggle .lp-pro-toggle-btn').forEach(btn => {
     btn.setAttribute('aria-pressed', btn.dataset.plan === _proPlan ? 'true' : 'false');
   });
-  // Reveal the annual-only perks when the yearly tab is active
+  // Reveal the per-cycle perks
   document.querySelectorAll('.lp-annual-only').forEach(el => {
     el.hidden = (_proPlan !== 'yearly');
+  });
+  document.querySelectorAll('.lp-family-only').forEach(el => {
+    el.hidden = (_proPlan !== 'family');
   });
   _renderProPrice();
 }
@@ -6992,6 +7201,13 @@ async function handleProCta() {
     const yearlyBtn = document.querySelector('#lp-pro-toggle .lp-pro-toggle-btn[data-plan="yearly"]');
     if (yearlyBtn && info.yearly_available === false) {
       yearlyBtn.style.display = 'none';
+    }
+    // Reveal the Family toggle when the server has the family price wired up
+    const familyBtn = document.getElementById('lp-family-toggle-btn');
+    if (familyBtn) {
+      familyBtn.hidden = !info.family_available;
+      const seatLbl = document.getElementById('lp-family-seats-label');
+      if (seatLbl) seatLbl.textContent = (info.family_seats || 4) + ' seats';
     }
     // Update savings badge from the server-computed percentage
     const savePct = document.getElementById('lp-pro-save-pct');

@@ -2422,7 +2422,7 @@ async def family_info(user: User = Depends(current_user), db: DBSession = Depend
         "role":     "owner" if is_family_owner else "solo",
         "seats":    FAMILY_PLAN_SEATS,
         "used":     1 + len(members),   # owner counts
-        "members":  [{"email": m.email, "name": m.name} for m in members],
+        "members":  [{"id": m.id, "email": m.email, "name": m.name} for m in members],
         "pending":  pending,
     }
 
@@ -3536,6 +3536,17 @@ def _yearly_price_for_country(country: str) -> str:
     return "39.99"       # $3.33 effective / month — ~33% off 12× $4.99
 
 
+def _family_price_for_country(country: str) -> str:
+    """Family-plan monthly amount per visitor country. Mirrors the
+    multi-currency price object configured in Stripe:
+    USD $9.99 / EUR €8.99 / GBP £8.99 (≈ $2.50 per seat on a 4-seat plan)."""
+    if country in _GBP_COUNTRIES:
+        return "8.99"
+    if country in _EUR_COUNTRIES:
+        return "8.99"
+    return "9.99"
+
+
 def _format_amount(amount: str, symbol: str) -> str:
     """Render an amount in the locale-appropriate format (EUR uses comma)."""
     if symbol == "€":
@@ -3567,9 +3578,11 @@ async def stripe_price_info(request: Request):
     country = await _country_from_ip(ip)
     currency, symbol, monthly_amount = _price_for_country(country)
     yearly_amount = _yearly_price_for_country(country)
+    family_amount = _family_price_for_country(country)
     # Localised display strings ("2,99" vs "2.99" in EUR)
     monthly_display = _format_amount(monthly_amount, symbol)
     yearly_display  = _format_amount(yearly_amount,  symbol)
+    family_display  = _format_amount(family_amount,  symbol)
     return {
         "currency":              currency,
         "symbol":                symbol,
@@ -3587,6 +3600,7 @@ async def stripe_price_info(request: Request):
         # STRIPE_PRICE_ID_FAMILY is configured in the server's .env. Lets us
         # ship the infrastructure without exposing an unpriced plan.
         "family_available":      bool(_STRIPE_PRICE_ID_FAMILY),
+        "family_amount":         family_display,
         "family_seats":          FAMILY_PLAN_SEATS,
         "country":               country,
     }
