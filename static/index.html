@@ -2272,27 +2272,63 @@
       .lp-founder-avatar { width: 44px; height: 44px; font-size: 1.2rem; }
     }
 
-    .lp-apps {
-      display: grid; grid-template-columns: 1fr 1fr;
+    /* ── Merged Chrome + Mac CTA block (cream surface) ─────── */
+    .lp-apps-merged {
+      padding: 64px 32px 72px;
+      background: color-mix(in oklch, var(--accent-lt) 70%, oklch(96% 0.04 80));
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
-    }
-    .lp-app-card {
-      padding: 56px 48px 64px;
       display: flex; flex-direction: column; align-items: center;
       text-align: center; gap: 14px;
     }
-    .lp-app-card:first-child {
-      background: var(--accent-lt);
-      border-right: 1px solid var(--accent-mid);
+    [data-theme="dark"] .lp-apps-merged {
+      background: color-mix(in oklch, var(--surface) 80%, var(--accent-lt));
     }
-    .lp-app-card h3 {
-      font-family: 'Lora', serif; font-size: 1.55rem; font-weight: 600;
-      color: var(--text); line-height: 1.3; max-width: 280px;
+    .lp-apps-eyebrow {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent);
     }
-    .lp-app-card h3 em { font-style: italic; color: var(--accent); }
-    .lp-app-card p { font-size: 0.88rem; color: var(--text-mid); max-width: 300px; line-height: 1.65; }
-    .lp-app-card-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 4px; }
+    .lp-apps-h2 {
+      font-family: 'Lora', serif; font-size: clamp(1.7rem, 3vw, 2.1rem);
+      font-weight: 600; line-height: 1.2; color: var(--text);
+      letter-spacing: -0.01em;
+      max-width: 14ch;
+    }
+    .lp-apps-desc {
+      font-size: 0.98rem; line-height: 1.65; color: var(--text-mid);
+      max-width: 520px;
+    }
+    .lp-apps-roadmap { color: var(--muted); }
+    .lp-apps-btns {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      margin-top: 10px;
+    }
+    .lp-apps-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px;
+      background: oklch(20% 0.01 65); color: #fff;
+      border: 1px solid oklch(28% 0.01 65); border-radius: 12px;
+      font-family: 'DM Sans', inherit; font-size: 0.92rem; font-weight: 600;
+      text-decoration: none; cursor: pointer; white-space: nowrap;
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px -4px rgba(0,0,0,0.25);
+    }
+    .lp-apps-btn:hover {
+      background: oklch(14% 0.01 65); transform: translateY(-1px);
+      box-shadow: 0 6px 18px -4px rgba(0,0,0,0.32);
+    }
+    [data-theme="dark"] .lp-apps-btn {
+      background: var(--bg); color: var(--text); border-color: var(--border);
+    }
+    [data-theme="dark"] .lp-apps-btn:hover { background: var(--surface); }
+    .lp-apps-note {
+      margin-top: 6px;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    @media (max-width: 540px) {
+      .lp-apps-merged { padding: 48px 20px 56px; }
+      .lp-apps-btn { padding: 11px 18px; font-size: 0.88rem; }
+    }
 
     /* Footer */
 
@@ -3898,32 +3934,25 @@
     </a>
   </div>
 
-  <!-- Apps CTA (merged) -->
-  <div class="lp-apps" id="lp-download">
-    <div class="lp-app-card">
-      <span class="lp-ext-eyebrow" data-i18n="extEyebrow">Chrome Extension</span>
-      <h3 data-i18n-html="extH2">Look up words without leaving the page.</h3>
-      <p data-i18n="extP">Select any word or sentence on any website. Lexio appears instantly with the meaning in context — no copy-paste, no tab switching.</p>
-      <div class="lp-app-card-btns">
-        <a class="lp-ext-badge" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          <span data-i18n="extBtn">Add to Chrome</span>
-        </a>
-      </div>
-      <span class="lp-ext-note" data-i18n="extNote">Free on the Chrome Web Store · Works on any page · No account required</span>
+  <!-- Apps CTA (merged: Chrome + Mac in one cream block) -->
+  <div class="lp-apps-merged" id="lp-download">
+    <span class="lp-apps-eyebrow">Chrome &amp; Mac</span>
+    <h3 class="lp-apps-h2">Lexio wherever you read.</h3>
+    <p class="lp-apps-desc">
+      Add it to Chrome for any web page or PDF, or get the Mac app for a menu-bar lookup in any app.
+      <span class="lp-apps-roadmap">iOS, Windows, and Linux are on the roadmap.</span>
+    </p>
+    <div class="lp-apps-btns">
+      <a class="lp-apps-btn" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="14.31" y1="8" x2="20.05" y2="17.94"/><line x1="9.69" y1="8" x2="21.17" y2="8"/><line x1="7.38" y1="12" x2="13.12" y2="2.06"/><line x1="9.69" y1="16" x2="3.95" y2="6.06"/><line x1="14.31" y1="16" x2="2.83" y2="16"/><line x1="16.62" y1="12" x2="10.88" y2="21.94"/></svg>
+        <span>Add to Chrome</span>
+      </a>
+      <button class="lp-apps-btn" type="button" onclick="openDesktopModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>Download for Mac</span>
+      </button>
     </div>
-    <div class="lp-app-card">
-      <span class="lp-ext-eyebrow">Mac App</span>
-      <h3 data-i18n-html="deskH2">Always at hand on your Mac.</h3>
-      <p data-i18n="deskP">The Lexio Mac app lives in your menu bar or dock — look up words without switching tabs. <span style="opacity:0.7">Mac &amp; Chrome for now; iOS, Windows, and Linux are on the roadmap.</span></p>
-      <div class="lp-app-card-btns">
-        <button class="lp-ext-badge" onclick="openDesktopModal()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          <span data-i18n="downloadMac">Download for Mac</span>
-        </button>
-        <button class="lp-btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})" data-i18n="openBrowser">Open in browser</button>
-      </div>
-    </div>
+    <span class="lp-apps-note">Free · Works on any page · No account required</span>
   </div>
 
   <!-- Founder byline (trust signal) -->
