@@ -3841,6 +3841,15 @@ async def pro_page():
     from fastapi.responses import RedirectResponse
     return RedirectResponse(url="/#lp-pro", status_code=301)
 
+@app.get("/recap", response_class=HTMLResponse, include_in_schema=False)
+async def recap_page():
+    """Spotify-Wrapped-style annual reading recap. Server returns a static
+    HTML shell; the page calls /api/annual-recap on load and renders the
+    user's stats. For unauthenticated visitors, the page acts as marketing
+    for the annual plan (sign-in CTA + sample numbers)."""
+    with open("static/recap.html", encoding="utf-8") as f:
+        return HTMLResponse(f.read())
+
 @app.get("/privacy", response_class=HTMLResponse, include_in_schema=False)
 async def privacy_page():
     with open("static/privacy.html", encoding="utf-8") as f:

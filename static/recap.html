@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Lexio Year — A Reader's Recap</title>
+  <meta name="description" content="A personal recap of your year reading with Lexio — words you saved, lookups you made, the languages you read in, and the month-by-month rhythm of your reading." />
+  <link rel="canonical" href="https://lexio.site/recap" />
+  <meta name="robots" content="noindex, nofollow">
+
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Your Lexio Year — A Reader's Recap" />
+  <meta property="og:description" content="A year of contextual definitions, hard words, and reading recovered. Yours, in numbers." />
+  <meta property="og:url" content="https://lexio.site/recap" />
+  <meta property="og:image" content="https://lexio.site/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Your Lexio Year" />
+  <meta name="twitter:description" content="A year of contextual definitions, hard words, and reading recovered." />
+  <meta name="twitter:image" content="https://lexio.site/og-image.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           oklch(96.5% 0.012 75);
+      --surface:      oklch(99.2% 0.006 75);
+      --border:       oklch(89%   0.014 75);
+      --accent:       oklch(58%   0.17  54);
+      --accent-mid:   oklch(90%   0.08  70);
+      --accent-lt:    oklch(96%   0.06  75);
+      --text:         oklch(18%   0.015 65);
+      --text-mid:     oklch(35%   0.012 65);
+      --muted:        oklch(58%   0.01  65);
+      --radius:       16px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+    html, body { background: var(--bg); color: var(--text); min-height: 100%; line-height: 1.5; }
+
+    /* ── Header ──────────────────────────────────────────────── */
+    .page-header {
+      height: 60px; padding: 0 28px;
+      display: flex; align-items: center; gap: 18px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600; color: var(--text); text-decoration: none; }
+    .logo em { font-style: italic; color: var(--accent); }
+    .header-spacer { flex: 1; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.88rem; font-weight: 500; color: var(--text-mid);
+      text-decoration: none; padding: 8px 14px; border-radius: 8px;
+    }
+    .back-link:hover { background: var(--accent-mid); color: var(--text); }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      padding: 80px 24px 40px;
+      text-align: center;
+      max-width: 760px; margin: 0 auto;
+      position: relative;
+    }
+    .hero .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 600; letter-spacing: -0.02em; line-height: 1.05;
+      color: var(--text); margin-bottom: 16px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero p.lead {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.05rem, 2vw, 1.2rem); line-height: 1.65;
+      color: var(--text-mid);
+      max-width: 580px; margin: 0 auto;
+    }
+
+    /* ── Hero state badges ───────────────────────────────────── */
+    .badge-row { display: flex; justify-content: center; gap: 8px; margin-top: 22px; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.74rem; font-weight: 600; letter-spacing: 0.04em;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--text-mid);
+    }
+    .badge.founder {
+      background: linear-gradient(135deg, oklch(72% 0.16 75 / 0.18), oklch(62% 0.18 50 / 0.18));
+      border-color: oklch(72% 0.16 75 / 0.4);
+      color: oklch(56% 0.18 50);
+    }
+    .badge.plan {
+      background: color-mix(in oklch, var(--accent) 12%, var(--surface));
+      border-color: var(--accent-mid);
+      color: var(--accent);
+    }
+
+    /* ── Number tiles ─────────────────────────────────────────── */
+    .tiles {
+      max-width: 880px; margin: 0 auto; padding: 40px 24px 24px;
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .tile {
+      padding: 32px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .tile:hover { transform: translateY(-2px); border-color: var(--accent-mid); }
+    .tile-num {
+      font-family: 'Lora', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 600; line-height: 1; color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .tile-label {
+      margin-top: 10px;
+      font-size: 0.85rem; color: var(--text-mid);
+    }
+    @media (max-width: 720px) { .tiles { grid-template-columns: 1fr; } }
+
+    /* ── Sections ─────────────────────────────────────────────── */
+    .section {
+      max-width: 760px; margin: 0 auto; padding: 32px 24px;
+    }
+    .section h2 {
+      font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 600;
+      margin-bottom: 6px; letter-spacing: -0.01em;
+    }
+    .section h2 em { font-style: italic; color: var(--accent); }
+    .section .section-sub {
+      font-size: 0.95rem; color: var(--text-mid); margin-bottom: 20px;
+    }
+
+    /* ── Sparkline (monthly saved-word bars) ──────────────────── */
+    .sparkline {
+      display: flex; align-items: flex-end; gap: 6px;
+      padding: 24px 22px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      height: 180px;
+    }
+    .spark-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+    .spark-bar {
+      width: 100%;
+      background: linear-gradient(180deg, var(--accent) 0%, oklch(70% 0.15 60) 100%);
+      border-radius: 4px 4px 0 0;
+      min-height: 2px;
+      transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .spark-label {
+      font-size: 0.62rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .spark-count { font-size: 0.7rem; font-weight: 600; color: var(--text-mid); }
+
+    /* ── Recent words list ────────────────────────────────────── */
+    .words-cloud {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .word-chip {
+      font-family: 'Lora', serif;
+      font-size: 1rem; font-weight: 500;
+      padding: 8px 14px;
+      background: color-mix(in oklch, var(--accent-lt) 60%, var(--surface));
+      border: 1px solid var(--accent-mid);
+      border-radius: 999px; color: var(--text);
+    }
+
+    /* ── Share + CTA ──────────────────────────────────────────── */
+    .closing-cta {
+      max-width: 680px; margin: 24px auto 80px;
+      padding: 40px 28px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .closing-cta h2 {
+      font-family: 'Lora', serif; font-size: 1.7rem; font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .closing-cta p {
+      color: var(--text-mid); margin-bottom: 22px; line-height: 1.6;
+    }
+    .cta-row {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; font-size: 0.92rem; font-weight: 600;
+      border-radius: 10px; text-decoration: none;
+      transition: transform 0.15s, background 0.15s;
+      border: 1px solid transparent; cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--accent); color: white;
+      box-shadow: 0 6px 16px -4px color-mix(in oklch, var(--accent) 55%, transparent);
+    }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--surface); color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+
+    /* ── State variants ───────────────────────────────────────── */
+    .state-hidden { display: none !important; }
+    .loading-shimmer {
+      background: linear-gradient(90deg, var(--surface), var(--border), var(--surface));
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .empty-state {
+      max-width: 560px; margin: 60px auto;
+      padding: 40px 32px; text-align: center;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .empty-state h2 {
+      font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .empty-state p {
+      color: var(--text-mid); line-height: 1.6; margin-bottom: 20px;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .page-footer {
+      max-width: 760px; margin: 0 auto; padding: 16px 24px 40px;
+      text-align: center;
+      font-size: 0.82rem; color: var(--muted); font-style: italic;
+    }
+    .page-footer a { color: var(--text-mid); text-decoration: none; }
+    .page-footer a:hover { color: var(--accent); }
+
+    @media (max-width: 540px) {
+      .hero { padding: 56px 20px 28px; }
+      .tiles { padding: 28px 20px 16px; }
+      .section { padding: 24px 20px; }
+      .closing-cta { padding: 32px 20px; margin-bottom: 56px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <a class="logo" href="/">Le<em>x</em>io</a>
+  <div class="header-spacer"></div>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Lexio
+  </a>
+</header>
+
+<!-- ─── State A: signed-in Pro reader sees their actual recap ─── -->
+<div id="recap-content" class="state-hidden">
+
+  <section class="hero">
+    <span class="eyebrow">Your Lexio Year</span>
+    <h1>A year of reading, <em>annotated.</em></h1>
+    <p class="lead">Every word you took the time to understand, and the months that contained them.</p>
+    <div class="badge-row" id="badge-row"></div>
+  </section>
+
+  <section class="tiles">
+    <div class="tile">
+      <div class="tile-num" id="tile-saved">—</div>
+      <div class="tile-label">words saved this year</div>
+    </div>
+    <div class="tile">
+      <div class="tile-num" id="tile-lookups">—</div>
+      <div class="tile-label">contextual lookups, lifetime</div>
+    </div>
+    <div class="tile">
+      <div class="tile-num" id="tile-days">—</div>
+      <div class="tile-label">days reading with Lexio</div>
+    </div>
+  </section>
+
+  <section class="section" id="section-rhythm">
+    <h2>Your reading <em>rhythm.</em></h2>
+    <p class="section-sub">Words saved, month by month. Tall bars are the months you read hardest.</p>
+    <div class="sparkline" id="sparkline"></div>
+  </section>
+
+  <section class="section" id="section-words">
+    <h2>The latest words you <em>collected.</em></h2>
+    <p class="section-sub">Your ten most recent saves. The shape of your reading right now.</p>
+    <div class="words-cloud" id="words-cloud"></div>
+  </section>
+
+  <div class="closing-cta">
+    <h2>Read on.</h2>
+    <p>The next year of vocabulary is waiting in the books you haven't opened yet.</p>
+    <div class="cta-row">
+      <button class="btn btn-primary" onclick="shareRecap()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share your year
+      </button>
+      <a class="btn btn-secondary" href="/">Back to reading</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── State B: free/anonymous visitors — upgrade teaser ─── -->
+<div id="recap-teaser" class="state-hidden">
+  <div class="empty-state">
+    <h2>This is the Lexio Year recap.</h2>
+    <p>Annual subscribers get a personal recap of every word they saved, every lookup they made, and the month-by-month rhythm of their reading. Yours starts the day you sign up.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/#lp-pro">Start a 3-day Pro trial</a>
+      <a class="btn btn-secondary" href="/">Back to reading</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── State C: signed in but no data yet ─── -->
+<div id="recap-empty" class="state-hidden">
+  <div class="empty-state">
+    <h2>Not enough reading yet.</h2>
+    <p>Your recap fills in as you save words and look things up. Come back after a few weeks of reading and there'll be something here worth seeing.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/">Open Lexio</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Loading shimmer (default visible) ─── -->
+<div id="recap-loading">
+  <section class="hero">
+    <span class="eyebrow">Your Lexio Year</span>
+    <h1 style="opacity:0.3">Loading your <em>year…</em></h1>
+  </section>
+  <section class="tiles">
+    <div class="tile"><div class="tile-num loading-shimmer" style="height:48px;border-radius:6px"></div><div class="tile-label">&nbsp;</div></div>
+    <div class="tile"><div class="tile-num loading-shimmer" style="height:48px;border-radius:6px"></div><div class="tile-label">&nbsp;</div></div>
+    <div class="tile"><div class="tile-num loading-shimmer" style="height:48px;border-radius:6px"></div><div class="tile-label">&nbsp;</div></div>
+  </section>
+</div>
+
+<footer class="page-footer">
+  <em>Read deeper. Understand everything.</em><br>
+  © 2026 Lexio · <a href="/">Home</a> · <a href="/glossary">Glossary</a> · <a href="/privacy.html">Privacy</a>
+</footer>
+
+<script>
+const MONTH_LABELS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function show(id) {
+  ['recap-content','recap-teaser','recap-empty','recap-loading'].forEach(x => {
+    document.getElementById(x).classList.toggle('state-hidden', x !== id);
+  });
+}
+
+function formatNum(n) {
+  if (n == null) return '—';
+  return n.toLocaleString();
+}
+
+async function loadRecap() {
+  const token = localStorage.getItem('lexio_token');
+  if (!token) { show('recap-teaser'); return; }
+
+  let r;
+  try {
+    r = await fetch('/api/annual-recap', { headers: { 'Authorization': 'Bearer ' + token } });
+  } catch {
+    show('recap-teaser'); return;
+  }
+
+  if (r.status === 402) {
+    // Free/expired user — show the upgrade teaser
+    show('recap-teaser');
+    return;
+  }
+  if (!r.ok) {
+    show('recap-teaser');
+    return;
+  }
+
+  const data = await r.json();
+  if (!data || (data.saved_total === 0 && data.lookup_total === 0 && data.account_age_days < 7)) {
+    show('recap-empty');
+    return;
+  }
+
+  // ── Render
+  show('recap-content');
+
+  // Badges
+  const badges = [];
+  if (data.is_founder) badges.push('<span class="badge founder">★ Founder</span>');
+  if (data.plan_interval) {
+    const labels = { month: 'Monthly Pro', year: 'Annual Pro', family: 'Family Pro' };
+    badges.push('<span class="badge plan">' + (labels[data.plan_interval] || 'Pro') + '</span>');
+  }
+  document.getElementById('badge-row').innerHTML = badges.join('');
+
+  // Number tiles
+  document.getElementById('tile-saved').textContent = formatNum(data.saved_recent || data.saved_total);
+  document.getElementById('tile-lookups').textContent = formatNum(data.lookup_total);
+  document.getElementById('tile-days').textContent = formatNum(data.account_age_days);
+
+  // Sparkline — last 12 months
+  const byMonth = data.saved_by_month || {};
+  const months = [];
+  const now = new Date();
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
+    months.push({ key, label: MONTH_LABELS[d.getMonth()], count: byMonth[key] || 0 });
+  }
+  const maxCount = Math.max(1, ...months.map(m => m.count));
+  const sparkline = document.getElementById('sparkline');
+  if (months.every(m => m.count === 0)) {
+    document.getElementById('section-rhythm').classList.add('state-hidden');
+  } else {
+    sparkline.innerHTML = months.map(m => {
+      const pct = (m.count / maxCount) * 100;
+      const heightPx = Math.max(2, Math.round(pct * 1.2));
+      return (
+        '<div class="spark-col">' +
+          '<div class="spark-count">' + (m.count || '') + '</div>' +
+          '<div class="spark-bar" style="height:' + heightPx + 'px"></div>' +
+          '<div class="spark-label">' + m.label + '</div>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  // Recent words
+  const recent = data.recent_words || [];
+  if (recent.length === 0) {
+    document.getElementById('section-words').classList.add('state-hidden');
+  } else {
+    document.getElementById('words-cloud').innerHTML = recent.map(w =>
+      '<span class="word-chip">' + escapeHtml(w) + '</span>'
+    ).join('');
+  }
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function shareRecap() {
+  const text = 'My Lexio Year — a personal recap of every word I took the time to understand. https://lexio.site/recap';
+  if (navigator.share) {
+    navigator.share({ title: 'My Lexio Year', text, url: 'https://lexio.site/recap' }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = event.target.closest('.btn');
+      if (btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copied';
+        setTimeout(() => { btn.innerHTML = orig; }, 1800);
+      }
+    });
+  }
+}
+
+loadRecap();
+</script>
+
+<script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+</body>
+</html>

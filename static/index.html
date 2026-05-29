@@ -370,7 +370,14 @@
     .ap-stat-name { font-size:0.82rem; color:var(--text-mid); }
     .ap-stat-val { font-size:0.82rem; font-weight:500; color:var(--text); }
     /* Footer */
-    .ap-footer { padding:16px 20px; margin-top:auto; border-top:1px solid var(--border); flex-shrink:0; }
+    .ap-footer { padding:16px 20px; margin-top:auto; border-top:1px solid var(--border); flex-shrink:0; display:flex; align-items:center; gap:12px; }
+    .ap-footer-spacer { flex:1; }
+    .ap-recap-link {
+      font-size:0.82rem; font-weight:500; color:var(--accent);
+      text-decoration:none; padding:6px 10px; border-radius:6px;
+      transition:background 0.15s;
+    }
+    .ap-recap-link:hover { background:var(--accent-lt); }
     /* OAuth divider */
     .auth-divider { display:flex; align-items:center; gap:10px; font-size:0.74rem; color:var(--muted); }
     .auth-divider::before,.auth-divider::after { content:''; flex:1; height:1px; background:var(--border); }
@@ -4279,6 +4286,8 @@
 
       <!-- Footer -->
       <div class="ap-footer">
+        <a class="ap-recap-link" id="ap-recap-link" href="/recap" style="display:none">View your Lexio year →</a>
+        <div class="ap-footer-spacer"></div>
         <button class="auth-logout" onclick="signOut()">Sign out</button>
       </div>
 
@@ -6280,6 +6289,12 @@ async function _populateAccountPanel() {
     if (!proRes.ok || !usageRes.ok) return;
     const pro   = await proRes.json();
     const usage = await usageRes.json();
+
+    // Show the "View your Lexio year" recap link in the footer for any
+    // Pro user (paid or trial). The link goes to /recap which renders
+    // the personal year-in-review.
+    const recapLink = document.getElementById('ap-recap-link');
+    if (recapLink) recapLink.style.display = (pro.is_pro || pro.is_trial) ? '' : 'none';
 
     // ── Plan card ────────────────────────────────────────────
     const badge   = document.querySelector('#ap-plan-card .ap-plan-badge');
