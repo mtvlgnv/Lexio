@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What's new in Lexio — Changelog</title>
+  <meta name="description" content="A running list of what's been added to Lexio — features, fixes, content. Updated as we ship." />
+  <link rel="canonical" href="https://lexio.site/changelog.html" />
+  <link rel="alternate" hreflang="en" href="https://lexio.site/changelog.html" />
+  <link rel="alternate" hreflang="x-default" href="https://lexio.site/changelog.html" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#f3ead8" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="What's new in Lexio" />
+  <meta property="og:description" content="A running list of features shipped on Lexio." />
+  <meta property="og:url" content="https://lexio.site/changelog.html" />
+  <meta property="og:image" content="https://lexio.site/og-image.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           oklch(96.5% 0.012 75);
+      --surface:      oklch(99.2% 0.006 75);
+      --border:       oklch(89%   0.014 75);
+      --accent:       oklch(58%   0.17  54);
+      --accent-mid:   oklch(90%   0.08  70);
+      --text:         oklch(18%   0.015 65);
+      --text-mid:     oklch(35%   0.012 65);
+      --muted:        oklch(58%   0.01  65);
+      --radius:       12px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+    html, body { background: var(--bg); color: var(--text); min-height: 100%; line-height: 1.6; }
+
+    .page-header {
+      height: 60px; padding: 0 28px;
+      display: flex; align-items: center; gap: 18px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600; color: var(--text); text-decoration: none; }
+    .logo em { font-style: italic; color: var(--accent); }
+    .header-spacer { flex: 1; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.88rem; font-weight: 500; color: var(--text-mid);
+      text-decoration: none; padding: 8px 14px; border-radius: 8px;
+    }
+    .back-link:hover { background: var(--accent-mid); color: var(--text); }
+
+    .hero {
+      padding: 64px 24px 32px;
+      max-width: 760px; margin: 0 auto;
+      text-align: center;
+    }
+    .hero .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: 'Lora', serif; font-size: clamp(2rem, 4vw, 2.6rem);
+      font-weight: 600; letter-spacing: -0.015em; line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero p {
+      font-family: 'Lora', serif; font-size: 1.02rem; line-height: 1.65;
+      color: var(--text-mid); max-width: 540px; margin: 0 auto;
+    }
+
+    .timeline {
+      max-width: 760px; margin: 32px auto 80px; padding: 0 24px;
+    }
+    .entry {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .entry:last-child { border-bottom: none; }
+    .entry-meta {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .entry-date {
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .entry-tag {
+      display: inline-block;
+      font-size: 0.66rem; font-weight: 700;
+      padding: 3px 8px; border-radius: 999px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .entry-tag.feature { background: color-mix(in oklch, var(--accent) 15%, var(--surface)); color: var(--accent); border: 1px solid var(--accent-mid); }
+    .entry-tag.fix     { background: color-mix(in oklch, oklch(60% 0.15 145) 12%, var(--surface)); color: oklch(40% 0.16 145); border: 1px solid color-mix(in oklch, oklch(60% 0.15 145) 35%, transparent); }
+    .entry-tag.polish  { background: color-mix(in oklch, oklch(60% 0.13 240) 12%, var(--surface)); color: oklch(42% 0.15 240); border: 1px solid color-mix(in oklch, oklch(60% 0.13 240) 35%, transparent); }
+    .entry-tag.content { background: color-mix(in oklch, oklch(60% 0.14 65) 12%, var(--surface)); color: oklch(40% 0.15 65); border: 1px solid color-mix(in oklch, oklch(60% 0.14 65) 35%, transparent); }
+    .entry h2 {
+      font-family: 'Lora', serif; font-size: 1.35rem; font-weight: 600;
+      letter-spacing: -0.01em; line-height: 1.3; margin-bottom: 8px;
+    }
+    .entry h2 em { font-style: italic; color: var(--accent); }
+    .entry p {
+      font-size: 0.96rem; color: var(--text-mid); line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    .entry p em { font-style: italic; color: var(--text); }
+    .entry p strong { color: var(--text); font-weight: 600; }
+    .entry ul {
+      list-style: none; padding-left: 0; margin: 8px 0 0;
+    }
+    .entry li {
+      font-size: 0.94rem; color: var(--text-mid); line-height: 1.7;
+      padding-left: 18px; position: relative; margin-bottom: 4px;
+    }
+    .entry li::before {
+      content: "→"; position: absolute; left: 0;
+      color: var(--accent); font-weight: 600;
+    }
+    .entry a {
+      color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+    }
+
+    .closing {
+      max-width: 680px; margin: 24px auto 80px;
+      padding: 32px 28px; text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .closing p {
+      font-size: 0.95rem; color: var(--text-mid); line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .closing a.btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px; background: var(--accent); color: white;
+      border-radius: 10px; font-size: 0.9rem; font-weight: 600;
+      text-decoration: none;
+    }
+
+    footer {
+      max-width: 760px; margin: 0 auto; padding: 0 24px 32px;
+      text-align: center;
+      font-size: 0.82rem; color: var(--muted); font-style: italic;
+    }
+    footer a { color: var(--text-mid); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 540px) {
+      .hero { padding: 40px 20px 24px; }
+      .timeline { padding: 0 20px; margin-bottom: 48px; }
+      .entry h2 { font-size: 1.18rem; }
+      .closing { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <a class="logo" href="/">Le<em>x</em>io</a>
+  <div class="header-spacer"></div>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Lexio
+  </a>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">Changelog</span>
+  <h1>What's new in <em>Lexio.</em></h1>
+  <p>A running list of what's been added, fixed, and polished — kept honest. The newest stuff is on top.</p>
+</section>
+
+<div class="timeline">
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">May 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Family plan ($9.99 USD / €8.99 / £8.99 — 4 seats).</h2>
+    <p>One subscription, four Lexio Pro readers. The plan owner sees a panel inside their account where they can invite up to three more people by email; each member gets their own word bank but shares the bill.</p>
+    <p>Members are unlocked the moment they accept — no separate billing, no card on file from them. Cancel any time from the owner's account; all four seats wind down together.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">May 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Cross-device word bank sync (Pro).</h2>
+    <p>The word bank used to live only in the browser you saved a word from. Now it follows you between phone, laptop, and the Chrome extension automatically — every word you save, every device. Pro accounts only; free users keep the local-only behaviour.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">May 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Anki export.</h2>
+    <p>One click in the word bank produces a two-column Anki TSV — front side is the word + IPA + context sentence, back side is the contextual definition + the "why this word" note + etymology. Drop it straight into <em>File → Import</em> in Anki and your saved words become a deck.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">May 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Your Lexio Year — personal reading recap.</h2>
+    <p>A new page at <a href="/recap">/recap</a> that shows every Pro reader their words saved this year, lifetime contextual lookups, account age, and a month-by-month reading rhythm. Built like the year-in-review pages you know from elsewhere, but for vocabulary.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">May 2026</span>
+      <span class="entry-tag polish">Polish</span>
+    </div>
+    <h2>PWA — installable on iOS, Android, and desktop.</h2>
+    <p>Lexio now ships a web app manifest and a service worker. Add it to your home screen on iPhone/Android and you get a standalone app with launch shortcuts to the glossary and your word bank.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">May 2026</span>
+      <span class="entry-tag content">Content</span>
+    </div>
+    <h2>20 new reader's guides + 30 new glossary entries.</h2>
+    <p>The glossary now has 100+ contextual literary terms, each with a "how to read it in context" section. The reader's guides cover 18 of the most-read books in English literature — <em>Hamlet, 1984, Frankenstein, The Great Gatsby, Pride and Prejudice, Animal Farm, Beloved, The Catcher in the Rye, The Odyssey, Macbeth, Romeo and Juliet, To Kill a Mockingbird</em>, and more. Free to read, no signup required.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">May 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Pick how you read — interactive mode previewer.</h2>
+    <p>The pricing section now lets you tap between Fast (GPT-4o Mini), Balanced (Gemini 2.5 Flash), and Deep (Claude Sonnet 4.5) to see what each mode is good at before you commit. The same three-mode chooser is built into every Pro lookup.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">April 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Lexio on the Chrome Web Store.</h2>
+    <p>The Lexio Chrome extension launched on the Web Store. Highlight any word on any page — news article, Substack, JSTOR, PDF in the browser, even Wikipedia — choose <em>Define with Lexio</em>, and get the contextual definition inline. Same Pro tier; the extension and the website share the same account.</p>
+    <p><a href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">Install from the Chrome Web Store →</a></p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">April 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Three reading modes per lookup.</h2>
+    <p>Pro users can choose which model handles a given lookup — Fast for quick passes, Balanced for everyday literary reading, Deep for the hardest prose. Each mode is tuned to its strength: Fast prioritises speed, Balanced is the recommended default, Deep gives the richest etymology and "why this word" explanations.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">March 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Camera OCR — Lexio reads paper books.</h2>
+    <p>Tap the camera icon on the homepage or in the extension, snap a photo of a printed page, and Lexio extracts the text. From there it works the same as pasted text — click any word for a contextual definition.</p>
+  </article>
+
+  <article class="entry">
+    <div class="entry-meta">
+      <span class="entry-date">March 2026</span>
+      <span class="entry-tag feature">Feature</span>
+    </div>
+    <h2>Eleven reading languages.</h2>
+    <p>English, Spanish, French, German, Italian, Portuguese, Dutch, Russian, Japanese, Chinese, Arabic. Paste text in any of them, ask for the definition in any other — the contextual reading is preserved across translations.</p>
+  </article>
+
+</div>
+
+<div class="closing">
+  <p>Lexio is a one-person project. If something doesn't work or you have an idea, write to me directly at <a href="mailto:matveylgnv2021@gmail.com">matveylgnv2021@gmail.com</a> — I read every message.</p>
+  <a class="btn" href="/">Try Lexio</a>
+</div>
+
+<footer>
+  <em>Read deeper. Understand everything.</em><br>
+  © 2026 Lexio · <a href="/">Home</a> · <a href="/glossary">Glossary</a> · <a href="/privacy.html">Privacy</a>
+</footer>
+
+<script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+</body>
+</html>
