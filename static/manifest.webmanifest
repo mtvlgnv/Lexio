@@ -1,0 +1,35 @@
+{
+  "name": "Lexio — Contextual Definitions",
+  "short_name": "Lexio",
+  "description": "A dictionary that reads the sentence. Click any word, get the meaning that fits the surrounding sentence.",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#f3ead8",
+  "background_color": "#f7efde",
+  "lang": "en",
+  "categories": ["education", "books", "productivity", "reference"],
+  "icons": [
+    { "src": "/icon128.png",  "sizes": "128x128",  "type": "image/png", "purpose": "any maskable" },
+    { "src": "/favicon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Glossary",
+      "short_name": "Glossary",
+      "description": "Browse literary terms explained in context.",
+      "url": "/glossary?source=pwa-shortcut",
+      "icons": [{ "src": "/icon128.png", "sizes": "128x128" }]
+    },
+    {
+      "name": "Word bank",
+      "short_name": "Word bank",
+      "description": "Open your saved words.",
+      "url": "/?wb=open&source=pwa-shortcut",
+      "icons": [{ "src": "/icon128.png", "sizes": "128x128" }]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lost the word — Lexio</title>
+  <meta name="description" content="The page you're looking for couldn't be found. Maybe a glossary entry can help you on your way." />
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           oklch(96.5% 0.012 75);
+      --surface:      oklch(99.2% 0.006 75);
+      --border:       oklch(89%   0.014 75);
+      --accent:       oklch(58%   0.17  54);
+      --accent-mid:   oklch(90%   0.08  70);
+      --text:         oklch(18%   0.015 65);
+      --text-mid:     oklch(35%   0.012 65);
+      --muted:        oklch(58%   0.01  65);
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+    body {
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    .header {
+      height: 60px; padding: 0 28px; display: flex; align-items: center;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+    }
+    .logo { font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600; color: var(--text); text-decoration: none; }
+    .logo em { font-style: italic; color: var(--accent); }
+    main {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 48px 24px; text-align: center;
+      gap: 18px;
+    }
+    .glyph {
+      font-family: 'Lora', serif; font-size: clamp(6rem, 20vw, 12rem);
+      font-style: italic; font-weight: 400;
+      color: var(--accent);
+      line-height: 1; letter-spacing: -0.05em;
+      margin-bottom: 4px;
+    }
+    h1 {
+      font-family: 'Lora', serif; font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 600; letter-spacing: -0.015em; line-height: 1.2;
+      max-width: 540px;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    p {
+      font-family: 'Lora', serif; font-size: 1.05rem; color: var(--text-mid);
+      line-height: 1.65; max-width: 540px;
+    }
+    .ctas {
+      display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+      margin-top: 12px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 22px; font-size: 0.95rem; font-weight: 600;
+      border-radius: 10px; text-decoration: none;
+      transition: background 0.15s, transform 0.15s, border-color 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent); color: white;
+      box-shadow: 0 4px 14px -4px color-mix(in oklch, var(--accent) 50%, transparent);
+    }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--surface); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--accent); }
+    footer {
+      padding: 16px 24px 28px; text-align: center;
+      font-size: 0.84rem; color: var(--muted); font-style: italic;
+    }
+    footer a { color: var(--text-mid); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a class="logo" href="/">Le<em>x</em>io</a>
+  </header>
+  <main>
+    <div class="glyph" aria-hidden="true">404</div>
+    <h1>The word you're looking for isn't <em>here</em>.</h1>
+    <p>Either the URL got a typo, or this page never existed in the first place. Either way — there's nothing to define here.</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="/">Back to Lexio</a>
+      <a class="btn btn-secondary" href="/glossary">Browse the glossary</a>
+    </div>
+  </main>
+  <footer>
+    <em>Read deeper. Understand everything.</em><br>
+    © 2026 Lexio · <a href="/">Home</a> · <a href="/glossary">Glossary</a> · <a href="/privacy.html">Privacy</a>
+  </footer>
+</body>
+</html>

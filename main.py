@@ -1508,6 +1508,15 @@ async def register(request: Request, body: RegisterRequest, db: DBSession = Depe
             _issue_email_verification_code(db, user)
         except Exception as exc:
             logger.warning("Failed to send initial verification code: %s", exc)
+    # Welcome email — best-effort, never blocks the signup response.
+    # Skipped when the account requires verification (the verification email
+    # is sent first; welcome goes out after the email is verified instead, but
+    # for now we keep it simple and send for verified-on-arrival accounts).
+    if initial_verified:
+        try:
+            _send_welcome_email(user)
+        except Exception as exc:
+            logger.warning("Failed to send welcome email: %s", exc)
     token = _issue_session_token(db, user, request)
     return {
         "token": token,
@@ -1693,6 +1702,46 @@ If you didn't request this, you can safely ignore this email.
 # they can subscribe to Pro. OAuth signups are already provider-verified.
 EMAIL_VERIFY_TTL = datetime.timedelta(minutes=30)
 
+def _send_welcome_email(user: "User") -> bool:
+    """One-time welcome email sent immediately after registration. Best-effort —
+    SMTP failures are silent so they don't break the signup response. Body is
+    intentionally short and human so it doesn't read as automated."""
+    if not SMTP_USER or not SMTP_PASS:
+        return False
+    name = (user.name or user.email.split("@")[0]).strip() or "there"
+    body = f"""Hi {name},
+
+You just created a Lexio account — welcome.
+
+A few things worth knowing as you start:
+
+  • Paste any text on lexio.site, click a word, and you'll get the
+    meaning that fits the sentence around it (not a generic dictionary
+    entry).
+
+  • The Chrome extension does the same thing on any page or PDF you
+    read in Chrome — right-click a word, choose 'Define with Lexio'.
+    https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob
+
+  • Your free plan gives you 20 contextual lookups a month, Fast mode.
+    If you want unlimited + Balanced (Gemini) and Deep (Claude) modes,
+    Pro starts a 3-day free trial.
+
+  • Saved words live in your word bank — Pro users get cross-device sync
+    and an Anki-ready export.
+
+If anything breaks or you have an idea, write to me directly at
+matveylgnv2021@gmail.com. I read every message.
+
+— Matvei
+"""
+    return _send_email(
+        user.email,
+        "Welcome to Lexio",
+        body,
+    )
+
+
 def _send_email(to_email: str, subject: str, body: str) -> bool:
     """Generic plaintext email send. Returns True on success, False if
     SMTP isn't configured or the send fails. Used by features that don't
@@ -1872,6 +1921,12 @@ async def verify_email(
     user.email_verify_code        = None
     user.email_verify_expires_at  = None
     db.commit()
+    # First-time verification: send the welcome email now that we know the
+    # user owns the address. Best-effort, non-blocking.
+    try:
+        _send_welcome_email(user)
+    except Exception as exc:
+        logger.warning("Failed to send welcome email post-verify: %s", exc)
     return {"ok": True}
 
 
