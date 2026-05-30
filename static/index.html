@@ -475,7 +475,12 @@
     .tooltip-box strong { font-weight:600; white-space:nowrap; }
     .tooltip-dismiss { margin-left:auto; background:none; border:none; font-size:0.75rem; color:var(--accent); cursor:pointer; padding:0; font-family:inherit; white-space:nowrap; text-decoration:underline; text-underline-offset:2px; flex-shrink:0; }
     @media (max-width: 520px) {
-      .tooltip-box { margin:8px 12px 0; padding:8px 10px; font-size:0.78rem; gap:8px; }
+      /* The onboarding tooltip ("Paste your text here, then click
+         Analyze text") wastes valuable above-the-fold space on a
+         small phone, and the action it explains is obvious because
+         the Analyze button is right there below the textarea. Hide
+         it entirely on phones — the tip is redundant. */
+      .tooltip-box { display: none !important; }
     }
 
     /* ── Error banner ───────────────────────────────────────── */
@@ -1151,7 +1156,7 @@
          can see the carousel without scrolling much. */
       body.app-compact:not(.in-app) .panel-right { display: none; }
       body.app-compact:not(.in-app) .panel-left { min-height: 0; margin-bottom: 0; }
-      body.app-compact:not(.in-app) #input-text { min-height: 140px; }
+      body.app-compact:not(.in-app) #input-text { min-height: 110px; }
       /* Smaller font + tighter line-height on mobile so paragraphs
          actually fit. !important overrides setFontSize/setLineHeight
          inline styles (which were tuned for desktop). */
@@ -2908,9 +2913,9 @@
       /* Hero — clean warm background, tighter padding */
       .lp-hero {
         background: var(--bg);
-        padding: 48px 20px 28px;
+        padding: 32px 20px 24px;
         min-height: 0;
-        gap: 28px;
+        gap: 22px;
       }
       .lp-hero h1 { font-size: clamp(1.85rem, 7vw, 2.3rem); }
       .lp-hero-sub { font-size: 0.98rem; }
@@ -5156,7 +5161,7 @@ function autoGrowInput() {
   }
   inputText.style.height = 'auto';
   // +2px for the trailing newline a textarea reserves
-  inputText.style.height = Math.max(140, inputText.scrollHeight + 2) + 'px';
+  inputText.style.height = Math.max(110, inputText.scrollHeight + 2) + 'px';
 }
 _mobileMQ.addEventListener('change', autoGrowInput);
 window.addEventListener('resize', autoGrowInput);
