@@ -10,6 +10,8 @@ Disallow: /auth/
 Disallow: /stripe/
 Disallow: /ocr/
 Disallow: /wordbank/
+Disallow: /family/
+Disallow: /recap
 Disallow: /define
 Disallow: /fetch-text
 
