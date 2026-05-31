@@ -2293,44 +2293,104 @@
     }
     .lp-pro-refund strong { color: var(--text-mid); font-weight: 600; }
 
-    /* ── Pro section — "thanks" state for current subscribers ─────── */
-    .lp-pro-thanks {
-      background: color-mix(in oklch, var(--accent-lt) 55%, var(--surface));
-      border: 1.5px solid color-mix(in oklch, var(--accent) 28%, transparent);
-      border-radius: 16px;
-      padding: 36px 40px 32px;
-      max-width: 640px; width: 100%; margin: 8px auto 0;
-      display: flex; flex-direction: column; align-items: center;
-      gap: 10px; text-align: center;
-      box-shadow: 0 18px 40px -20px color-mix(in oklch, var(--accent) 35%, transparent);
+    /* ── Pro section — "Your subscription" card for current subscribers.
+       Calm, settings-style. No celebratory glow, no feature flex — just
+       a clean summary of what you're paying for and a way to manage it. */
+    .lp-sub-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 26px 20px;
+      max-width: 520px; width: 100%; margin: 8px auto 0;
+      text-align: left;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
     }
-    .lp-pro-thanks-icon { font-size: 1.8rem; line-height: 1; margin-bottom: 2px; }
-    .lp-pro-thanks-title {
-      font-family: 'Lora', serif; font-size: 1.45rem; font-weight: 600;
-      color: var(--text); line-height: 1.3;
+    [data-theme="dark"] .lp-sub-card {
+      background: color-mix(in oklch, var(--surface) 92%, white);
+      border-color: color-mix(in oklch, var(--border) 70%, white);
     }
-    .lp-pro-thanks-sub {
-      font-size: 0.95rem; color: var(--text-mid); max-width: 460px;
-      line-height: 1.6;
+    .lp-sub-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 14px;
     }
-    .lp-pro-thanks-perks {
-      list-style: none;
-      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px 28px; width: 100%; max-width: 500px;
-      margin: 14px 0 18px; text-align: left;
+    .lp-sub-eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
     }
-    .lp-pro-thanks-perks li {
-      font-size: 0.92rem; color: var(--text);
-      padding-left: 22px; position: relative; line-height: 1.5;
+    .lp-sub-status {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px; border-radius: 999px;
+      background: color-mix(in oklch, var(--accent) 12%, transparent);
+      color: var(--accent);
+      border: 1px solid color-mix(in oklch, var(--accent) 22%, transparent);
     }
-    .lp-pro-thanks-perks li::before {
-      content: '✓'; position: absolute; left: 0; top: 0;
-      color: var(--accent); font-weight: 700;
+    .lp-sub-status.is-trial {
+      background: color-mix(in oklch, #b07d2a 14%, transparent);
+      color: #8a5f1f;
+      border-color: color-mix(in oklch, #b07d2a 28%, transparent);
     }
-    .lp-pro-thanks-cta { min-width: 240px; }
-    @media (max-width: 720px) {
-      .lp-pro-thanks { padding: 28px 22px; }
-      .lp-pro-thanks-perks { grid-template-columns: 1fr; gap: 8px; max-width: 320px; }
+    [data-theme="dark"] .lp-sub-status.is-trial { color: #e0b870; }
+    .lp-sub-plan {
+      display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+      font-family: 'Lora', serif;
+      font-size: 1.35rem; font-weight: 600; color: var(--text);
+      line-height: 1.25; margin-bottom: 16px;
+    }
+    .lp-sub-plan-cycle {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.95rem; font-weight: 500;
+      color: var(--text-mid);
+    }
+    .lp-sub-plan-sep { color: var(--border); font-weight: 400; }
+    .lp-sub-meta {
+      display: flex; flex-direction: column;
+      border-top: 1px solid var(--border);
+      margin: 0 0 18px;
+      padding-top: 4px;
+    }
+    .lp-sub-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      gap: 16px; padding: 10px 0;
+      border-bottom: 1px solid color-mix(in oklch, var(--border) 50%, transparent);
+    }
+    .lp-sub-row:last-child { border-bottom: none; }
+    .lp-sub-row dt {
+      font-size: 0.8rem; color: var(--muted);
+      font-weight: 500;
+    }
+    .lp-sub-row dd {
+      margin: 0; font-size: 0.88rem; color: var(--text);
+      font-weight: 500; text-align: right;
+    }
+    .lp-sub-actions {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 14px; flex-wrap: wrap;
+    }
+    .lp-sub-manage {
+      font-family: inherit; font-size: 0.88rem; font-weight: 600;
+      color: var(--text); background: transparent;
+      border: 1px solid var(--border);
+      padding: 8px 16px; border-radius: 8px;
+      cursor: pointer;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .lp-sub-manage:hover {
+      border-color: var(--accent); color: var(--accent);
+    }
+    .lp-sub-manage:disabled { opacity: 0.55; cursor: default; }
+    .lp-sub-link {
+      font-size: 0.85rem; color: var(--accent);
+      text-decoration: none; font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color .15s;
+    }
+    .lp-sub-link:hover { border-bottom-color: var(--accent); }
+    @media (max-width: 600px) {
+      .lp-sub-card { padding: 20px 18px 18px; }
+      .lp-sub-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+      .lp-sub-manage { width: 100%; text-align: center; }
+      .lp-sub-link { text-align: center; }
     }
     @media (max-width: 600px) {
       .lp-pro { padding: 48px 20px; }
@@ -3753,19 +3813,28 @@
     <h2 class="lp-section-title lp-pro-title" id="lp-pro-title">Read without limits</h2>
     <p class="lp-pro-sub" id="lp-pro-sub">The free plan gets you started. Pro removes every cap and unlocks all three reading modes.</p>
 
-    <!-- Thanks card — shown when the user is already Pro or on trial -->
-    <div class="lp-pro-thanks" id="lp-pro-thanks" style="display:none">
-      <div class="lp-pro-thanks-icon">✨</div>
-      <h3 class="lp-pro-thanks-title" id="lp-pro-thanks-title">You're a Lexio Pro reader.</h3>
-      <p class="lp-pro-thanks-sub" id="lp-pro-thanks-sub">Thanks for going Pro — every cap is lifted and every mode is unlocked.</p>
-      <ul class="lp-pro-thanks-perks">
-        <li>Unlimited word lookups</li>
-        <li>Unlimited OCR scans</li>
-        <li>Fast, Balanced &amp; Deep reading modes</li>
-        <li>Word bank syncs across all your devices</li>
-        <li>Priority support</li>
-      </ul>
-      <button class="lp-pro-cta lp-pro-thanks-cta" onclick="handleManageSub()">Manage subscription →</button>
+    <!-- Subscription card — shown when the user is already Pro or on trial.
+         Calm, settings-style. Populated by checkProStatus() from /api/pro-status. -->
+    <div class="lp-sub-card" id="lp-pro-thanks" style="display:none">
+      <div class="lp-sub-head">
+        <span class="lp-sub-eyebrow">Your subscription</span>
+        <span class="lp-sub-status" id="lp-sub-status">Active</span>
+      </div>
+      <div class="lp-sub-plan">
+        <span class="lp-sub-plan-name" id="lp-sub-plan-name">Lexio Pro</span>
+        <span class="lp-sub-plan-sep" aria-hidden="true">·</span>
+        <span class="lp-sub-plan-cycle" id="lp-sub-plan-cycle">Monthly</span>
+      </div>
+      <dl class="lp-sub-meta">
+        <div class="lp-sub-row" id="lp-sub-row-renews"><dt>Billing</dt><dd id="lp-sub-meta-renews">Renews monthly</dd></div>
+        <div class="lp-sub-row" id="lp-sub-row-family" hidden><dt>Family plan</dt><dd id="lp-sub-meta-family">—</dd></div>
+        <div class="lp-sub-row" id="lp-sub-row-founder" hidden><dt>Recognition</dt><dd>Founding member</dd></div>
+        <div class="lp-sub-row" id="lp-sub-row-since" hidden><dt>Member since</dt><dd id="lp-sub-meta-since">—</dd></div>
+      </dl>
+      <div class="lp-sub-actions">
+        <button type="button" class="lp-sub-manage" onclick="handleManageSub(event)">Manage subscription</button>
+        <a class="lp-sub-link" href="/recap">View your reading recap →</a>
+      </div>
     </div>
 
     <!-- Billing-cycle toggle — affects only the Pro column -->
@@ -3928,7 +3997,7 @@
       </button>
       <button class="lp-mode-pill" data-mode="deep" type="button" onclick="previewMode('deep')" role="tab" aria-selected="false">
         <span class="lp-mode-pill-brand" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path fill="#D97757" d="M11.5 3h1L20 21h-3.4l-1.5-4H8.9l-1.5 4H4l7.5-18Zm.5 4.5L9.7 14h4.6L12 7.5Z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#D97757" d="M12 1 L13 12 L12 23 L11 12 Z M1 12 L12 11 L23 12 L12 13 Z M4 4 L12.4 11.6 L20 20 L11.6 12.4 Z M4 20 L11.6 11.6 L20 4 L12.4 12.4 Z"/></svg>
         </span>
         Deep
       </button>
@@ -7516,31 +7585,128 @@ async function checkProStatus() {
 
     if (_userIsPro) {
       _unlockProModels();
-      // Swap the entire Pro section into "thanks" mode for current subscribers
-      // (paid Pro or active trial) — no upsell, just acknowledgement + manage.
+      // Swap the entire Pro section into "subscription" mode for current
+      // subscribers (paid Pro or active trial) — no upsell, no feature flex,
+      // no pricing toggle: just plan summary + manage.
       const grid       = document.getElementById('lp-pro-grid');
       const thanks     = document.getElementById('lp-pro-thanks');
+      const toggle     = document.getElementById('lp-pro-toggle');
+      const refund     = document.querySelector('.lp-pro-refund');
       const secTitle   = document.getElementById('lp-pro-title');
       const secSub     = document.getElementById('lp-pro-sub');
-      const thanksTtl  = document.getElementById('lp-pro-thanks-title');
-      const thanksSub  = document.getElementById('lp-pro-thanks-sub');
 
       if (grid)   grid.style.display   = 'none';
       if (thanks) thanks.style.display = '';
+      if (toggle) toggle.style.display = 'none';
+      if (refund) refund.style.display = 'none';
 
-      if (isPaidPro) {
-        if (secTitle)  secTitle.textContent  = "You're reading without limits.";
-        if (secSub)    secSub.textContent    = "Welcome to Pro — every cap is off, every mode is on.";
-        if (thanksTtl) thanksTtl.textContent = "You're a Lexio Pro reader.";
-        if (thanksSub) thanksSub.textContent = "Thanks for going Pro — everything Lexio offers is unlocked for you.";
-      } else if (isTrial) {
-        const dayLine = daysLeft > 1
-          ? `${daysLeft} days of Pro trial left`
-          : 'Last day of your Pro trial';
-        if (secTitle)  secTitle.textContent  = "You're on a Pro trial.";
-        if (secSub)    secSub.textContent    = `${dayLine} · card on file · cancel anytime`;
-        if (thanksTtl) thanksTtl.textContent = "Full Pro access — on us, for now.";
-        if (thanksSub) thanksSub.textContent = `You've got every Pro feature unlocked for the next ${daysLeft > 1 ? daysLeft + ' days' : 'day'}.`;
+      // Section header — calm, factual. No "celebrate you're Pro" language.
+      if (secTitle) secTitle.textContent = isTrial
+        ? "Your Pro trial"
+        : "Your Pro subscription";
+      if (secSub) {
+        if (isTrial) {
+          secSub.textContent = daysLeft > 1
+            ? `${daysLeft} days of Pro trial left · card on file · cancel anytime.`
+            : 'Last day of your Pro trial · card on file · cancel anytime.';
+        } else {
+          secSub.textContent = "Everything Lexio offers is unlocked — across web, the Chrome extension, and the app.";
+        }
+      }
+
+      // Populate the subscription card from the extended /api/pro-status payload.
+      const interval         = d.subscription_interval || null;
+      const familyRole       = d.family_role || null;
+      const familyOwnerName  = d.family_owner_name || null;
+      const isFounder        = !!d.is_founder;
+      const memberSince      = d.member_since || null;
+
+      const statusEl   = document.getElementById('lp-sub-status');
+      const planName   = document.getElementById('lp-sub-plan-name');
+      const planCycle  = document.getElementById('lp-sub-plan-cycle');
+      const renewsRow  = document.getElementById('lp-sub-row-renews');
+      const renewsDd   = document.getElementById('lp-sub-meta-renews');
+      const familyRow  = document.getElementById('lp-sub-row-family');
+      const familyDd   = document.getElementById('lp-sub-meta-family');
+      const founderRow = document.getElementById('lp-sub-row-founder');
+      const sinceRow   = document.getElementById('lp-sub-row-since');
+      const sinceDd    = document.getElementById('lp-sub-meta-since');
+
+      // Status pill: Active (paid) or Trial · Nd
+      if (statusEl) {
+        statusEl.classList.toggle('is-trial', isTrial);
+        if (isTrial) {
+          statusEl.textContent = daysLeft > 1 ? `Trial · ${daysLeft}d` : 'Trial · last day';
+        } else {
+          statusEl.textContent = 'Active';
+        }
+      }
+
+      // Plan name + cycle label
+      const cycleLabel =
+        interval === 'year'   ? 'Annual' :
+        interval === 'family' ? 'Family (4 seats)' :
+        interval === 'month'  ? 'Monthly' :
+        familyRole === 'member' ? 'Family seat' :
+        '';
+      if (planName)  planName.textContent  = familyRole === 'member' ? 'Lexio Pro' : 'Lexio Pro';
+      if (planCycle) planCycle.textContent = cycleLabel || (isTrial ? 'On trial' : 'Active');
+
+      // Billing row — describe the recurring schedule
+      if (renewsRow && renewsDd) {
+        if (isTrial) {
+          renewsDd.textContent = daysLeft > 1 ? `Trial — converts in ${daysLeft} days` : 'Trial — converts tomorrow';
+        } else if (familyRole === 'member') {
+          renewsDd.textContent = familyOwnerName ? `Included via ${familyOwnerName}` : 'Included via family plan';
+          // For a family seat there's nothing to manage directly here; leave the
+          // button (the portal call will gracefully no-op if no Stripe customer).
+        } else if (interval === 'year') {
+          renewsDd.textContent = 'Renews annually';
+        } else if (interval === 'family') {
+          renewsDd.textContent = 'Renews monthly · family plan';
+        } else if (interval === 'month') {
+          renewsDd.textContent = 'Renews monthly';
+        } else {
+          renewsDd.textContent = 'Active';
+        }
+      }
+
+      // Family row — owner or member context
+      if (familyRow && familyDd) {
+        if (familyRole === 'owner') {
+          familyDd.textContent = 'You own this plan';
+          familyRow.hidden = false;
+        } else if (familyRole === 'member') {
+          familyDd.textContent = familyOwnerName ? `Member of ${familyOwnerName}'s plan` : 'Member of a family plan';
+          familyRow.hidden = false;
+        } else {
+          familyRow.hidden = true;
+        }
+      }
+
+      // Founder row — only show when the badge is real
+      if (founderRow) founderRow.hidden = !isFounder;
+
+      // Member since — only show if the server gave us a date
+      if (sinceRow && sinceDd) {
+        if (memberSince) {
+          sinceDd.textContent = memberSince;
+          sinceRow.hidden = false;
+        } else {
+          sinceRow.hidden = true;
+        }
+      }
+
+      // Family seat holders have no Stripe customer of their own — there's
+      // nothing for them to "manage" here. Replace the button with a note
+      // instead of dumping them into a checkout for a duplicate subscription.
+      const manageBtn = document.querySelector('.lp-sub-manage');
+      if (manageBtn) {
+        if (familyRole === 'member') {
+          manageBtn.style.display = 'none';
+        } else {
+          manageBtn.style.display = '';
+        }
       }
       // App header menu
       const mp  = document.getElementById('menu-pro-btn');
@@ -7559,10 +7725,15 @@ async function checkProStatus() {
 }
 checkProStatus();
 
-async function handleManageSub() {
+async function handleManageSub(ev) {
   const token = localStorage.getItem('lexio_token');
   if (!token) return;
-  const btn = document.getElementById('lp-manage-btn');
+  // Prefer the clicked button so the loading state lands where the user
+  // looked; fall back to the in-grid manage button (older code path).
+  const btn = (ev && ev.currentTarget && ev.currentTarget.tagName === 'BUTTON')
+    ? ev.currentTarget
+    : (document.querySelector('.lp-sub-manage') || document.getElementById('lp-manage-btn'));
+  const originalLabel = btn ? btn.textContent : '';
   if (btn) { btn.textContent = 'Opening…'; btn.disabled = true; }
   try {
     const r = await fetch('/stripe/customer-portal', {
@@ -7580,7 +7751,7 @@ async function handleManageSub() {
     window.location.href = url;
   } catch {
     alert('Could not open billing portal. Please try again.');
-    if (btn) { btn.textContent = 'Manage subscription →'; btn.disabled = false; }
+    if (btn) { btn.textContent = originalLabel || 'Manage subscription'; btn.disabled = false; }
   }
 }
 

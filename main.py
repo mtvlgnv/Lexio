@@ -3878,7 +3878,11 @@ async def stripe_webhook(request: Request, db: DBSession = Depends(get_db)):
 
 @app.get("/api/pro-status")
 async def pro_status(user: User = Depends(current_user), db: DBSession = Depends(get_db)):
-    """Return Pro/trial status for the authenticated user."""
+    """Return Pro/trial status + subscription metadata for the authenticated user.
+
+    Drives the in-app "Your subscription" card. Keep this lightweight — no
+    Stripe API calls; only what we have in the local DB.
+    """
     u = db.query(User).filter(User.id == user.id).first()
     # A user is "on trial" if they have a future trial_expires_at — regardless
     # of is_pro, because Stripe-trial users have is_pro=1 set by the
@@ -3886,7 +3890,32 @@ async def pro_status(user: User = Depends(current_user), db: DBSession = Depends
     trial = bool(u and u.trial_expires_at and u.trial_expires_at > datetime.datetime.utcnow())
     paid  = bool(u and u.is_pro and not trial)
     days  = _trial_days_left(u) if u else 0
-    return {"is_pro": paid or trial, "is_trial": trial, "trial_days_left": days}
+
+    interval     = getattr(u, "subscription_interval", None) if u else None
+    is_founder   = bool(getattr(u, "is_founder", 0)) if u else False
+    family_role: str | None = None
+    family_owner_name: str | None = None
+    if u:
+        if u.family_owner_id:
+            family_role = "member"
+            owner = db.query(User).get(u.family_owner_id)
+            if owner:
+                family_owner_name = (owner.name or owner.email.split("@")[0]) if owner.email else (owner.name or None)
+        elif interval == "family":
+            family_role = "owner"
+
+    member_since = u.created_at.strftime("%b %Y") if (u and u.created_at) else None
+
+    return {
+        "is_pro": paid or trial,
+        "is_trial": trial,
+        "trial_days_left": days,
+        "subscription_interval": interval,    # "month" | "year" | "family" | None
+        "is_founder": is_founder,
+        "family_role": family_role,           # "owner" | "member" | None
+        "family_owner_name": family_owner_name,
+        "member_since": member_since,         # "May 2026"
+    }
 
 
 # ── Named static page routes ─────────────────────────────────────────────────
