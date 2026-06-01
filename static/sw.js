@@ -3,7 +3,7 @@
 // assets are cached, never API responses. Network is always the source of
 // truth for /api, /define, /wordbank, /stripe, /family, /recap.
 
-const CACHE_NAME = 'lexio-shell-v1';
+const CACHE_NAME = 'lexio-shell-v2';
 const SHELL = [
   '/',
   '/favicon-32.png?v=2',
@@ -56,7 +56,27 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
   if (BYPASS.some((re) => re.test(url.pathname))) return;
 
-  // Stale-while-revalidate for the small static shell only.
+  // HTML documents (navigations) are NETWORK-FIRST: always try to serve the
+  // freshest page so a deploy is visible immediately, falling back to cache
+  // only when offline. Stale-while-revalidate would leave the page one
+  // version behind on every update — that's what we're avoiding here.
+  const isDocument = req.mode === 'navigate' || req.destination === 'document';
+  if (isDocument) {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.ok && res.type === 'basic') {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(req).then((c) => c || caches.match('/')))
+    );
+    return;
+  }
+
+  // Stale-while-revalidate for the small static shell only (favicons, etc.).
   event.respondWith(
     caches.match(req).then((cached) => {
       const networkFetch = fetch(req)
