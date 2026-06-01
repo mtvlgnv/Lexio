@@ -2547,6 +2547,30 @@
     }
     .lp-nav-link:hover { background: var(--bg); color: var(--text); }
     .lp-nav-link.lp-nav-active { color: var(--accent); background: var(--accent-lt); }
+    /* ── "Explore" section dropdown (replaces Features/Pricing/FAQ links) ── */
+    .lp-nav-drop-wrap { position: relative; display: inline-flex; }
+    .lp-nav-drop-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: inherit; background: transparent; border: none; cursor: pointer;
+    }
+    .lp-nav-drop-btn svg { transition: transform 0.18s; opacity: 0.75; }
+    .lp-nav-drop-btn[aria-expanded="true"] { color: var(--text); background: var(--bg); }
+    .lp-nav-drop-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+    .lp-nav-drop {
+      position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; gap: 2px; min-width: 180px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 6px; z-index: 60;
+      box-shadow: 0 14px 36px -14px rgba(0,0,0,0.4);
+    }
+    .lp-nav-drop.hidden { display: none; }
+    .lp-nav-drop-item {
+      font-size: 0.85rem; font-weight: 500; color: var(--text-mid);
+      text-decoration: none; padding: 8px 12px; border-radius: 8px;
+      white-space: nowrap; transition: background 0.15s, color 0.15s;
+    }
+    .lp-nav-drop-item:hover { background: var(--bg); color: var(--text); }
+    .lp-nav-drop-item.lp-nav-active { color: var(--accent); background: var(--accent-lt); }
     @media (max-width: 900px) { .lp-header-nav { display: none; } }
 
 
@@ -3324,9 +3348,20 @@
 
   <!-- Landing nav — hidden in app mode -->
   <nav class="lp-header-nav">
-    <a class="lp-nav-link" href="#lp-features"      data-section="lp-features">Features</a>
-    <a class="lp-nav-link" href="#lp-pro"           data-section="lp-pro">Pricing</a>
-    <a class="lp-nav-link" href="#lp-faq"           data-section="lp-faq">FAQ</a>
+    <div class="lp-nav-drop-wrap">
+      <button class="lp-nav-link lp-nav-drop-btn" id="lp-explore-btn" type="button"
+              aria-haspopup="true" aria-expanded="false" onclick="toggleExplore()">
+        Explore
+        <svg width="9" height="9" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+      </button>
+      <div class="lp-nav-drop hidden" id="lp-explore-drop" role="menu" aria-label="Page sections">
+        <a class="lp-nav-drop-item" href="#lp-how"      data-section="lp-how"      role="menuitem">How it works</a>
+        <a class="lp-nav-drop-item" href="#lp-features" data-section="lp-features" role="menuitem">Features</a>
+        <a class="lp-nav-drop-item" href="#lp-models"   data-section="lp-models"   role="menuitem">Reading modes</a>
+        <a class="lp-nav-drop-item" href="#lp-pro"      data-section="lp-pro"      role="menuitem">Pricing</a>
+        <a class="lp-nav-drop-item" href="#lp-faq"      data-section="lp-faq"      role="menuitem">FAQ</a>
+      </div>
+    </div>
     <a class="lp-nav-link" href="/chrome-extension.html">Chrome extension</a>
     <a class="lp-nav-link" href="/glossary">Glossary</a>
     <a class="lp-nav-link" href="/for-readers.html">For readers</a>
@@ -3778,7 +3813,7 @@
   </div><!-- end .lp-warm-area -->
 
   <!-- How it works -->
-  <section class="lp-steps">
+  <section class="lp-steps" id="lp-how">
     <h2 class="lp-section-title" data-i18n="howLabel">How it works</h2>
     <div class="lp-steps-grid">
       <div class="lp-step">
@@ -6296,8 +6331,27 @@ function closeMenu() {
 let langPickerOpen = false;
 const LANG_LABELS = { en:'EN', es:'ES', fr:'FR', de:'DE', it:'IT', pt:'PT', nl:'NL', ru:'RU', zh:'中文', ja:'日本語', ko:'한국어' };
 
+// ── "Explore" section dropdown ────────────────────────────────
+let exploreOpen = false;
+function toggleExplore() {
+  exploreOpen = !exploreOpen;
+  const drop = document.getElementById('lp-explore-drop');
+  const btn  = document.getElementById('lp-explore-btn');
+  if (drop) drop.classList.toggle('hidden', !exploreOpen);
+  if (btn)  btn.setAttribute('aria-expanded', exploreOpen);
+  if (exploreOpen && langPickerOpen) closeLangPicker();
+}
+function closeExplore() {
+  exploreOpen = false;
+  const drop = document.getElementById('lp-explore-drop');
+  const btn  = document.getElementById('lp-explore-btn');
+  if (drop) drop.classList.add('hidden');
+  if (btn)  btn.setAttribute('aria-expanded', 'false');
+}
+
 function toggleLangPicker() {
   langPickerOpen = !langPickerOpen;
+  if (langPickerOpen) closeExplore();
   document.getElementById('lang-hdr-drop').classList.toggle('hidden', !langPickerOpen);
   document.getElementById('lang-hdr-btn').classList.toggle('active', langPickerOpen);
   document.getElementById('lang-hdr-btn').setAttribute('aria-expanded', langPickerOpen);
@@ -6320,6 +6374,7 @@ function pickUILang(code) {
   document.getElementById('lang-hdr-label').textContent = LANG_LABELS[code] || code.toUpperCase();
 }
 document.addEventListener('click', e => {
+  if (exploreOpen && !e.target.closest('.lp-nav-drop-wrap')) closeExplore();
   if (langPickerOpen && !e.target.closest('.lang-hdr-wrap')) closeLangPicker();
 });
 function updateMenuTheme() {
@@ -7141,7 +7196,7 @@ inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key===
 document.addEventListener('keydown', e => {
   const tag = document.activeElement?.tagName;
   if (tag==='TEXTAREA'||tag==='INPUT') return;
-  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); closeLangPicker(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); closeLangPicker(); closeExplore(); if(shortcutsOpen) toggleShortcuts(); }
   if (e.key==='?')  toggleShortcuts();
   if (e.key==='b'||e.key==='B') openWordBank();
 });
@@ -7792,12 +7847,19 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
 
 // ── Landing nav active state ───────────────────────────────────
 (function() {
-  const navLinks = document.querySelectorAll('.lp-header-nav .lp-nav-link[data-section]');
+  // Includes both standalone nav links and the items inside the Explore dropdown.
+  const navLinks = document.querySelectorAll('.lp-header-nav [data-section]');
   if (!navLinks.length) return;
+  const exploreBtn = document.getElementById('lp-explore-btn');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         navLinks.forEach(l => l.classList.toggle('lp-nav-active', l.dataset.section === entry.target.id));
+        // Reflect "a section is in view" on the Explore button itself.
+        if (exploreBtn) {
+          const anyActive = !!document.querySelector('.lp-nav-drop-item.lp-nav-active');
+          exploreBtn.classList.toggle('lp-nav-active', anyActive);
+        }
       }
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -70% 0px' });
@@ -7805,12 +7867,13 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
     const el = document.getElementById(l.dataset.section);
     if (el) observer.observe(el);
   });
-  // Smooth scroll for nav links
+  // Smooth scroll for nav links (and close the dropdown if the click came from it)
   navLinks.forEach(l => {
     l.addEventListener('click', e => {
       e.preventDefault();
       const target = document.getElementById(l.dataset.section);
       if (target) target.scrollIntoView({ behavior: 'smooth' });
+      if (typeof closeExplore === 'function') closeExplore();
     });
   });
 })();
