@@ -2538,6 +2538,11 @@
     .lp-header-nav {
       position: absolute; left: 50%; transform: translateX(-50%);
       display: flex; align-items: center; gap: 2px;
+      /* transform creates a stacking context — without a z-index the whole
+         nav (and any open dropdown inside it) would paint under the <main>
+         panels that follow in the DOM. Lift it above page content but keep
+         it below full-screen modals (z-index 100+). */
+      z-index: 90;
     }
     body.in-app .lp-header-nav { display: none; }
     .lp-nav-link {
@@ -2557,7 +2562,7 @@
     .lp-nav-drop-btn[aria-expanded="true"] { color: var(--text); background: var(--bg); }
     .lp-nav-drop-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
     .lp-nav-drop {
-      position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+      position: absolute; top: calc(100% + 8px); left: 0;
       display: flex; flex-direction: column; gap: 2px; min-width: 180px;
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 12px; padding: 6px; z-index: 60;
