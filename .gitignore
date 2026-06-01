@@ -15,3 +15,13 @@ extension.zip
 # …but keep the published Chrome extension that the site serves:
 !static/lexio-extension.zip
 .claude/
+
+# iOS app — XcodeGen generates the project from ios/project.yml, so don't
+# commit the project file or Xcode's build artifacts.
+ios/*.xcodeproj
+ios/*.xcworkspace
+ios/build/
+ios/DerivedData/
+**/xcuserdata/
+**/*.xcuserstate
+.swiftpm/

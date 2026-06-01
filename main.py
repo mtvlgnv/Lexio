@@ -3972,5 +3972,32 @@ async def work_page(slug: str):
     return HTMLResponse(_works.render_work(work))
 
 
+# ── Book catalog (JSON) — powers the in-app library/Browse screen ──────────────
+import catalog as _catalog
+
+@app.get("/api/catalog", response_class=JSONResponse)
+async def catalog_list(lang: Optional[str] = None):
+    """Catalog metadata (no text). Optional `?lang=fr` filters by language.
+
+    Returns the set of available languages (with counts) plus the matching
+    books, so the client can build a language picker and list in one call.
+    """
+    return JSONResponse({
+        "languages": _catalog.languages(),
+        "books": _catalog.all_books(lang),
+    })
+
+@app.get("/api/catalog/{slug}", response_class=JSONResponse)
+async def catalog_book(slug: str):
+    """One book's metadata plus its full public-domain text."""
+    meta = _catalog.get(slug)
+    if not meta:
+        raise HTTPException(status_code=404, detail="Book not found.")
+    body = _catalog.text(slug)
+    if body is None:
+        raise HTTPException(status_code=404, detail="Book text unavailable.")
+    return JSONResponse({**meta, "body": body})
+
+
 # ── Static frontend ───────────────────────────────────────────────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

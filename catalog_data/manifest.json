@@ -1,0 +1,242 @@
+[
+  {
+    "slug": "also-sprach-zarathustra-7205",
+    "gutenberg_id": 7205,
+    "title": "Also sprach Zarathustra",
+    "author": "Friedrich Nietzsche",
+    "language": "de",
+    "year": "1883",
+    "word_count": 82955,
+    "source": "https://www.gutenberg.org/ebooks/7205"
+  },
+  {
+    "slug": "die-verwandlung-22367",
+    "gutenberg_id": 22367,
+    "title": "Die Verwandlung",
+    "author": "Franz Kafka",
+    "language": "de",
+    "year": "1915",
+    "word_count": 19319,
+    "source": "https://www.gutenberg.org/ebooks/22367"
+  },
+  {
+    "slug": "faust-der-trag-die-erster-teil-2229",
+    "gutenberg_id": 2229,
+    "title": "Faust: Der Tragödie erster Teil",
+    "author": "Johann Wolfgang von Goethe",
+    "language": "de",
+    "year": "1808",
+    "word_count": 30658,
+    "source": "https://www.gutenberg.org/ebooks/2229"
+  },
+  {
+    "slug": "a-doll-s-house-2542",
+    "gutenberg_id": 2542,
+    "title": "A Doll's House",
+    "author": "Henrik Ibsen",
+    "language": "en",
+    "year": "1879",
+    "word_count": 26479,
+    "source": "https://www.gutenberg.org/ebooks/2542"
+  },
+  {
+    "slug": "a-modest-proposal-1080",
+    "gutenberg_id": 1080,
+    "title": "A Modest Proposal",
+    "author": "Jonathan Swift",
+    "language": "en",
+    "year": "1729",
+    "word_count": 3420,
+    "source": "https://www.gutenberg.org/ebooks/1080"
+  },
+  {
+    "slug": "a-tale-of-two-cities-98",
+    "gutenberg_id": 98,
+    "title": "A Tale of Two Cities",
+    "author": "Charles Dickens",
+    "language": "en",
+    "year": "1859",
+    "word_count": 135886,
+    "source": "https://www.gutenberg.org/ebooks/98"
+  },
+  {
+    "slug": "alice-s-adventures-in-wonderland-11",
+    "gutenberg_id": 11,
+    "title": "Alice's Adventures in Wonderland",
+    "author": "Lewis Carroll",
+    "language": "en",
+    "year": "1865",
+    "word_count": 26525,
+    "source": "https://www.gutenberg.org/ebooks/11"
+  },
+  {
+    "slug": "dracula-345",
+    "gutenberg_id": 345,
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "language": "en",
+    "year": "1897",
+    "word_count": 161321,
+    "source": "https://www.gutenberg.org/ebooks/345"
+  },
+  {
+    "slug": "frankenstein-84",
+    "gutenberg_id": 84,
+    "title": "Frankenstein",
+    "author": "Mary Shelley",
+    "language": "en",
+    "year": "1818",
+    "word_count": 75042,
+    "source": "https://www.gutenberg.org/ebooks/84"
+  },
+  {
+    "slug": "moby-dick-or-the-whale-2701",
+    "gutenberg_id": 2701,
+    "title": "Moby-Dick; or, The Whale",
+    "author": "Herman Melville",
+    "language": "en",
+    "year": "1851",
+    "word_count": 212796,
+    "source": "https://www.gutenberg.org/ebooks/2701"
+  },
+  {
+    "slug": "pride-and-prejudice-1342",
+    "gutenberg_id": 1342,
+    "title": "Pride and Prejudice",
+    "author": "Jane Austen",
+    "language": "en",
+    "year": "1813",
+    "word_count": 127359,
+    "source": "https://www.gutenberg.org/ebooks/1342"
+  },
+  {
+    "slug": "the-adventures-of-sherlock-holmes-1661",
+    "gutenberg_id": 1661,
+    "title": "The Adventures of Sherlock Holmes",
+    "author": "Arthur Conan Doyle",
+    "language": "en",
+    "year": "1892",
+    "word_count": 104506,
+    "source": "https://www.gutenberg.org/ebooks/1661"
+  },
+  {
+    "slug": "the-great-gatsby-64317",
+    "gutenberg_id": 64317,
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "language": "en",
+    "year": "1925",
+    "word_count": 48208,
+    "source": "https://www.gutenberg.org/ebooks/64317"
+  },
+  {
+    "slug": "don-quijote-2000",
+    "gutenberg_id": 2000,
+    "title": "Don Quijote",
+    "author": "Miguel de Cervantes",
+    "language": "es",
+    "year": "1605",
+    "word_count": 386614,
+    "source": "https://www.gutenberg.org/ebooks/2000"
+  },
+  {
+    "slug": "niebla-49836",
+    "gutenberg_id": 49836,
+    "title": "Niebla",
+    "author": "Miguel de Unamuno",
+    "language": "es",
+    "year": "1914",
+    "word_count": 56974,
+    "source": "https://www.gutenberg.org/ebooks/49836"
+  },
+  {
+    "slug": "candide-4650",
+    "gutenberg_id": 4650,
+    "title": "Candide",
+    "author": "Voltaire",
+    "language": "fr",
+    "year": "1759",
+    "word_count": 34080,
+    "source": "https://www.gutenberg.org/ebooks/4650"
+  },
+  {
+    "slug": "du-c-t-de-chez-swann-5097",
+    "gutenberg_id": 5097,
+    "title": "Du côté de chez Swann",
+    "author": "Marcel Proust",
+    "language": "fr",
+    "year": "1913",
+    "word_count": 143308,
+    "source": "https://www.gutenberg.org/ebooks/5097"
+  },
+  {
+    "slug": "le-comte-de-monte-cristo-tome-i-17989",
+    "gutenberg_id": 17989,
+    "title": "Le Comte de Monte-Cristo, Tome I",
+    "author": "Alexandre Dumas",
+    "language": "fr",
+    "year": "1844",
+    "word_count": 121579,
+    "source": "https://www.gutenberg.org/ebooks/17989"
+  },
+  {
+    "slug": "les-trois-mousquetaires-13951",
+    "gutenberg_id": 13951,
+    "title": "Les Trois Mousquetaires",
+    "author": "Alexandre Dumas",
+    "language": "fr",
+    "year": "1844",
+    "word_count": 225157,
+    "source": "https://www.gutenberg.org/ebooks/13951"
+  },
+  {
+    "slug": "madame-bovary-14155",
+    "gutenberg_id": 14155,
+    "title": "Madame Bovary",
+    "author": "Gustave Flaubert",
+    "language": "fr",
+    "year": "1857",
+    "word_count": 112516,
+    "source": "https://www.gutenberg.org/ebooks/14155"
+  },
+  {
+    "slug": "la-divina-commedia-inferno-1012",
+    "gutenberg_id": 1012,
+    "title": "La Divina Commedia: Inferno",
+    "author": "Dante Alighieri",
+    "language": "it",
+    "year": "1320",
+    "word_count": 97827,
+    "source": "https://www.gutenberg.org/ebooks/1012"
+  },
+  {
+    "slug": "pg776",
+    "gutenberg_id": 776,
+    "title": "こころ",
+    "author": "夏目漱石",
+    "language": "ja",
+    "year": "1914",
+    "word_count": 31697,
+    "source": "https://www.gutenberg.org/ebooks/776"
+  },
+  {
+    "slug": "dom-casmurro-55752",
+    "gutenberg_id": 55752,
+    "title": "Dom Casmurro",
+    "author": "Machado de Assis",
+    "language": "pt",
+    "year": "1899",
+    "word_count": 65707,
+    "source": "https://www.gutenberg.org/ebooks/55752"
+  },
+  {
+    "slug": "pg28054",
+    "gutenberg_id": 28054,
+    "title": "Братья Карамазовы",
+    "author": "Фёдор Достоевский",
+    "language": "ru",
+    "year": "1880",
+    "word_count": 350685,
+    "source": "https://www.gutenberg.org/ebooks/28054"
+  }
+]
