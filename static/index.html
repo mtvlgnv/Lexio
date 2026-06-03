@@ -586,7 +586,10 @@
     @media (max-width: 520px) {
       /* Composer wraps awkwardly on small phones: the Analyze button used
          to land alone on a second row in odd alignment. Force its row to
-         stretch full width so the click target is obvious. */
+         stretch full width so the click target is obvious. With the spacer
+         removed, distribute the photo / sample / mode buttons across the
+         whole row instead of letting them bunch up on the left. */
+      .composer-bar { justify-content: space-between; }
       .composer-bar .footer-spacer { display: none; }
       .composer-bar .btn-primary { order: 90; flex: 1 0 100%; }
       .composer-bar .usage-pill { order: 99; width: 100%; justify-content: center; margin: 0; }
@@ -1186,6 +1189,12 @@
     @media (max-width:760px) {
       header { padding:0 16px; gap:8px; }
       .tagline, .shortcut-hint { display:none; }
+      /* Trim the mobile header to essentials so it stops looking crowded.
+         The Chrome extension is desktop-only, so the install CTA is useless
+         on a phone; the "Saved" button collapses to its bookmark icon. */
+      .install-hdr-btn { display:none; }
+      .wb-header-btn span:not(.wb-badge) { display:none; }
+      .wb-header-btn { padding:6px 9px; }
       .lang-btn { display:flex; }
       main { flex-direction:column; height:auto; padding:12px; }
       .panel-left  { margin-right:0; margin-bottom:10px; min-height:260px; }
