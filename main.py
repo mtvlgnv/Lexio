@@ -408,7 +408,8 @@ def _run_migrations():
 _run_migrations()
 
 # ── Usage limits ─────────────────────────────────────────────────────────────
-FREE_LOOKUP_LIMIT = 20
+FREE_LOOKUP_LIMIT = 20    # signed-in free tier: lookups per month (Fast only)
+ANON_LOOKUP_LIMIT = 5     # anonymous (no account): free lookups before sign-up
 FREE_OCR_LIMIT    = 3
 TRIAL_DAYS        = 3
 
@@ -696,7 +697,9 @@ def _check_usage(
         db.flush()
         db.commit()
 
-    limit = free_limit
+    # Anonymous lookups get a small pre-signup allowance (ANON_LOOKUP_LIMIT);
+    # OCR keeps the standard free limit.
+    limit = ANON_LOOKUP_LIMIT if kind == "lookup" else FREE_OCR_LIMIT
     used  = row.lookups if kind == "lookup" else row.ocr
     if used >= limit:
         return {"allowed": False, "used": used, "limit": limit}
@@ -758,7 +761,8 @@ def _consume_usage(
         row.ocr += 1
         used = row.ocr
     db.commit()
-    return {"used": used, "limit": free_limit}
+    anon_limit = ANON_LOOKUP_LIMIT if kind == "lookup" else FREE_OCR_LIMIT
+    return {"used": used, "limit": anon_limit}
 
 
 def _has_pro_access(db: DBSession, user: Optional["User"]) -> bool:
@@ -3512,7 +3516,7 @@ async def get_usage(request: Request, user: Optional[User] = Depends(optional_us
     row = db.query(AnonUsage).filter(AnonUsage.ip == ip, AnonUsage.month == now_month).first()
     return {
         "is_pro": False,
-        "lookup": {"used": row.lookups if row else 0, "limit": FREE_LOOKUP_LIMIT},
+        "lookup": {"used": row.lookups if row else 0, "limit": ANON_LOOKUP_LIMIT},
         "ocr":    {"used": row.ocr     if row else 0, "limit": FREE_OCR_LIMIT},
         "hourly": hourly_status,
     }

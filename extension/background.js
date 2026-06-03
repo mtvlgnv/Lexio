@@ -54,9 +54,17 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
         if (resp.status === 402) {
           const err = await resp.json().catch(() => ({}));
           const d   = err.detail || {};
-          const msg402 = d.kind === 'lookup'
-            ? `Monthly limit reached (${d.used || 0}/${d.limit || 100} lookups). Upgrade to Pro for unlimited lookups.`
-            : 'Monthly limit reached. Upgrade to Pro at lexio.site.';
+          let msg402;
+          if (d.kind === 'lookup') {
+            // Anonymous users get a small free allowance — point them to a free
+            // account (20/month) before pitching Pro. Signed-in free users have
+            // already created an account, so Pro is the next step for them.
+            msg402 = stored.lexio_token
+              ? `Monthly limit reached (${d.used || 0}/${d.limit || 20} lookups). Upgrade to Pro at lexio.site for unlimited lookups.`
+              : `You've used your ${d.limit || 5} free lookups. Create a free account at lexio.site for 20 lookups every month.`;
+          } else {
+            msg402 = 'Monthly limit reached. Upgrade to Pro at lexio.site.';
+          }
           sendResponse({ ok: false, error: msg402, code: 'limit_exceeded' });
           return;
         }

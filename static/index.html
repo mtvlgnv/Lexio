@@ -5049,10 +5049,16 @@ function showProModal(kind, used, limit) {
   const title      = document.querySelector('#pro-modal .pro-modal-title');
   const planCard   = document.querySelector('#pro-modal .pro-plan-card');
   const resetNote  = document.querySelector('#pro-modal .pro-modal-reset');
+  const signupBtn  = document.getElementById('pro-modal-signup');
 
   // Heuristic: limits above the free tier mean the user is on Pro and hit
   // the Pro cap (500 OCR / 20,000 credits / month).
   const isProCap = (kind === 'ocr' && limit > 10) || (kind === 'monthly_credit');
+
+  // Anonymous visitors who run out of their free lookups should be invited to
+  // create a free account (20 lookups/month) before being asked to pay for Pro.
+  const isSignupNudge = !localStorage.getItem('lexio_token') && kind === 'lookup';
+  if (signupBtn) signupBtn.style.display = isSignupNudge ? '' : 'none';
 
   if (isProCap) {
     if (title) title.textContent = "You've hit your Pro monthly cap";
@@ -5060,6 +5066,11 @@ function showProModal(kind, used, limit) {
     if (resetNote) resetNote.textContent =
       'Your Pro quota resets on the 1st of next month. If you need more, write to ' +
       'matveylgnv2021@gmail.com — I read every message.';
+  } else if (isSignupNudge) {
+    if (title) title.textContent = "You've used your free lookups";
+    if (planCard)  planCard.style.display  = '';
+    if (resetNote) resetNote.textContent =
+      'A free account gives you 20 lookups every month — no card required.';
   } else {
     if (title) title.textContent = "You've hit your free limit";
     if (planCard)  planCard.style.display  = '';
@@ -5075,6 +5086,10 @@ function showProModal(kind, used, limit) {
     sub.textContent =
       `You've used all ${limit.toLocaleString()} Pro credits this month. ` +
       `Fast = 1 credit, Balanced = 2, Deep = 3.`;
+  } else if (isSignupNudge) {
+    sub.textContent =
+      `You've used all ${limit} free lookups. Create a free account to keep ` +
+      `going — 20 lookups every month, free.`;
   } else {
     sub.textContent = `You've used all ${limit} free lookups this month.`;
   }
@@ -8082,6 +8097,11 @@ if (!_gradMobile && !_gradReduced) {
     <div class="pro-modal-icon">⚡</div>
     <h2 class="pro-modal-title">You've hit your free limit</h2>
     <p class="pro-modal-sub" id="pro-modal-sub">You've used all 20 free lookups this month.</p>
+    <a class="pro-plan-btn" id="pro-modal-signup"
+       style="display:none; margin-bottom:16px; cursor:pointer;"
+       onclick="closeProModal(); openAuthModal(true); return false;">
+      Create a free account →
+    </a>
     <div class="pro-plan-card">
       <div class="pro-plan-header">
         <span class="pro-plan-name">Lexio Pro</span>
