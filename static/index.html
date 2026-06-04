@@ -1187,6 +1187,9 @@
 
     /* ── Responsive ─────────────────────────────────────────── */
     @media (max-width:760px) {
+      /* Kill any stray horizontal overflow so the page can't drift sideways
+         or sit off-center on phones. */
+      html, body { overflow-x: hidden; }
       header { padding:0 16px; gap:8px; }
       .tagline, .shortcut-hint { display:none; }
       /* Trim the mobile header to essentials so it stops looking crowded.
@@ -1199,7 +1202,7 @@
       main { flex-direction:column; height:auto; padding:12px; }
       .panel-left  { margin-right:0; margin-bottom:10px; min-height:260px; }
       .panel-right { width:100%; min-height:300px; }
-      #input-text  { min-height:160px; }
+      #input-text  { min-height:90px; }
       #token-view  { min-height:220px; }
       /* Compact (empty) state on mobile: hide the empty right panel so the
          giant "w" placeholder doesn't sit between the textarea and the
@@ -1207,7 +1210,11 @@
          can see the carousel without scrolling much. */
       body.app-compact:not(.in-app) .panel-right { display: none; }
       body.app-compact:not(.in-app) .panel-left { min-height: 0; margin-bottom: 0; }
-      body.app-compact:not(.in-app) #input-text { min-height: 110px; }
+      body.app-compact:not(.in-app) #input-text { min-height: 90px; }
+      /* The empty-state card was locked to the 460px desktop "shrink"
+         height, which rendered as a giant blank box on phones. Let it hug
+         its content so the input starts ~3 lines tall and grows with text. */
+      body.app-compact:not(.in-app) main { height: auto; }
       /* Smaller font + tighter line-height on mobile so paragraphs
          actually fit. !important overrides setFontSize/setLineHeight
          inline styles (which were tuned for desktop). */
@@ -5384,7 +5391,7 @@ function autoGrowInput() {
   }
   inputText.style.height = 'auto';
   // +2px for the trailing newline a textarea reserves
-  inputText.style.height = Math.max(110, inputText.scrollHeight + 2) + 'px';
+  inputText.style.height = Math.max(90, inputText.scrollHeight + 2) + 'px';
 }
 _mobileMQ.addEventListener('change', autoGrowInput);
 window.addEventListener('resize', autoGrowInput);
