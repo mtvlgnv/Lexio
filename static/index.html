@@ -7066,14 +7066,37 @@ function prefillWord(word) {
 loadWordBank(); loadTweaks(); applyTweaks(); updateWBBadge();
 startPlaceholderRotation(); setupDragAndDrop(); checkPermalink(); initTooltips();
 
-// Hide scroll nudge once user scrolls past the app section
+// Scroll cue: show the down-chevrons until the user starts scrolling OR
+// the hero headline ("A dictionary that reads the sentence") comes into
+// view — then retire them for good. The cue must never flicker back once
+// the landing copy is up. (It used to toggle with scroll position, so it
+// kept reappearing and overlapping the hero text on taller phones.)
 (function() {
   const nudge = document.getElementById('scroll-nudge');
   if (!nudge) return;
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > window.innerHeight * 0.3) nudge.classList.add('hidden');
-    else nudge.classList.remove('hidden');
-  }, { passive: true });
+  let dismissed = false;
+  function dismiss() {
+    if (dismissed) return;
+    dismissed = true;
+    nudge.classList.add('hidden');
+    window.removeEventListener('scroll', onScroll);
+  }
+  function onScroll() {
+    if (window.scrollY > window.innerHeight * 0.3) dismiss();
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Permanently retire the cue the moment the hero headline appears.
+  const hero = document.querySelector('.lp-hero h1');
+  if (hero && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(function(entries) {
+      if (entries.some(function(e) { return e.isIntersecting; })) {
+        dismiss();
+        io.disconnect();
+      }
+    });
+    io.observe(hero);
+  }
 })();
 
 // Compact mode — Electron desktop overlay
