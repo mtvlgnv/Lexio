@@ -1374,6 +1374,18 @@
       /* Slower on mobile — give readers more time per card. */
       .try-marquee-track { animation-duration: 32s; }
     }
+    /* Phones: feature one card centered, with a thin sliver of the
+       neighbours peeking at each edge. The margin centres the 240px card;
+       the negative delay starts the loop one step in so BOTH edges already
+       show a peek on load (instead of the first card sitting flush-left).
+       Margin only offsets position — the track width is unchanged, so the
+       seamless -50% loop is preserved. */
+    @media (max-width: 560px) {
+      .try-marquee-track {
+        margin-left: calc(50% - 120px);
+        animation-delay: -3.2s;
+      }
+    }
     /* Respect reduced motion — stop the scroll. */
     @media (prefers-reduced-motion: reduce) {
       .try-marquee-track { animation: none; }
