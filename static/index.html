@@ -7066,24 +7066,27 @@ function prefillWord(word) {
 loadWordBank(); loadTweaks(); applyTweaks(); updateWBBadge();
 startPlaceholderRotation(); setupDragAndDrop(); checkPermalink(); initTooltips();
 
-// Scroll cue: the down-chevrons stay visible until the hero headline
-// ("A dictionary that reads the sentence") actually scrolls into view,
-// then they retire for good. Keyed to the hero — NOT to an arbitrary
-// scroll distance — so the cue keeps doing its job while the user scrolls
-// through the space above the hero, and it never flickers back once the
-// landing copy is up.
+// Scroll cue: the down-chevrons sit at the bottom of the empty landing
+// state to signal "there's more below". They're visible at rest and
+// retire permanently the first time the user scrolls — by then the user
+// plainly knows they can scroll, and a one-way dismiss means the cue
+// never flickers back or collides with the landing copy as it scrolls up.
+//
+// NB: we deliberately do NOT key this to the hero headline coming into
+// view. On a phone the hero already sits within (or just below) the first
+// viewport and the layout shifts as the carousel/fonts settle, so an
+// IntersectionObserver fires on load and kills the cue before it's seen.
 (function() {
   const nudge = document.getElementById('scroll-nudge');
   if (!nudge) return;
-  const hero = document.querySelector('.lp-hero h1');
-  if (!hero || !('IntersectionObserver' in window)) return;
-  const io = new IntersectionObserver(function(entries) {
-    if (entries.some(function(e) { return e.isIntersecting; })) {
-      nudge.classList.add('hidden');
-      io.disconnect();
-    }
-  });
-  io.observe(hero);
+  function dismiss() {
+    nudge.classList.add('hidden');
+    window.removeEventListener('scroll', onScroll);
+  }
+  function onScroll() {
+    if (window.scrollY > 24) dismiss();
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
 })();
 
 // Compact mode — Electron desktop overlay
