@@ -1256,7 +1256,18 @@
     }
     #scroll-nudge:hover svg { opacity: 1; }
     #scroll-nudge.hidden { opacity: 0; pointer-events: none; }
-    @media (max-width: 760px) { #scroll-nudge { display: none !important; } }
+    @media (max-width: 760px) {
+      /* Mobile: keep the scroll cue (centered above the browser bar) so a
+         first-time user knows there's more below the fold — but only in the
+         resting empty state, so it gets out of the way once they start
+         typing or are reading a result. */
+      #scroll-nudge {
+        right: auto; left: 50%; transform: translateX(-50%);
+        bottom: 20px;
+      }
+      #scroll-nudge svg { width: 30px; height: 30px; }
+      body:not(.app-compact) #scroll-nudge { display: none; }
+    }
     /* Only hidden when user is actively in-app (typing/analyzing) —
        still shown in compact/empty state so the user knows there's
        more landing content below the carousel. */
