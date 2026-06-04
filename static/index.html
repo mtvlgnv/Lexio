@@ -7066,37 +7066,24 @@ function prefillWord(word) {
 loadWordBank(); loadTweaks(); applyTweaks(); updateWBBadge();
 startPlaceholderRotation(); setupDragAndDrop(); checkPermalink(); initTooltips();
 
-// Scroll cue: show the down-chevrons until the user starts scrolling OR
-// the hero headline ("A dictionary that reads the sentence") comes into
-// view — then retire them for good. The cue must never flicker back once
-// the landing copy is up. (It used to toggle with scroll position, so it
-// kept reappearing and overlapping the hero text on taller phones.)
+// Scroll cue: the down-chevrons stay visible until the hero headline
+// ("A dictionary that reads the sentence") actually scrolls into view,
+// then they retire for good. Keyed to the hero — NOT to an arbitrary
+// scroll distance — so the cue keeps doing its job while the user scrolls
+// through the space above the hero, and it never flickers back once the
+// landing copy is up.
 (function() {
   const nudge = document.getElementById('scroll-nudge');
   if (!nudge) return;
-  let dismissed = false;
-  function dismiss() {
-    if (dismissed) return;
-    dismissed = true;
-    nudge.classList.add('hidden');
-    window.removeEventListener('scroll', onScroll);
-  }
-  function onScroll() {
-    if (window.scrollY > window.innerHeight * 0.3) dismiss();
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-
-  // Permanently retire the cue the moment the hero headline appears.
   const hero = document.querySelector('.lp-hero h1');
-  if (hero && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver(function(entries) {
-      if (entries.some(function(e) { return e.isIntersecting; })) {
-        dismiss();
-        io.disconnect();
-      }
-    });
-    io.observe(hero);
-  }
+  if (!hero || !('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(function(entries) {
+    if (entries.some(function(e) { return e.isIntersecting; })) {
+      nudge.classList.add('hidden');
+      io.disconnect();
+    }
+  });
+  io.observe(hero);
 })();
 
 // Compact mode — Electron desktop overlay
