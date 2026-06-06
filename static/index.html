@@ -312,7 +312,7 @@
     .ap-plan-badge { display:inline-flex; align-items:center; gap:6px; font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:3px 8px; border-radius:20px; width:fit-content; }
     .ap-plan-badge.free { background:var(--surface); color:var(--text-mid); border:1px solid var(--border); }
     .ap-plan-badge.trial { background:oklch(72% 0.16 75 / 0.15); color:oklch(72% 0.16 75); border:1px solid oklch(72% 0.16 75 / 0.3); }
-    .ap-plan-badge.pro { background:linear-gradient(135deg,oklch(72% 0.16 75 / 0.15),oklch(62% 0.18 50 / 0.15)); color:oklch(72% 0.16 75); border:1px solid oklch(72% 0.16 75 / 0.3); }
+    .ap-plan-badge.pro { background:oklch(72% 0.16 75 / 0.15); color:oklch(72% 0.16 75); border:1px solid oklch(72% 0.16 75 / 0.3); }
     .ap-plan-desc { font-size:0.8rem; color:var(--text-mid); line-height:1.45; }
     .ap-plan-action { padding:8px 14px; border-radius:var(--radius-sm); font-family:inherit; font-size:0.82rem; font-weight:600; cursor:pointer; transition:background 0.15s,opacity 0.15s; border:none; }
     .ap-plan-action.upgrade { background:var(--accent); color:#fff; }
@@ -652,7 +652,7 @@
     .footer-spacer { flex:1; }
 
     button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background-color 0.15s,transform 0.1s; background-color:var(--accent); background-image:none; color:#fff; letter-spacing:0.01em; }
-    button.btn-primary.btn-glow { background-image:radial-gradient(circle at var(--glow-x) var(--glow-y), color-mix(in oklch, white 35%, var(--accent)) 0%, var(--accent) 60%); }
+    button.btn-primary.btn-glow { background-image:none; }
     button.btn-primary:hover  { background-color:var(--accent-dk); }
     button.btn-primary:active { transform:scale(0.97); }
     button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
@@ -787,7 +787,7 @@
       display:inline-flex; align-items:center; justify-content:center;
       font-size:0.6rem; font-weight:700; letter-spacing:0.04em;
       padding:1px 6px; border-radius:6px;
-      background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));
+      background:oklch(72% 0.16 75);
       color:#fff; margin-left:6px; flex-shrink:0;
     }
     .mode-menu-pro-badge[hidden] { display:none; }
@@ -937,10 +937,7 @@
       color:var(--pos-other-text); background:var(--pos-other-bg);
       transition:color 0.2s, background 0.2s;
     }
-    .pos-badge[data-pos="noun"] { color:var(--pos-noun-text); background:var(--pos-noun-bg); }
-    .pos-badge[data-pos="verb"] { color:var(--pos-verb-text); background:var(--pos-verb-bg); }
-    .pos-badge[data-pos="adj"]  { color:var(--pos-adj-text);  background:var(--pos-adj-bg);  }
-    .pos-badge[data-pos="adv"]  { color:var(--pos-adv-text);  background:var(--pos-adv-bg);  }
+    /* All parts of speech share one calm accent (see base .pos-badge) */
 
     /* Register tag */
     .register-tag {
@@ -1118,7 +1115,7 @@
     .desktop-step-text { font-size:0.81rem; color:var(--text); line-height:1.55; }
     .desktop-step-text code { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-size:0.74rem; font-family:ui-monospace,'Cascadia Code',monospace; color:var(--text); }
     .desktop-dl-btn { display:inline-flex; align-items:center; gap:8px; padding:9px 18px; background-color:var(--accent); background-image:none; color:#fff; border:none; border-radius:var(--radius-sm); font-family:inherit; font-size:0.85rem; font-weight:600; cursor:pointer; transition:background-color 0.15s; text-decoration:none; width:fit-content; }
-    .desktop-dl-btn.btn-glow { background-image:radial-gradient(circle at var(--glow-x) var(--glow-y), color-mix(in oklch, white 35%, var(--accent)) 0%, var(--accent) 60%); }
+    .desktop-dl-btn.btn-glow { background-image:none; }
     .desktop-dl-btn:hover { background-color:var(--accent-dk); }
     .desktop-dl-sub { font-size:0.7rem; opacity:0.8; font-weight:400; }
     .desktop-open-btn { display:inline-flex; align-items:center; gap:7px; padding:7px 14px; background:transparent; color:var(--accent); border:1px solid var(--accent-mid); border-radius:var(--radius-sm); font-family:inherit; font-size:0.8rem; font-weight:500; cursor:pointer; transition:background 0.15s; }
@@ -1277,7 +1274,7 @@
     #scroll-progress {
       position: fixed; top: 0; left: 0;
       width: 0; height: 3px; z-index: 50;
-      background: linear-gradient(90deg, var(--accent), oklch(72% 0.16 75));
+      background: var(--accent);
       transition: width 0.05s linear;
       pointer-events: none;
     }
@@ -1629,11 +1626,7 @@
       transition: background-color 0.15s;
     }
     .lp-btn-primary.btn-glow {
-      background-image: radial-gradient(
-        circle at var(--glow-x) var(--glow-y),
-        color-mix(in oklch, white 35%, var(--accent)) 0%,
-        var(--accent) 60%
-      );
+      background-image: none;
     }
     .lp-btn-ghost {
       display: inline-flex; align-items: center; gap: 8px;
@@ -1646,11 +1639,7 @@
       transition: background-color 0.15s;
     }
     .lp-btn-ghost.btn-glow {
-      background-image: radial-gradient(
-        circle at var(--glow-x) var(--glow-y),
-        var(--accent-lt) 0%,
-        transparent 75%
-      );
+      background-image: none;
     }
     /* hero-specific override — sits on top of the animated gradient */
     .lp-hero-cta .lp-btn-ghost {
@@ -1661,11 +1650,7 @@
       border-color: color-mix(in oklch, var(--border) 70%, transparent);
     }
     .lp-hero-cta .lp-btn-ghost.btn-glow {
-      background-image: radial-gradient(
-        circle at var(--glow-x) var(--glow-y),
-        color-mix(in oklch, var(--surface) 95%, transparent) 0%,
-        color-mix(in oklch, var(--surface) 80%, transparent) 75%
-      );
+      background-image: none;
     }
 
     /* Trending words */
@@ -2203,18 +2188,13 @@
       display: inline-flex; align-items: center; gap: 7px;
       font-size: 0.7rem; font-weight: 700; letter-spacing: .18em;
       text-transform: uppercase;
-      background: linear-gradient(135deg, oklch(72% 0.16 75), oklch(62% 0.18 50));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: oklch(72% 0.16 75);
       margin-bottom: 18px;
     }
     .lp-pro-badge::before, .lp-pro-badge::after {
       content: '';
       display: block; width: 28px; height: 1px;
-      background: linear-gradient(90deg, transparent, oklch(72% 0.16 75));
-    }
-    .lp-pro-badge::after {
-      background: linear-gradient(90deg, oklch(72% 0.16 75), transparent);
+      background: oklch(72% 0.16 75 / 0.45);
     }
     .lp-pro-title { text-align: center; margin-bottom: 10px; }
     .lp-pro-sub {
@@ -2658,9 +2638,7 @@
     /* Glossary preview (homepage section) */
     .lp-glossary {
       padding: 56px 48px;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,122,24,0.10), transparent 70%),
-        linear-gradient(135deg, rgba(195,85,0,0.06), rgba(255,122,24,0.03));
+      background: var(--bg);
       border-top: 1px solid var(--border);
       display: flex; flex-direction: column; align-items: center; gap: 14px;
     }
@@ -2712,9 +2690,7 @@
       padding: 64px 48px;
       display: flex; flex-direction: column; align-items: center; gap: 14px;
       border-top: 1px solid var(--border);
-      background:
-        radial-gradient(ellipse 60% 50% at 50% 0%, color-mix(in oklch, var(--accent) 6%, transparent), transparent 70%),
-        var(--bg);
+      background: var(--bg);
     }
     .lp-audience-eyebrow {
       font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
@@ -2769,9 +2745,7 @@
       padding: 64px 48px;
       display: flex; flex-direction: column; align-items: center; gap: 14px;
       border-top: 1px solid var(--border);
-      background:
-        radial-gradient(ellipse 60% 50% at 50% 100%, color-mix(in oklch, var(--accent) 5%, transparent), transparent 70%),
-        var(--bg);
+      background: var(--bg);
     }
     .lp-compare-eyebrow {
       font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
@@ -3016,10 +2990,9 @@
       content: '';
       position: absolute; inset: 0; z-index: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 60% 70% at 28% 55%, color-mix(in oklch, var(--accent) 14%, transparent), transparent 60%),
-        radial-gradient(ellipse 55% 65% at 78% 35%, color-mix(in oklch, var(--accent) 10%, transparent), transparent 60%);
-      animation: lpHeroBreathe 9s ease-in-out infinite;
-      opacity: 0.85;
+        radial-gradient(ellipse 60% 70% at 28% 55%, color-mix(in oklch, var(--accent) 7%, transparent), transparent 60%),
+        radial-gradient(ellipse 55% 65% at 78% 35%, color-mix(in oklch, var(--accent) 5%, transparent), transparent 60%);
+      opacity: 0.6;
     }
     @keyframes lpHeroBreathe {
       0%, 100% { opacity: 0.55; transform: scale(1);    }
@@ -3385,7 +3358,7 @@
   <img src="/favicon-32.png?v=2" width="22" height="22" alt="Lexio logo" style="border-radius:6px;flex-shrink:0;">
   <span class="brand-group">
     <span class="brand">Le<em>x</em>io</span>
-    <span id="pro-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(135deg,oklch(72% 0.16 75),oklch(62% 0.18 50));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;">PRO</span>
+    <span id="pro-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:oklch(72% 0.16 75);flex-shrink:0;">PRO</span>
     <span id="trial-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:oklch(72% 0.16 75);flex-shrink:0;white-space:nowrap;">TRIAL</span>
   </span>
 
