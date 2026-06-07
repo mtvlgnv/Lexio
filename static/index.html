@@ -1936,6 +1936,37 @@
       }
     }
 
+    /* ── TikTok / social instant-demo (?try=1) ──────────────────── */
+    .word-token.demo-pulse {
+      opacity: 1;
+      background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 32%, transparent) 62%);
+      color: var(--accent);
+      border-radius: 4px;
+      animation: demoPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes demoPulse {
+      0%, 100% { background-color: transparent; }
+      50%      { background-color: color-mix(in oklch, var(--accent) 16%, transparent); }
+    }
+    .demo-coachmark {
+      position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+      background: var(--text); color: var(--bg);
+      padding: 11px 18px; border-radius: 999px;
+      font-size: 0.9rem; font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+      z-index: 60; pointer-events: none;
+      max-width: 90vw; text-align: center; white-space: nowrap;
+      animation: coachBob 1.7s ease-in-out infinite;
+    }
+    @keyframes coachBob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(-6px); }
+    }
+    body.demo-mode #scroll-nudge,
+    body.demo-mode #scroll-progress,
+    body.demo-mode #back-to-top,
+    body.demo-mode .lp-header-nav { display: none !important; }
+
     /* Chrome extension CTA button accent */
     .lp-btn-chrome svg { color: var(--accent); flex-shrink: 0; }
     .lp-section-title {
@@ -8097,6 +8128,61 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
       btn.style.transform = '';
     });
   });
+})();
+
+/* ── TikTok / social instant-demo ───────────────────────────────────────────
+   ?try=1 (or ?demo=1) drops a cold visitor straight into a tappable passage:
+   no paste, no "Analyze", and no signup wall. The normal analyze() gates on
+   auth; this path deliberately skips that. Reuses renderTokens + the anonymous
+   /define path (backend grants 5 free lookups before nudging signup). */
+const DEMO_PASSAGE  = "He met the news with a strange equanimity, as if grief were a language he had long since forgotten how to speak.";
+const DEMO_HINT_WORD = "equanimity";
+
+function startDemo() {
+  document.body.classList.add('demo-mode');
+
+  // Strip the marketing page — it all lives in #landing, so hiding that one
+  // wrapper leaves the app, modals, and overlays fully intact.
+  const landing = document.getElementById('landing');
+  if (landing) landing.style.display = 'none';
+
+  // Load the passage straight into the tappable reading view.
+  const ta = document.getElementById('input-text');
+  if (ta) { ta.value = DEMO_PASSAGE; ta.classList.add('hidden'); }
+  currentContext = DEMO_PASSAGE;
+  renderTokens(DEMO_PASSAGE);
+  document.getElementById('token-view').classList.remove('hidden');
+  ['analyze-btn','sample-btn','edit-btn','char-count','url-bar','reading-stats']
+    .forEach(id => { const e = document.getElementById(id); if (e) e.classList.add('hidden'); });
+  if (typeof stopPlaceholderRotation === 'function') stopPlaceholderRotation();
+  if (typeof updateAppCompact === 'function') updateAppCompact();
+
+  // Pulse the juicy word + a one-time "tap any word" coachmark.
+  document.querySelectorAll('#token-view .word-token').forEach(t => {
+    if (t.textContent.toLowerCase() === DEMO_HINT_WORD.toLowerCase()) t.classList.add('demo-pulse');
+  });
+  let coach = document.getElementById('demo-coachmark');
+  if (!coach) {
+    coach = document.createElement('div');
+    coach.id = 'demo-coachmark';
+    coach.className = 'demo-coachmark';
+    coach.textContent = '👆 Tap any word to see what it means';
+    document.body.appendChild(coach);
+  }
+  const tv = document.getElementById('token-view');
+  tv.addEventListener('click', function retire() {
+    document.querySelectorAll('#token-view .word-token.demo-pulse').forEach(t => t.classList.remove('demo-pulse'));
+    if (coach) coach.remove();
+    tv.removeEventListener('click', retire);
+  });
+}
+
+(function initTryDemo() {
+  const p = new URLSearchParams(location.search);
+  if (!(p.has('try') || p.has('demo'))) return;
+  function go() { try { startDemo(); } catch (e) { console.error('Lexio demo failed', e); } }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go);
+  else go();
 })();
 
 </script>
