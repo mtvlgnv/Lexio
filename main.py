@@ -4003,5 +4003,14 @@ async def catalog_book(slug: str):
     return JSONResponse({**meta, "body": body})
 
 
+# ── This Week on Lexio (top-words content/SEO page) ────────────────────────────
+import thisweek as _thisweek
+
+@app.get("/this-week", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/this-week/", response_class=HTMLResponse, include_in_schema=False)
+async def this_week_page():
+    return HTMLResponse(_thisweek.render())
+
+
 # ── Static frontend ───────────────────────────────────────────────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
