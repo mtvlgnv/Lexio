@@ -5466,7 +5466,10 @@ function setupDragAndDrop() {
 /* ── Analyze ────────────────────────────────────────────────── */
 function analyze() {
   const raw = inputText.value.trim(); if(!raw) return;
-  if(!authUser) { openAuthModal(true); return; }
+  // Anonymous users get their ANON_LOOKUP_LIMIT (5) free lookups before any
+  // sign-up wall. The backend enforces the cap (/define is optional-auth and
+  // returns 402 when spent, which fetchDefinition() surfaces as the signup
+  // modal), so do NOT hard-wall cold visitors here — that was killing the funnel.
   if(URL_RE.test(raw)) { fetchArticle(); return; }
   currentContext = raw; hideError();
   renderTokens(raw); stopPlaceholderRotation();
