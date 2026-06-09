@@ -26,10 +26,26 @@ mkdir -p "$BACKUP_DIR"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 OUT="$BACKUP_DIR/lexio-$STAMP.db"
 
-sqlite3 "$DB" ".backup '$OUT'"
+# Online backup + integrity check. Prefer the sqlite3 CLI; fall back to
+# python3's stdlib sqlite3 module (always present where the app runs).
+if command -v sqlite3 >/dev/null; then
+    sqlite3 "$DB" ".backup '$OUT'"
+    CHECK="$(sqlite3 "$OUT" 'PRAGMA integrity_check;')"
+else
+    CHECK="$(python3 - "$DB" "$OUT" <<'PY'
+import sqlite3, sys
+src = sqlite3.connect(sys.argv[1])
+dst = sqlite3.connect(sys.argv[2])
+with dst:
+    src.backup(dst)
+print(dst.execute("PRAGMA integrity_check").fetchone()[0])
+dst.close(); src.close()
+PY
+)"
+fi
 
 # Sanity: the snapshot must be a healthy SQLite db before we keep it
-if [[ "$(sqlite3 "$OUT" 'PRAGMA integrity_check;')" != "ok" ]]; then
+if [[ "$CHECK" != "ok" ]]; then
     echo "✗ backup verification failed: $OUT"
     rm -f "$OUT"
     exit 1
