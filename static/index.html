@@ -1403,24 +1403,18 @@
     #landing { display: flex; flex-direction: column; }
     body.in-app #landing { display: none; }
 
-    /* ── Web routing: marketing landing ("/") vs. tool page ("/app") ──
-       The same document renders one or the other depending on the URL path.
-       On "/" the tool composer is hidden so only the hero + marketing show;
-       on "/app" the landing is hidden so only the tool shows. */
-    body.landing-page main { display: none !important; }
-    body.landing-page #scroll-nudge { display: none !important; }
+    /* ── Web routing: desktop keeps the tool embedded on "/", phones get a
+       dedicated "/app" tool page ──
+       On DESKTOP the landing renders the tool composer above the marketing
+       sections, exactly as it always did. On MOBILE the tool is hidden on "/"
+       and lives on its own "/app" route instead (the hero CTAs navigate there).
+       On "/app" the marketing landing is always hidden so only the tool shows. */
+    @media (max-width: 760px) {
+      body.landing-page main { display: none !important; }
+      body.landing-page #scroll-nudge { display: none !important; }
+    }
     body.tool-page #landing { display: none !important; }
     body.tool-page .lp-header-nav { display: none; }
-    /* Primary "Try free" CTA in the header — landing only */
-    .lp-try-cta {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 15px; border-radius: 999px;
-      background: var(--accent); color: #fff; font-weight: 600;
-      font-size: 0.9rem; text-decoration: none; white-space: nowrap;
-      transition: filter 0.15s ease;
-    }
-    .lp-try-cta:hover { filter: brightness(1.07); }
-    body.tool-page .lp-try-cta, body.in-app .lp-try-cta { display: none; }
     .brand-home { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }
 
     /* Shared warm-gradient surface: the try-passage carousel and
@@ -3444,12 +3438,6 @@
 
   <div class="header-spacer"></div>
 
-  <!-- Primary CTA — opens the tool page (landing only) -->
-  <a class="lp-try-cta" href="/app">
-    <span data-i18n="tryItNow">Try Lexio free</span>
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-  </a>
-
   <!-- Direct-install CTA (goes straight to the Chrome Web Store) -->
   <a class="install-hdr-btn" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener" title="Install the Lexio Chrome extension">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="14.31" y1="8" x2="20.05" y2="17.94"/><line x1="9.69" y1="8" x2="21.17" y2="8"/><line x1="7.38" y1="12" x2="13.12" y2="2.06"/><line x1="9.69" y1="16" x2="3.95" y2="6.06"/><line x1="14.31" y1="16" x2="2.83" y2="16"/><line x1="16.62" y1="12" x2="10.88" y2="21.94"/></svg>
@@ -5416,10 +5404,21 @@ function cycleSample() {
 
 /* Hero CTA — pre-fill a Literature sample and immediately analyze
    so the first interaction is the product working, not a scroll. */
+// True when the tool composer is actually on this page: on "/app" always, and
+// on the desktop landing (where the tool stays embedded). On the mobile landing
+// the tool lives on "/app", so CTAs navigate there instead of acting in place.
+function toolOnThisPage() {
+  if (document.body.classList.contains('tool-page')) return true;
+  if (document.body.classList.contains('landing-page')) {
+    return !window.matchMedia('(max-width: 760px)').matches;
+  }
+  return true; // Electron / unknown — tool is present
+}
+
 function tryHeroSample() {
-  // From the marketing landing, send the reader to the dedicated tool page;
-  // it will re-run this with the sample loaded once it boots.
-  if (!document.body.classList.contains('tool-page')) {
+  // On the mobile landing the tool isn't here — go to the dedicated tool page,
+  // which re-runs this with the sample loaded once it boots.
+  if (!toolOnThisPage()) {
     window.location.href = '/app?go=sample';
     return;
   }
@@ -7084,7 +7083,7 @@ let _wbSyncIsProOnly = false;
 })();
 
 function prefillWord(word) {
-  if (!document.body.classList.contains('tool-page')) {
+  if (!toolOnThisPage()) {
     window.location.href = '/app?word=' + encodeURIComponent(word);
     return;
   }
@@ -7269,7 +7268,7 @@ function renderTryPassages() {
 }
 
 function loadTryPassage(idx) {
-  if (!document.body.classList.contains('tool-page')) {
+  if (!toolOnThisPage()) {
     window.location.href = '/app?passage=' + idx;
     return;
   }
