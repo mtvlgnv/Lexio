@@ -1403,6 +1403,26 @@
     #landing { display: flex; flex-direction: column; }
     body.in-app #landing { display: none; }
 
+    /* ── Web routing: marketing landing ("/") vs. tool page ("/app") ──
+       The same document renders one or the other depending on the URL path.
+       On "/" the tool composer is hidden so only the hero + marketing show;
+       on "/app" the landing is hidden so only the tool shows. */
+    body.landing-page main { display: none !important; }
+    body.landing-page #scroll-nudge { display: none !important; }
+    body.tool-page #landing { display: none !important; }
+    body.tool-page .lp-header-nav { display: none; }
+    /* Primary "Try free" CTA in the header — landing only */
+    .lp-try-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 15px; border-radius: 999px;
+      background: var(--accent); color: #fff; font-weight: 600;
+      font-size: 0.9rem; text-decoration: none; white-space: nowrap;
+      transition: filter 0.15s ease;
+    }
+    .lp-try-cta:hover { filter: brightness(1.07); }
+    body.tool-page .lp-try-cta, body.in-app .lp-try-cta { display: none; }
+    .brand-home { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }
+
     /* Shared warm-gradient surface: the try-passage carousel and
        the hero share a single WebGL canvas so the gradient is one
        continuous animation with no seam between them. */
@@ -3391,12 +3411,14 @@
 
 <!-- ── Header ──────────────────────────────────────────────── -->
 <header>
+  <a class="brand-home" href="/" aria-label="Lexio home">
   <img src="/favicon-32.png?v=2" width="22" height="22" alt="Lexio logo" style="border-radius:6px;flex-shrink:0;">
   <span class="brand-group">
     <span class="brand">Le<em>x</em>io</span>
     <span id="pro-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:oklch(72% 0.16 75);flex-shrink:0;">PRO</span>
     <span id="trial-header-badge" style="display:none;font-size:1rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:oklch(72% 0.16 75);flex-shrink:0;white-space:nowrap;">TRIAL</span>
   </span>
+  </a>
 
   <!-- Landing nav — hidden in app mode -->
   <nav class="lp-header-nav">
@@ -3421,6 +3443,12 @@
   </nav>
 
   <div class="header-spacer"></div>
+
+  <!-- Primary CTA — opens the tool page (landing only) -->
+  <a class="lp-try-cta" href="/app">
+    <span data-i18n="tryItNow">Try Lexio free</span>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
 
   <!-- Direct-install CTA (goes straight to the Chrome Web Store) -->
   <a class="install-hdr-btn" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener" title="Install the Lexio Chrome extension">
@@ -5389,6 +5417,12 @@ function cycleSample() {
 /* Hero CTA — pre-fill a Literature sample and immediately analyze
    so the first interaction is the product working, not a scroll. */
 function tryHeroSample() {
+  // From the marketing landing, send the reader to the dedicated tool page;
+  // it will re-run this with the sample loaded once it boots.
+  if (!document.body.classList.contains('tool-page')) {
+    window.location.href = '/app?go=sample';
+    return;
+  }
   // Pick the Literature sample (index 3) — best vocab payoff for readers
   const litIdx = SAMPLES.findIndex(s => s.label === 'Literature');
   currentSample = litIdx >= 0 ? litIdx : 0;
@@ -7050,6 +7084,10 @@ let _wbSyncIsProOnly = false;
 })();
 
 function prefillWord(word) {
+  if (!document.body.classList.contains('tool-page')) {
+    window.location.href = '/app?word=' + encodeURIComponent(word);
+    return;
+  }
   // Scroll to app, fill a sample sentence so the user can immediately click the word
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const ta = document.getElementById('input-text');
@@ -7109,6 +7147,31 @@ if (new URLSearchParams(window.location.search).get('compact') === '1') {
 if (new URLSearchParams(window.location.search).get('app') === '1') {
   document.body.classList.add('in-app');
 }
+
+// ── Web routing: split the marketing landing ("/") from the tool ("/app") ──
+// Only applies to the normal web build; Electron loads with ?app=1 / ?compact=1
+// and keeps its own full-app layout untouched.
+(function routePage() {
+  const sp = new URLSearchParams(window.location.search);
+  if (sp.get('app') === '1' || sp.get('compact') === '1') return;
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  const isTool = path === '/app';
+  document.body.classList.add(isTool ? 'tool-page' : 'landing-page');
+
+  // On the tool page, honour preload params handed over by landing CTAs.
+  if (isTool) {
+    window.addEventListener('load', () => {
+      const go = sp.get('go');
+      const passage = sp.get('passage');
+      const word = sp.get('word');
+      try {
+        if (go === 'sample' && typeof tryHeroSample === 'function') tryHeroSample();
+        else if (passage !== null && typeof loadTryPassage === 'function') loadTryPassage(parseInt(passage, 10));
+        else if (word && typeof prefillWord === 'function') prefillWord(word);
+      } catch (e) { /* non-fatal: tool still usable */ }
+    });
+  }
+})();
 
 // ── App compact / try-passage carousel / scroll progress / back-to-top ──────
 
@@ -7206,6 +7269,10 @@ function renderTryPassages() {
 }
 
 function loadTryPassage(idx) {
+  if (!document.body.classList.contains('tool-page')) {
+    window.location.href = '/app?passage=' + idx;
+    return;
+  }
   const ta = document.getElementById('input-text');
   const p = TRY_PASSAGES[idx];
   if (!ta || !p) return;

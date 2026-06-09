@@ -4012,5 +4012,17 @@ async def this_week_page():
     return HTMLResponse(_thisweek.render())
 
 
+# ── App (tool) page ────────────────────────────────────────────────────────────
+# The tool lives on its own route; the same index.html renders the tool instead
+# of the marketing landing based on the URL path (see the routing script in the
+# page). Must be declared before the catch-all StaticFiles mount below.
+from fastapi.responses import FileResponse
+
+@app.get("/app", response_class=HTMLResponse, include_in_schema=False)
+@app.get("/app/", response_class=HTMLResponse, include_in_schema=False)
+async def app_page():
+    return FileResponse("static/index.html")
+
+
 # ── Static frontend ───────────────────────────────────────────────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
