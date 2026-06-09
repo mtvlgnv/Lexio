@@ -14,6 +14,21 @@ echo "── pulling latest from git ──"
 git pull --ff-only
 
 echo
+echo "── pre-deploy database backup ──"
+if [[ -x scripts/backup_db.sh ]]; then
+    scripts/backup_db.sh || echo "⚠ backup failed — continuing deploy (check sqlite3 is installed)"
+else
+    echo "⚠ scripts/backup_db.sh missing — skipping"
+fi
+
+# Ensure the nightly backup cron is installed (idempotent).
+if [[ ! -f /etc/cron.d/lexio-backup ]]; then
+    echo "15 3 * * * root /var/www/lexio/scripts/backup_db.sh >> /var/log/lexio-backup.log 2>&1" > /etc/cron.d/lexio-backup
+    chmod 644 /etc/cron.d/lexio-backup
+    echo "✓ installed nightly backup cron (/etc/cron.d/lexio-backup)"
+fi
+
+echo
 echo "── restarting lexio (uvicorn) ──"
 systemctl restart lexio
 # Poll for readiness rather than fixed sleep — uvicorn workers take ~5s to bind.

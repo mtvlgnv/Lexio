@@ -28,6 +28,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, ForeignKey
+from sqlalchemy import event as sa_event
 from sqlalchemy.orm import declarative_base, sessionmaker, Session as DBSession
 from passlib.context import CryptContext
 from jose import jwt, JWTError
@@ -144,7 +145,25 @@ def _safe_json_loads(text: str) -> dict:
 # ── Database ─────────────────────────────────────────────────────────────────
 
 DATABASE_URL = "sqlite:///./lexio.db"
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(
+    DATABASE_URL,
+    # `timeout` is sqlite3's busy wait (seconds) — without it, concurrent
+    # writes from multiple uvicorn workers raise "database is locked".
+    connect_args={"check_same_thread": False, "timeout": 10},
+)
+
+
+@sa_event.listens_for(engine, "connect")
+def _set_sqlite_pragmas(dbapi_conn, _record):
+    cur = dbapi_conn.cursor()
+    # WAL lets readers proceed during writes — required for multi-worker
+    # uvicorn. Persistent: once set, the db file stays in WAL mode.
+    cur.execute("PRAGMA journal_mode=WAL")
+    cur.execute("PRAGMA synchronous=NORMAL")
+    cur.execute("PRAGMA busy_timeout=10000")
+    cur.close()
+
+
 Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 
@@ -629,13 +648,20 @@ def _trial_days_left(u: "User") -> int:
     return 0
 
 def _get_client_ip(request: Request) -> str:
-    """Return the real client IP, respecting X-Real-IP from nginx."""
-    xff = request.headers.get("x-forwarded-for")
-    if xff:
-        return xff.split(",")[0].strip()
+    """Return the real client IP.
+
+    Trust order matters: X-Real-IP is set by our nginx from $remote_addr and
+    cannot be forged through it. X-Forwarded-For is client-controllable —
+    nginx *appends* the real address, so only the LAST entry is trustworthy;
+    taking the first would let anyone spoof their identity (and bypass the
+    per-IP rate limits and anonymous free-lookup quota) with a forged header.
+    """
     real = request.headers.get("x-real-ip")
     if real:
         return real.strip()
+    xff = request.headers.get("x-forwarded-for")
+    if xff:
+        return xff.split(",")[-1].strip()
     return request.client.host if request.client else "unknown"
 
 
@@ -1271,13 +1297,16 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
 
     # Single retry on parse/value errors — Gemini occasionally produces
     # malformed JSON on the first call; a fresh sample usually succeeds.
+    # The provider SDKs are synchronous: run them in a thread so the
+    # multi-second AI call doesn't block the event loop for every other
+    # request on this worker.
     try:
         try:
-            result = _call_and_parse()
+            result = await asyncio.to_thread(_call_and_parse)
         except (json.JSONDecodeError, ValueError) as first_exc:
             logger.warning("/define %s parse failed (%s) — retrying once",
                            actual_model, first_exc)
-            result = _call_and_parse()
+            result = await asyncio.to_thread(_call_and_parse)
     except json.JSONDecodeError as exc:
         logger.error("/define JSON parse error: %s", exc)
         raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
@@ -3419,7 +3448,9 @@ async def ocr_image(request: Request, file: UploadFile = File(...),
         "Preserve paragraph breaks. Return only the extracted text, no commentary."
     )
 
-    try:
+    # Sync vision SDK calls — run in a thread so the (slow) OCR request
+    # doesn't block the event loop for every other request on this worker.
+    def _run_ocr() -> str:
         if os.getenv("GOOGLE_API_KEY"):
             response = google_client.models.generate_content(
                 model="gemini-2.5-flash",
@@ -3439,6 +3470,7 @@ async def ocr_image(request: Request, file: UploadFile = File(...),
                     ).strip()
                 except Exception:
                     pass
+            return text
         elif os.getenv("OPENAI_API_KEY"):
             import base64
             b64 = base64.b64encode(image_bytes).decode()
@@ -3450,9 +3482,12 @@ async def ocr_image(request: Request, file: UploadFile = File(...),
                     {"type": "text", "text": ocr_prompt},
                 ]}],
             )
-            text = response.choices[0].message.content.strip()
+            return response.choices[0].message.content.strip()
         else:
             raise HTTPException(status_code=503, detail="No vision API key configured (GOOGLE_API_KEY or OPENAI_API_KEY required).")
+
+    try:
+        text = await asyncio.to_thread(_run_ocr)
     except HTTPException:
         raise
     except Exception as exc:
@@ -3629,11 +3664,7 @@ def _savings_percent(monthly_amount: str, yearly_amount: str) -> int:
 async def stripe_price_info(request: Request):
     """Return both monthly + yearly prices localised to the visitor's
     country. No auth required — this is purely a marketing endpoint."""
-    ip = request.client.host
-    # Prefer X-Forwarded-For when behind a proxy
-    forwarded = request.headers.get("X-Forwarded-For", "")
-    if forwarded:
-        ip = forwarded.split(",")[0].strip()
+    ip = _get_client_ip(request)
     country = await _country_from_ip(ip)
     currency, symbol, monthly_amount = _price_for_country(country)
     yearly_amount = _yearly_price_for_country(country)
@@ -3707,10 +3738,7 @@ async def stripe_create_checkout(
             detail=f"Stripe {plan} price not configured",
         )
 
-    ip = request.client.host
-    forwarded = request.headers.get("X-Forwarded-For", "")
-    if forwarded:
-        ip = forwarded.split(",")[0].strip()
+    ip = _get_client_ip(request)
     country = await _country_from_ip(ip)
     currency, _, _ = _price_for_country(country)
 
@@ -3746,7 +3774,9 @@ async def stripe_create_checkout(
             "end_behavior": {"missing_payment_method": "cancel"},
         }
 
-    session = _stripe.checkout.Session.create(
+    # Stripe's SDK is synchronous — run in a thread to keep the loop free.
+    session = await asyncio.to_thread(
+        _stripe.checkout.Session.create,
         mode="subscription",
         line_items=[{"price": price_id, "quantity": 1}],
         currency=currency.lower(),
@@ -3772,7 +3802,8 @@ async def stripe_customer_portal(
     """Return a Stripe Billing Portal URL so the user can manage / cancel."""
     if not user.stripe_customer_id:
         raise HTTPException(status_code=400, detail="No Stripe subscription found")
-    portal = _stripe.billing_portal.Session.create(
+    portal = await asyncio.to_thread(
+        _stripe.billing_portal.Session.create,
         customer=user.stripe_customer_id,
         return_url=_SITE_URL,
     )
