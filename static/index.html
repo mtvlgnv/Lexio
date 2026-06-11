@@ -5029,7 +5029,7 @@ function onModelPillClick(model) {
   const label  = MODEL_LABELS[model] || model;
   const word   = resultWord || 'this word';
   const msg    = document.getElementById('model-switch-msg');
-  msg.innerHTML = `Compare <strong class="model-switch-msg-word">${word}</strong> with <strong>${label}</strong>?`;
+  msg.innerHTML = `Compare <strong class="model-switch-msg-word">${_escape(word)}</strong> with <strong>${_escape(label)}</strong>?`;
   document.getElementById('model-switch-go').onclick = confirmModelSwitch;
   document.getElementById('model-switch-confirm').classList.remove('hidden');
 }
@@ -5623,8 +5623,11 @@ function showSmartPlaceholder(text) {
 
   sub.textContent = 'Try one of these — or click any word that catches your eye.';
   chips.innerHTML = picks.map(w =>
-    `<button class="suggest-chip" onclick="clickSuggested('${w}')">${w}</button>`
+    `<button class="suggest-chip" data-word="${_escape(w)}">${_escape(w)}</button>`
   ).join('');
+  chips.querySelectorAll('.suggest-chip').forEach(btn =>
+    btn.addEventListener('click', () => clickSuggested(btn.dataset.word))
+  );
   chips.classList.remove('hidden');
 }
 
@@ -5790,9 +5793,11 @@ function renderHistory() {
   const chipsHtml = '<span class="history-label">Recent</span>' +
     history.slice(1).map((h,i) =>
       `<button class="history-chip"
-        onmouseenter="showChipTooltip(event,'${h.data.contextual?.slice(0,80).replace(/'/g,'&#39;')+'…'||''}')"
+        data-tip="${_escape((h.data.contextual||'').slice(0,80)+(h.data.contextual?'…':''))}"
+        data-idx="${i+1}"
+        onmouseenter="showChipTooltip(event,this.dataset.tip)"
         onmouseleave="hideChipTooltip()"
-        onclick="showCached(${i+1})">${h.word}<span class="history-chip-pos"> ${h.data.pos||''}</span></button>`
+        onclick="showCached(this.dataset.idx|0)">${_escape(h.word)}<span class="history-chip-pos"> ${_escape(h.data.pos||'')}</span></button>`
     ).join('');
   // Populate pinned bar (above def); hide old in-scroll strip
   if (bar) { bar.innerHTML = chipsHtml; bar.classList.remove('hidden'); }
@@ -6218,7 +6223,7 @@ function renderWordBankList() {
   }
   if (emptyMsg) emptyMsg.style.display = 'none';
   list.innerHTML = matches.map(({ e, i }) =>
-    `<div class="wb-entry"><div class="wb-entry-header"><span class="wb-word">${e.word}</span>${e.pos?`<span class="wb-pos">${e.pos}</span>`:''}<button class="wb-delete" onclick="deleteFromBank(${i})" title="Remove">×</button></div><p class="wb-def">${e.contextual||e.definition||''}</p></div>`
+    `<div class="wb-entry"><div class="wb-entry-header"><span class="wb-word">${_escape(e.word)}</span>${e.pos?`<span class="wb-pos">${_escape(e.pos)}</span>`:''}<button class="wb-delete" onclick="deleteFromBank(${i})" title="Remove">×</button></div><p class="wb-def">${_escape(e.contextual||e.definition||'')}</p></div>`
   ).join('');
 }
 function deleteFromBank(i) { wordBank.splice(i,1); saveWordBank(); renderWordBankList(); }

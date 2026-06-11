@@ -32,7 +32,7 @@ Lexio from "paste your own text" into "a beautiful library of books you read in-
 - Other: `/ocr`, `/fetch-text`, `/auth/{register,login,google,apple}`, `/api/{usage,pro-status}`,
   Stripe checkout/portal/webhook, `/stats/top-words`, and SEO pages (`/works`, `/glossary`).
 - Auth: JWT (email/password, Google, Apple). Payments: Stripe, Free vs Pro
-  ($2.99/mo, 3-day trial). Free = 100 lookups/mo + Fast only; Pro = all modes.
+  ($2.99/mo, 3-day trial). Free = 20 lookups/mo + Fast only; Pro = all modes.
 
 ## Languages
 11 in and out: English, Spanish, French, German, Italian, Portuguese, Russian,

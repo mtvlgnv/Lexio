@@ -1,4 +1,5 @@
 import asyncio
+import hmac
 import logging
 import os
 import json
@@ -2697,7 +2698,7 @@ _START_TIME = datetime.datetime.utcnow()
 
 def _check_admin(x_admin_key: Optional[str] = Header(default=None)):
     admin_key = os.getenv("ADMIN_KEY", "")
-    if not admin_key or x_admin_key != admin_key:
+    if not admin_key or not hmac.compare_digest(x_admin_key or "", admin_key):
         raise HTTPException(status_code=403, detail="Forbidden")
 
 @app.get("/api/admin/health")
@@ -2902,9 +2903,10 @@ button{width:100%;padding:10px;background:#c47028;color:#fff;border:none;border-
 
 @app.post("/admin", response_class=HTMLResponse)
 @app.post("/admin/", response_class=HTMLResponse)
+@limiter.limit("10/minute")
 async def admin_login(request: Request, key: str = Form(...)):
     admin_key = os.getenv("ADMIN_KEY", "")
-    if not admin_key or key != admin_key:
+    if not admin_key or not hmac.compare_digest(key, admin_key):
         error_html = _LOGIN_FORM_TMPL.replace("{error}", '<p class="err">Wrong key.</p>')
         return HTMLResponse(error_html, status_code=401)
     resp = RedirectResponse(url="/admin", status_code=303)
