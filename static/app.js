@@ -650,12 +650,12 @@ function cycleSample() {
 /* Hero CTA — pre-fill a Literature sample and immediately analyze
    so the first interaction is the product working, not a scroll. */
 // True when the tool composer is actually on this page: on "/app" always, and
-// on the desktop landing (where the tool stays embedded). On the mobile landing
-// the tool lives on "/app", so CTAs navigate there instead of acting in place.
+// the marketing landing ("/"): the tool lives on "/app", so CTAs navigate there.
+// The ?try=1 instant demo is the one exception — it mounts the tool inline.
 function toolOnThisPage() {
   if (document.body.classList.contains('tool-page')) return true;
   if (document.body.classList.contains('landing-page')) {
-    return !window.matchMedia('(max-width: 760px)').matches;
+    return document.body.classList.contains('demo-mode');
   }
   return true; // Electron / unknown — tool is present
 }

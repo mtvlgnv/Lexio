@@ -1356,16 +1356,16 @@
     #landing { display: flex; flex-direction: column; }
     body.in-app #landing { display: none; }
 
-    /* ── Web routing: desktop keeps the tool embedded on "/", phones get a
-       dedicated "/app" tool page ──
-       On DESKTOP the landing renders the tool composer above the marketing
-       sections, exactly as it always did. On MOBILE the tool is hidden on "/"
-       and lives on its own "/app" route instead (the hero CTAs navigate there).
-       On "/app" the marketing landing is always hidden so only the tool shows. */
-    @media (max-width: 760px) {
-      body.landing-page main { display: none !important; }
-      body.landing-page #scroll-nudge { display: none !important; }
-    }
+    /* ── Web routing: "/" is the marketing landing, "/app" is the tool ──
+       The tool composer (<main>) is hidden on the landing at ALL widths so "/"
+       is a pure marketing page; the tool lives on the dedicated "/app" route and
+       the hero CTAs navigate there. The ?try=1 instant demo is exempt so it can
+       still mount the tool inline on "/". On "/app" the marketing is hidden. */
+    body.landing-page:not(.demo-mode) main { display: none !important; }
+    body.landing-page:not(.demo-mode) #scroll-nudge { display: none !important; }
+    /* Lead the marketing landing with the hero, not the tool's sample carousel. */
+    body.landing-page:not(.demo-mode) #try-passage,
+    body.landing-page:not(.demo-mode) .lp-warm-divider { display: none !important; }
     body.tool-page #landing { display: none !important; }
     body.tool-page .lp-header-nav { display: none; }
     .brand-home { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }
