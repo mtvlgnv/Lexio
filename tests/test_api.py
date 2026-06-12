@@ -32,11 +32,11 @@ VALID_AI_JSON = json.dumps({
 
 @pytest.fixture(autouse=True)
 def _mock_ai(monkeypatch):
-    monkeypatch.setattr(main, "_call_openai", lambda prompt: VALID_AI_JSON)
-    monkeypatch.setattr(main, "_call_google", lambda prompt: VALID_AI_JSON)
-    monkeypatch.setattr(
-        main, "_call_anthropic", lambda prompt, model="": VALID_AI_JSON
-    )
+    # /define lives in app.routers.define and calls ai._call_* by attribute,
+    # so patch the provider wrappers on the app.ai module.
+    monkeypatch.setattr("app.ai._call_openai", lambda prompt: VALID_AI_JSON)
+    monkeypatch.setattr("app.ai._call_google", lambda prompt: VALID_AI_JSON)
+    monkeypatch.setattr("app.ai._call_anthropic", lambda prompt, model="": VALID_AI_JSON)
 
 
 def _ip():
