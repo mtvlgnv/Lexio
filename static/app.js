@@ -2312,7 +2312,7 @@ let _wbSyncIsProOnly = false;
     const topWords = data.words.slice(0, 5);
     const maxCount = topWords[0].count || 1;
     list.innerHTML = topWords.map((w, i) => `
-      <div class="lp-trending-item" onclick="prefillWord(${JSON.stringify(w.word)})">
+      <div class="lp-trending-item" data-word="${_escape(w.word)}" onclick="prefillWord(this.dataset.word)">
         <div class="lp-trending-rank">${i + 1}</div>
         <div class="lp-trending-word">${escHtml(w.word)}</div>
         <div class="lp-trending-bar-wrap">
