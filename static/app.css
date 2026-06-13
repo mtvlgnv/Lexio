@@ -5,7 +5,7 @@
     .skip-link {
       position: absolute; top: -100px; left: 12px;
       padding: 10px 16px; background: var(--accent, #c34); color: #fff;
-      border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
       font-weight: 600; text-decoration: none; z-index: 10000;
       transition: top 0.15s ease;
     }
@@ -48,7 +48,7 @@
       --radius:            14px;
       --radius-sm:         8px;
       --header-h:          60px;
-      font-family: 'DM Sans', system-ui, sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
     }
 
     [data-theme="dark"] {
@@ -101,7 +101,7 @@
       display: inline-flex; align-items: baseline; gap: 6px;
       flex-shrink: 0;
     }
-    .brand { font-family:'Lora',serif; font-size:1.4rem; font-weight:600; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
+    .brand { font-family:'Fraunces',serif; font-size:1.4rem; font-weight:600; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
     .brand em { font-style:italic; color:var(--accent); }
     .tagline { font-size:0.75rem; color:var(--muted); padding-left:6px; white-space:nowrap; }
     .header-spacer { flex:1; }
@@ -109,7 +109,7 @@
     .wb-header-btn {
       display:flex; align-items:center; gap:6px;
       background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
-      padding:5px 12px; font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
+      padding:5px 12px; font-family:'Inter',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer; transition:background 0.15s, color 0.15s; white-space:nowrap;
     }
     .wb-header-btn:hover { background:var(--bg); color:var(--text); }
@@ -121,7 +121,7 @@
       border: 1px solid var(--accent);
       border-radius: var(--radius-sm);
       padding: 6px 13px;
-      font-family: 'DM Sans', inherit; font-size: 0.78rem; font-weight: 600;
+      font-family: 'Inter', inherit; font-size: 0.78rem; font-weight: 600;
       text-decoration: none; cursor: pointer; white-space: nowrap;
       transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
       box-shadow: 0 2px 8px -2px color-mix(in oklch, var(--accent) 45%, transparent);
@@ -392,7 +392,7 @@
       display:flex; align-items:center; gap:6px;
       background:var(--bg); border:1px solid var(--border);
       border-radius:var(--radius-sm); padding:5px 11px;
-      font-family:'DM Sans',inherit; font-size:0.75rem; font-weight:500;
+      font-family:'Inter',inherit; font-size:0.75rem; font-weight:500;
       color:var(--text-mid); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
     }
@@ -468,9 +468,9 @@
     #input-text {
       flex:1; width:100%; padding:14px 24px 16px; border:none; outline:none; resize:none;
       font-size:1rem; line-height:1.8; color:var(--text); background:transparent;
-      font-family:'DM Sans',inherit; font-weight:300; transition:color 0.3s;
+      font-family:'Inter',inherit; font-weight:300; transition:color 0.3s;
     }
-    #input-text::placeholder { color:var(--border); font-style:italic; font-family:'Lora',serif; transition:color 0.38s ease; }
+    #input-text::placeholder { color:var(--border); font-style:italic; font-family:'Fraunces',serif; transition:color 0.38s ease; }
     #input-text.ph-fading::placeholder { color:transparent; }
 
     /* ── Token view ─────────────────────────────────────────── */
@@ -553,7 +553,7 @@
       height:32px; padding:0 12px;
       background:transparent; border:1px solid var(--border);
       border-radius:var(--radius-sm);
-      font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
+      font-family:'Inter',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
       text-decoration:none; flex-shrink:0;
@@ -597,18 +597,18 @@
     .lang-btn {
       display:flex; align-items:center; gap:7px;
       background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
-      padding:5px 12px; font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
+      padding:5px 12px; font-family:'Inter',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer; transition:background 0.15s,color 0.15s,border-color 0.15s; white-space:nowrap;
     }
     .lang-btn:hover { background:var(--bg); color:var(--text); border-color:var(--accent-mid); }
     .lang-btn select { appearance:none; -webkit-appearance:none; background:transparent; border:none; outline:none; font-family:inherit; font-size:inherit; font-weight:inherit; color:inherit; cursor:pointer; padding:0; }
     .footer-spacer { flex:1; }
 
-    button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background-color 0.15s,transform 0.1s; background-color:var(--accent); background-image:none; color:#fff; letter-spacing:0.01em; }
+    button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'Inter',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background-color 0.15s,transform 0.1s; background-color:var(--accent); background-image:none; color:#fff; letter-spacing:0.01em; }
     button.btn-primary.btn-glow { background-image:none; }
     button.btn-primary:hover  { background-color:var(--accent-dk); }
     button.btn-primary:active { transform:scale(0.97); }
-    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
+    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'Inter',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
     button.btn-secondary:hover { background:var(--bg); color:var(--text); }
     button.hidden { display:none !important; }
 
@@ -633,7 +633,7 @@
     }
     .model-pill {
       padding:7px 16px; border:none; border-radius:40px;
-      background:transparent; font-family:'DM Sans',inherit;
+      background:transparent; font-family:'Inter',inherit;
       font-size:0.78rem; font-weight:500; color:var(--muted);
       cursor:pointer; transition:all 0.16s;
       white-space:nowrap; line-height:1;
@@ -667,7 +667,7 @@
       height:32px; padding:0 10px 0 12px;
       background:transparent; border:1px solid var(--border);
       border-radius:var(--radius-sm);
-      font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
+      font-family:'Inter',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
       white-space:nowrap;
@@ -709,7 +709,7 @@
       box-shadow:none !important;
     }
     .mode-menu-name {
-      font-family:'DM Sans',inherit;
+      font-family:'Inter',inherit;
       font-size:0.88rem; font-weight:600; color:var(--text);
       display:flex; align-items:center; gap:8px; width:100%;
     }
@@ -814,7 +814,7 @@
     .tweak-row { margin-bottom:8px; }
     .tweak-label { font-size:0.7rem; font-weight:500; color:var(--text-mid); margin-bottom:4px; }
     .tweak-options { display:flex; gap:4px; }
-    .tweak-opt { flex:1; padding:3px 0; border:1px solid var(--border); border-radius:5px; background:var(--bg); color:var(--muted); font-family:'DM Sans',inherit; font-size:0.68rem; font-weight:500; cursor:pointer; text-align:center; transition:all 0.15s; }
+    .tweak-opt { flex:1; padding:3px 0; border:1px solid var(--border); border-radius:5px; background:var(--bg); color:var(--muted); font-family:'Inter',inherit; font-size:0.68rem; font-weight:500; cursor:pointer; text-align:center; transition:all 0.15s; }
     .tweak-opt.active { border-color:var(--accent); background:var(--accent-lt); color:var(--accent); }
     .tweak-slider-row { display:flex; align-items:center; gap:8px; }
     .tweak-slider { flex:1; -webkit-appearance:none; height:2px; border-radius:2px; background:var(--border); outline:none; cursor:pointer; }
@@ -829,8 +829,8 @@
       0%,100% { opacity:0.35; transform:scale(1); }
       50%     { opacity:0.55; transform:scale(1.05); }
     }
-    .placeholder-glyph { font-family:'Lora',serif; font-size:3.5rem; font-style:italic; color:var(--accent-mid); line-height:1; user-select:none; animation:glyph-breathe 5s ease-in-out infinite; }
-    .placeholder-title { font-family:'Lora',serif; font-size:1rem; font-weight:500; color:var(--text-mid); }
+    .placeholder-glyph { font-family:'Fraunces',serif; font-size:3.5rem; font-style:italic; color:var(--accent-mid); line-height:1; user-select:none; animation:glyph-breathe 5s ease-in-out infinite; }
+    .placeholder-title { font-family:'Fraunces',serif; font-size:1rem; font-weight:500; color:var(--text-mid); }
     #def-placeholder p { font-size:0.82rem; max-width:220px; line-height:1.65; color:var(--muted); }
 
     /* Suggested word chips */
@@ -838,14 +838,14 @@
     .suggest-chip {
       padding:3px 10px; background:var(--bg); border:1px solid var(--border);
       border-radius:20px; font-size:0.75rem; color:var(--text-mid); cursor:pointer;
-      font-family:'Lora',serif; font-style:italic;
+      font-family:'Fraunces',serif; font-style:italic;
       transition:background 0.12s, border-color 0.12s, color 0.12s;
     }
     .suggest-chip:hover { background:var(--token-hover); border-color:var(--accent-mid); color:var(--accent-dk); }
 
     /* ── Right panel — skeleton loading ─────────────────────── */
     #def-loading { flex:1; display:flex; flex-direction:column; gap:0; padding:24px; }
-    .loading-word-label-top { font-family:'Lora',serif; font-style:italic; font-size:0.85rem; color:var(--muted); margin-bottom:16px; min-height:1.2em; }
+    .loading-word-label-top { font-family:'Fraunces',serif; font-style:italic; font-size:0.85rem; color:var(--muted); margin-bottom:16px; min-height:1.2em; }
 
     @keyframes skel-shimmer {
       0%   { background-position:200% center; }
@@ -875,10 +875,10 @@
     .def-word-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; border-bottom:1px solid var(--border-light); padding-bottom:16px; }
     .def-word-col { display:flex; flex-direction:column; gap:6px; min-width:0; }
 
-    .def-word { font-family:'Lora',serif; font-size:2rem; font-weight:500; letter-spacing:-0.5px; color:var(--text); line-height:1.1; }
+    .def-word { font-family:'Fraunces',serif; font-size:2rem; font-weight:500; letter-spacing:-0.5px; color:var(--text); line-height:1.1; }
     .ipa-row { display:flex; align-items:center; gap:7px; }
     .ipa-row.hidden { display:none; }
-    .ipa-text { font-size:0.82rem; color:var(--muted); letter-spacing:0.02em; font-family:'Lora',serif; }
+    .ipa-text { font-size:0.82rem; color:var(--muted); letter-spacing:0.02em; font-family:'Fraunces',serif; }
     .say-btn { display:inline-flex; align-items:center; gap:4px; background:none; border:1px solid var(--border); border-radius:5px; padding:2px 8px; font-family:inherit; font-size:0.68rem; color:var(--muted); cursor:pointer; transition:background 0.12s,color 0.12s,border-color 0.12s; }
     .say-btn:hover { background:var(--bg); color:var(--text); border-color:var(--accent-mid); }
 
@@ -897,14 +897,14 @@
       display:inline-block; font-size:0.62rem; font-weight:500; letter-spacing:0.06em;
       padding:2px 7px; border-radius:10px; align-self:flex-start;
       background:var(--bg); border:1px solid var(--border); color:var(--muted);
-      font-style:italic; font-family:'Lora',serif;
+      font-style:italic; font-family:'Fraunces',serif;
     }
 
     /* Simpler synonym */
     #def-simpler { display:flex; align-items:center; gap:5px; }
     #def-simpler.hidden { display:none; }
     .simpler-label { font-size:0.68rem; color:var(--muted); }
-    .simpler-word { font-size:0.75rem; font-style:italic; font-family:'Lora',serif; color:var(--text-mid); background:var(--bg); padding:1px 7px; border-radius:10px; border:1px solid var(--border); }
+    .simpler-word { font-size:0.75rem; font-style:italic; font-family:'Fraunces',serif; color:var(--text-mid); background:var(--bg); padding:1px 7px; border-radius:10px; border:1px solid var(--border); }
 
     /* Action buttons */
     .action-btns { display:flex; flex-direction:column; gap:4px; flex-shrink:0; align-items:flex-start; }
@@ -918,13 +918,13 @@
     .def-label { font-size:0.68rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
     .def-text { font-size:0.95rem; line-height:1.75; color:var(--text); font-weight:300; }
 
-    .def-why-box { background:var(--accent-lt); border-radius:var(--radius-sm); padding:14px 16px 14px 20px; font-size:0.88rem; line-height:1.7; color:var(--text-mid); font-style:italic; font-family:'Lora',serif; position:relative; }
+    .def-why-box { background:var(--accent-lt); border-radius:var(--radius-sm); padding:14px 16px 14px 20px; font-size:0.88rem; line-height:1.7; color:var(--text-mid); font-style:italic; font-family:'Fraunces',serif; position:relative; }
     .def-why-box::before { content:'"'; position:absolute; top:4px; left:12px; font-size:2rem; color:var(--accent); opacity:0.22; line-height:1; }
 
     /* Etymology row */
     .etymology-row { display:flex; align-items:baseline; gap:7px; }
     .etymology-label { font-size:0.62rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); white-space:nowrap; flex-shrink:0; }
-    .etymology-text { font-size:0.8rem; font-style:italic; font-family:'Lora',serif; color:var(--muted); line-height:1.5; }
+    .etymology-text { font-size:0.8rem; font-style:italic; font-family:'Fraunces',serif; color:var(--muted); line-height:1.5; }
 
     /* ── More-detail progressive disclosure ─────────────────── */
     .more-toggle { display:inline-flex; align-items:center; gap:5px; font-size:0.72rem; font-weight:500; color:var(--muted); background:none; border:none; cursor:pointer; padding:4px 0; font-family:inherit; transition:color 0.15s; }
@@ -950,7 +950,7 @@
     .explored-line { font-size:0.7rem; color:var(--muted); text-align:right; padding-top:2px; }
 
     /* Screenshot watermark */
-    .screenshot-footer { display:none; text-align:right; font-size:0.7rem; color:var(--muted); padding-top:8px; font-family:'Lora',serif; font-style:italic; }
+    .screenshot-footer { display:none; text-align:right; font-size:0.7rem; color:var(--muted); padding-top:8px; font-family:'Fraunces',serif; font-style:italic; }
     .screenshot-mode .screenshot-footer { display:block; }
     .screenshot-mode { background:var(--surface) !important; overflow:visible !important; max-height:none !important; }
 
@@ -968,7 +968,7 @@
     #wb-overlay.hidden { display:none; }
     .wb-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:620px; max-height:80vh; display:flex; flex-direction:column; border:1px solid var(--border); overflow:hidden; }
     .wb-header { display:flex; align-items:center; gap:10px; padding:18px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
-    .wb-title { font-family:'Lora',serif; font-size:1.1rem; font-weight:500; color:var(--text); }
+    .wb-title { font-family:'Fraunces',serif; font-size:1.1rem; font-weight:500; color:var(--text); }
     .wb-count { font-size:0.8rem; color:var(--muted); }
     .wb-header-spacer { flex:1; }
     .wb-action-btn { padding:6px 14px; background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:inherit; font-size:0.78rem; font-weight:500; color:var(--text-mid); cursor:pointer; transition:background 0.12s, color 0.12s; }
@@ -1008,7 +1008,7 @@
     .wb-entry { padding:14px 16px; border:1px solid var(--border-light); border-radius:var(--radius-sm); background:var(--bg); display:flex; flex-direction:column; gap:6px; transition:border-color 0.12s; }
     .wb-entry:hover { border-color:var(--border); }
     .wb-entry-header { display:flex; align-items:center; gap:8px; }
-    .wb-word { font-family:'Lora',serif; font-size:1rem; font-weight:500; color:var(--text); }
+    .wb-word { font-family:'Fraunces',serif; font-size:1rem; font-weight:500; color:var(--text); }
     .wb-pos { font-size:0.68rem; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); background:var(--accent-lt); padding:2px 7px; border-radius:10px; }
     .wb-delete { margin-left:auto; background:none; border:none; color:var(--muted); cursor:pointer; font-size:1.1rem; line-height:1; padding:2px 6px; border-radius:4px; transition:background 0.12s,color 0.12s; }
     .wb-delete:hover { background:var(--danger-bg); color:var(--danger); }
@@ -1028,7 +1028,7 @@
     .fc-card.flipped { transform:rotateY(180deg); }
     .fc-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:28px 24px; text-align:center; border:1.5px solid var(--border); border-radius:14px; background:var(--bg); }
     .fc-back-face { transform:rotateY(180deg); background:var(--accent-lt); border-color:var(--accent-mid); }
-    .fc-word { font-family:'Lora',serif; font-size:2rem; font-weight:600; color:var(--text); line-height:1.2; }
+    .fc-word { font-family:'Fraunces',serif; font-size:2rem; font-weight:600; color:var(--text); line-height:1.2; }
     .fc-ctx { font-size:0.76rem; color:var(--muted); line-height:1.6; font-style:italic; max-width:320px; }
     .fc-tap-hint { font-size:0.65rem; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:6px; }
     .fc-pos-badge { font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); background:var(--surface); padding:3px 10px; border-radius:20px; border:1px solid var(--accent-mid); }
@@ -1080,7 +1080,7 @@
     #shortcuts-overlay.hidden { display:none; }
     .shortcuts-inner { background:var(--surface); border-radius:var(--radius); width:100%; max-width:380px; border:1px solid var(--border); overflow:hidden; }
     .shortcuts-header { display:flex; align-items:center; justify-content:space-between; padding:18px 24px; border-bottom:1px solid var(--border); }
-    .shortcuts-title { font-family:'Lora',serif; font-size:1rem; font-weight:500; color:var(--text); }
+    .shortcuts-title { font-family:'Fraunces',serif; font-size:1rem; font-weight:500; color:var(--text); }
     .shortcuts-close { background:none; border:none; font-size:1.2rem; color:var(--muted); cursor:pointer; padding:4px 8px; border-radius:6px; transition:background 0.12s; }
     .shortcuts-close:hover { background:var(--bg); }
     .shortcut-list { padding:16px 24px 20px; display:flex; flex-direction:column; gap:10px; }
@@ -1321,7 +1321,7 @@
       color: var(--muted); font-weight: 600;
     }
     .try-card-title {
-      font-family: 'Lora', serif; font-size: 1.02rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.02rem; font-weight: 600;
       color: var(--text); font-style: italic;
     }
     .try-card-excerpt {
@@ -1478,7 +1478,7 @@
       border-radius: 999px;
     }
     .lp-hero h1 {
-      font-family: 'Lora', serif;
+      font-family: 'Fraunces', serif;
       font-size: clamp(2.1rem, 3.9vw, 3.4rem);
       font-weight: 600; line-height: 1.08; letter-spacing: -0.015em;
       color: var(--text);
@@ -1517,7 +1517,7 @@
     /* Rotating audience phrase — variable SEO content */
     .lp-hero-rotator {
       margin: 18px 0 0;
-      font-family: 'Lora', serif;
+      font-family: 'Fraunces', serif;
       font-size: 0.95rem;
       font-style: italic;
       color: var(--text-mid);
@@ -1655,7 +1655,7 @@
     }
     .lp-trending-item:nth-child(1) .lp-trending-rank { background: oklch(88% 0.12 75); color: oklch(45% 0.15 54); }
     .lp-trending-word {
-      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 500;
+      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 500;
       color: var(--text); flex: 1; text-transform: capitalize;
     }
     .lp-trending-bar-wrap { display: none; }
@@ -1709,7 +1709,7 @@
       width: 100%; text-align: center !important; margin: 0 0 6px;
     }
     .lp-trending-compact-header .lp-trending-month {
-      font-family: 'Lora', serif;
+      font-family: 'Fraunces', serif;
       font-size: 1rem; font-weight: 400; font-style: italic;
       color: var(--accent);
       letter-spacing: 0; text-transform: none;
@@ -1802,7 +1802,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       background: color-mix(in oklch, var(--accent) 18%, transparent);
       color: var(--accent);
-      font-size: 0.7rem; font-weight: 700; font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem; font-weight: 700; font-family: 'Inter', sans-serif;
       flex-shrink: 0;
     }
 
@@ -1815,7 +1815,7 @@
       min-height: 280px;
     }
     .lp-demo-text {
-      font-family: 'Lora', serif;
+      font-family: 'Fraunces', serif;
       font-size: 1.02rem; line-height: 1.65;
       color: var(--text);
     }
@@ -1842,7 +1842,7 @@
       border-radius: 10px;
       padding: 12px 14px 14px;
       box-shadow: 0 14px 36px rgba(20,15,10,0.22);
-      font-family: 'DM Sans', system-ui, sans-serif;
+      font-family: 'Inter', system-ui, sans-serif;
       font-size: 0.82rem; line-height: 1.5;
       color: var(--text);
       opacity: 0; transform: translateY(10px) scale(0.96);
@@ -1861,7 +1861,7 @@
       border-bottom: 1px solid var(--border);
     }
     .lp-demo-popup-word {
-      font-family: 'Lora', serif; font-size: 1rem;
+      font-family: 'Fraunces', serif; font-size: 1rem;
       font-weight: 600; color: var(--accent);
     }
     .lp-demo-popup-pos {
@@ -1937,7 +1937,7 @@
     /* Chrome extension CTA button accent */
     .lp-btn-chrome svg { color: var(--accent); flex-shrink: 0; }
     .lp-section-title {
-      font-family: 'Lora', serif; font-size: 1.8rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
       color: var(--text); text-align: center;
     }
     .lp-section-title em { font-style: italic; color: var(--accent); }
@@ -1956,7 +1956,7 @@
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .lp-step h3 {
-      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600;
       color: var(--text); line-height: 1.3;
     }
     .lp-step p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.65; }
@@ -2085,7 +2085,7 @@
     }
     .lp-mode-detail-name {
       display: inline-flex; align-items: center; gap: 8px;
-      font-family: 'Lora', serif; font-size: 1.15rem; color: var(--text);
+      font-family: 'Fraunces', serif; font-size: 1.15rem; color: var(--text);
     }
     .lp-mode-detail-name svg { color: var(--accent); flex-shrink: 0; }
     .lp-mode-detail-name strong { font-weight: 600; }
@@ -2220,18 +2220,18 @@
       display: flex; align-items: baseline; gap: 4px; line-height: 1;
     }
     .lp-pro-amount {
-      font-family: 'Lora', serif; font-size: 2.4rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 600;
     }
     .lp-pro-period { font-size: 0.82rem; color: var(--muted); }
     .lp-pro-headline {
-      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600;
       color: var(--accent); margin: 6px 0 2px; line-height: 1.3;
     }
     .lp-pro-subhead {
       font-size: 0.78rem; color: var(--muted); margin-bottom: 12px;
     }
     .lp-pro-anchor {
-      font-family: 'Lora', serif; font-style: italic; font-size: 0.88rem;
+      font-family: 'Fraunces', serif; font-style: italic; font-size: 0.88rem;
       color: var(--text-mid); margin-top: 8px; line-height: 1.4;
     }
     .lp-pro-perks { list-style: none; display: flex; flex-direction: column; gap: 9px; }
@@ -2350,7 +2350,7 @@
     [data-theme="dark"] .lp-sub-status.is-trial { color: #e0b870; }
     .lp-sub-plan {
       display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
-      font-family: 'Lora', serif;
+      font-family: 'Fraunces', serif;
       font-size: 1.35rem; font-weight: 600; color: var(--text);
       line-height: 1.25; margin-bottom: 16px;
     }
@@ -2441,7 +2441,7 @@
       text-transform: uppercase; color: var(--accent);
     }
     .lp-ext h2 {
-      font-family: 'Lora', serif; font-size: 1.9rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.9rem; font-weight: 600;
       color: var(--text); max-width: 520px; line-height: 1.25;
     }
     .lp-ext h2 em { font-style: italic; color: var(--accent); }
@@ -2474,12 +2474,12 @@
     .lp-founder-avatar {
       width: 52px; height: 52px; border-radius: 50%;
       background: var(--accent); color: #fff;
-      font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 600;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
     .lp-founder-text h4 {
-      font-family: 'Lora', serif; font-size: 1rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600;
       color: var(--text); margin: 0 0 4px;
     }
     .lp-founder-text p {
@@ -2508,7 +2508,7 @@
       text-transform: uppercase; color: var(--accent);
     }
     .lp-apps-h2 {
-      font-family: 'Lora', serif; font-size: clamp(1.7rem, 3vw, 2.1rem);
+      font-family: 'Fraunces', serif; font-size: clamp(1.7rem, 3vw, 2.1rem);
       font-weight: 600; line-height: 1.2; color: var(--text);
       letter-spacing: -0.01em;
       max-width: 14ch;
@@ -2527,7 +2527,7 @@
       padding: 12px 22px;
       background: oklch(20% 0.01 65); color: #fff;
       border: 1px solid oklch(28% 0.01 65); border-radius: 12px;
-      font-family: 'DM Sans', inherit; font-size: 0.92rem; font-weight: 600;
+      font-family: 'Inter', inherit; font-size: 0.92rem; font-weight: 600;
       text-decoration: none; cursor: pointer; white-space: nowrap;
       transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
       box-shadow: 0 4px 14px -4px rgba(0,0,0,0.25);
@@ -2608,7 +2608,7 @@
     .lp-faq-q {
       width: 100%; background: none; border: none; padding: 18px 0;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      cursor: pointer; font-family: 'DM Sans', inherit; font-size: 0.93rem;
+      cursor: pointer; font-family: 'Inter', inherit; font-size: 0.93rem;
       font-weight: 600; color: var(--text); text-align: left;
     }
     .lp-faq-q:hover { color: var(--accent); }
@@ -2665,7 +2665,7 @@
       background: color-mix(in oklch, var(--surface) 85%, var(--accent));
     }
     .lp-glossary-term {
-      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600;
       color: var(--text);
     }
     .lp-glossary-context {
@@ -2723,7 +2723,7 @@
       margin-bottom: 4px;
     }
     .lp-audience-card h3 {
-      font-family: 'Lora', serif; font-size: 1.12rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.12rem; font-weight: 600;
       color: var(--text); letter-spacing: -0.005em;
     }
     .lp-audience-card p {
@@ -2770,11 +2770,11 @@
       margin-bottom: 4px;
     }
     .lp-compare-vs {
-      font-family: 'Lora', serif; font-style: italic;
+      font-family: 'Fraunces', serif; font-style: italic;
       color: var(--muted); font-size: 0.9rem;
     }
     .lp-compare-card h3 {
-      font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600;
       color: var(--text); letter-spacing: -0.005em;
     }
     .lp-compare-card p {
@@ -2816,7 +2816,7 @@
       margin-top: 8px;
     }
     .lp-longform-body p {
-      font-family: 'Lora', serif;
+      font-family: 'Fraunces', serif;
       font-size: 1.02rem; line-height: 1.78; color: var(--text-mid);
     }
     .lp-longform-body p em { font-style: italic; color: var(--text); }
@@ -2841,7 +2841,7 @@
     }
     .lp-footer a { color: var(--muted); text-decoration: none; }
     .lp-footer a:hover { color: var(--accent); }
-    .lp-footer-brand { font-family: 'Lora', serif; font-weight: 600; font-size: 0.95rem; color: var(--text); }
+    .lp-footer-brand { font-family: 'Fraunces', serif; font-weight: 600; font-size: 0.95rem; color: var(--text); }
 
     /* Landing responsive */
     @media (max-width: 960px) {

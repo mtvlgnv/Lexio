@@ -44,7 +44,7 @@ def all_entries() -> list[dict]:
 
 # ── HTML rendering ───────────────────────────────────────────────────────────
 # Self-contained pages — match the dark hero / orange-accent look of the main
-# site, but with comfortable reading typography (Lora for headings, DM Sans
+# site, but with comfortable reading typography (Fraunces for headings, Inter
 # for UI, larger body text).
 
 _CSS = """
@@ -60,7 +60,7 @@ _CSS = """
   --surface: #181310;
 }
 body {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.75;
@@ -77,7 +77,7 @@ body {
 }
 .back:hover { color: var(--accent2); }
 .logo {
-  font-family: 'Lora', serif;
+  font-family: 'Fraunces', serif;
   font-size: 1.4rem; font-weight: 600;
   color: var(--accent2);
   display: block; margin-bottom: 14px;
@@ -87,7 +87,7 @@ body {
 .breadcrumb a { color: var(--muted); text-decoration: none; }
 .breadcrumb a:hover { color: var(--accent2); }
 h1 {
-  font-family: 'Lora', serif;
+  font-family: 'Fraunces', serif;
   font-size: 2.1rem; font-weight: 600;
   margin-bottom: 10px;
   line-height: 1.25;
@@ -101,7 +101,7 @@ h1 {
   font-style: italic;
 }
 h2 {
-  font-family: 'Lora', serif;
+  font-family: 'Fraunces', serif;
   font-size: 1.3rem; font-weight: 600;
   margin: 36px 0 12px;
   color: var(--text);
@@ -138,7 +138,7 @@ blockquote {
   display: block;
 }
 .cta h3 {
-  font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 600;
+  font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 600;
   color: var(--text); margin-bottom: 8px;
 }
 .cta p { color: var(--text-mid); font-size: 0.95rem; margin-bottom: 16px; }
@@ -166,7 +166,7 @@ blockquote {
 }
 .related-item:hover { border-color: rgba(255,122,24,0.4); transform: translateY(-1px); }
 .related-item-term {
-  font-family: 'Lora', serif; font-size: 1rem; font-weight: 600;
+  font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600;
   color: var(--text); margin-bottom: 2px;
 }
 .related-item-context { font-size: 0.82rem; color: var(--muted); font-style: italic; }
@@ -203,7 +203,7 @@ blockquote {
   margin-bottom: 4px;
 }
 .entry-card-term {
-  font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600;
+  font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600;
   color: var(--text);
 }
 .entry-card-new {
@@ -299,7 +299,7 @@ def _head(title: str, description: str, canonical: str,
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>{_CSS}</style>
 
   <!-- Privacy-friendly analytics -->
