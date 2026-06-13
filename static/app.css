@@ -101,7 +101,7 @@
       display: inline-flex; align-items: baseline; gap: 6px;
       flex-shrink: 0;
     }
-    .brand { font-family:'Fraunces',serif; font-size:1.4rem; font-weight:600; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
+    .brand { font-family:'Fraunces',serif; font-size:1.4rem; font-weight:400; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
     .brand em { font-style:italic; color:var(--accent); }
     .tagline { font-size:0.75rem; color:var(--muted); padding-left:6px; white-space:nowrap; }
     .header-spacer { flex:1; }
@@ -1028,7 +1028,7 @@
     .fc-card.flipped { transform:rotateY(180deg); }
     .fc-face { position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:28px 24px; text-align:center; border:1.5px solid var(--border); border-radius:14px; background:var(--bg); }
     .fc-back-face { transform:rotateY(180deg); background:var(--accent-lt); border-color:var(--accent-mid); }
-    .fc-word { font-family:'Fraunces',serif; font-size:2rem; font-weight:600; color:var(--text); line-height:1.2; }
+    .fc-word { font-family:'Fraunces',serif; font-size:2rem; font-weight:400; color:var(--text); line-height:1.2; }
     .fc-ctx { font-size:0.76rem; color:var(--muted); line-height:1.6; font-style:italic; max-width:320px; }
     .fc-tap-hint { font-size:0.65rem; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:6px; }
     .fc-pos-badge { font-size:0.68rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); background:var(--surface); padding:3px 10px; border-radius:20px; border:1px solid var(--accent-mid); }
@@ -1321,7 +1321,7 @@
       color: var(--muted); font-weight: 600;
     }
     .try-card-title {
-      font-family: 'Fraunces', serif; font-size: 1.02rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.02rem; font-weight: 400;
       color: var(--text); font-style: italic;
     }
     .try-card-excerpt {
@@ -1480,7 +1480,7 @@
     .lp-hero h1 {
       font-family: 'Fraunces', serif;
       font-size: clamp(2.1rem, 3.9vw, 3.4rem);
-      font-weight: 600; line-height: 1.08; letter-spacing: -0.015em;
+      font-weight: 400; line-height: 1.08; letter-spacing: -0.015em;
       color: var(--text);
       max-width: 560px;
     }
@@ -1862,7 +1862,7 @@
     }
     .lp-demo-popup-word {
       font-family: 'Fraunces', serif; font-size: 1rem;
-      font-weight: 600; color: var(--accent);
+      font-weight: 400; color: var(--accent);
     }
     .lp-demo-popup-pos {
       font-size: 0.72rem; color: var(--text-mid); font-style: italic;
@@ -1937,7 +1937,7 @@
     /* Chrome extension CTA button accent */
     .lp-btn-chrome svg { color: var(--accent); flex-shrink: 0; }
     .lp-section-title {
-      font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 400;
       color: var(--text); text-align: center;
     }
     .lp-section-title em { font-style: italic; color: var(--accent); }
@@ -1956,7 +1956,7 @@
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .lp-step h3 {
-      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 400;
       color: var(--text); line-height: 1.3;
     }
     .lp-step p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.65; }
@@ -2220,11 +2220,11 @@
       display: flex; align-items: baseline; gap: 4px; line-height: 1;
     }
     .lp-pro-amount {
-      font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 400;
     }
     .lp-pro-period { font-size: 0.82rem; color: var(--muted); }
     .lp-pro-headline {
-      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 400;
       color: var(--accent); margin: 6px 0 2px; line-height: 1.3;
     }
     .lp-pro-subhead {
@@ -2351,7 +2351,7 @@
     .lp-sub-plan {
       display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
       font-family: 'Fraunces', serif;
-      font-size: 1.35rem; font-weight: 600; color: var(--text);
+      font-size: 1.35rem; font-weight: 400; color: var(--text);
       line-height: 1.25; margin-bottom: 16px;
     }
     .lp-sub-plan-cycle {
@@ -2441,7 +2441,7 @@
       text-transform: uppercase; color: var(--accent);
     }
     .lp-ext h2 {
-      font-family: 'Fraunces', serif; font-size: 1.9rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.9rem; font-weight: 400;
       color: var(--text); max-width: 520px; line-height: 1.25;
     }
     .lp-ext h2 em { font-style: italic; color: var(--accent); }
@@ -2474,12 +2474,12 @@
     .lp-founder-avatar {
       width: 52px; height: 52px; border-radius: 50%;
       background: var(--accent); color: #fff;
-      font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 400;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
     .lp-founder-text h4 {
-      font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400;
       color: var(--text); margin: 0 0 4px;
     }
     .lp-founder-text p {
@@ -2509,7 +2509,7 @@
     }
     .lp-apps-h2 {
       font-family: 'Fraunces', serif; font-size: clamp(1.7rem, 3vw, 2.1rem);
-      font-weight: 600; line-height: 1.2; color: var(--text);
+      font-weight: 400; line-height: 1.2; color: var(--text);
       letter-spacing: -0.01em;
       max-width: 14ch;
     }
@@ -2665,7 +2665,7 @@
       background: color-mix(in oklch, var(--surface) 85%, var(--accent));
     }
     .lp-glossary-term {
-      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.05rem; font-weight: 400;
       color: var(--text);
     }
     .lp-glossary-context {
@@ -2723,7 +2723,7 @@
       margin-bottom: 4px;
     }
     .lp-audience-card h3 {
-      font-family: 'Fraunces', serif; font-size: 1.12rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.12rem; font-weight: 400;
       color: var(--text); letter-spacing: -0.005em;
     }
     .lp-audience-card p {
@@ -2774,7 +2774,7 @@
       color: var(--muted); font-size: 0.9rem;
     }
     .lp-compare-card h3 {
-      font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600;
+      font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 400;
       color: var(--text); letter-spacing: -0.005em;
     }
     .lp-compare-card p {
@@ -2841,7 +2841,7 @@
     }
     .lp-footer a { color: var(--muted); text-decoration: none; }
     .lp-footer a:hover { color: var(--accent); }
-    .lp-footer-brand { font-family: 'Fraunces', serif; font-weight: 600; font-size: 0.95rem; color: var(--text); }
+    .lp-footer-brand { font-family: 'Fraunces', serif; font-weight: 400; font-size: 0.95rem; color: var(--text); }
 
     /* Landing responsive */
     @media (max-width: 960px) {

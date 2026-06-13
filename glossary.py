@@ -78,7 +78,7 @@ body {
 .back:hover { color: var(--accent2); }
 .logo {
   font-family: 'Fraunces', serif;
-  font-size: 1.4rem; font-weight: 600;
+  font-size: 1.4rem; font-weight: 400;
   color: var(--accent2);
   display: block; margin-bottom: 14px;
 }
@@ -88,7 +88,7 @@ body {
 .breadcrumb a:hover { color: var(--accent2); }
 h1 {
   font-family: 'Fraunces', serif;
-  font-size: 2.1rem; font-weight: 600;
+  font-size: 2.1rem; font-weight: 400;
   margin-bottom: 10px;
   line-height: 1.25;
   color: var(--text);
@@ -102,7 +102,7 @@ h1 {
 }
 h2 {
   font-family: 'Fraunces', serif;
-  font-size: 1.3rem; font-weight: 600;
+  font-size: 1.3rem; font-weight: 400;
   margin: 36px 0 12px;
   color: var(--text);
 }
@@ -138,7 +138,7 @@ blockquote {
   display: block;
 }
 .cta h3 {
-  font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 600;
+  font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 400;
   color: var(--text); margin-bottom: 8px;
 }
 .cta p { color: var(--text-mid); font-size: 0.95rem; margin-bottom: 16px; }
@@ -166,7 +166,7 @@ blockquote {
 }
 .related-item:hover { border-color: rgba(255,122,24,0.4); transform: translateY(-1px); }
 .related-item-term {
-  font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 600;
+  font-family: 'Fraunces', serif; font-size: 1rem; font-weight: 400;
   color: var(--text); margin-bottom: 2px;
 }
 .related-item-context { font-size: 0.82rem; color: var(--muted); font-style: italic; }
@@ -203,7 +203,7 @@ blockquote {
   margin-bottom: 4px;
 }
 .entry-card-term {
-  font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 600;
+  font-family: 'Fraunces', serif; font-size: 1.15rem; font-weight: 400;
   color: var(--text);
 }
 .entry-card-new {
