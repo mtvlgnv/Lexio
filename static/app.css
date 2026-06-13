@@ -1362,7 +1362,7 @@
        the hero CTAs navigate there. The ?try=1 instant demo is exempt so it can
        still mount the tool inline on "/". On "/app" the marketing is hidden. */
     body.landing-page:not(.demo-mode) main { display: none !important; }
-    body.landing-page:not(.demo-mode) #scroll-nudge { display: none !important; }
+    body.tool-page #scroll-nudge { display: none !important; }
     /* Lead the marketing landing with the hero, not the tool's sample carousel. */
     body.landing-page:not(.demo-mode) #try-passage,
     body.landing-page:not(.demo-mode) .lp-warm-divider { display: none !important; }
@@ -1579,7 +1579,7 @@
       font-size: 0.98rem; font-weight: 600;
       box-shadow: 0 6px 20px -4px color-mix(in oklch, var(--accent) 55%, transparent);
     }
-    .lp-btn-primary-lg:hover { transform: translateY(-1px); box-shadow: 0 10px 28px -6px color-mix(in oklch, var(--accent) 65%, transparent); }
+    .lp-btn-primary-lg:hover { box-shadow: 0 10px 28px -6px color-mix(in oklch, var(--accent) 65%, transparent); }
     .lp-btn-primary-lg svg { transition: transform 0.2s; }
     .lp-btn-primary-lg:hover svg { transform: translateX(3px); }
     .lp-btn-primary {
@@ -1590,8 +1590,9 @@
       text-decoration: none; position: relative;
       background-color: var(--accent);
       background-image: none;
-      transition: background-color 0.15s;
+      transition: background-color 0.15s, transform 0.18s ease;
     }
+    .lp-btn-primary:hover { transform: scale(1.05); }
     .lp-btn-primary.btn-glow {
       background-image: none;
     }
