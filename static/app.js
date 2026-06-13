@@ -3417,14 +3417,14 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
     lines[1].textContent  = s.whyWord;
   }
 
-  // CSS animation is a 7s loop. Swap content at ~6.7s (popup invisible)
+  // CSS animation is a 3.4s loop. Swap content at ~3.15s (popup invisible)
   // so the next loop starts already showing the new word.
   let i = 0;
   setTimeout(function tick() {
     i = (i + 1) % states.length;
     applyState(states[i]);
-    setTimeout(tick, 7000);
-  }, 6700);
+    setTimeout(tick, 3400);
+  }, 3150);
 })();
 
 // (Removed the "magnetic pull" effect that translated CTAs toward the cursor.)

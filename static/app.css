@@ -1824,13 +1824,27 @@
       position: relative;
       padding: 1px 3px; border-radius: 3px;
       background-image: linear-gradient(transparent 62%, transparent 62%);
-      transition: background-image 0.25s;
-      animation: lpDemoWord 7s ease-in-out infinite;
+      animation: lpDemoWord 3.4s ease-in-out infinite;
     }
     @keyframes lpDemoWord {
-      0%, 28%   { background-image: linear-gradient(transparent 62%, transparent 62%); color: var(--text); }
-      35%, 85%  { background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 35%, transparent) 62%); color: var(--accent); }
+      0%, 13%   { background-image: linear-gradient(transparent 62%, transparent 62%); color: var(--text); }
+      20%, 82%  { background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 38%, transparent) 62%); color: var(--accent); }
       92%, 100% { background-image: linear-gradient(transparent 62%, transparent 62%); color: var(--text); }
+    }
+    /* Tap ripple — a ring pops out of the word as it's "tapped" each cycle */
+    .lp-demo-word::after {
+      content: ''; position: absolute; left: 50%; top: 60%;
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 2px solid color-mix(in oklch, var(--accent) 55%, transparent);
+      transform: translate(-50%, -50%) scale(0.3); opacity: 0;
+      pointer-events: none;
+      animation: lpDemoTap 3.4s ease-out infinite;
+    }
+    @keyframes lpDemoTap {
+      0%, 13%  { opacity: 0;    transform: translate(-50%, -50%) scale(0.3); }
+      19%      { opacity: 0.85; transform: translate(-50%, -50%) scale(0.9); }
+      38%      { opacity: 0;    transform: translate(-50%, -50%) scale(3.4); }
+      100%     { opacity: 0;    transform: translate(-50%, -50%) scale(3.4); }
     }
     .lp-demo-popup {
       position: absolute;
@@ -1847,14 +1861,14 @@
       font-size: 0.82rem; line-height: 1.5;
       color: var(--text);
       opacity: 0; transform: translateY(10px) scale(0.96);
-      animation: lpDemoPopup 7s ease-in-out infinite;
+      animation: lpDemoPopup 3.4s ease-out infinite;
       pointer-events: none;
       z-index: 4;
     }
     @keyframes lpDemoPopup {
-      0%, 35%    { opacity: 0; transform: translateY(10px) scale(0.96); }
-      42%, 85%   { opacity: 1; transform: translateY(0)    scale(1); }
-      92%, 100%  { opacity: 0; transform: translateY(10px) scale(0.96); }
+      0%, 18%    { opacity: 0; transform: translateY(8px) scale(0.96); }
+      26%, 82%   { opacity: 1; transform: translateY(0)   scale(1); }
+      90%, 100%  { opacity: 0; transform: translateY(8px) scale(0.96); }
     }
     .lp-demo-popup-top {
       display: flex; align-items: baseline; gap: 8px;
