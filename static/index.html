@@ -40,11 +40,11 @@
   <meta name="apple-mobile-web-app-title" content="Lexio">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=3">
+  <link rel="stylesheet" href="/app.css?v=4">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -293,6 +293,7 @@
         <a class="lp-nav-drop-item" href="#lp-faq"      data-section="lp-faq"      role="menuitem">FAQ</a>
       </div>
     </div>
+    <a class="lp-nav-link" href="/app">Open Lexio</a>
     <a class="lp-nav-link" href="/chrome-extension.html">Chrome extension</a>
     <a class="lp-nav-link" href="/glossary">Glossary</a>
     <a class="lp-nav-link" href="/for-readers.html">For readers</a>
@@ -621,6 +622,9 @@
   </div>
 </main>
 
+<!-- Subscriber's Pro subscription card is relocated here (under the tool) on /app -->
+<div id="app-sub-slot" class="app-sub-slot"></div>
+
 <!-- ── Sample-passage carousel (visible when app is in compact/empty state) ── -->
 <!-- ── Scroll progress bar (thin, top of viewport) ───────────── -->
 <div id="scroll-progress" aria-hidden="true"></div>
@@ -725,20 +729,7 @@
           <div class="lp-demo-popup-line">Stronger than "complex" — implies deliberate, almost architectural intricacy.</div>
         </div>
       </div>
-      <div class="lp-demo-footer">
-        <div class="lp-demo-footer-step">
-          <span class="lp-demo-footer-step-num">1</span>
-          <span>Paste any text</span>
-        </div>
-        <div class="lp-demo-footer-step">
-          <span class="lp-demo-footer-step-num">2</span>
-          <span>Click a word</span>
-        </div>
-        <div class="lp-demo-footer-step">
-          <span class="lp-demo-footer-step-num">3</span>
-          <span>Get the meaning</span>
-        </div>
-      </div>
+      <!-- demo step labels removed -->
     </div>
   </div>
   </div><!-- end .lp-warm-area -->
@@ -1615,7 +1606,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=3"></script>
+<script src="/app.js?v=4"></script>
 
 <script type="module">
 // Skip the WebGL gradient entirely on mobile — saves a noticeable amount of

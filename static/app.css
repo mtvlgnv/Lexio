@@ -5,7 +5,7 @@
     .skip-link {
       position: absolute; top: -100px; left: 12px;
       padding: 10px 16px; background: var(--accent, #c34); color: #fff;
-      border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      border-radius: 8px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem;
       font-weight: 600; text-decoration: none; z-index: 10000;
       transition: top 0.15s ease;
     }
@@ -48,7 +48,7 @@
       --radius:            14px;
       --radius-sm:         8px;
       --header-h:          60px;
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
     }
 
     [data-theme="dark"] {
@@ -109,7 +109,7 @@
     .wb-header-btn {
       display:flex; align-items:center; gap:6px;
       background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
-      padding:5px 12px; font-family:'Inter',inherit; font-size:0.78rem; font-weight:500;
+      padding:5px 12px; font-family:'IBM Plex Sans',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer; transition:background 0.15s, color 0.15s; white-space:nowrap;
     }
     .wb-header-btn:hover { background:var(--bg); color:var(--text); }
@@ -121,7 +121,7 @@
       border: 1px solid var(--accent);
       border-radius: var(--radius-sm);
       padding: 6px 13px;
-      font-family: 'Inter', inherit; font-size: 0.78rem; font-weight: 600;
+      font-family: 'IBM Plex Sans', inherit; font-size: 0.78rem; font-weight: 600;
       text-decoration: none; cursor: pointer; white-space: nowrap;
       transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
       box-shadow: 0 2px 8px -2px color-mix(in oklch, var(--accent) 45%, transparent);
@@ -392,7 +392,7 @@
       display:flex; align-items:center; gap:6px;
       background:var(--bg); border:1px solid var(--border);
       border-radius:var(--radius-sm); padding:5px 11px;
-      font-family:'Inter',inherit; font-size:0.75rem; font-weight:500;
+      font-family:'IBM Plex Sans',inherit; font-size:0.75rem; font-weight:500;
       color:var(--text-mid); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
     }
@@ -468,7 +468,7 @@
     #input-text {
       flex:1; width:100%; padding:14px 24px 16px; border:none; outline:none; resize:none;
       font-size:1rem; line-height:1.8; color:var(--text); background:transparent;
-      font-family:'Inter',inherit; font-weight:300; transition:color 0.3s;
+      font-family:'IBM Plex Sans',inherit; font-weight:300; transition:color 0.3s;
     }
     #input-text::placeholder { color:var(--border); font-style:italic; font-family:'Fraunces',serif; transition:color 0.38s ease; }
     #input-text.ph-fading::placeholder { color:transparent; }
@@ -553,7 +553,7 @@
       height:32px; padding:0 12px;
       background:transparent; border:1px solid var(--border);
       border-radius:var(--radius-sm);
-      font-family:'Inter',inherit; font-size:0.78rem; font-weight:500;
+      font-family:'IBM Plex Sans',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
       text-decoration:none; flex-shrink:0;
@@ -597,18 +597,18 @@
     .lang-btn {
       display:flex; align-items:center; gap:7px;
       background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
-      padding:5px 12px; font-family:'Inter',inherit; font-size:0.78rem; font-weight:500;
+      padding:5px 12px; font-family:'IBM Plex Sans',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer; transition:background 0.15s,color 0.15s,border-color 0.15s; white-space:nowrap;
     }
     .lang-btn:hover { background:var(--bg); color:var(--text); border-color:var(--accent-mid); }
     .lang-btn select { appearance:none; -webkit-appearance:none; background:transparent; border:none; outline:none; font-family:inherit; font-size:inherit; font-weight:inherit; color:inherit; cursor:pointer; padding:0; }
     .footer-spacer { flex:1; }
 
-    button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'Inter',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background-color 0.15s,transform 0.1s; background-color:var(--accent); background-image:none; color:#fff; letter-spacing:0.01em; }
+    button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'IBM Plex Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background-color 0.15s,transform 0.1s; background-color:var(--accent); background-image:none; color:#fff; letter-spacing:0.01em; }
     button.btn-primary.btn-glow { background-image:none; }
     button.btn-primary:hover  { background-color:var(--accent-dk); }
     button.btn-primary:active { transform:scale(0.97); }
-    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'Inter',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
+    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'IBM Plex Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
     button.btn-secondary:hover { background:var(--bg); color:var(--text); }
     button.hidden { display:none !important; }
 
@@ -633,7 +633,7 @@
     }
     .model-pill {
       padding:7px 16px; border:none; border-radius:40px;
-      background:transparent; font-family:'Inter',inherit;
+      background:transparent; font-family:'IBM Plex Sans',inherit;
       font-size:0.78rem; font-weight:500; color:var(--muted);
       cursor:pointer; transition:all 0.16s;
       white-space:nowrap; line-height:1;
@@ -667,7 +667,7 @@
       height:32px; padding:0 10px 0 12px;
       background:transparent; border:1px solid var(--border);
       border-radius:var(--radius-sm);
-      font-family:'Inter',inherit; font-size:0.78rem; font-weight:500;
+      font-family:'IBM Plex Sans',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
       white-space:nowrap;
@@ -709,7 +709,7 @@
       box-shadow:none !important;
     }
     .mode-menu-name {
-      font-family:'Inter',inherit;
+      font-family:'IBM Plex Sans',inherit;
       font-size:0.88rem; font-weight:600; color:var(--text);
       display:flex; align-items:center; gap:8px; width:100%;
     }
@@ -814,7 +814,7 @@
     .tweak-row { margin-bottom:8px; }
     .tweak-label { font-size:0.7rem; font-weight:500; color:var(--text-mid); margin-bottom:4px; }
     .tweak-options { display:flex; gap:4px; }
-    .tweak-opt { flex:1; padding:3px 0; border:1px solid var(--border); border-radius:5px; background:var(--bg); color:var(--muted); font-family:'Inter',inherit; font-size:0.68rem; font-weight:500; cursor:pointer; text-align:center; transition:all 0.15s; }
+    .tweak-opt { flex:1; padding:3px 0; border:1px solid var(--border); border-radius:5px; background:var(--bg); color:var(--muted); font-family:'IBM Plex Sans',inherit; font-size:0.68rem; font-weight:500; cursor:pointer; text-align:center; transition:all 0.15s; }
     .tweak-opt.active { border-color:var(--accent); background:var(--accent-lt); color:var(--accent); }
     .tweak-slider-row { display:flex; align-items:center; gap:8px; }
     .tweak-slider { flex:1; -webkit-appearance:none; height:2px; border-radius:2px; background:var(--border); outline:none; cursor:pointer; }
@@ -1368,6 +1368,9 @@
     body.landing-page:not(.demo-mode) .lp-warm-divider { display: none !important; }
     body.tool-page #landing { display: none !important; }
     body.tool-page .lp-header-nav { display: none; }
+    /* Subscriber's Pro card relocated under the tool on /app (#5) */
+    .app-sub-slot { max-width: 640px; margin: 4px auto 56px; padding: 0 24px; }
+    .app-sub-slot:empty { display: none; }
     .brand-home { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }
 
     /* Shared warm-gradient surface: the try-passage carousel and
@@ -1803,7 +1806,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       background: color-mix(in oklch, var(--accent) 18%, transparent);
       color: var(--accent);
-      font-size: 0.7rem; font-weight: 700; font-family: 'Inter', sans-serif;
+      font-size: 0.7rem; font-weight: 700; font-family: 'IBM Plex Sans', sans-serif;
       flex-shrink: 0;
     }
 
@@ -1857,7 +1860,7 @@
       border-radius: 10px;
       padding: 12px 14px 14px;
       box-shadow: 0 14px 36px rgba(20,15,10,0.22);
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
       font-size: 0.82rem; line-height: 1.5;
       color: var(--text);
       opacity: 0; transform: translateY(10px) scale(0.96);
@@ -2370,7 +2373,7 @@
       line-height: 1.25; margin-bottom: 16px;
     }
     .lp-sub-plan-cycle {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: 'IBM Plex Sans', system-ui, sans-serif;
       font-size: 0.95rem; font-weight: 500;
       color: var(--text-mid);
     }
@@ -2542,7 +2545,7 @@
       padding: 12px 22px;
       background: oklch(20% 0.01 65); color: #fff;
       border: 1px solid oklch(28% 0.01 65); border-radius: 12px;
-      font-family: 'Inter', inherit; font-size: 0.92rem; font-weight: 600;
+      font-family: 'IBM Plex Sans', inherit; font-size: 0.92rem; font-weight: 600;
       text-decoration: none; cursor: pointer; white-space: nowrap;
       transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
       box-shadow: 0 4px 14px -4px rgba(0,0,0,0.25);
@@ -2623,7 +2626,7 @@
     .lp-faq-q {
       width: 100%; background: none; border: none; padding: 18px 0;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      cursor: pointer; font-family: 'Inter', inherit; font-size: 0.93rem;
+      cursor: pointer; font-family: 'IBM Plex Sans', inherit; font-size: 0.93rem;
       font-weight: 600; color: var(--text); text-align: left;
     }
     .lp-faq-q:hover { color: var(--accent); }

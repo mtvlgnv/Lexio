@@ -2077,6 +2077,8 @@ function signOut() {
   updateWBBadge();
   if (typeof renderWordBank === 'function') { try { renderWordBank(); } catch {} }
   closeAuthModal();
+  // Reload so the whole UI resets cleanly to the signed-out state.
+  window.location.reload();
 }
 
 /* ── Forgot / Reset password ────────────────────────────────── */
@@ -3053,6 +3055,16 @@ async function checkProStatus() {
       if (thanks) thanks.style.display = '';
       if (toggle) toggle.style.display = 'none';
       if (refund) refund.style.display = 'none';
+
+      // (#5) Subscribers see their subscription card under the tool on /app;
+      // on the marketing page (/) the pricing section is hidden for them.
+      const _subSlot = document.getElementById('app-sub-slot');
+      if (document.body.classList.contains('tool-page')) {
+        if (_subSlot && thanks) { _subSlot.appendChild(thanks); thanks.style.display = ''; }
+      } else if (document.body.classList.contains('landing-page')) {
+        const _proSec = document.getElementById('lp-pro');
+        if (_proSec) _proSec.style.display = 'none';
+      }
 
       // Section header — calm, factual. No "celebrate you're Pro" language.
       if (secTitle) secTitle.textContent = isTrial
