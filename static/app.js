@@ -3427,32 +3427,7 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
   }, 6700);
 })();
 
-// ── Magnetic pull for primary CTAs ──────────────────────────────
-(function() {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-  const SELECTOR = '.lp-btn-primary, .lp-hero-cta .lp-btn-ghost';
-  const STRENGTH = 0.18;   // fraction of cursor offset from center
-  const MAX_PX   = 7;      // clamp so it stays subtle
-
-  document.querySelectorAll(SELECTOR).forEach(function(btn) {
-    if (btn.dataset.magnetic === '1') return;
-    btn.dataset.magnetic = '1';
-    btn.style.transition = (btn.style.transition || '') + ', transform 220ms cubic-bezier(.2,.7,.2,1)';
-
-    btn.addEventListener('pointermove', function(e) {
-      const r  = btn.getBoundingClientRect();
-      let   dx = (e.clientX - (r.left + r.width  / 2)) * STRENGTH;
-      let   dy = (e.clientY - (r.top  + r.height / 2)) * STRENGTH;
-      if (dx >  MAX_PX) dx =  MAX_PX; if (dx < -MAX_PX) dx = -MAX_PX;
-      if (dy >  MAX_PX) dy =  MAX_PX; if (dy < -MAX_PX) dy = -MAX_PX;
-      btn.style.transform = 'translate(' + dx.toFixed(1) + 'px, ' + dy.toFixed(1) + 'px)';
-    });
-    btn.addEventListener('pointerleave', function() {
-      btn.style.transform = '';
-    });
-  });
-})();
+// (Removed the "magnetic pull" effect that translated CTAs toward the cursor.)
 
 /* ── TikTok / social instant-demo ───────────────────────────────────────────
    ?try=1 (or ?demo=1) drops a cold visitor straight into a tappable passage:
