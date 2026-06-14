@@ -2545,7 +2545,15 @@ function updateScrollUI() {
   const max = Math.max(1, (doc.scrollHeight - doc.clientHeight));
   const pct = Math.min(100, (scrolled / max) * 100);
   if (sp) sp.style.width = pct + '%';
-  if (bt) bt.classList.toggle('visible', scrolled > 600);
+  if (bt) {
+    bt.classList.toggle('visible', scrolled > 600);
+    // Park the button just above the footer so it never covers footer content.
+    const footer = document.querySelector('.lp-footer');
+    if (footer) {
+      const overlap = window.innerHeight - footer.getBoundingClientRect().top;
+      bt.style.bottom = overlap > 0 ? (overlap + 24) + 'px' : '';
+    }
+  }
 }
 let _scrollRaf = null;
 function scheduleScrollUI() {

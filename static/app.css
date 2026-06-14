@@ -2887,14 +2887,31 @@
     @media (max-width: 760px) { .lp-glossary { padding: 40px 24px; } }
 
     .lp-footer {
-      padding: 28px 48px;
+      padding: 48px 48px 26px;
       background: var(--surface); border-top: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 0.78rem; color: var(--muted);
+      display: flex; flex-direction: column; gap: 28px;
+      font-size: 0.8rem; color: var(--muted);
     }
-    .lp-footer a { color: var(--muted); text-decoration: none; }
+    .lp-footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
     .lp-footer a:hover { color: var(--accent); }
-    .lp-footer-brand { font-family: 'Fraunces', serif; font-weight: 400; font-size: 0.95rem; color: var(--text); }
+    .lp-footer-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+    .lp-footer-about { max-width: 440px; }
+    .lp-footer-tagline { font-family: 'Fraunces', serif; font-size: 1.05rem; color: var(--text); margin-bottom: 8px; }
+    .lp-footer-by { font-size: 0.8rem; line-height: 1.6; color: var(--muted); }
+    .lp-footer-by strong { color: var(--text-mid); font-weight: 600; }
+    .lp-footer-by a { color: var(--accent); }
+    .lp-footer-links { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; max-width: 360px; }
+    .lp-footer-wordmark {
+      font-family: 'Fraunces', serif; font-weight: 400;
+      font-size: clamp(4rem, 17vw, 12rem); line-height: 0.85;
+      color: var(--text); letter-spacing: -0.02em; user-select: none;
+    }
+    .lp-footer-wordmark em { font-style: italic; color: var(--accent); }
+    .lp-footer-base {
+      display: flex; justify-content: space-between; gap: 16px;
+      padding-top: 18px; border-top: 1px solid var(--border);
+      font-size: 0.74rem; color: var(--muted);
+    }
 
     /* Landing responsive */
     @media (max-width: 960px) {
@@ -2919,7 +2936,9 @@
       .lp-hero-trust li { font-size: 0.78rem; }
       .lp-steps, .lp-features { padding: 40px 24px; }
       .lp-steps-grid, .lp-features-grid { grid-template-columns: 1fr; }
-      .lp-footer { flex-direction: column; gap: 12px; text-align: center; }
+      .lp-footer { padding: 36px 24px 22px; }
+      .lp-footer-top { flex-direction: column; gap: 24px; }
+      .lp-footer-base { flex-direction: column; gap: 6px; }
       .lp-apps { grid-template-columns: 1fr; }
       .lp-app-card:first-child { border-right: none; border-bottom: 1px solid var(--accent-mid); }
       .lp-app-card { padding: 40px 24px; }

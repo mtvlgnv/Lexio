@@ -4,6 +4,7 @@ import hmac
 import secrets
 import datetime
 import logging
+import html as _html
 from typing import Optional
 
 from fastapi import APIRouter, Request, Depends, HTTPException, Header, Form
