@@ -5,7 +5,7 @@
     .skip-link {
       position: absolute; top: -100px; left: 12px;
       padding: 10px 16px; background: var(--accent, #c34); color: #fff;
-      border-radius: 8px; font-family: 'Source Sans 3', sans-serif; font-size: 0.9rem;
+      border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
       font-weight: 600; text-decoration: none; z-index: 10000;
       transition: top 0.15s ease;
     }
@@ -48,7 +48,7 @@
       --radius:            14px;
       --radius-sm:         8px;
       --header-h:          60px;
-      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-family: 'DM Sans', system-ui, sans-serif;
     }
 
     [data-theme="dark"] {
@@ -109,7 +109,7 @@
     .wb-header-btn {
       display:flex; align-items:center; gap:6px;
       background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
-      padding:5px 12px; font-family:'Source Sans 3',inherit; font-size:0.78rem; font-weight:500;
+      padding:5px 12px; font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer; transition:background 0.15s, color 0.15s; white-space:nowrap;
     }
     .wb-header-btn:hover { background:var(--bg); color:var(--text); }
@@ -121,7 +121,7 @@
       border: 1px solid var(--accent);
       border-radius: var(--radius-sm);
       padding: 6px 13px;
-      font-family: 'Source Sans 3', inherit; font-size: 0.78rem; font-weight: 600;
+      font-family: 'DM Sans', inherit; font-size: 0.78rem; font-weight: 600;
       text-decoration: none; cursor: pointer; white-space: nowrap;
       transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
       box-shadow: 0 2px 8px -2px color-mix(in oklch, var(--accent) 45%, transparent);
@@ -392,7 +392,7 @@
       display:flex; align-items:center; gap:6px;
       background:var(--bg); border:1px solid var(--border);
       border-radius:var(--radius-sm); padding:5px 11px;
-      font-family:'Source Sans 3',inherit; font-size:0.75rem; font-weight:500;
+      font-family:'DM Sans',inherit; font-size:0.75rem; font-weight:500;
       color:var(--text-mid); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
     }
@@ -468,7 +468,7 @@
     #input-text {
       flex:1; width:100%; padding:14px 24px 16px; border:none; outline:none; resize:none;
       font-size:1rem; line-height:1.8; color:var(--text); background:transparent;
-      font-family:'Source Sans 3',inherit; font-weight:300; transition:color 0.3s;
+      font-family:'DM Sans',inherit; font-weight:300; transition:color 0.3s;
     }
     #input-text::placeholder { color:var(--border); font-style:italic; font-family:'Fraunces',serif; transition:color 0.38s ease; }
     #input-text.ph-fading::placeholder { color:transparent; }
@@ -553,7 +553,7 @@
       height:32px; padding:0 12px;
       background:transparent; border:1px solid var(--border);
       border-radius:var(--radius-sm);
-      font-family:'Source Sans 3',inherit; font-size:0.78rem; font-weight:500;
+      font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
       text-decoration:none; flex-shrink:0;
@@ -597,18 +597,18 @@
     .lang-btn {
       display:flex; align-items:center; gap:7px;
       background:transparent; border:1px solid var(--border); border-radius:var(--radius-sm);
-      padding:5px 12px; font-family:'Source Sans 3',inherit; font-size:0.78rem; font-weight:500;
+      padding:5px 12px; font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text-mid); cursor:pointer; transition:background 0.15s,color 0.15s,border-color 0.15s; white-space:nowrap;
     }
     .lang-btn:hover { background:var(--bg); color:var(--text); border-color:var(--accent-mid); }
     .lang-btn select { appearance:none; -webkit-appearance:none; background:transparent; border:none; outline:none; font-family:inherit; font-size:inherit; font-weight:inherit; color:inherit; cursor:pointer; padding:0; }
     .footer-spacer { flex:1; }
 
-    button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'Source Sans 3',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background-color 0.15s,transform 0.1s; background-color:var(--accent); background-image:none; color:#fff; letter-spacing:0.01em; }
+    button.btn-primary { cursor:pointer; border:none; border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background-color 0.15s,transform 0.1s; background-color:var(--accent); background-image:none; color:#fff; letter-spacing:0.01em; }
     button.btn-primary.btn-glow { background-image:none; }
     button.btn-primary:hover  { background-color:var(--accent-dk); }
     button.btn-primary:active { transform:scale(0.97); }
-    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'Source Sans 3',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
+    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
     button.btn-secondary:hover { background:var(--bg); color:var(--text); }
     button.hidden { display:none !important; }
 
@@ -633,7 +633,7 @@
     }
     .model-pill {
       padding:7px 16px; border:none; border-radius:40px;
-      background:transparent; font-family:'Source Sans 3',inherit;
+      background:transparent; font-family:'DM Sans',inherit;
       font-size:0.78rem; font-weight:500; color:var(--muted);
       cursor:pointer; transition:all 0.16s;
       white-space:nowrap; line-height:1;
@@ -667,7 +667,7 @@
       height:32px; padding:0 10px 0 12px;
       background:transparent; border:1px solid var(--border);
       border-radius:var(--radius-sm);
-      font-family:'Source Sans 3',inherit; font-size:0.78rem; font-weight:500;
+      font-family:'DM Sans',inherit; font-size:0.78rem; font-weight:500;
       color:var(--text); cursor:pointer;
       transition:background 0.15s, border-color 0.15s, color 0.15s;
       white-space:nowrap;
@@ -709,7 +709,7 @@
       box-shadow:none !important;
     }
     .mode-menu-name {
-      font-family:'Source Sans 3',inherit;
+      font-family:'DM Sans',inherit;
       font-size:0.88rem; font-weight:600; color:var(--text);
       display:flex; align-items:center; gap:8px; width:100%;
     }
@@ -814,7 +814,7 @@
     .tweak-row { margin-bottom:8px; }
     .tweak-label { font-size:0.7rem; font-weight:500; color:var(--text-mid); margin-bottom:4px; }
     .tweak-options { display:flex; gap:4px; }
-    .tweak-opt { flex:1; padding:3px 0; border:1px solid var(--border); border-radius:5px; background:var(--bg); color:var(--muted); font-family:'Source Sans 3',inherit; font-size:0.68rem; font-weight:500; cursor:pointer; text-align:center; transition:all 0.15s; }
+    .tweak-opt { flex:1; padding:3px 0; border:1px solid var(--border); border-radius:5px; background:var(--bg); color:var(--muted); font-family:'DM Sans',inherit; font-size:0.68rem; font-weight:500; cursor:pointer; text-align:center; transition:all 0.15s; }
     .tweak-opt.active { border-color:var(--accent); background:var(--accent-lt); color:var(--accent); }
     .tweak-slider-row { display:flex; align-items:center; gap:8px; }
     .tweak-slider { flex:1; -webkit-appearance:none; height:2px; border-radius:2px; background:var(--border); outline:none; cursor:pointer; }
@@ -1806,7 +1806,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       background: color-mix(in oklch, var(--accent) 18%, transparent);
       color: var(--accent);
-      font-size: 0.7rem; font-weight: 700; font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.7rem; font-weight: 700; font-family: 'DM Sans', sans-serif;
       flex-shrink: 0;
     }
 
@@ -1860,7 +1860,7 @@
       border-radius: 10px;
       padding: 12px 14px 14px;
       box-shadow: 0 14px 36px rgba(20,15,10,0.22);
-      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-family: 'DM Sans', system-ui, sans-serif;
       font-size: 0.82rem; line-height: 1.5;
       color: var(--text);
       opacity: 0; transform: translateY(10px) scale(0.96);
@@ -1978,6 +1978,41 @@
       color: var(--text); line-height: 1.3;
     }
     .lp-step p { font-size: 0.88rem; color: var(--text-mid); line-height: 1.65; }
+
+    /* ── The problem / why ─────────────────────────────────────── */
+    .lp-why {
+      padding: 64px 48px 72px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .lp-why-eyebrow {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+    }
+    .lp-why-sub {
+      max-width: 600px; margin: 14px auto 40px;
+      font-size: 1rem; line-height: 1.7; color: var(--text-mid);
+    }
+    .lp-why-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+      width: 100%; max-width: 760px; text-align: left;
+    }
+    .lp-why-card {
+      padding: 22px 24px; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--surface);
+    }
+    .lp-why-card-label {
+      display: block; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .lp-why-old .lp-why-card-label { color: var(--muted); }
+    .lp-why-new { border-color: var(--accent-mid); background: var(--accent-lt); }
+    .lp-why-new .lp-why-card-label { color: var(--accent); }
+    .lp-why-card p { font-size: 0.92rem; line-height: 1.6; color: var(--text-mid); }
+    @media (max-width: 760px) {
+      .lp-why { padding: 44px 24px 52px; }
+      .lp-why-grid { grid-template-columns: 1fr; max-width: 420px; }
+    }
 
     /* Features */
     /* twin row wrapper */
@@ -2373,7 +2408,7 @@
       line-height: 1.25; margin-bottom: 16px;
     }
     .lp-sub-plan-cycle {
-      font-family: 'Source Sans 3', system-ui, sans-serif;
+      font-family: 'DM Sans', system-ui, sans-serif;
       font-size: 0.95rem; font-weight: 500;
       color: var(--text-mid);
     }
@@ -2545,7 +2580,7 @@
       padding: 12px 22px;
       background: oklch(20% 0.01 65); color: #fff;
       border: 1px solid oklch(28% 0.01 65); border-radius: 12px;
-      font-family: 'Source Sans 3', inherit; font-size: 0.92rem; font-weight: 600;
+      font-family: 'DM Sans', inherit; font-size: 0.92rem; font-weight: 600;
       text-decoration: none; cursor: pointer; white-space: nowrap;
       transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
       box-shadow: 0 4px 14px -4px rgba(0,0,0,0.25);
@@ -2626,7 +2661,7 @@
     .lp-faq-q {
       width: 100%; background: none; border: none; padding: 18px 0;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
-      cursor: pointer; font-family: 'Source Sans 3', inherit; font-size: 0.93rem;
+      cursor: pointer; font-family: 'DM Sans', inherit; font-size: 0.93rem;
       font-weight: 600; color: var(--text); text-align: left;
     }
     .lp-faq-q:hover { color: var(--accent); }
@@ -3134,7 +3169,7 @@
       }
 
       /* Cut redundant sections */
-      .lp-steps { display: none !important; }        /* duplicated by demo footer */
+      /* .lp-steps now shows on mobile — the demo footer that duplicated it was removed */
       #lp-glossary { display: none !important; }     /* too heavy for mobile */
 
       /* Sample passages — marquee still scrolls on mobile, just tighter */
