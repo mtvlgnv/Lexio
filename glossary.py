@@ -60,7 +60,7 @@ _CSS = """
   --surface: #181310;
 }
 body {
-  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-family: 'Source Sans 3', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.75;
@@ -299,7 +299,7 @@ def _head(title: str, description: str, canonical: str,
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>{_CSS}</style>
 
   <!-- Privacy-friendly analytics -->
