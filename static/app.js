@@ -469,13 +469,19 @@ async function loadUsage() {
     if (!res.ok) return;
     const data = await res.json();
     if (data.is_pro) {
+      // Pro: monthly is unlimited (hide that pill); the hourly credit budget
+      // is the only meaningful cap, so show just the hourly pill.
       const pill = document.getElementById('usage-pill');
       if (pill) pill.style.display = 'none';
+      if (data.hourly) updateHourlyPill(data.hourly.used, data.hourly.limit);
     } else {
+      // Free: the monthly lookup cap is the binding limit. The hourly pill
+      // would carry the same number (free hourly limit == monthly == 20),
+      // producing two identical bars — so hide it and show monthly only.
       updateUsagePill(data.lookup.used, data.lookup.limit);
+      const hp = document.getElementById('hourly-pill');
+      if (hp) hp.style.display = 'none';
     }
-    // Hourly pill applies to both free and pro (anonymous gets limit:-1 → hidden).
-    if (data.hourly) updateHourlyPill(data.hourly.used, data.hourly.limit);
   } catch (_) {}
 }
 

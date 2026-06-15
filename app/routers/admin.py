@@ -1,6 +1,7 @@
 """Admin dashboard (cookie auth) + admin API (key auth) routes (Phase 2 extract)."""
 import os
 import hmac
+import json
 import secrets
 import datetime
 import logging

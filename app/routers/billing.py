@@ -1,6 +1,8 @@
 """Stripe billing: pricing, checkout, customer portal, webhook (Phase 2 extract)."""
 import os
 import json
+import asyncio
+import ipaddress
 import datetime
 import logging
 import httpx
@@ -13,7 +15,7 @@ from app.db import get_db
 from app.models import User
 from app.security import current_user
 from app.limits import _get_client_ip
-from app.config import FAMILY_PLAN_SEATS
+from app.config import FAMILY_PLAN_SEATS, TRIAL_DAYS
 
 logger = logging.getLogger("lexio")
 router = APIRouter()

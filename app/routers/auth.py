@@ -14,11 +14,12 @@ from pydantic import BaseModel, EmailStr, Field
 from sqlalchemy.orm import Session as DBSession
 
 from app.db import get_db
-from app.models import User, PasswordResetToken
+from app.models import User, PasswordResetToken, UserSearchLog, WordBankEntry
 from app.security import (
     current_user, optional_user, hash_password, verify_password, create_token,
     _issue_session_token, _register_session, _revoke_session,
     _decode_token_payload, _jti_is_active, _device_label_from_ua,
+    MAX_SESSIONS_PER_USER,
 )
 from app.ratelimit import limiter
 from app.schemas import RegisterRequest, LoginRequest
