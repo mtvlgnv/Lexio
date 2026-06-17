@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=9">
+  <link rel="stylesheet" href="/app.css?v=10">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -626,8 +626,25 @@
   </div>
 </main>
 
-<!-- Subscriber's Pro subscription card is relocated here (under the tool) on /app -->
-<div id="app-sub-slot" class="app-sub-slot"></div>
+<!-- Engagement row (under the tool, /app only): streak panel on the left,
+     the relocated Pro subscription card on the right (Pro users). -->
+<div id="app-engage-row" class="app-engage-row">
+  <section id="app-streak-panel" class="app-streak-panel lp-sub-card" style="display:none" aria-label="Your streak">
+    <div class="lp-sub-head">
+      <span class="lp-sub-eyebrow">Your streak</span>
+      <span class="streak-flame-lg" aria-hidden="true">🔥</span>
+    </div>
+    <div class="streak-panel-num"><span id="streak-panel-days">0</span></div>
+    <div class="streak-panel-caption" id="streak-panel-caption">days in a row</div>
+    <dl class="lp-sub-meta">
+      <div class="lp-sub-row"><dt>Best streak</dt><dd id="streak-panel-best">—</dd></div>
+      <div class="lp-sub-row"><dt>Words saved</dt><dd id="streak-panel-words">—</dd></div>
+      <div class="lp-sub-row"><dt>Active days</dt><dd id="streak-panel-active">—</dd></div>
+    </dl>
+  </section>
+  <!-- Subscriber's Pro subscription card is relocated here (under the tool) on /app -->
+  <div id="app-sub-slot" class="app-sub-slot"></div>
+</div>
 
 <!-- ── Sample-passage carousel (visible when app is in compact/empty state) ── -->
 <!-- ── Scroll progress bar (thin, top of viewport) ───────────── -->
@@ -1625,7 +1642,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=9"></script>
+<script src="/app.js?v=10"></script>
 
 <script type="module">
 // Skip the WebGL gradient entirely on mobile — saves a noticeable amount of

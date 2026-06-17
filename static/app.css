@@ -1371,6 +1371,32 @@
     /* Subscriber's Pro card relocated under the tool on /app (#5) */
     .app-sub-slot { max-width: 640px; margin: 4px auto 56px; padding: 0 24px; }
     .app-sub-slot:empty { display: none; }
+
+    /* Engagement row: streak panel + subscription card, side by side.
+       Hidden by default; loadStreak() reveals it for signed-in tool-page users. */
+    .app-engage-row {
+      display: none; flex-wrap: wrap; gap: 20px;
+      align-items: flex-start; justify-content: center;
+      max-width: 1040px; margin: 4px auto 56px; padding: 0 24px;
+    }
+    .app-engage-row.shown { display: flex; }
+    /* Neutralise the auto-margins the cards carry on the marketing page. */
+    .app-engage-row .lp-sub-card { margin: 0; }
+    .app-engage-row .app-sub-slot { margin: 0; padding: 0; max-width: 520px; flex: 1 1 440px; }
+    .app-streak-panel { flex: 0 1 320px; text-align: center; }
+    .app-streak-panel .lp-sub-head { justify-content: space-between; }
+    .app-streak-panel .streak-flame-lg { font-size: 1.4rem; line-height: 1; filter: grayscale(1) opacity(.5); transition: filter .3s; }
+    .app-streak-panel.hot .streak-flame-lg { filter: none; }
+    .streak-panel-num {
+      font-family: 'Fraunces', Georgia, serif; font-weight: 400;
+      font-size: 3.4rem; line-height: 1; color: var(--text); margin: 6px 0 2px;
+    }
+    .app-streak-panel.hot .streak-panel-num { color: var(--accent); }
+    .streak-panel-caption { font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; }
+    .app-streak-panel .lp-sub-meta { text-align: left; }
+    @media (max-width: 760px) {
+      .app-streak-panel, .app-engage-row .app-sub-slot { flex: 1 1 100%; max-width: 520px; }
+    }
     .brand-home { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }
 
     /* Shared warm-gradient surface: the try-passage carousel and
