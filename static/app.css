@@ -2055,6 +2055,23 @@
       position: relative; overflow: hidden;
       background: var(--bg);
     }
+    /* Soft fade the colourful WebGL canvas into the cream page background at
+       the top and bottom edges of this section — no hard color↔white seam.
+       Transparent mask at the very edges lets .lp-twin's own --bg show
+       through; opaque through the middle keeps the color behind the glass
+       cards untouched. No effect on mobile (canvas is display:none there). */
+    #twin-webgl {
+      -webkit-mask-image: linear-gradient(to bottom,
+          transparent 0,
+          #000 12%,
+          #000 88%,
+          transparent 100%);
+      mask-image: linear-gradient(to bottom,
+          transparent 0,
+          #000 12%,
+          #000 88%,
+          transparent 100%);
+    }
     .lp-twin .lp-features { border-top: none; flex: 1; align-items: stretch; }
     .lp-twin .lp-models   { border-top: none; flex: 1; align-items: stretch; }
     /* Right column holds two stacked glass boxes (modes + trending). */
