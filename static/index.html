@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=11">
+  <link rel="stylesheet" href="/app.css?v=12">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -911,7 +911,7 @@
       --gradient-color-3:#7a3b9e;
       --gradient-color-4:#f0b060;
     "></canvas>
-  <div class="lp-features" style="position:relative;z-index:1;">
+  <div class="lp-features lp-glass" style="position:relative;z-index:1;">
     <h2 class="lp-section-title">Features</h2>
     <div class="lp-features-grid">
 
@@ -966,8 +966,10 @@
     </div>
   </div>
 
+  <!-- Right column: two stacked liquid-glass boxes -->
+  <div class="lp-twin-right" style="position:relative;z-index:1;">
   <!-- Pick how you read — interactive mode picker -->
-  <div class="lp-models" id="lp-models" style="position:relative;z-index:1;">
+  <div class="lp-models lp-glass" id="lp-models">
     <h2 class="lp-section-title">Pick how you read.</h2>
 
     <div class="lp-mode-pills" role="tablist" aria-label="Reading modes">
@@ -1007,14 +1009,14 @@
       <p class="lp-mode-detail-desc" id="lp-mode-desc">Smart and thorough — wide language coverage, strong contextual reasoning, and rich cultural nuance.</p>
       <p class="lp-mode-detail-best"><em id="lp-mode-best">Best for: most readers, most of the time.</em></p>
     </div>
+  </div><!-- end .lp-models glass box -->
 
-    <!-- Trending words (compact, inside modes column) -->
-    <div class="lp-trending-compact">
+    <!-- What people are looking up — its own liquid-glass box -->
+    <div class="lp-trending-compact lp-glass">
       <div class="lp-trending-compact-header">
         <span class="lp-trending-eyebrow" id="trending-month">This month</span>
       </div>
       <h2 class="lp-section-title lp-trending-h2">What people are looking up</h2>
-      <p class="lp-trending-tagline">Real readers, real words — pulled from live lookups. What's stumping you today?</p>
       <div class="lp-trending-skeleton" id="trending-skeleton">
         <div class="skeleton-row"></div>
         <div class="skeleton-row" style="opacity:.7"></div>
@@ -1023,7 +1025,7 @@
       <div class="lp-trending-list hidden" id="trending-list"></div>
       <p class="lp-trending-empty hidden" id="trending-empty" data-i18n="trendingEmpty">No searches recorded yet this month — be the first!</p>
     </div>
-  </div>
+  </div><!-- end .lp-twin-right -->
   </div><!-- end .lp-twin -->
 
   <!-- FAQ -->
@@ -1197,7 +1199,6 @@
         <a href="https://github.com/mtvlgnv" target="_blank" rel="noopener" aria-label="GitHub">GitHub ↗</a>
       </nav>
     </div>
-    <div class="lp-footer-wordmark" aria-hidden="true">Le<em>x</em>io</div>
     <div class="lp-footer-base">
       <span>© 2026 Lexio</span>
       <span>Eindhoven, Netherlands</span>
@@ -1636,7 +1637,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=11"></script>
+<script src="/app.js?v=12"></script>
 
 <script type="module">
 // Skip the WebGL gradient entirely on mobile — saves a noticeable amount of

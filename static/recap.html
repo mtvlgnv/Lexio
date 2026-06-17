@@ -154,19 +154,27 @@
       height: 180px;
     }
     .spark-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+    .spark-pair { display: flex; align-items: flex-end; justify-content: center; gap: 3px; width: 100%; height: 120px; }
     .spark-bar {
-      width: 100%;
-      background: linear-gradient(180deg, var(--accent) 0%, oklch(70% 0.15 60) 100%);
+      flex: 1; max-width: 14px;
       border-radius: 4px 4px 0 0;
-      min-height: 2px;
+      min-height: 0;
       transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    .spark-bar.saved { background: linear-gradient(180deg, var(--accent) 0%, oklch(70% 0.15 60) 100%); }
+    .spark-bar.looks { background: linear-gradient(180deg, oklch(72% 0.07 250) 0%, oklch(64% 0.08 250) 100%); }
     .spark-label {
       font-size: 0.62rem; color: var(--muted);
       text-transform: uppercase; letter-spacing: 0.04em;
       white-space: nowrap;
     }
     .spark-count { font-size: 0.7rem; font-weight: 600; color: var(--text-mid); }
+    /* Legend for the two-series sparkline */
+    .spark-legend { display: flex; gap: 18px; justify-content: center; margin-bottom: 12px; font-size: 0.78rem; color: var(--text-mid); }
+    .spark-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .spark-legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
+    .spark-legend i.saved { background: var(--accent); }
+    .spark-legend i.looks { background: oklch(68% 0.08 250); }
 
     /* ── Recent words list ────────────────────────────────────── */
     .words-cloud {
@@ -303,7 +311,8 @@
 
   <section class="section" id="section-rhythm">
     <h2>Your reading <em>rhythm.</em></h2>
-    <p class="section-sub">Words saved, month by month. Tall bars are the months you read hardest.</p>
+    <p class="section-sub">Words looked up and saved, month by month. Tall bars are the months you read hardest.</p>
+    <div class="spark-legend"><span><i class="looks"></i>Lookups</span><span><i class="saved"></i>Saved</span></div>
     <div class="sparkline" id="sparkline"></div>
   </section>
 
@@ -425,31 +434,31 @@ async function loadRecap() {
   document.getElementById('tile-lookups').textContent = formatNum(data.lookup_total);
   document.getElementById('tile-days').textContent = formatNum(data.account_age_days);
 
-  // Sparkline — last 12 months
-  const byMonth = data.saved_by_month || {};
+  // Sparkline — last 12 months, two series (lookups + saved) on a shared scale.
+  const savedByMonth = data.saved_by_month || {};
+  const lookByMonth  = data.lookups_by_month || {};
   const months = [];
   const now = new Date();
   for (let i = 11; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
-    months.push({ key, label: MONTH_LABELS[d.getMonth()], count: byMonth[key] || 0 });
+    months.push({ key, label: MONTH_LABELS[d.getMonth()], saved: savedByMonth[key] || 0, looks: lookByMonth[key] || 0 });
   }
-  const maxCount = Math.max(1, ...months.map(m => m.count));
+  const maxCount = Math.max(1, ...months.map(m => Math.max(m.saved, m.looks)));
   const sparkline = document.getElementById('sparkline');
-  if (months.every(m => m.count === 0)) {
+  if (months.every(m => m.saved === 0 && m.looks === 0)) {
     document.getElementById('section-rhythm').classList.add('state-hidden');
   } else {
-    sparkline.innerHTML = months.map(m => {
-      const pct = (m.count / maxCount) * 100;
-      const heightPx = Math.max(2, Math.round(pct * 1.2));
-      return (
-        '<div class="spark-col">' +
-          '<div class="spark-count">' + (m.count || '') + '</div>' +
-          '<div class="spark-bar" style="height:' + heightPx + 'px"></div>' +
-          '<div class="spark-label">' + m.label + '</div>' +
-        '</div>'
-      );
-    }).join('');
+    const h = v => v ? Math.max(2, Math.round((v / maxCount) * 120)) : 0;
+    sparkline.innerHTML = months.map(m =>
+      '<div class="spark-col">' +
+        '<div class="spark-pair">' +
+          '<div class="spark-bar looks" style="height:' + h(m.looks) + 'px" title="' + m.looks + ' lookups"></div>' +
+          '<div class="spark-bar saved" style="height:' + h(m.saved) + 'px" title="' + m.saved + ' saved"></div>' +
+        '</div>' +
+        '<div class="spark-label">' + m.label + '</div>' +
+      '</div>'
+    ).join('');
   }
 
   // Recent words

@@ -79,10 +79,17 @@ async def annual_recap(user: User = Depends(current_user), db: DBSession = Depen
 
     # Lifetime lookups via UserSearchLog
     lookup_total = db.query(UserSearchLog).filter(UserSearchLog.user_id == user.id).count()
-    lookup_recent = db.query(UserSearchLog).filter(
+    lookup_rows = db.query(UserSearchLog.searched_at).filter(
         UserSearchLog.user_id == user.id,
         UserSearchLog.searched_at >= cutoff,
-    ).count()
+    ).all()
+    lookups_by_month = {}
+    for (ts,) in lookup_rows:
+        if ts is None:
+            continue
+        key = ts.strftime("%Y-%m")
+        lookups_by_month[key] = lookups_by_month.get(key, 0) + 1
+    lookup_recent = len(lookup_rows)
 
     # Account age (days since signup)
     age_days = (datetime.datetime.utcnow() - user.created_at).days if user.created_at else 0
@@ -91,6 +98,7 @@ async def annual_recap(user: User = Depends(current_user), db: DBSession = Depen
         "saved_total":     saved_total,
         "saved_recent":    sum(monthly.values()),
         "saved_by_month":  monthly,
+        "lookups_by_month": lookups_by_month,
         "recent_words":    recent_words,
         "lookup_total":    lookup_total,
         "lookup_recent":   lookup_recent,

@@ -1377,27 +1377,29 @@
        stack under the mobile breakpoint. Hidden until loadStreak() reveals it. */
     .app-engage-row {
       display: none; gap: 20px;
-      align-items: flex-start; justify-content: center;
+      align-items: stretch; justify-content: center;     /* equal-height cards */
       max-width: 1040px; margin: 4px auto 56px; padding: 0 24px;
     }
     .app-engage-row.shown { display: flex; }
     /* Neutralise the auto-margins the cards carry on the marketing page. */
     .app-engage-row .lp-sub-card { margin: 0; }
     .app-engage-row .app-sub-slot { margin: 0; padding: 0; max-width: 540px; flex: 1 1 auto; min-width: 0; }
-    .app-streak-panel { flex: 0 0 300px; text-align: center; }
+    /* Streak panel: left-aligned, big number that grows to fill the card so it
+       matches the subscription card's height. */
+    .app-streak-panel { flex: 0 0 300px; text-align: left; display: flex; flex-direction: column; }
     .app-streak-panel .lp-sub-head { justify-content: space-between; }
     .app-streak-panel .streak-flame-lg { font-size: 1.4rem; line-height: 1; filter: grayscale(1) opacity(.5); transition: filter .3s; }
     .app-streak-panel.hot .streak-flame-lg { filter: none; }
     .streak-panel-main {
-      display: flex; align-items: baseline; justify-content: center; gap: 8px;
-      margin: 10px 0 8px;
+      display: flex; align-items: baseline; justify-content: flex-start; gap: 10px;
+      margin: auto 0 6px;                                 /* push the number down to fill */
     }
     .streak-panel-num {
       font-family: 'Fraunces', Georgia, serif; font-weight: 400;
-      font-size: 3.4rem; line-height: 1; color: var(--text);
+      font-size: clamp(4.5rem, 9vw, 7rem); line-height: 0.9; color: var(--text);
     }
     .app-streak-panel.hot .streak-panel-num { color: var(--accent); }
-    .streak-panel-unit { font-size: 1rem; color: var(--muted); }
+    .streak-panel-unit { font-size: 1.1rem; color: var(--muted); }
     .streak-panel-best { font-size: 0.82rem; color: var(--muted); }
     @media (max-width: 760px) {
       .app-engage-row { flex-wrap: wrap; }
@@ -1721,12 +1723,10 @@
       .lp-trending-bar-wrap { display: none; }
     }
 
-    /* Compact trending — sits inside the modes column */
+    /* Trending — its own liquid-glass box in the right column */
     .lp-trending-compact {
       width: 100%;
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
+      padding: 32px 32px;
       display: flex; flex-direction: column; gap: 10px;
     }
     .lp-trending-compact-header {
@@ -2050,12 +2050,31 @@
     /* twin row wrapper */
     .lp-twin {
       display: flex; flex-direction: row; align-items: stretch;
+      gap: 22px; padding: 28px;
       border-top: 1px solid var(--border);
       position: relative; overflow: hidden;
       background: var(--bg);
     }
     .lp-twin .lp-features { border-top: none; flex: 1; align-items: stretch; }
     .lp-twin .lp-models   { border-top: none; flex: 1; align-items: stretch; }
+    /* Right column holds two stacked glass boxes (modes + trending). */
+    .lp-twin-right { display: flex; flex-direction: column; gap: 22px; flex: 1; min-width: 0; }
+    /* Liquid-glass panel — frosted, translucent, sits over the gradient canvas. */
+    .lp-glass {
+      background: rgba(255,255,255,0.16);
+      -webkit-backdrop-filter: blur(22px) saturate(180%);
+      backdrop-filter: blur(22px) saturate(180%);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(60,30,10,0.18), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+    [data-theme="dark"] .lp-glass {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.16);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12);
+    }
+    /* Slightly calm the inner feature cards so glass-on-glass stays legible. */
+    .lp-glass .lp-feature { background: rgba(255,255,255,0.30); border-color: rgba(255,255,255,0.45); }
     .lp-twin .lp-features-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
     .lp-twin .lp-section-title {
       text-align: center; width: 100%;
@@ -2066,7 +2085,7 @@
     .lp-twin .lp-models-sub    { text-align: left; }
 
     .lp-features {
-      padding: 48px 48px;
+      padding: 32px 32px;
       background: transparent; border-top: 1px solid var(--border);
       display: flex; flex-direction: column; align-items: center; gap: 20px;
     }
@@ -2093,7 +2112,7 @@
 
     /* AI Models comparison */
     .lp-models {
-      padding: 48px 48px;
+      padding: 32px 32px;
       background: transparent; border-top: 1px solid var(--border);
       display: flex; flex-direction: column; align-items: center; gap: 16px;
     }
