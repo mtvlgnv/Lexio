@@ -33,6 +33,7 @@
   "GET /pro",
   "GET /recap",
   "GET /redoc",
+  "GET /sitemap.xml",
   "GET /stats/top-words",
   "GET /stripe/price-info",
   "GET /this-week",

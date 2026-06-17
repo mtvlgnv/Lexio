@@ -2,9 +2,20 @@
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, FileResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, FileResponse, Response
 
 router = APIRouter()
+
+
+# ── Dynamic XML sitemap ───────────────────────────────────────────────────────
+# Generated from live glossary/works content so it never drifts out of sync.
+# Declared before the StaticFiles mount in main.py, so it shadows any static
+# sitemap.xml. nginx proxies /sitemap.xml to the app (see route allowlist).
+import sitemap as _sitemap
+
+@router.get("/sitemap.xml", include_in_schema=False)
+async def sitemap_xml():
+    return Response(content=_sitemap.render(), media_type="application/xml")
 
 
 # ── Named static page routes ─────────────────────────────────────────────────
