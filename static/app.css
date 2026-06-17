@@ -1396,7 +1396,7 @@
     }
     .streak-panel-num {
       font-family: 'Fraunces', Georgia, serif; font-weight: 400;
-      font-size: clamp(4.5rem, 9vw, 7rem); line-height: 0.9; color: var(--text);
+      font-size: clamp(7rem, 13vw, 10rem); line-height: 0.85; color: var(--text);
     }
     .app-streak-panel.hot .streak-panel-num { color: var(--accent); }
     .streak-panel-unit { font-size: 1.1rem; color: var(--muted); }
