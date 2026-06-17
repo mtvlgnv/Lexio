@@ -1401,9 +1401,22 @@
     .app-streak-panel.hot .streak-panel-num { color: var(--accent); }
     .streak-panel-unit { font-size: 1.1rem; color: var(--muted); }
     .streak-panel-best { font-size: 0.82rem; color: var(--muted); }
+
+    /* Activity Graph */
+    .app-activity-graph { flex: 1 1 300px; display: flex; flex-direction: column; }
+    .app-activity-graph .lp-sub-head { justify-content: space-between; align-items: baseline; }
+    .activity-graph-subtitle { font-size: 0.8rem; color: var(--muted); }
+    .activity-graph-container {
+      flex: 1 1 auto; margin-top: 16px;
+      display: flex; align-items: flex-end; height: 120px;
+    }
+    .activity-graph-container svg { width: 100%; height: 100%; overflow: visible; }
+    .activity-graph-bar { fill: var(--accent); opacity: 0.4; transition: opacity 0.2s, y 0.3s, height 0.3s; cursor: crosshair; rx: 3; }
+    .activity-graph-bar:hover { opacity: 1; }
+
     @media (max-width: 760px) {
       .app-engage-row { flex-wrap: wrap; }
-      .app-streak-panel, .app-engage-row .app-sub-slot { flex: 1 1 100%; max-width: 520px; }
+      .app-streak-panel, .app-activity-graph, .app-engage-row .app-sub-slot { flex: 1 1 100%; max-width: 520px; }
     }
     .brand-home { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }
 

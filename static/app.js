@@ -504,8 +504,42 @@ async function loadStreak() {
     set('streak-panel-best', d.longest_streak ? dayWord(d.longest_streak) : '—');
     panel.classList.toggle('hot', n >= 3);
     panel.style.display = '';
+    
+    if (d.activity && d.activity.length > 0) {
+      document.getElementById('app-activity-graph').style.display = '';
+      renderActivityGraph(d.activity);
+    }
+    
     if (row) row.classList.add('shown');
   } catch (_) { panel.style.display = 'none'; }
+}
+
+function renderActivityGraph(activity) {
+  const container = document.getElementById('activity-graph-container');
+  const subtitle = document.getElementById('activity-graph-subtitle');
+  if (!container) return;
+
+  const total = activity.reduce((sum, d) => sum + d.count, 0);
+  if (subtitle) subtitle.textContent = `${total} words · ${activity.length} days`;
+
+  const maxVal = Math.max(5, ...activity.map(d => d.count));
+  const w = 100 / activity.length;
+
+  let svgContent = `<svg viewBox="0 0 100 100" preserveAspectRatio="none">`;
+  activity.forEach((d, i) => {
+    const h = d.count === 0 ? 0 : Math.max(2, (d.count / maxVal) * 100);
+    const x = i * w;
+    const y = 100 - h;
+    svgContent += `
+      <rect x="${x + w * 0.1}" y="${y}" width="${Math.max(0.5, w * 0.8)}" height="${h}" 
+            class="activity-graph-bar" rx="1"
+            title="${d.date}: ${d.count} lookups">
+        <title>${new Date(d.date).toLocaleDateString()}: ${d.count} lookups</title>
+      </rect>
+    `;
+  });
+  svgContent += `</svg>`;
+  container.innerHTML = svgContent;
 }
 
 /* ── OCR / photo-to-text ────────────────────────────── */

@@ -331,11 +331,30 @@ async def get_streak(user: User = Depends(current_user), db: DBSession = Depends
         .scalar()
     ) or 0
 
+    activity_counts = {}
+    for r in rows:
+        if r[0]:
+            d = r[0].date()
+            activity_counts[d] = activity_counts.get(d, 0) + 1
+            
+    user_created = user.created_at.date() if getattr(user, "created_at", None) else today - datetime.timedelta(days=29)
+    start_date = max(today - datetime.timedelta(days=29), user_created)
+    
+    activity = []
+    curr_date = start_date
+    while curr_date <= today:
+        activity.append({
+            "date": curr_date.isoformat(),
+            "count": activity_counts.get(curr_date, 0)
+        })
+        curr_date += one_day
+
     return {
         "current_streak": current,
         "longest_streak": longest,
         "active_days": len(days),
         "total_words": total_words,
+        "activity": activity,
     }
 
 
