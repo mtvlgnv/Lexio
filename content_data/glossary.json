@@ -2592,5 +2592,95 @@
    "backstory"
   ],
   "body_html": "<p>An <strong>anecdote</strong> is a short, self-contained story about a real (or\nrealistic) incident, told to illustrate a point, reveal character, or simply\nentertain. It's the small narrative we slip into conversation and writing —\n\"that reminds me of the time...\"</p>\n\n<h2>The point of a small story</h2>\n\n<p>An anecdote earns its place by doing more than recounting an event. In an\nessay or speech, it makes an abstract idea concrete: instead of asserting that a\nperson was generous, a writer tells one small story that shows it. A single vivid\nincident can carry more conviction than a page of general claims.</p>\n\n<h2>In characterisation</h2>\n\n<p>Anecdotes are a quiet tool of characterisation. When a character tells a story\nabout their past — or when a narrator drops a brief incident from a character's\nlife — what they choose to tell, and how, reveals who they are. The anecdote\nbecomes a window: its real subject is often the teller.</p>\n\n<h2>Anecdote and evidence</h2>\n\n<p>An anecdote is powerful precisely because it's specific and human — which is\nalso its danger in argument. \"Anecdotal evidence\" names the fallacy of treating\none memorable story as proof of a general truth. A good writer uses anecdote to\nillustrate a point, not to prove it, and knows the difference.</p>\n\n<h2>How to read it</h2>\n\n<p>When a text pauses for an anecdote, ask what larger point it's being asked to\ncarry — and whether the single story really supports it. Note, too, what the\nchoice of <em>that</em> story over others tells you about the narrator's values.</p>"
+ },
+ {
+  "slug": "science-fiction",
+  "term": "science fiction",
+  "context": "literary genre",
+  "title": "What Science Fiction Is (as a Genre)",
+  "meta_description": "Science fiction imagines the consequences of science and technology, using the future or the impossible to think about the present. Here's what defines it.",
+  "h1": "What science fiction is",
+  "updated": "2026-06-18",
+  "related": [
+   "dystopia",
+   "utopia",
+   "postmodernism"
+  ],
+  "body_html": "<p><strong>Science fiction</strong> is the genre that imagines the consequences\nof science, technology, and change — extrapolating from what we know to what\nmight be. At its best it isn't about gadgets at all; it uses the future, space, or\nthe impossible as a lens for examining the present.</p>\n\n<h2>The \"what if\" engine</h2>\n\n<p>Science fiction runs on a single question: <em>what if?</em> What if we could\nlive forever, travel faster than light, build a thinking machine, meet a truly\nalien mind? The genre takes one such premise, treats it with rigour, and follows\nits human consequences. The novelist Robert Heinlein and others built whole works\nfrom exactly this disciplined speculation.</p>\n\n<h2>Hard vs. soft</h2>\n\n<p>\"Hard\" science fiction prizes scientific plausibility — the physics has to\nwork. \"Soft\" science fiction cares more about people and society, using the\nsciences of psychology, anthropology, and politics. Ursula K. Le Guin and Octavia\nButler wrote profound soft SF; the distinction marks emphasis, not quality.</p>\n\n<h2>A mirror for the present</h2>\n\n<p>The future in science fiction is almost always a comment on now. Orwell's\n<em>1984</em> and Huxley's <em>Brave New World</em> warn about their own\ncenturies; Le Guin's invented societies test ideas about gender and power. The\nestrangement of an unfamiliar world lets readers see their own assumptions from\nthe outside.</p>\n\n<h2>How to read it</h2>\n\n<p>Identify the central \"novum\" — the one new thing the world adds (a technology,\na discovery, a social change) — and then watch what the story claims follows from\nit. Science fiction's real argument is always there: in the consequences it\nchooses to imagine.</p>"
+ },
+ {
+  "slug": "fantasy-genre",
+  "term": "fantasy",
+  "context": "literary genre",
+  "title": "What Fantasy Is (as a Literary Genre)",
+  "meta_description": "Fantasy is fiction built on the impossible — magic, invented worlds, mythic forces. Here's what defines the genre and how it differs from science fiction.",
+  "h1": "What fantasy is as a genre",
+  "updated": "2026-06-18",
+  "related": [
+   "magical-realism",
+   "archetype",
+   "gothic-fiction"
+  ],
+  "body_html": "<p><strong>Fantasy</strong> is the genre of the frankly impossible — stories\nbuilt on magic, invented worlds, mythical creatures, and forces that the real\nworld's laws don't allow. Unlike science fiction, it doesn't ask you to believe\nthe marvels could happen; it asks you to accept that, here, they simply do.</p>\n\n<h2>The secondary world</h2>\n\n<p>Much fantasy unfolds in a \"secondary world\" — a fully imagined reality with\nits own geography, history, and rules. J. R. R. Tolkien, who theorised the form,\ncalled the maker of such a world a \"sub-creator,\" and insisted the invented world\nmust be internally consistent enough to earn the reader's \"secondary belief.\"</p>\n\n<h2>Magic needs rules</h2>\n\n<p>Paradoxically, good fantasy is highly disciplined. Magic that can do anything\ncreates no tension, so the strongest fantasy gives its impossible elements firm\nlimits and costs. The constraints are what make the stakes real — a spell matters\nonly if it might fail or exact a price.</p>\n\n<h2>Fantasy vs. science fiction</h2>\n\n<p>The rough line: science fiction extrapolates from the possible (it gestures at\nexplanation — technology, evolution, physics), while fantasy embraces the\nimpossible (its marvels are magical, not explained). The two blur constantly, and\nmany great works sit deliberately on the border.</p>\n\n<h2>Why it endures</h2>\n\n<p>Fantasy draws deeply on myth, folklore, and <em>archetype</em>, which is part\nof its power — it speaks in the oldest narrative patterns we have. By stepping\nfully outside the real, it can stage moral and emotional truths in their purest,\nmost elemental form.</p>"
+ },
+ {
+  "slug": "detective-fiction",
+  "term": "detective fiction",
+  "context": "literary genre",
+  "title": "What Detective Fiction Is (Genre & Rules)",
+  "meta_description": "Detective fiction builds a story around solving a crime, inviting the reader to play along. Here's the genre's conventions, fair play, and key types.",
+  "h1": "What detective fiction is",
+  "updated": "2026-06-18",
+  "related": [
+   "red-herring",
+   "chekhovs-gun",
+   "unreliable-narrator"
+  ],
+  "body_html": "<p><strong>Detective fiction</strong> is the genre built around the\ninvestigation and solution of a crime — usually a murder. Its distinctive\npleasure is structural: the story is a puzzle, and the reader is invited to solve\nit alongside (or ahead of) the detective.</p>\n\n<h2>The shape of the puzzle</h2>\n\n<p>The classic detective story works backwards. A crime has happened; the\nnarrative reconstructs the hidden events that led to it. Clues are planted in\nplain sight, disguised among <em>red herrings</em>, and the climax is the\nrevelation that reorders everything you've read into sudden sense.</p>\n\n<h2>Fair play</h2>\n\n<p>The \"Golden Age\" of detective fiction (Agatha Christie, Dorothy L. Sayers)\nprized fair play: the reader must be given every clue the detective has, so the\nsolution is surprising yet, in hindsight, deducible. Writers even drew up rules\nforbidding cheats like undisclosed twins or supernatural culprits. The contract\nis that you <em>could</em> have solved it.</p>\n\n<h2>Two great traditions</h2>\n\n<p>The cerebral \"whodunit\" — a brilliant detective, a closed circle of suspects,\na tidy reveal — descends from Poe and Conan Doyle. The \"hardboiled\" tradition of\nHammett and Chandler is grittier and more cynical: the crime is a way into a\ncorrupt world, and the detective's integrity matters more than the puzzle.</p>\n\n<h2>How to read it</h2>\n\n<p>Read actively: weigh each clue, suspect everyone, and watch for the detail the\nnarrative lingers on a beat too long. Half the art is the writer's misdirection —\nlearning to feel where your attention is being steered is the game.</p>"
+ },
+ {
+  "slug": "horror-genre",
+  "term": "horror",
+  "context": "literary genre",
+  "title": "What Horror Is (as a Literary Genre)",
+  "meta_description": "Horror is fiction designed to frighten and unsettle, from terror's dread to the shock of the gross. Here's what defines it and how it works on a reader.",
+  "h1": "What horror is as a genre",
+  "updated": "2026-06-18",
+  "related": [
+   "gothic-fiction",
+   "uncanny-literature",
+   "grotesque-literature"
+  ],
+  "body_html": "<p><strong>Horror</strong> is the genre whose primary aim is to frighten,\nunsettle, and disturb. It is defined less by its furniture — monsters, ghosts,\nkillers — than by its target: the reader's fear, dread, and revulsion. Horror\nsets out to make you feel unsafe.</p>\n\n<h2>Terror vs. horror</h2>\n\n<p>The Gothic novelist Ann Radcliffe drew a famous distinction. <em>Terror</em>\nis the dread of what might happen — suspense, anticipation, the creak on the\nstair. <em>Horror</em> is the recoil at what is revealed — the body, the wound,\nthe thing finally seen. Terror expands the imagination; horror confronts it.\nMost great horror uses both, withholding then disclosing.</p>\n\n<h2>Fear of the unknown</h2>\n\n<p>H. P. Lovecraft argued that \"the oldest and strongest kind of fear is fear of\nthe unknown.\" Much horror works by keeping its threat partly hidden or\nincomprehensible — what we can't fully see or explain frightens us more than what\nwe can. This is why over-explaining a monster so often kills the fear.</p>\n\n<h2>The uncanny and the taboo</h2>\n\n<p>Horror frequently operates through the <em>uncanny</em> — the familiar made\nwrong — and by approaching cultural taboos around death, the body, and\ncontamination. The best horror disturbs because it touches something we'd rather\nnot look at: mortality, the loss of self, the monstrous inside the ordinary.</p>\n\n<h2>How to read it</h2>\n\n<p>Ask what a horror story is really afraid of. The surface monster is usually a\nmask for a deeper anxiety — about disease, sexuality, the outsider, death itself.\nNaming the fear beneath the fright is how horror rewards a serious reader.</p>"
+ },
+ {
+  "slug": "anthropomorphism",
+  "term": "anthropomorphism",
+  "context": "figurative technique",
+  "title": "Anthropomorphism vs. Personification",
+  "meta_description": "Anthropomorphism gives human form and behaviour to animals or objects as literal characters; personification is a brief figure of speech. Here's the difference.",
+  "h1": "What anthropomorphism is",
+  "updated": "2026-06-18",
+  "related": [
+   "personification",
+   "fable-and-parable",
+   "archetype"
+  ],
+  "body_html": "<p><strong>Anthropomorphism</strong> is the attribution of human form,\npersonality, and behaviour to something non-human — an animal, object, god, or\nforce — treating it, within the story, as if it genuinely were a human character.\nTalking, scheming, feeling animals are the classic case.</p>\n\n<h2>How it works</h2>\n\n<p>When a story anthropomorphises, the non-human thing doesn't just briefly seem\nhuman — it <em>acts</em> human throughout. The pigs in Orwell's <em>Animal\nFarm</em> hold meetings and betray each other; the toys in countless tales have\nongoing wants and friendships. The non-human character is built to behave like a\nperson from start to finish.</p>\n\n<h2>Anthropomorphism vs. personification</h2>\n\n<p>This is the distinction students most often need. <em>Personification</em> is\na brief figure of speech — \"the wind whispered,\" \"the sun smiled\" — a momentary,\npoetic flourish. <em>Anthropomorphism</em> is structural: the non-human thing is\na literal, sustained character with human traits. Personification decorates a\nline; anthropomorphism builds a character.</p>\n\n<h2>Why writers use it</h2>\n\n<p>Anthropomorphism lets writers explore human nature at a safe, instructive\ndistance. Fables use animal characters so a moral can be shown cleanly, free of\nthe specifics of real people. It can also create wonder, comedy, or — in works\nlike <em>Watership Down</em> — a strange new sympathy for the non-human world.</p>\n\n<h2>How to read it</h2>\n\n<p>Ask what the human-shaped animal or object lets the author say that a human\ncharacter couldn't say as easily. The non-human mask usually exists to make a\npoint about us — sharper for being told slant.</p>"
+ },
+ {
+  "slug": "idiom",
+  "term": "idiom",
+  "context": "language and diction",
+  "title": "What an Idiom Is (with Examples)",
+  "meta_description": "An idiom is a phrase whose meaning can't be guessed from its individual words — 'kick the bucket,' 'spill the beans.' Here's how idioms work in writing.",
+  "h1": "What an idiom is",
+  "updated": "2026-06-18",
+  "related": [
+   "cliche",
+   "diction",
+   "metonymy"
+  ],
+  "body_html": "<p>An <strong>idiom</strong> is a fixed phrase whose meaning can't be worked out\nfrom the literal sense of its words. \"Kick the bucket\" has nothing to do with\nbuckets; \"spill the beans\" involves no beans. You simply have to know what the\nwhole expression means — which is exactly what makes idioms a marker of fluency.</p>\n\n<h2>Meaning beyond the words</h2>\n\n<p>Idioms are figurative by nature. \"Under the weather\" means unwell; \"the ball\nis in your court\" means it's your decision. Because the meaning is conventional\nrather than literal, idioms are notoriously hard for language learners — and a\nrich source of confusion (and comedy) when taken at face value.</p>\n\n<h2>What idioms do in writing</h2>\n\n<p>Idioms make prose and dialogue sound natural and rooted in a real speech\ncommunity. A character who uses the right idioms feels authentic; the absence of\nthem can make dialogue sound stilted or \"translated.\" Idioms carry the texture of\nhow people actually talk.</p>\n\n<h2>Idiom vs. cliché</h2>\n\n<p>The two overlap but aren't identical. An idiom is simply a fixed figurative\nphrase; it's part of the language. A cliché is an expression — often an idiom —\nthat has been overused into staleness. \"Raining cats and dogs\" is an idiom that\nhas also become a cliché. Idioms are tools; clichés are tools worn smooth.</p>\n\n<h2>How to read for them</h2>\n\n<p>Notice when a phrase can't be read literally — that's the idiom flagging\nitself. In translated literature especially, watch how idioms are handled: the\nchoice to keep a foreign idiom strange or to swap in a native one quietly shapes\nthe voice you hear.</p>"
  }
 ]
