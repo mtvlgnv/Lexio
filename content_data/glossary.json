@@ -2233,5 +2233,94 @@
    "trope"
   ],
   "body_html": "<p><strong>Semiotics</strong> (sometimes \"semiology\") is the study of signs —\nof how anything, from a word to a traffic light to a wedding ring, comes to mean\nsomething. For literary and cultural critics it offers a precise vocabulary for\nthe basic question: how does meaning actually get made?</p>\n\n<h2>The sign: signifier and signified</h2>\n\n<p>Following the linguist Ferdinand de Saussure, a sign has two parts: the\n<em>signifier</em> (the form — the sound or marks of the word \"rose\") and the\n<em>signified</em> (the concept it calls up). The link between them is arbitrary:\nnothing about the sound \"rose\" naturally means the flower. Meaning is a\nconvention, an agreement among users — which means it can shift.</p>\n\n<h2>Layers of meaning</h2>\n\n<p>Roland Barthes extended this to culture. A sign can carry a first-order,\nliteral meaning (denotation) and then a second-order, cultural meaning\n(connotation): a rose denotes a flower, but in the right context it connotes\nromance. Barthes showed how advertising, fashion, and everyday images quietly\nload such second meanings — and how they pass themselves off as natural.</p>\n\n<h2>Why it matters for literature</h2>\n\n<p>Semiotics gives reading a method. A literary text is a dense web of signs,\nand a symbol is just a signifier whose signified has been stretched or charged.\nAsking \"what does this signify, and by what convention?\" turns vague intuition\nabout imagery into something you can actually analyse and defend.</p>\n\n<h2>Beyond the page</h2>\n\n<p>Because signs are everywhere, semiotics travels far beyond books — into film,\nbrand logos, gesture, food, architecture. Learning to read a culture's signs is\nthe same skill as close-reading a poem: noticing that nothing \"just means what it\nmeans,\" and asking who decided it would.</p>"
+ },
+ {
+  "slug": "sonnet",
+  "term": "sonnet",
+  "context": "poetic form",
+  "title": "What a Sonnet Is (Shakespearean vs Petrarchan)",
+  "meta_description": "A sonnet is a 14-line poem with a set rhyme scheme and a turn of thought. Here's the Shakespearean vs Petrarchan forms and how to read the volta.",
+  "h1": "What a sonnet is",
+  "updated": "2026-06-18",
+  "related": [
+   "volta-sonnet",
+   "iambic-pentameter",
+   "ode"
+  ],
+  "body_html": "<p>A <strong>sonnet</strong> is a fourteen-line poem, usually in iambic\npentameter, built around a single thought that develops and then turns. Its\ndiscipline is the point: in fourteen lines a poet has to set up a problem and\nresolve it, which is why the form has lasted seven hundred years.</p>\n\n<h2>The Petrarchan (Italian) sonnet</h2>\n\n<p>The older form, named after Petrarch, divides into an <em>octave</em> (eight\nlines) and a <em>sestet</em> (six), rhyming roughly abbaabba cdecde. The octave\nposes a question, situation, or tension; the sestet answers or resolves it. The\nhinge between them, around line nine, is the <strong>volta</strong> — the\n\"turn.\"</p>\n\n<h2>The Shakespearean (English) sonnet</h2>\n\n<p>Shakespeare worked in a form better suited to English, which has fewer\nrhymes: three quatrains and a closing couplet, rhyming abab cdcd efef gg. Each\nquatrain develops the idea a stage further, and the final couplet snaps it shut\nwith a summary, twist, or epigram. Here the volta often falls at that couplet.</p>\n\n<h2>The volta is everything</h2>\n\n<p>Whatever the rhyme scheme, what makes a poem a sonnet is the <em>turn</em>:\nthe moment the argument shifts — from problem to solution, praise to doubt,\ndescription to meaning. Reading a sonnet well means finding the volta and asking\nwhat changes across it.</p>\n\n<h2>The form refuses to die</h2>\n\n<p>Poets keep returning to the sonnet precisely because it's hard. Wordsworth,\nHopkins, Millay, and contemporary poets like Terrance Hayes have all bent the\nrules — loosening the rhyme, moving the turn, stretching the meter — while\nkeeping the essential bargain: fourteen lines, one thought, one turn.</p>"
+ },
+ {
+  "slug": "haiku",
+  "term": "haiku",
+  "context": "Japanese poetic form",
+  "title": "What a Haiku Is (Form & Examples)",
+  "meta_description": "A haiku is a short Japanese poem of three lines capturing a single vivid moment, traditionally with a seasonal word. Here's the form beyond '5-7-5'.",
+  "h1": "What a haiku is",
+  "updated": "2026-06-18",
+  "related": [
+   "imagery",
+   "synesthesia-literature",
+   "juxtaposition"
+  ],
+  "body_html": "<p>A <strong>haiku</strong> is a very short Japanese poem that captures a single,\nvivid moment of perception — usually a flash of the natural world held still.\nMost readers learn it as three lines of five, seven, and five syllables, but the\nreal form is subtler than the syllable count suggests.</p>\n\n<h2>Beyond 5-7-5</h2>\n\n<p>The famous \"5-7-5\" describes Japanese sound-units (<em>on</em>), which don't\nmap neatly onto English syllables; many fine English haiku are shorter. What\nmatters more than the count are two traditional elements: a <em>kigo</em>, a\nseason word that anchors the poem in a time of year, and a <em>kireji</em>, a\n\"cutting word\" that creates a pause or break.</p>\n\n<h2>The cut</h2>\n\n<p>That cut is the heart of haiku. It splits the poem into two images and lets\nthem strike against each other, leaving the connection unspoken. Bashō's most\nfamous haiku sets an old silent pond against a frog's sudden splash — and trusts\nthe gap between them to do the work. The reader supplies the meaning.</p>\n\n<h2>What it's really doing</h2>\n\n<p>A haiku doesn't explain or moralise; it points. It is the art of\n<em>juxtaposition</em> stripped to essentials: two concrete images, no\ncommentary, a single breath of attention. The emotion arises from the things\nthemselves, never from the poet telling you how to feel.</p>\n\n<h2>How to read one</h2>\n\n<p>Read slowly and resist the urge to \"decode\" it. Find the two halves and the\ncut between them; let the images sit side by side. A good haiku rewards stillness\n— it gives you a moment, not a message, and asks only that you actually look.</p>"
+ },
+ {
+  "slug": "free-verse",
+  "term": "free verse",
+  "context": "poetic form",
+  "title": "What Free Verse Is in Poetry",
+  "meta_description": "Free verse is poetry without regular meter or rhyme — but not without form. Here's how it works, from Whitman to now, and why 'free' doesn't mean shapeless.",
+  "h1": "What free verse is",
+  "updated": "2026-06-18",
+  "related": [
+   "blank-verse",
+   "enjambment",
+   "meter-poetic"
+  ],
+  "body_html": "<p><strong>Free verse</strong> is poetry that abandons regular meter and rhyme.\nIt has no fixed beat per line and no set rhyme scheme. But \"free\" is misleading:\nthe best free verse is highly controlled — it simply finds its order in rhythm,\nline breaks, and image rather than in a metrical template.</p>\n\n<h2>Free of what, exactly</h2>\n\n<p>Free verse is free of two things: a predictable meter (like iambic\npentameter) and an obligatory rhyme scheme. It is not free of rhythm, sound, or\nstructure. A free-verse poet still shapes the line — deciding where it breaks,\nhow long it runs, where the stresses fall — and those decisions carry the music\nthat meter would otherwise supply.</p>\n\n<h2>The line is the unit</h2>\n\n<p>Without meter, the line break does extra work. Where a line ends — whether it\nstops on a strong word or spills over via <em>enjambment</em> into the next —\ncontrols pace, emphasis, and surprise. In free verse, reading the line breaks is\nreading the poem; they are the form.</p>\n\n<h2>Where it comes from</h2>\n\n<p>Walt Whitman pioneered long, surging, list-like free-verse lines in\n<em>Leaves of Grass</em>. The modernists — Pound, Eliot, William Carlos Williams\n— pared it down, insisting (in Pound's phrase) on composing \"in the sequence of\nthe musical phrase, not in sequence of a metronome.\" It has been the dominant\nmode of poetry ever since.</p>\n\n<h2>Free verse vs. blank verse</h2>\n\n<p>Don't confuse the two. Blank verse is unrhymed but strictly metrical (iambic\npentameter). Free verse drops the meter too. Blank verse keeps the beat and\nloses the rhyme; free verse loses both and keeps only what the poet chooses to\nimpose.</p>"
+ },
+ {
+  "slug": "stanza",
+  "term": "stanza",
+  "context": "poetic structure",
+  "title": "What a Stanza Is in Poetry",
+  "meta_description": "A stanza is a grouped set of lines in a poem — poetry's version of a paragraph. Here are the common types (couplet, tercet, quatrain) and what they do.",
+  "h1": "What a stanza is in poetry",
+  "updated": "2026-06-18",
+  "related": [
+   "couplet",
+   "rhyme-scheme",
+   "enjambment"
+  ],
+  "body_html": "<p>A <strong>stanza</strong> is a group of lines in a poem set off from other\ngroups by a blank line — poetry's equivalent of a paragraph. Stanzas organise a\npoem visually and rhythmically, and their shape often carries meaning of its\nown.</p>\n\n<h2>The common types</h2>\n\n<p>Stanzas are usually named by their number of lines: a <strong>couplet</strong>\n(two), a <strong>tercet</strong> (three), a <strong>quatrain</strong> (four — by\nfar the most common in English), a <strong>quintain</strong> (five), a\n<strong>sestet</strong> (six), and an <strong>octave</strong> (eight). A sonnet,\nfor instance, can be read as an octave plus a sestet, or three quatrains plus a\ncouplet.</p>\n\n<h2>What stanzas do</h2>\n\n<p>A stanza is a unit of thought as much as of form. A new stanza can signal a\nshift — in time, speaker, mood, or argument — the way a paragraph break does in\nprose. Regular, identical stanzas give a poem order and song; irregular ones can\nmirror restlessness or feeling that won't be contained.</p>\n\n<h2>Stanza and white space</h2>\n\n<p>The blank space between stanzas is part of the poem. It is a pause, a breath,\nsometimes a leap. Poets use it to control pacing and to let an image resonate\nbefore the next one arrives. When you read aloud, honour the gap.</p>\n\n<h2>How to read for it</h2>\n\n<p>Notice the stanza pattern early, then watch for where it breaks. A poet who\nhas used neat quatrains and suddenly drops to a single line is doing something\ndeliberate. The shape on the page is information — read it alongside the words.</p>"
+ },
+ {
+  "slug": "rhyme-scheme",
+  "term": "rhyme scheme",
+  "context": "poetry basics",
+  "title": "What a Rhyme Scheme Is (How to Find It)",
+  "meta_description": "A rhyme scheme is the pattern of rhymes at the ends of lines, mapped with letters like ABAB. Here's how to identify one and what different patterns do.",
+  "h1": "What a rhyme scheme is",
+  "updated": "2026-06-18",
+  "related": [
+   "stanza",
+   "sonnet"
+  ],
+  "body_html": "<p>A <strong>rhyme scheme</strong> is the pattern formed by the rhyming words at\nthe ends of a poem's lines. Critics map it with letters: each new rhyme sound\ngets the next letter of the alphabet, and repeats reuse the same letter. The\nscheme \"ABAB\" means lines one and three rhyme, and lines two and four rhyme.</p>\n\n<h2>How to mark one up</h2>\n\n<p>Read down the line-endings. Give the first end-sound the label A. Give the\nnext new sound B, the next C, and so on — but whenever an end-sound repeats an\nearlier one, reuse that earlier letter. Work through a stanza and you'll have its\nscheme: AABB (couplets), ABAB (alternating), ABBA (enclosed), and so on.</p>\n\n<h2>What the patterns do</h2>\n\n<p>Different schemes feel different. Couplets (AABB) snap shut and suit wit,\nsummary, and closure. Alternating rhyme (ABAB) feels open and forward-moving.\nEnclosed rhyme (ABBA) folds back on itself, good for reflection. The scheme is\npart of a poem's argument, not just decoration.</p>\n\n<h2>Beyond perfect rhyme</h2>\n\n<p>Schemes don't require exact rhymes. Poets use <em>slant rhyme</em> (or\nhalf-rhyme) — \"eyes\" with \"is,\" \"room\" with \"storm\" — to suggest pattern while\nunsettling it. Emily Dickinson built her unmistakable music almost entirely from\nslant rhyme. A near-miss in an otherwise neat scheme is usually meaningful.</p>\n\n<h2>Why it matters</h2>\n\n<p>Identifying the rhyme scheme is often the first step in naming a form — a\nShakespearean sonnet is ABAB CDCD EFEF GG, a limerick AABBA. More than that, the\npattern shapes how the poem moves and where it lands its emphasis. Reading the\nscheme is reading the poem's skeleton.</p>"
+ },
+ {
+  "slug": "couplet",
+  "term": "couplet",
+  "context": "poetic form",
+  "title": "What a Couplet Is (incl. Heroic Couplet)",
+  "meta_description": "A couplet is two consecutive rhyming lines. Here's how couplets work, the heroic couplet of Pope and Dryden, and Shakespeare's sonnet-closing couplets.",
+  "h1": "What a couplet is",
+  "updated": "2026-06-18",
+  "related": [
+   "rhyme-scheme",
+   "iambic-pentameter",
+   "sonnet"
+  ],
+  "body_html": "<p>A <strong>couplet</strong> is a pair of consecutive lines, usually rhyming and\nusually of the same length. It is the smallest stanza in English poetry and one\nof the most useful: two lines are just enough to set up an idea and clinch it.</p>\n\n<h2>The shape of a small argument</h2>\n\n<p>Because a couplet rhymes and closes quickly, it feels complete — a tiny unit\nof sense. Poets exploit this for wit, summary, and finality. When a rhymed\ncouplet ends on a strong stop (a \"closed couplet\"), it lands like a verdict.</p>\n\n<h2>The heroic couplet</h2>\n\n<p>The <strong>heroic couplet</strong> — two rhyming lines of iambic pentameter\n— was the dominant form of English poetry in the seventeenth and eighteenth\ncenturies. Dryden and especially Alexander Pope made it a precision instrument\nfor satire and argument, packing balanced, epigrammatic sense into each pair:\n\"True wit is Nature to advantage dressed, / What oft was thought, but ne'er so\nwell expressed.\"</p>\n\n<h2>The Shakespearean clincher</h2>\n\n<p>Shakespeare ends each of his sonnets with a couplet, using the sudden snap of\nthe rhyme to summarise, reverse, or undercut the twelve lines before it. The\nshift from alternating rhyme into a couplet is itself a signal that the poem is\nabout to conclude.</p>\n\n<h2>How to read one</h2>\n\n<p>When a poem drops into a rhymed couplet — especially after a passage that\ndidn't rhyme that way — expect emphasis: a point being driven home, a scene being\nclosed, a judgment being passed. The form is built to make you feel the click of\nsomething completed.</p>"
  }
 ]
