@@ -2334,7 +2334,11 @@ let _wbSyncIsProOnly = false;
 
     skeleton.classList.add('hidden');
 
-    if (monthEl && data.month) monthEl.textContent = data.month;
+    if (monthEl && data.month) {
+      // data.month is like "JUNE 2026" — show just the month name, title-cased.
+      const mn = String(data.month).split(' ')[0];
+      monthEl.textContent = mn.charAt(0) + mn.slice(1).toLowerCase();
+    }
 
     if (!data.words || data.words.length === 0) {
       empty.classList.remove('hidden');
