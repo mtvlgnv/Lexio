@@ -1378,7 +1378,7 @@
     .app-engage-row {
       display: none; gap: 20px;
       align-items: stretch; justify-content: center;     /* equal-height cards */
-      max-width: 1040px; margin: 4px auto 56px; padding: 0 24px;
+      max-width: 1400px; margin: 4px auto 56px; padding: 0 24px;
     }
     .app-engage-row.shown { display: flex; }
     /* Neutralise the auto-margins the cards carry on the marketing page. */
@@ -1408,11 +1408,13 @@
     .activity-graph-subtitle { font-size: 0.8rem; color: var(--muted); }
     .activity-graph-container {
       flex: 1 1 auto; margin-top: 16px;
-      display: flex; align-items: flex-end; height: 120px;
+      display: flex; align-items: flex-end; height: 160px;
     }
-    .activity-graph-container svg { width: 100%; height: 100%; overflow: visible; }
+    .activity-graph-container svg { width: 100%; height: 100%; overflow: visible; font-family: inherit; }
     .activity-graph-bar { fill: var(--accent); opacity: 0.4; transition: opacity 0.2s, y 0.3s, height 0.3s; cursor: crosshair; rx: 3; }
     .activity-graph-bar:hover { opacity: 1; }
+    .activity-graph-axis-text { font-size: 11px; fill: var(--muted); }
+    .activity-graph-grid-line { stroke: var(--border); stroke-dasharray: 2 4; stroke-width: 1px; }
 
     @media (max-width: 760px) {
       .app-engage-row { flex-wrap: wrap; }
