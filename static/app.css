@@ -2018,7 +2018,7 @@
       border-top: 1px solid var(--border);
     }
     .lp-why-eyebrow {
-      font-family: 'Pinyon Script', cursive; font-size: 3.5rem; font-weight: 400;
+      font-family: 'Playball', cursive; font-size: 3.5rem; font-weight: 400;
       color: var(--accent); margin-bottom: 14px; line-height: 1.2;
     }
     .lp-why-sub {
@@ -2628,7 +2628,7 @@
       background: color-mix(in oklch, var(--surface) 80%, var(--accent-lt));
     }
     .lp-apps-eyebrow {
-      font-family: 'Pinyon Script', cursive; font-size: 3.5rem; font-weight: 400;
+      font-family: 'Playball', cursive; font-size: 3.5rem; font-weight: 400;
       color: var(--accent); line-height: 1.2;
     }
     .lp-apps-h2 {
@@ -2765,7 +2765,7 @@
       display: flex; flex-direction: column; align-items: center; gap: 14px;
     }
     .lp-glossary-eyebrow {
-      font-family: 'Pinyon Script', cursive; font-size: 3.5rem; font-weight: 400;
+      font-family: 'Playball', cursive; font-size: 3.5rem; font-weight: 400;
       color: var(--accent); line-height: 1.2;
     }
     .lp-glossary-sub {
