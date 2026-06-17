@@ -17,16 +17,22 @@ BASE = "https://lexio.site"
 # Static, crawlable pages: (path, changefreq, priority). The tool (/app) and
 # personal pages (/recap) are intentionally excluded — /app is a thin app
 # shell (canonical → /) and /recap is per-user and disallowed in robots.txt.
+#
+# URL form matters: in production nginx proxies /glossary, /works, /this-week
+# (and /) to the app, but serves everything else as a static file via
+# try_files with NO .html fallback — so /for-readers 404s while
+# /for-readers.html resolves. Each path below is the form that returns 200 and
+# matches the page's own canonical, so the sitemap never lists a 404.
 _STATIC_PAGES = [
-    ("/",                 "weekly",  "1.0"),
-    ("/glossary",         "weekly",  "0.8"),
-    ("/works",            "weekly",  "0.8"),
-    ("/this-week",        "daily",   "0.6"),
-    ("/for-readers",      "monthly", "0.7"),
-    ("/chrome-extension", "monthly", "0.7"),
-    ("/changelog",        "monthly", "0.4"),
-    ("/privacy",          "yearly",  "0.2"),
-    ("/credits",          "yearly",  "0.2"),
+    ("/",                      "weekly",  "1.0"),
+    ("/glossary",              "weekly",  "0.8"),
+    ("/works",                 "weekly",  "0.8"),
+    ("/this-week",             "daily",   "0.6"),
+    ("/for-readers.html",      "monthly", "0.7"),
+    ("/chrome-extension.html", "monthly", "0.7"),
+    ("/changelog.html",        "monthly", "0.4"),
+    ("/privacy.html",          "yearly",  "0.2"),
+    ("/credits.html",          "yearly",  "0.2"),
 ]
 
 
