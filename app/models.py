@@ -53,6 +53,10 @@ class User(Base):
     is_founder            = Column(Integer, default=0, nullable=False)
     # Family-plan membership: if set, this user inherits Pro from the owner.
     family_owner_id       = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
+    # Weekly re-engagement digest (retention). digest_opt_out=1 suppresses it;
+    # last_digest_at throttles to at most one send per DIGEST_INTERVAL_DAYS.
+    digest_opt_out   = Column(Integer, default=0, nullable=False)
+    last_digest_at   = Column(DateTime, nullable=True)
     created_at       = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):

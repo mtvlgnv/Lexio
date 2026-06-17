@@ -132,6 +132,14 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
             created_at   TIMESTAMP DEFAULT (strftime('%Y-%m-%dT%H:%M:%S','now'))
         )
     """))),
+    # Weekly re-engagement digest (retention): opt-out flag + throttle timestamp.
+    (17, "add digest opt-out + last_digest_at", lambda conn, _: [
+        conn.execute(_sa_text(ddl))
+        for col, ddl in [
+            ("digest_opt_out", "ALTER TABLE users ADD COLUMN digest_opt_out INTEGER NOT NULL DEFAULT 0"),
+            ("last_digest_at", "ALTER TABLE users ADD COLUMN last_digest_at TIMESTAMP"),
+        ] if col not in _cols(conn, "users")
+    ]),
 ]
 
 def _run_migrations():

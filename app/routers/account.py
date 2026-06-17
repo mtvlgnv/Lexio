@@ -8,7 +8,7 @@ import logging
 from typing import Optional
 
 from fastapi import APIRouter, Request, Depends, HTTPException, File, UploadFile
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse, Response, HTMLResponse
 from sqlalchemy import func
 from sqlalchemy.orm import Session as DBSession
 from google.genai import types as genai_types
@@ -271,3 +271,70 @@ async def pro_status(user: User = Depends(current_user), db: DBSession = Depends
         "family_owner_name": family_owner_name,
         "member_since": member_since,         # "May 2026"
     }
+
+
+@router.get("/api/streak")
+async def get_streak(user: User = Depends(current_user), db: DBSession = Depends(get_db)):
+    """Lookup-streak + totals for the signed-in user, computed on the fly from
+    UserSearchLog (no extra tracking). A "day" is any UTC day with >=1 lookup.
+    Powers the streak chip on the tool page. Works for free and Pro alike."""
+    rows = (
+        db.query(UserSearchLog.searched_at)
+        .filter(UserSearchLog.user_id == user.id)
+        .all()
+    )
+    days = sorted({r[0].date() for r in rows if r[0]})
+    dayset = set(days)
+    today = datetime.datetime.utcnow().date()
+    one_day = datetime.timedelta(days=1)
+
+    # Current streak: consecutive days ending today, with a one-day grace so a
+    # user who hasn't looked anything up *yet today* doesn't see it reset.
+    current = 0
+    cur = today if today in dayset else (today - one_day if (today - one_day) in dayset else None)
+    while cur and cur in dayset:
+        current += 1
+        cur -= one_day
+
+    # Longest streak ever.
+    longest = run = 0
+    prev = None
+    for d in days:
+        run = run + 1 if (prev is not None and (d - prev).days == 1) else 1
+        longest = max(longest, run)
+        prev = d
+
+    total_words = (
+        db.query(func.count(WordBankEntry.id))
+        .filter(WordBankEntry.user_id == user.id)
+        .scalar()
+    ) or 0
+
+    return {
+        "current_streak": current,
+        "longest_streak": longest,
+        "active_days": len(days),
+        "total_words": total_words,
+    }
+
+
+@router.get("/email/unsubscribe")
+async def unsubscribe_digest(u: int, t: str, db: DBSession = Depends(get_db)):
+    """One-click unsubscribe from the weekly digest. Stateless HMAC token (no
+    auth, no login) so it works straight from an email client. Idempotent."""
+    from app.email import digest_unsub_token_valid
+    user = db.query(User).get(u)
+    if not user or not digest_unsub_token_valid(u, t):
+        return HTMLResponse(
+            "<p style='font:16px system-ui;max-width:32rem;margin:3rem auto'>"
+            "That unsubscribe link isn't valid. If you keep getting emails, reply "
+            "to one and we'll sort it out.</p>",
+            status_code=400,
+        )
+    user.digest_opt_out = 1
+    db.commit()
+    return HTMLResponse(
+        "<p style='font:16px system-ui;max-width:32rem;margin:3rem auto'>"
+        "Done — you won't get the weekly word digest anymore. You can still "
+        "review your words anytime at <a href='/app'>lexio.site/app</a>.</p>"
+    )

@@ -1,5 +1,9 @@
 """Transactional email senders + SMTP config (Phase 2 extract)."""
 import os
+import hmac
+import json
+import random
+import hashlib
 import smtplib
 import secrets
 import datetime
@@ -7,7 +11,7 @@ import logging
 from email.mime.text import MIMEText
 from sqlalchemy.orm import Session as DBSession
 
-from app.models import User
+from app.models import User, WordBankEntry
 
 logger = logging.getLogger("lexio")
 
@@ -145,6 +149,77 @@ can safely ignore this email.
     except Exception as exc:
         logger.error("Failed to send verification email to %s: %s", to_email, exc)
         return False
+
+
+# ── Weekly re-engagement digest (retention) ──────────────────────────────────
+# Sent to Pro users with a synced word bank: a handful of words to revisit, in
+# the contextual sense Lexio gave them. Free users' banks live only in their
+# browser (sync is Pro-gated), so the server has nothing to build from for them.
+DIGEST_INTERVAL_DAYS = 7
+_DIGEST_WORD_COUNT    = 5
+
+def digest_unsub_token(user_id: int) -> str:
+    """Stateless one-click-unsubscribe token. HMAC of the user id under
+    SECRET_KEY, so no DB token table is needed and links can't be forged."""
+    key = os.getenv("SECRET_KEY", "").encode()
+    return hmac.new(key, f"digest:{user_id}".encode(), hashlib.sha256).hexdigest()[:32]
+
+def digest_unsub_token_valid(user_id: int, token: str) -> bool:
+    return hmac.compare_digest(digest_unsub_token(user_id), (token or ""))
+
+def _pick_digest_words(db: DBSession, user: "User") -> list[dict]:
+    """Return up to _DIGEST_WORD_COUNT parsed word-bank entries, chosen at
+    random for variety so repeat digests don't always feature the same words."""
+    entries = db.query(WordBankEntry).filter(WordBankEntry.user_id == user.id).all()
+    parsed = []
+    for e in entries:
+        try:
+            parsed.append(json.loads(e.data))
+        except Exception:
+            continue
+    if len(parsed) > _DIGEST_WORD_COUNT:
+        parsed = random.sample(parsed, _DIGEST_WORD_COUNT)
+    return parsed
+
+def send_weekly_digest(db: DBSession, user: "User") -> bool:
+    """Build and send the weekly word-revisit digest for one user, then stamp
+    last_digest_at. Returns False (without stamping) if there's nothing to send
+    or SMTP is down, so the user is retried on the next run."""
+    if not SMTP_USER or not SMTP_PASS or user.digest_opt_out:
+        return False
+    words = _pick_digest_words(db, user)
+    if len(words) < 3:
+        return False
+    name = (user.name or user.email.split("@")[0]).strip() or "there"
+    lines = []
+    for w in words:
+        term = (w.get("word") or "").strip()
+        # Prefer the contextual sense (Lexio's whole point) over the generic one.
+        gloss = (w.get("contextual") or w.get("definition") or "").strip()
+        if not term:
+            continue
+        lines.append(f"  • {term} — {gloss}" if gloss else f"  • {term}")
+    unsub_url = f"{SITE_URL}/email/unsubscribe?u={user.id}&t={digest_unsub_token(user.id)}"
+    body = f"""Hi {name},
+
+A few words from your Lexio word bank, worth a second look:
+
+{chr(10).join(lines)}
+
+Open your word bank to review them all, or paste new text and keep going:
+{SITE_URL}/app
+
+— Lexio
+
+—
+You're getting this because you save words in Lexio. Don't want the
+weekly nudge? Unsubscribe here: {unsub_url}
+"""
+    ok = _send_email(user.email, "Your words to revisit this week", body)
+    if ok:
+        user.last_digest_at = datetime.datetime.utcnow()
+        db.commit()
+    return ok
 
 
 def _issue_email_verification_code(db: DBSession, user: "User") -> str:

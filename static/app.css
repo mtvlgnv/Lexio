@@ -3039,6 +3039,14 @@
     .usage-pill.danger { color: #e55; }
     .usage-pill.danger .usage-fill { background: #e55; }
 
+    /* Lookup-streak chip — habit reinforcement. Sits with the usage pills. */
+    .streak-pill {
+      font-size: .72rem; color: var(--muted); white-space: nowrap;
+      display: flex; align-items: center; gap: 4px; font-weight: 600;
+    }
+    .streak-pill .streak-flame { font-size: .85rem; line-height: 1; }
+    .streak-pill.hot { color: var(--accent); }
+
     /* ── Scroll-triggered reveal animations ───────────────────────────── */
     .lp-reveal {
       opacity: 0; transform: translateY(24px);

@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=8">
+  <link rel="stylesheet" href="/app.css?v=9">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -462,6 +462,10 @@
       <span class="usage-pill hourly-pill" id="hourly-pill" title="Hourly credits — Fast=1, Balanced=2, Deep=3. Resets every hour." style="display:none">
         <span id="hourly-text">0 / 120</span>
         <span class="usage-bar"><span class="usage-fill" id="hourly-fill" style="width:0%"></span></span>
+      </span>
+      <span class="streak-pill" id="streak-pill" title="Days in a row you've looked up a word" style="display:none">
+        <span class="streak-flame" aria-hidden="true">🔥</span>
+        <span id="streak-text">0</span>
       </span>
       <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()" data-i18n="edit">← Edit</button>
       <button id="analyze-btn" class="btn-primary" onclick="analyze()" data-i18n="analyzeText">Analyze text</button>
@@ -1621,7 +1625,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=8"></script>
+<script src="/app.js?v=9"></script>
 
 <script type="module">
 // Skip the WebGL gradient entirely on mobile — saves a noticeable amount of

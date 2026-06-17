@@ -485,6 +485,27 @@ async function loadUsage() {
   } catch (_) {}
 }
 
+/* ── Lookup streak chip (habit reinforcement, signed-in only) ── */
+async function loadStreak() {
+  const pill = document.getElementById('streak-pill');
+  if (!pill) return;
+  const token = localStorage.getItem('lexio_token');
+  if (!token) { pill.style.display = 'none'; return; }   // anon: no streak
+  try {
+    const res = await fetch('/api/streak', { headers: { Authorization: 'Bearer ' + token } });
+    if (!res.ok) { pill.style.display = 'none'; return; }
+    const d = await res.json();
+    const n = d.current_streak || 0;
+    if (n < 1) { pill.style.display = 'none'; return; }
+    const text = document.getElementById('streak-text');
+    if (text) text.textContent = n === 1 ? '1 day' : n + ' days';
+    pill.classList.toggle('hot', n >= 3);
+    pill.title = `${n}-day lookup streak` + (d.longest_streak > n ? ` · best ${d.longest_streak}` : '')
+               + (d.total_words ? ` · ${d.total_words} words saved` : '');
+    pill.style.display = '';
+  } catch (_) { pill.style.display = 'none'; }
+}
+
 /* ── OCR / photo-to-text ────────────────────────────── */
 function triggerOCR() {
   document.getElementById('ocr-file-input').click();
@@ -1012,6 +1033,7 @@ async function fetchDefinition(word, context, modelOverride, bypassCache=false) 
     const data = await resp.json();
     if (data._usage)  updateUsagePill(data._usage.used, data._usage.limit);
     if (data._hourly) updateHourlyPill(data._hourly.used, data._hourly.limit);
+    loadStreak();   // a lookup may have started or extended today's streak
     defCache.set(key, data);
     modelResults[model] = data;
     addToHistory(word, data);
@@ -2658,8 +2680,9 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
 // Init model selector
 initializeModelSelector();
 
-// Load usage on page start
+// Load usage + streak on page start
 loadUsage();
+loadStreak();
 
 // Clean up URL if returning from Stripe checkout
 if (new URLSearchParams(location.search).get('stripe') === 'success') {
