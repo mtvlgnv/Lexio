@@ -485,55 +485,27 @@ async function loadUsage() {
   } catch (_) {}
 }
 
-/* ── Lookup streak: toolbar chip + the under-tool panel (signed-in only) ── */
+/* ── Lookup streak: the under-tool panel (signed-in tool-page users only) ── */
 async function loadStreak() {
-  const pill  = document.getElementById('streak-pill');
   const panel = document.getElementById('app-streak-panel');
   const row   = document.getElementById('app-engage-row');
-  const hideAll = () => {
-    if (pill)  pill.style.display = 'none';
-    if (panel) panel.style.display = 'none';
-    if (row)   row.classList.remove('shown');
-  };
+  if (!panel || !document.body.classList.contains('tool-page')) return;
   const token = localStorage.getItem('lexio_token');
-  if (!token) { hideAll(); return; }   // anon: no streak surfaces
+  if (!token) { panel.style.display = 'none'; return; }   // anon: no streak
   try {
     const res = await fetch('/api/streak', { headers: { Authorization: 'Bearer ' + token } });
-    if (!res.ok) { hideAll(); return; }
+    if (!res.ok) { panel.style.display = 'none'; return; }
     const d = await res.json();
     const n = d.current_streak || 0;
     const dayWord = x => x === 1 ? '1 day' : x + ' days';
-
-    // Toolbar chip — only when there's an active streak (keeps the bar clean).
-    if (pill) {
-      if (n < 1) { pill.style.display = 'none'; }
-      else {
-        const text = document.getElementById('streak-text');
-        if (text) text.textContent = dayWord(n);
-        pill.classList.toggle('hot', n >= 3);
-        pill.title = `${n}-day lookup streak`
-                   + (d.longest_streak > n ? ` · best ${d.longest_streak}` : '')
-                   + (d.total_words ? ` · ${d.total_words} words saved` : '');
-        pill.style.display = '';
-      }
-    }
-
-    // Panel — shown for any signed-in user on the tool page (a nudge even at 0).
-    if (panel && document.body.classList.contains('tool-page')) {
-      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-      set('streak-panel-days', n);
-      set('streak-panel-caption', n === 0 ? 'Look up a word to start one' : (n === 1 ? 'day in a row' : 'days in a row'));
-      set('streak-panel-best',   d.longest_streak ? dayWord(d.longest_streak) : '—');
-      set('streak-panel-words',  d.total_words  ?? 0);
-      set('streak-panel-active', d.active_days   ?? 0);
-      panel.classList.toggle('hot', n >= 3);
-      panel.style.display = '';
-      if (row) row.classList.add('shown');
-    } else if (panel) {
-      panel.style.display = 'none';
-      if (row) row.classList.remove('shown');
-    }
-  } catch (_) { hideAll(); }
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('streak-panel-days', n);
+    set('streak-panel-unit', n === 1 ? 'day' : 'days');
+    set('streak-panel-best', d.longest_streak ? dayWord(d.longest_streak) : '—');
+    panel.classList.toggle('hot', n >= 3);
+    panel.style.display = '';
+    if (row) row.classList.add('shown');
+  } catch (_) { panel.style.display = 'none'; }
 }
 
 /* ── OCR / photo-to-text ────────────────────────────── */

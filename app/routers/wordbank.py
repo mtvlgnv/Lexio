@@ -52,13 +52,25 @@ async def sync_wordbank(
             continue
         key = word.lower()
         entry_dict = entry.model_dump(exclude_none=True)
+        # Parse the client's true save time so the DB column reflects when the
+        # word was actually saved, not when it first synced (see annual_recap).
+        _saved_at = None
+        if entry.savedAt:
+            try:
+                _sa = datetime.datetime.fromisoformat(entry.savedAt.replace("Z", "+00:00"))
+                _saved_at = _sa.astimezone(datetime.timezone.utc).replace(tzinfo=None) if _sa.tzinfo else _sa
+            except Exception:
+                _saved_at = None
         if key in existing:
             existing[key].data = json.dumps(entry_dict)
+            if _saved_at:               # backfill stale sync-time columns
+                existing[key].saved_at = _saved_at
         else:
             new_entry = WordBankEntry(
-                user_id = user.id,
-                word    = word,
-                data    = json.dumps(entry_dict),
+                user_id  = user.id,
+                word     = word,
+                data     = json.dumps(entry_dict),
+                saved_at = _saved_at or datetime.datetime.utcnow(),
             )
             db.add(new_entry)
             existing[key] = new_entry

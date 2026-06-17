@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=10">
+  <link rel="stylesheet" href="/app.css?v=11">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -463,10 +463,6 @@
         <span id="hourly-text">0 / 120</span>
         <span class="usage-bar"><span class="usage-fill" id="hourly-fill" style="width:0%"></span></span>
       </span>
-      <span class="streak-pill" id="streak-pill" title="Days in a row you've looked up a word" style="display:none">
-        <span class="streak-flame" aria-hidden="true">🔥</span>
-        <span id="streak-text">0</span>
-      </span>
       <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()" data-i18n="edit">← Edit</button>
       <button id="analyze-btn" class="btn-primary" onclick="analyze()" data-i18n="analyzeText">Analyze text</button>
     </div>
@@ -634,13 +630,11 @@
       <span class="lp-sub-eyebrow">Your streak</span>
       <span class="streak-flame-lg" aria-hidden="true">🔥</span>
     </div>
-    <div class="streak-panel-num"><span id="streak-panel-days">0</span></div>
-    <div class="streak-panel-caption" id="streak-panel-caption">days in a row</div>
-    <dl class="lp-sub-meta">
-      <div class="lp-sub-row"><dt>Best streak</dt><dd id="streak-panel-best">—</dd></div>
-      <div class="lp-sub-row"><dt>Words saved</dt><dd id="streak-panel-words">—</dd></div>
-      <div class="lp-sub-row"><dt>Active days</dt><dd id="streak-panel-active">—</dd></div>
-    </dl>
+    <div class="streak-panel-main">
+      <span class="streak-panel-num" id="streak-panel-days">0</span>
+      <span class="streak-panel-unit" id="streak-panel-unit">days</span>
+    </div>
+    <div class="streak-panel-best">Best streak · <span id="streak-panel-best">—</span></div>
   </section>
   <!-- Subscriber's Pro subscription card is relocated here (under the tool) on /app -->
   <div id="app-sub-slot" class="app-sub-slot"></div>
@@ -1642,7 +1636,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=10"></script>
+<script src="/app.js?v=11"></script>
 
 <script type="module">
 // Skip the WebGL gradient entirely on mobile — saves a noticeable amount of

@@ -43,15 +43,28 @@ async def annual_recap(user: User = Depends(current_user), db: DBSession = Depen
 
     # Total saved words
     saved_total = db.query(WordBankEntry).filter(WordBankEntry.user_id == user.id).count()
-    # Saved words by month (last 12)
+    # Saved words by month (last 12). Group by the client's true save time
+    # (data.savedAt) rather than the DB saved_at column — for word banks that
+    # were synced in bulk, the column holds the *sync* time, which collapses
+    # every word into one month. Fall back to the column when savedAt is absent.
     cutoff = datetime.datetime.utcnow() - datetime.timedelta(days=365)
     monthly = {}
-    saved_entries = db.query(WordBankEntry).filter(
-        WordBankEntry.user_id == user.id,
-        WordBankEntry.saved_at >= cutoff,
-    ).all()
+    saved_entries = db.query(WordBankEntry).filter(WordBankEntry.user_id == user.id).all()
     for e in saved_entries:
-        key = e.saved_at.strftime("%Y-%m") if e.saved_at else "—"
+        when = None
+        try:
+            sa = json.loads(e.data).get("savedAt")
+            if sa:
+                when = datetime.datetime.fromisoformat(sa.replace("Z", "+00:00"))
+                if when.tzinfo is not None:
+                    when = when.astimezone(datetime.timezone.utc).replace(tzinfo=None)
+        except Exception:
+            when = None
+        if when is None:
+            when = e.saved_at
+        if when is None or when < cutoff:
+            continue
+        key = when.strftime("%Y-%m")
         monthly[key] = monthly.get(key, 0) + 1
 
     # Top 10 most-recent saved words
