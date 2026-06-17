@@ -2412,5 +2412,95 @@
    "allegory-vs-symbol"
   ],
   "body_html": "<p>An <strong>analogy</strong> is an extended comparison that explains or argues\nby mapping a familiar thing onto an unfamiliar one. Where a metaphor or simile\nmakes a quick imaginative leap, an analogy is usually doing a job: clarifying a\nhard idea or supporting a point by showing it works like something you already\nunderstand.</p>\n\n<h2>How it works</h2>\n\n<p>An analogy lines up the parts of two things and claims the relationships\nmatch. \"A cell is like a factory\" only helps if the parts correspond — the\nnucleus as management, the membrane as the gate, and so on. The strength of an\nanalogy depends on how well those relationships actually line up.</p>\n\n<h2>Analogy vs. simile and metaphor</h2>\n\n<p>A simile says X is <em>like</em> Y in one vivid flash (\"the road was like a\nribbon\"). A metaphor says X <em>is</em> Y. An analogy is bigger and more\nreasoned: it develops the comparison across several points to explain or persuade,\nnot just to decorate. All three compare; the analogy argues.</p>\n\n<h2>Analogy in argument</h2>\n\n<p>Analogies are powerful in persuasion precisely because they make the strange\nfeel familiar — which is also their danger. A \"false analogy\" stretches a\ncomparison past where it holds (\"running a country is just like running a\nbusiness\"). The first question to ask of any analogy is where the likeness\nbreaks down.</p>\n\n<h2>How to read one</h2>\n\n<p>When a writer reaches for an analogy, identify the two things being compared\nand the relationship being claimed between them. Then test it: does the mapping\ngenuinely hold, or only at the one flattering point the writer chose? A good\nanalogy illuminates; a weak one smuggles in a conclusion.</p>"
+ },
+ {
+  "slug": "postcolonialism",
+  "term": "postcolonialism",
+  "context": "literary theory (Said, Spivak)",
+  "title": "What Postcolonialism Means in Literature",
+  "meta_description": "Postcolonial theory reads literature through the legacy of empire — who speaks, who's spoken for. Here's the idea, from Said's Orientalism to Spivak.",
+  "h1": "What postcolonialism means in literature",
+  "updated": "2026-06-18",
+  "related": [
+   "heteroglossia",
+   "intertextuality",
+   "structuralism"
+  ],
+  "body_html": "<p><strong>Postcolonialism</strong> is a way of reading literature and culture\nthat takes the history of European empire as central. It asks how colonialism\nshaped — and still shapes — who gets to tell stories, whose experience counts as\nuniversal, and how the colonised are represented by others.</p>\n\n<h2>Said and Orientalism</h2>\n\n<p>The founding text is Edward Said's <em>Orientalism</em> (1978), which argued\nthat Western writing about \"the East\" wasn't neutral description but a system of\nimages that cast the Orient as exotic, irrational, and inferior — and thereby\njustified domination. Said showed that representation is never innocent: to\ndescribe a people is also to claim power over how they're seen.</p>\n\n<h2>Who can speak?</h2>\n\n<p>Later critics sharpened the question of voice. Gayatri Spivak's famous essay\n\"Can the Subaltern Speak?\" asks whether the most marginalised can ever be heard\non their own terms, or only through the frameworks of the powerful. Postcolonial\nreading is alert to silences — to whose perspective a text assumes and whose it\nerases.</p>\n\n<h2>Writing back</h2>\n\n<p>Postcolonialism also celebrates how formerly colonised writers reclaim the\nstory. Chinua Achebe's <em>Things Fall Apart</em> answers the colonial novel from\nthe inside; Jean Rhys's <em>Wide Sargasso Sea</em> rewrites <em>Jane Eyre</em>\nfrom the silenced \"madwoman's\" point of view. This \"writing back\" turns the\ncanon's own materials against its assumptions.</p>\n\n<h2>How to read with it</h2>\n\n<p>Reading a text through a postcolonial lens, ask: who holds the power to\nrepresent, and who is represented? What does the work assume is normal or\ncentral? Whose land, labour, and voice make the comfortable world of the story\npossible — and go unmentioned?</p>"
+ },
+ {
+  "slug": "feminist-literary-criticism",
+  "term": "feminist literary criticism",
+  "context": "literary theory",
+  "title": "What Feminist Literary Criticism Is",
+  "meta_description": "Feminist criticism reads literature through gender — how women are represented, written out, or write back. Here's the approach and its key questions.",
+  "h1": "What feminist literary criticism is",
+  "updated": "2026-06-18",
+  "related": [
+   "death-of-the-author",
+   "structuralism",
+   "intertextuality"
+  ],
+  "body_html": "<p><strong>Feminist literary criticism</strong> reads literature with attention\nto gender: how women (and ideas of femininity and masculinity) are represented,\nwho gets to write and be read, and how texts reinforce or challenge the\nassumptions of a male-dominated culture.</p>\n\n<h2>Rereading the canon</h2>\n\n<p>One early task was to reread familiar works and expose the gender politics\nhiding in plain sight — the angelic or monstrous women, the plots that reward\nfemale silence, the \"universal\" reader assumed to be male. Critics asked what\nhappens to a classic when you read it as the women in it, not just the men.</p>\n\n<h2>Recovering lost writers</h2>\n\n<p>A second project was recovery: rediscovering women writers excluded from the\ncanon and asking why they were forgotten. Elaine Showalter called the study of\nwomen's own writing \"gynocriticism\" — shifting focus from how men wrote women to\nhow women wrote themselves and their own traditions.</p>\n\n<h2>Gender as a construction</h2>\n\n<p>Later feminist theory, drawing on thinkers like Judith Butler, treated gender\nnot as a fixed essence but as something performed and produced — including by\ntexts. This widened the field toward questions of sexuality and identity and\noverlapped with queer theory, asking how literature helps build the categories\nit seems merely to describe.</p>\n\n<h2>How to read with it</h2>\n\n<p>Ask who acts and who is acted upon, whose interiority the narrative grants and\nwhose it withholds, and what the text treats as natural about men and women. The\npoint isn't to convict old books — it's to read more fully by seeing what the\ntext, and its era, took for granted.</p>"
+ },
+ {
+  "slug": "reader-response-criticism",
+  "term": "reader-response criticism",
+  "context": "literary theory",
+  "title": "What Reader-Response Criticism Is",
+  "meta_description": "Reader-response theory locates a text's meaning in the reader's experience, not the page alone. Here's the idea, from Iser and Fish, and what it changes.",
+  "h1": "What reader-response criticism is",
+  "updated": "2026-06-18",
+  "related": [
+   "death-of-the-author",
+   "ambiguity-literature",
+   "intertextuality"
+  ],
+  "body_html": "<p><strong>Reader-response criticism</strong> argues that a text's meaning isn't\nsitting finished on the page waiting to be extracted — it happens in the act of\nreading. Meaning is produced in the encounter between text and reader, which\nmakes the reader an active maker of the work, not a passive receiver.</p>\n\n<h2>The gaps the reader fills</h2>\n\n<p>Wolfgang Iser pointed out that no text spells everything out; every narrative\nis full of gaps and indeterminacies the reader must fill in from imagination and\nexperience. Two readers complete those gaps differently, which is why the \"same\"\nbook can be a different work for each of them.</p>\n\n<h2>Interpretive communities</h2>\n\n<p>Stanley Fish pushed further: even our sense of what a text \"obviously\" says is\nshaped by the conventions of the \"interpretive community\" we belong to. We don't\nread alone; we read with the assumptions of our training, era, and culture, which\nquietly decide what counts as a valid reading.</p>\n\n<h2>A reaction against close reading</h2>\n\n<p>Reader-response was partly a revolt against approaches that treated the text as\na self-contained object with one correct meaning. If meaning lives in the\nreading, then experience, emotion, and even misreading become legitimate objects\nof study — and the question shifts from \"what does this mean?\" to \"what does this\n<em>do</em> to a reader, and how?\"</p>\n\n<h2>How to use it</h2>\n\n<p>Try tracking your own responses as you read: where you were confused,\nsurprised, moved, or resistant, and why. Then ask what in the text produced that\neffect. Done rigorously, this turns private reaction into analysis — without\npretending the reader was never in the room.</p>"
+ },
+ {
+  "slug": "marxist-literary-criticism",
+  "term": "Marxist literary criticism",
+  "context": "literary theory",
+  "title": "What Marxist Literary Criticism Is",
+  "meta_description": "Marxist criticism reads literature through class, power, and economics — what a text reveals (and hides) about the society that produced it. Here's how.",
+  "h1": "What Marxist literary criticism is",
+  "updated": "2026-06-18",
+  "related": [
+   "realism-literature",
+   "naturalism-literature",
+   "structuralism"
+  ],
+  "body_html": "<p><strong>Marxist literary criticism</strong> reads literature in light of class\nconflict, economic power, and ideology. It treats a text not as a free-floating\nwork of genius but as a product of a specific society — one that inevitably bears\nthe marks of that society's material conditions and class interests.</p>\n\n<h2>Base and superstructure</h2>\n\n<p>The classic Marxist model distinguishes the economic \"base\" (how a society\nproduces and distributes wealth) from the \"superstructure\" of culture, law, and\nart that grows on top of it. On this view, literature is part of the\nsuperstructure — shaped, often unconsciously, by the economic order it arises\nfrom and frequently serving to justify it.</p>\n\n<h2>Ideology and what texts hide</h2>\n\n<p>A central concern is ideology: the set of assumptions that makes an unequal\narrangement feel natural and inevitable. Marxist critics look for what a text\ntakes for granted — whose labour goes unseen, whose wealth is treated as the\nnorm, what the \"happy ending\" quietly endorses. Often the most revealing thing\nabout a book is what it can't say.</p>\n\n<h2>Key thinkers</h2>\n\n<p>Georg Lukács championed realism for showing society as a whole; the Frankfurt\nSchool analysed mass culture; Louis Althusser theorised how art helps reproduce\nideology; Fredric Jameson urged critics to \"always historicise.\" They differ\nsharply, but share the conviction that form and history can't be separated.</p>\n\n<h2>How to read with it</h2>\n\n<p>Ask what class the story centres, what work pays for its world, and whose\ninterests its values serve. Treat the text as evidence about its moment — both\nfor what it openly depicts and for the contradictions it tries to smooth over.</p>"
+ },
+ {
+  "slug": "understatement",
+  "term": "understatement",
+  "context": "rhetoric and tone",
+  "title": "What Understatement Is (with Examples)",
+  "meta_description": "Understatement deliberately makes something sound smaller or less important than it is, often for irony or effect. Here's how it works, with litotes.",
+  "h1": "What understatement is",
+  "updated": "2026-06-18",
+  "related": [
+   "litotes",
+   "hyperbole",
+   "irony-types"
+  ],
+  "body_html": "<p><strong>Understatement</strong> is the deliberate presentation of something as\nsmaller, milder, or less important than it really is. It's the opposite of\nexaggeration — and, handled well, it can hit harder than any amount of emphasis.</p>\n\n<h2>Why downplaying intensifies</h2>\n\n<p>Understatement works by leaving room. When the words clearly fall short of the\nreality, the reader supplies the gap — and what we imagine is often stronger than\nwhat we're told. Calling a catastrophe \"a spot of bother\" makes the disaster loom\nlarger precisely because the language refuses to meet it.</p>\n\n<h2>Understatement and irony</h2>\n\n<p>Understatement is frequently ironic: the mismatch between the calm words and\nthe huge reality signals that the speaker means more than they say. In Mercutio's\ndying line in <em>Romeo and Juliet</em> — \"'tis not so deep as a well... but 'tis\nenough\" — the wound is mortal, and the understatement is both brave and bitter.</p>\n\n<h2>Understatement vs. litotes</h2>\n\n<p>Litotes is a specific kind of understatement that affirms something by denying\nits opposite — \"not bad\" for good, \"no small feat\" for a major achievement. All\nlitotes is understatement; not all understatement is litotes. Understatement is\nthe broad effect; litotes is one neat technique for producing it.</p>\n\n<h2>The British speciality</h2>\n\n<p>Understatement is famously central to English humour and to a certain stoic\nvoice — the explorer noting that conditions were \"rather trying.\" In writing, it\ncreates dry comedy, conveys characters who refuse to dramatise themselves, and\nlets horror register all the more for being spoken of quietly.</p>"
+ },
+ {
+  "slug": "dialect-and-vernacular",
+  "term": "dialect and vernacular",
+  "context": "voice and diction",
+  "title": "Dialect and Vernacular in Literature",
+  "meta_description": "Dialect is a regional or social variety of language; vernacular is everyday speech. Here's how writers use both to build voice, place, and character.",
+  "h1": "Dialect and vernacular in literature",
+  "updated": "2026-06-18",
+  "related": [
+   "diction",
+   "free-indirect-discourse",
+   "heteroglossia"
+  ],
+  "body_html": "<p><strong>Dialect</strong> is a variety of a language particular to a region or\nsocial group — its own vocabulary, grammar, and pronunciation. <strong>Vernacular</strong>\nis everyday, ordinary speech, as opposed to formal or literary language. Writers\nuse both to make a voice sound real and rooted.</p>\n\n<h2>What dialect does on the page</h2>\n\n<p>When a writer renders a character's dialect — through spelling, rhythm, and\nidiom — they instantly convey region, class, and identity without explaining\nthem. Mark Twain's <em>Huckleberry Finn</em> is built from carefully\ndifferentiated American dialects; Twain's prefatory note insists the variety is\ndeliberate, not careless.</p>\n\n<h2>Vernacular as a literary choice</h2>\n\n<p>Choosing the vernacular over \"high\" literary language is itself a statement.\nDante wrote in Italian rather than Latin; Zora Neale Hurston wrote Black Southern\nspeech with dignity and music; Irvine Welsh's <em>Trainspotting</em> commits\nfully to Edinburgh vernacular. Each insists that ordinary speech is worthy of\nliterature — and that whose speech gets written down is a question of power.</p>\n\n<h2>The risks</h2>\n\n<p>Heavy phonetic spelling (\"eye dialect\") can slow a reader down or, worse,\nturn a speaker into a caricature. The most skilful writers suggest a dialect with\na few well-chosen markers of rhythm and word choice rather than respelling every\nsyllable, trusting the ear to fill in the rest.</p>\n\n<h2>How to read it</h2>\n\n<p>Notice whose speech is marked as \"dialect\" and whose is treated as the\nneutral default — that contrast often encodes the story's assumptions about\nstatus. Then read the marked speech aloud; dialect lives in sound, and the page\nis only its score.</p>"
  }
 ]
