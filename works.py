@@ -142,8 +142,44 @@ def render_index() -> str:
       <div class="entry-card-desc">{escape(w['meta_description'])}</div>
     </a>""")
 
+    # Structured data — a CollectionPage of the guides (each an Article about a
+    # Book) plus a BreadcrumbList, matching the glossary index.
+    jsonld = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "CollectionPage",
+                "name": "Lexio Reader's Guides",
+                "description": "In-depth reader's guides to major works of literature.",
+                "url": canonical,
+                "hasPart": [
+                    {
+                        "@type": "Article",
+                        "name": w["title"].split(" — ")[0],
+                        "about": {
+                            "@type": "Book",
+                            "name": w["title"].split(" — ")[0],
+                            "author": {"@type": "Person", "name": w["author"]},
+                        },
+                        "url": f"https://lexio.site/works/{w['slug']}",
+                    }
+                    for w in WORKS
+                ],
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://lexio.site/"},
+                    {"@type": "ListItem", "position": 2, "name": "Reader's guides", "item": canonical},
+                ],
+            },
+        ],
+    }
+    jsonld_tag = f'<script type="application/ld+json">{_json.dumps(jsonld, ensure_ascii=False)}</script>'
+
     return f"""{head}
 <body>
+{jsonld_tag}
 <div class="wrap-wide">
   <a class="back" href="/">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -151,6 +187,9 @@ def render_index() -> str:
   </a>
 
   <span class="logo">Le<em>x</em>io</span>
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a> &nbsp;›&nbsp; Reader's guides
+  </nav>
   <h1>Reader's guides</h1>
   <p class="intro">Substantial reader's guides to major works of literature — vocabulary, themes, and concepts, with links to in-depth glossary entries.</p>
 
