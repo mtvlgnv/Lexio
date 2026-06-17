@@ -2322,5 +2322,95 @@
    "sonnet"
   ],
   "body_html": "<p>A <strong>couplet</strong> is a pair of consecutive lines, usually rhyming and\nusually of the same length. It is the smallest stanza in English poetry and one\nof the most useful: two lines are just enough to set up an idea and clinch it.</p>\n\n<h2>The shape of a small argument</h2>\n\n<p>Because a couplet rhymes and closes quickly, it feels complete — a tiny unit\nof sense. Poets exploit this for wit, summary, and finality. When a rhymed\ncouplet ends on a strong stop (a \"closed couplet\"), it lands like a verdict.</p>\n\n<h2>The heroic couplet</h2>\n\n<p>The <strong>heroic couplet</strong> — two rhyming lines of iambic pentameter\n— was the dominant form of English poetry in the seventeenth and eighteenth\ncenturies. Dryden and especially Alexander Pope made it a precision instrument\nfor satire and argument, packing balanced, epigrammatic sense into each pair:\n\"True wit is Nature to advantage dressed, / What oft was thought, but ne'er so\nwell expressed.\"</p>\n\n<h2>The Shakespearean clincher</h2>\n\n<p>Shakespeare ends each of his sonnets with a couplet, using the sudden snap of\nthe rhyme to summarise, reverse, or undercut the twelve lines before it. The\nshift from alternating rhyme into a couplet is itself a signal that the poem is\nabout to conclude.</p>\n\n<h2>How to read one</h2>\n\n<p>When a poem drops into a rhymed couplet — especially after a passage that\ndidn't rhyme that way — expect emphasis: a point being driven home, a scene being\nclosed, a judgment being passed. The form is built to make you feel the click of\nsomething completed.</p>"
+ },
+ {
+  "slug": "flashback",
+  "term": "flashback",
+  "context": "narrative technique",
+  "title": "What a Flashback Is in a Story",
+  "meta_description": "A flashback interrupts the present action to show an earlier event. Here's how it works, why writers use it, and how it differs from backstory and analepsis.",
+  "h1": "What a flashback is",
+  "updated": "2026-06-18",
+  "related": [
+   "prolepsis-and-analepsis",
+   "backstory",
+   "in-medias-res"
+  ],
+  "body_html": "<p>A <strong>flashback</strong> is a scene that interrupts the forward flow of a\nstory to show something that happened earlier. Instead of telling you about the\npast, a flashback drops you into it — you watch the earlier event unfold as if it\nwere happening now.</p>\n\n<h2>What it's for</h2>\n\n<p>Flashbacks let a writer withhold and then reveal. A story can open in the\nmiddle of the action (<em>in medias res</em>) and fill in the crucial earlier\nmoment only when it will hit hardest. They explain how a character became who\nthey are, expose a buried secret, or recontextualise everything you've read so\nfar.</p>\n\n<h2>Flashback vs. backstory</h2>\n\n<p>The two are related but not the same. Backstory is all the history that\nprecedes a story's opening; it can be delivered in summary, dialogue, or a single\nline. A flashback is one <em>technique</em> for delivering backstory — a fully\ndramatised scene rather than a mention. All flashbacks are backstory; not all\nbackstory is a flashback.</p>\n\n<h2>The technical term</h2>\n\n<p>In narrative theory, a flashback is a form of <em>analepsis</em> — a movement\nback in narrative time. Its opposite, a flash-forward, is <em>prolepsis</em>.\nCritics use these terms to describe how a narrative's order (the sequence it\ntells events in) differs from their chronology (the order they happened).</p>\n\n<h2>How to read it</h2>\n\n<p>When a flashback arrives, ask why <em>here</em>. The placement is rarely\naccidental: a writer reveals the past at the exact moment it will change how you\nread the present. Note what the flashback explains — and what it conveniently\nleaves out.</p>"
+ },
+ {
+  "slug": "character-arc",
+  "term": "character arc",
+  "context": "narrative and character",
+  "title": "What a Character Arc Is (Types & Examples)",
+  "meta_description": "A character arc is how a character changes across a story. Here are the main types — positive, negative, and flat — and how to trace one.",
+  "h1": "What a character arc is",
+  "updated": "2026-06-18",
+  "related": [
+   "bildungsroman-genre",
+   "protagonist-and-antagonist",
+   "foil-character"
+  ],
+  "body_html": "<p>A <strong>character arc</strong> is the path of inner change a character\ntravels across a story — who they are at the start, what tests and choices\nreshape them, and who they've become by the end. Plot is what happens; the arc\nis what it does to the person it happens to.</p>\n\n<h2>The positive arc</h2>\n\n<p>The most common shape is the positive or \"change\" arc: a character begins with\na flaw, a false belief, or an unmet need, is forced by events to confront it, and\nends transformed. The coming-of-age novel (the <em>bildungsroman</em>) is built\nentirely around this kind of growth.</p>\n\n<h2>The negative arc</h2>\n\n<p>A negative arc runs the other way: the character declines, corrupts, or\ndeludes themselves further. Macbeth's slide from loyal soldier to tyrant is a\nclassic fall; many of the great tragedies and antihero stories follow this\ndownward shape. The change is real — it's just for the worse.</p>\n\n<h2>The flat arc</h2>\n\n<p>In a flat (or \"steadfast\") arc, the protagonist doesn't change much\nthemselves — instead, they hold to a truth that changes the world around them.\nMany heroes of myth, detective fiction, and action stories have flat arcs: their\nconstancy is the point, and the people and places around them transform.</p>\n\n<h2>How to trace one</h2>\n\n<p>To find a character's arc, compare their first and last meaningful choices.\nWhat did they want at the beginning, what did they learn or refuse to learn, and\nhow does their final decision differ from one they'd have made at the start? The\ndistance between those two choices is the arc.</p>"
+ },
+ {
+  "slug": "flat-and-round-characters",
+  "term": "flat and round characters",
+  "context": "characterization",
+  "title": "Flat vs. Round Characters, Explained",
+  "meta_description": "A flat character is simple and one-dimensional; a round character is complex and lifelike. Here's E. M. Forster's distinction and why both are useful.",
+  "h1": "Flat and round characters",
+  "updated": "2026-06-18",
+  "related": [
+   "direct-vs-indirect-characterization",
+   "foil-character",
+   "archetype"
+  ],
+  "body_html": "<p>The terms <strong>flat</strong> and <strong>round</strong> describe how\ncomplex a character is. The novelist E. M. Forster introduced them in\n<em>Aspects of the Novel</em> (1927), and they remain one of the handiest tools\nfor talking about characterisation.</p>\n\n<h2>The flat character</h2>\n\n<p>A flat character is built around a single trait or idea and doesn't change.\nYou can sum them up in a sentence: the loyal servant, the comic neighbour, the\ngreedy landlord. Forster said a flat character could be expressed in one phrase —\nand that you remember them precisely because they never surprise you.</p>\n\n<h2>The round character</h2>\n\n<p>A round character is complex, contradictory, and capable of surprising the\nreader convincingly. They have inner lives, mixed motives, and the capacity to\nchange. Most protagonists in serious fiction are round; they feel like people\nrather than functions.</p>\n\n<h2>Both are tools, not grades</h2>\n\n<p>\"Flat\" is not an insult. A novel full of nothing but round characters would be\nexhausting and unfocused. Flat characters do essential work — they populate a\nworld, provide contrast, carry the comedy, and keep our attention on the figures\nwho matter most. Dickens built unforgettable books largely from brilliant flat\ncharacters.</p>\n\n<h2>Flat/round vs. static/dynamic</h2>\n\n<p>Keep these axes separate. Flat versus round measures <em>complexity</em>;\nstatic versus dynamic measures <em>change</em>. A character can be round but\nstatic (deep yet unchanged) or flat but dynamic (simple yet altered). Naming both\nqualities gives a precise read on how a character is made.</p>"
+ },
+ {
+  "slug": "static-and-dynamic-characters",
+  "term": "static and dynamic characters",
+  "context": "characterization",
+  "title": "Static vs. Dynamic Characters, Explained",
+  "meta_description": "A static character stays the same across a story; a dynamic character changes. Here's the difference, with examples, and how it relates to flat and round.",
+  "h1": "Static and dynamic characters",
+  "updated": "2026-06-18",
+  "related": [
+   "character-arc",
+   "flat-and-round-characters",
+   "protagonist-and-antagonist"
+  ],
+  "body_html": "<p>The labels <strong>static</strong> and <strong>dynamic</strong> describe\nwhether a character changes over the course of a story. They're about\ntransformation, not depth — which is what separates them from the flat/round\ndistinction.</p>\n\n<h2>The static character</h2>\n\n<p>A static character is essentially the same at the end as at the beginning.\nTheir beliefs, personality, and circumstances hold steady while the story moves\naround them. Many supporting characters are static, and so are some protagonists\n— especially in detective series and myths, where the hero's constancy is the\nappeal.</p>\n\n<h2>The dynamic character</h2>\n\n<p>A dynamic character undergoes meaningful inner change — a shift in\nunderstanding, values, or identity. This change is the <em>character arc</em>.\nPip in <em>Great Expectations</em> and Elizabeth Bennet in <em>Pride and\nPrejudice</em> end the novel as visibly different people from the ones who began\nit.</p>\n\n<h2>Why the distinction matters</h2>\n\n<p>Spotting which characters are dynamic tells you where a story is placing its\nemotional weight. The character who changes is usually the one the book is really\nabout. A protagonist who refuses or fails to change can be just as telling — it\nmay be the whole tragedy.</p>\n\n<h2>Don't confuse the two pairs</h2>\n\n<p>Static/dynamic measures change; flat/round measures complexity. A villain can\nbe round (psychologically rich) yet static (never reforming). A minor figure can\nbe flat yet dynamic if one event clearly alters them. Use both pairs together for\na full picture.</p>"
+ },
+ {
+  "slug": "cliche",
+  "term": "cliché",
+  "context": "diction and style",
+  "title": "What a Cliché Is (and Why to Avoid It)",
+  "meta_description": "A cliché is an expression or idea worn out by overuse. Here's why clichés deaden writing, when they can be used on purpose, and how to spot one.",
+  "h1": "What a cliché is",
+  "updated": "2026-06-18",
+  "related": [
+   "trope",
+   "diction",
+   "bathos"
+  ],
+  "body_html": "<p>A <strong>cliché</strong> is a phrase, image, or idea that has been used so\noften it has lost its force. \"Avoid it like the plague,\" \"the calm before the\nstorm,\" \"a heart of gold\" — each was once vivid and is now invisible. We read\nstraight past it without seeing anything.</p>\n\n<h2>Why clichés deaden writing</h2>\n\n<p>Good writing makes you perceive something freshly; a cliché does the opposite.\nBecause the reader has met the phrase a thousand times, it triggers recognition\ninstead of imagination. The words go by without summoning a single concrete\npicture. A cliché is language on autopilot.</p>\n\n<h2>Where the word comes from</h2>\n\n<p>\"Cliché\" is French, from the sound printers' plates made when stamped — a\nready-made block reused to print the same thing again and again. The metaphor is\nexact: a cliché is a prefabricated unit of language, set once and stamped out\nendlessly.</p>\n\n<h2>When a cliché works on purpose</h2>\n\n<p>Clichés aren't always failures. A writer can put one in a character's mouth to\nreveal that the character thinks in secondhand phrases. Comedy and satire weave\nclichés deliberately. The test is intention: is the staleness the writer's, or\nthe character's?</p>\n\n<h2>How to catch your own</h2>\n\n<p>If a phrase arrives in your head fully formed, suspect it. The cure isn't a\nfancier phrase but a more exact one — replace the worn image with a specific\ndetail you actually observed. Precision is the natural antidote to cliché.</p>"
+ },
+ {
+  "slug": "analogy",
+  "term": "analogy",
+  "context": "rhetoric and reasoning",
+  "title": "What an Analogy Is (with Examples)",
+  "meta_description": "An analogy explains one thing by comparing it to another, often to clarify or persuade. Here's how analogy differs from simile and metaphor, with examples.",
+  "h1": "What an analogy is",
+  "updated": "2026-06-18",
+  "related": [
+   "simile-vs-metaphor",
+   "conceit-poetry",
+   "allegory-vs-symbol"
+  ],
+  "body_html": "<p>An <strong>analogy</strong> is an extended comparison that explains or argues\nby mapping a familiar thing onto an unfamiliar one. Where a metaphor or simile\nmakes a quick imaginative leap, an analogy is usually doing a job: clarifying a\nhard idea or supporting a point by showing it works like something you already\nunderstand.</p>\n\n<h2>How it works</h2>\n\n<p>An analogy lines up the parts of two things and claims the relationships\nmatch. \"A cell is like a factory\" only helps if the parts correspond — the\nnucleus as management, the membrane as the gate, and so on. The strength of an\nanalogy depends on how well those relationships actually line up.</p>\n\n<h2>Analogy vs. simile and metaphor</h2>\n\n<p>A simile says X is <em>like</em> Y in one vivid flash (\"the road was like a\nribbon\"). A metaphor says X <em>is</em> Y. An analogy is bigger and more\nreasoned: it develops the comparison across several points to explain or persuade,\nnot just to decorate. All three compare; the analogy argues.</p>\n\n<h2>Analogy in argument</h2>\n\n<p>Analogies are powerful in persuasion precisely because they make the strange\nfeel familiar — which is also their danger. A \"false analogy\" stretches a\ncomparison past where it holds (\"running a country is just like running a\nbusiness\"). The first question to ask of any analogy is where the likeness\nbreaks down.</p>\n\n<h2>How to read one</h2>\n\n<p>When a writer reaches for an analogy, identify the two things being compared\nand the relationship being claimed between them. Then test it: does the mapping\ngenuinely hold, or only at the one flattering point the writer chose? A good\nanalogy illuminates; a weak one smuggles in a conclusion.</p>"
  }
 ]
