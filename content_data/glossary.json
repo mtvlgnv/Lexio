@@ -2772,5 +2772,95 @@
    "tragedy-vs-comedy"
   ],
   "body_html": "<p><strong>Revenge tragedy</strong> is a genre of English Renaissance drama\norganised around a single engine: a wrong that demands vengeance, and a hero who\ntakes it — at terrible cost. Hugely popular in the late 1500s and early 1600s, it\ngave us some of the era's most violent and gripping plays.</p>\n\n<h2>The standard conventions</h2>\n\n<p>The genre runs on a recognisable kit: a grievous crime (often a murder) that\nthe law can't or won't punish; a ghost or other revelation that reveals or demands\nrevenge; an avenger who delays, schemes, and may feign or fall into madness;\nplays-within-plays and disguises; and a climactic bloodbath that consumes the\nguilty and usually the avenger too.</p>\n\n<h2>The founding plays</h2>\n\n<p>Thomas Kyd's <em>The Spanish Tragedy</em> (c. 1587) set the template;\nShakespeare's <em>Hamlet</em> is its supreme transformation — taking the genre's\nmachinery and turning the avenger's delay into a profound meditation on action,\nconscience, and death. Later, darker examples like Webster's <em>The Duchess of\nMalfi</em> push the violence and corruption further still.</p>\n\n<h2>The moral problem</h2>\n\n<p>Revenge tragedy is fascinated by a genuine dilemma: revenge feels just, yet\ntaking it makes the avenger a murderer in turn, dragging them down to the level of\nthe original crime. The genre stages the cost of vengeance — how the pursuit of\njustice outside the law corrupts and destroys the one who pursues it.</p>\n\n<h2>How to read it</h2>\n\n<p>Watch the avenger's delay and what fills it — doubt, plotting, madness, moral\nstruggle. That hesitation is where the best revenge tragedies do their deepest\nwork, turning a blood-soaked plot into a question about justice itself.</p>"
+ },
+ {
+  "slug": "metrical-feet",
+  "term": "metrical feet",
+  "context": "prosody and meter",
+  "title": "Metrical Feet: Iamb, Trochee, Anapest, Dactyl",
+  "meta_description": "A metrical foot is a unit of stressed and unstressed syllables. Here are the main feet — iamb, trochee, spondee, anapest, dactyl — with examples.",
+  "h1": "Metrical feet, explained",
+  "updated": "2026-06-18",
+  "related": [
+   "iambic-pentameter",
+   "meter-poetic",
+   "scansion"
+  ],
+  "body_html": "<p>A <strong>metrical foot</strong> is the basic building block of poetic meter:\na small, repeating unit of stressed and unstressed syllables. English meter is\nbuilt by stringing feet together, and naming the foot is the first step in\ndescribing a line's rhythm.</p>\n\n<h2>The two-syllable feet</h2>\n\n<p>The <strong>iamb</strong> is an unstressed syllable followed by a stressed one\n(da-DUM): \"be<strong>long</strong>.\" It's the natural heartbeat of English verse.\nIts reverse, the <strong>trochee</strong>, is stressed-then-unstressed\n(DUM-da): \"<strong>gar</strong>den.\" The <strong>spondee</strong> is two stressed\nsyllables (DUM-DUM): \"<strong>heart</strong>-<strong>break</strong>,\" used for\nweight and emphasis.</p>\n\n<h2>The three-syllable feet</h2>\n\n<p>The <strong>anapest</strong> runs unstressed-unstressed-stressed\n(da-da-DUM): \"in the <strong>night</strong>\" — galloping, light. The\n<strong>dactyl</strong> reverses it, stressed-unstressed-unstressed\n(DUM-da-da): \"<strong>ten</strong>derly\" — falling, often elegiac.</p>\n\n<h2>Foot plus number</h2>\n\n<p>A line's meter is named by its foot and the number of feet it contains:\npentameter (five), tetrameter (four), trimeter (three), and so on. \"Iambic\npentameter\" is therefore five iambs per line — the meter of Shakespeare and\nMilton. \"Trochaic tetrameter\" is four trochees, the driving beat of much chant\nand incantation.</p>\n\n<h2>Why it matters</h2>\n\n<p>Meter creates a baseline rhythm the ear expects — and poets get their effects\nby varying it. A trochee or spondee dropped into an iambic line jolts attention to\nexactly the word the poet wants you to feel. To hear those substitutions, you\nfirst have to know the feet.</p>"
+ },
+ {
+  "slug": "scansion",
+  "term": "scansion",
+  "context": "prosody and meter",
+  "title": "What Scansion Is (How to Scan a Poem)",
+  "meta_description": "Scansion is the analysis of a poem's meter — marking stressed and unstressed syllables to reveal its rhythm. Here's how to scan a line, step by step.",
+  "h1": "What scansion is",
+  "updated": "2026-06-18",
+  "related": [
+   "meter-poetic",
+   "metrical-feet",
+   "iambic-pentameter"
+  ],
+  "body_html": "<p><strong>Scansion</strong> is the practice of analysing a line of verse to\nreveal its meter — marking which syllables are stressed and which are unstressed,\nthen grouping them into feet. To \"scan\" a poem is to map its rhythm on the page.</p>\n\n<h2>How to scan a line</h2>\n\n<p>Work in three steps. First, read the line aloud naturally and mark the\nsyllables that get emphasis (the stresses). Second, mark the unstressed syllables\nbetween them. Third, divide the line into <em>feet</em> — the repeating\nstress-patterns — and count them. The pattern and count give you the meter\n(say, iambic pentameter: five da-DUM units).</p>\n\n<h2>Listen, don't count letters</h2>\n\n<p>Scansion follows the ear, not spelling. Stress is about how a word is actually\nsaid — \"be<strong>long</strong>,\" not \"<strong>be</strong>long.\" Reading aloud is\nessential; the rhythm lives in sound, and trying to scan silently from the\nspelling is the commonest beginner's mistake.</p>\n\n<h2>The interesting part: variation</h2>\n\n<p>Few poems march in perfect, unbroken meter — that would be deadening. The point\nof scanning is to find where the poet <em>departs</em> from the expected beat: a\nreversed foot, an extra syllable, a heavy spondee. Those departures usually fall\non the most important words, and spotting them is where scansion turns into\ninterpretation.</p>\n\n<h2>Why bother</h2>\n\n<p>Scansion makes audible what you might only half-feel: how a poem speeds,\nslows, stumbles, or pounds. It connects rhythm to meaning — showing that a line's\nmusic is doing part of the work its words are doing, and sometimes saying\nsomething the words alone don't.</p>"
+ },
+ {
+  "slug": "slant-rhyme",
+  "term": "slant rhyme",
+  "context": "poetry and sound",
+  "title": "What Slant Rhyme Is (Half Rhyme)",
+  "meta_description": "Slant rhyme (or half rhyme) is an imperfect rhyme where sounds are close but not exact — 'eyes'/'is.' Here's how it works and why poets choose it.",
+  "h1": "What slant rhyme is",
+  "updated": "2026-06-18",
+  "related": [
+   "rhyme-scheme",
+   "assonance-consonance",
+   "meter-poetic"
+  ],
+  "body_html": "<p><strong>Slant rhyme</strong> — also called half rhyme, near rhyme, or partial\nrhyme — is rhyme that's close but not exact. The sounds gesture toward a match\nwithout quite landing it: \"eyes\" and \"is,\" \"shape\" and \"keep,\" \"soul\" and \"all.\"\nThe ear hears a relationship and a slight dissonance at once.</p>\n\n<h2>How it works</h2>\n\n<p>Slant rhyme usually pairs words that share some sounds but not the full rhyme.\nOften the consonants agree while the vowels don't (consonance: \"blade\"/\"bled\"),\nor the vowels agree while the consonants don't (assonance: \"lake\"/\"fate\"). The\nresult is a muted, glancing chime rather than a full bell.</p>\n\n<h2>Why poets use it</h2>\n\n<p>Perfect rhyme can feel too neat — comic, sing-song, or falsely resolved. Slant\nrhyme keeps the music while withholding the satisfying click of closure, which\nsuits poems about doubt, grief, or unease. It can make a line feel honest and\nunfinished where a full rhyme would feel pat.</p>\n\n<h2>Emily Dickinson's signature</h2>\n\n<p>Emily Dickinson built much of her unmistakable sound from slant rhyme —\n\"Soul\"/\"all,\" \"Room\"/\"Storm\" — using the near-miss to unsettle her hymn-like\nstanzas. In a poem that otherwise rhymes cleanly, a sudden slant rhyme often\nfalls exactly where the meaning turns difficult.</p>\n\n<h2>How to read it</h2>\n\n<p>When a rhyme almost works, don't treat it as a flaw — treat it as a choice.\nAsk what the imperfect chime does to the feeling of the line, and notice whether\nthe poet saves the slant rhymes for the moments that resist easy resolution.</p>"
+ },
+ {
+  "slug": "internal-rhyme",
+  "term": "internal rhyme",
+  "context": "poetry and sound",
+  "title": "What Internal Rhyme Is (with Examples)",
+  "meta_description": "Internal rhyme is rhyme that occurs within a single line, not just at the ends. Here's how it works and what it does, from Poe to song lyrics.",
+  "h1": "What internal rhyme is",
+  "updated": "2026-06-18",
+  "related": [
+   "rhyme-scheme",
+   "alliteration",
+   "assonance-consonance"
+  ],
+  "body_html": "<p><strong>Internal rhyme</strong> is rhyme that falls <em>within</em> a line of\nverse rather than only at the end. A word in the middle of a line rhymes with the\nword at its end, or with another word inside the same or a nearby line — weaving\nextra music through the body of the poem.</p>\n\n<h2>The classic example</h2>\n\n<p>Edgar Allan Poe's \"The Raven\" is the textbook case: \"Once upon a midnight\n<strong>dreary</strong>, while I pondered, weak and <strong>weary</strong>.\" The\nrhyme of \"dreary\" and \"weary\" inside the line gives the verse its hypnotic,\nincantatory pulse — you feel the rhyme arrive before the line has even ended.</p>\n\n<h2>What it does</h2>\n\n<p>Internal rhyme speeds a line up and binds it tightly together, adding density\nand momentum that end-rhyme alone can't. It can create a sense of compulsion or\nbreathlessness, and it rewards reading aloud — much of its effect is lost to a\npurely silent reader.</p>\n\n<h2>End rhyme vs. internal rhyme</h2>\n\n<p>End rhyme structures a poem from the margins, marking line-ends and building\nthe rhyme scheme. Internal rhyme works inside the line, often unpredictably, as\nan extra layer of sound. A poem can use both at once — the end rhymes giving\nshape, the internal rhymes giving texture.</p>\n\n<h2>Where to hear it now</h2>\n\n<p>Internal rhyme is central to song lyrics and especially to rap, where dense\nchains of internal rhyme drive the rhythm and showcase technical skill. Whenever a\nline seems to chime with itself before it ends, you're hearing internal rhyme at\nwork.</p>"
+ },
+ {
+  "slug": "refrain",
+  "term": "refrain",
+  "context": "poetry and song",
+  "title": "What a Refrain Is in Poetry",
+  "meta_description": "A refrain is a line or phrase repeated at intervals in a poem or song. Here's how refrains create unity, emphasis, and shifting meaning on repetition.",
+  "h1": "What a refrain is",
+  "updated": "2026-06-18",
+  "related": [
+   "villanelle",
+   "anaphora",
+   "leitmotif"
+  ],
+  "body_html": "<p>A <strong>refrain</strong> is a line, phrase, or group of lines repeated at\nregular intervals in a poem or song — most often at the end of each stanza. The\nchorus of a song is the most familiar refrain. In poetry, the repetition does\nquiet, powerful work.</p>\n\n<h2>What a refrain does</h2>\n\n<p>A refrain binds a poem together, gives it a musical, song-like structure, and\nhammers home its central feeling or idea through return. Because we keep coming\nback to the same words, the refrain becomes the poem's emotional anchor — the\nthing it can't stop saying.</p>\n\n<h2>The same words, changed</h2>\n\n<p>The subtlest effect is that a refrain rarely means quite the same thing twice.\nAs the stanzas around it change, the repeated line accumulates new weight. By the\nfinal return it can read as ironic, desperate, or transformed — identical words,\nshifted ground. The repetition is the point, and so is the difference.</p>\n\n<h2>Forms built on refrain</h2>\n\n<p>Some fixed forms are structured entirely around refrains. The\n<em>villanelle</em> rotates two refrain lines until they join at the end; the\nballad and the rondeau lean on repeated lines too. In these forms the refrain\nisn't decoration — it's the skeleton.</p>\n\n<h2>Refrain vs. anaphora</h2>\n\n<p>Don't confuse the two repetitions. A refrain repeats a whole line or phrase at\nintervals, usually stanza by stanza. <em>Anaphora</em> repeats a word or phrase at\nthe <em>start</em> of consecutive lines or clauses, in a rush. One returns; the\nother accumulates.</p>"
+ },
+ {
+  "slug": "close-reading",
+  "term": "close reading",
+  "context": "literary method",
+  "title": "What Close Reading Is (and How to Do It)",
+  "meta_description": "Close reading is the careful, detailed analysis of a short passage — its words, images, and form. Here's the method and where it comes from.",
+  "h1": "What close reading is",
+  "updated": "2026-06-18",
+  "related": [
+   "diction",
+   "ambiguity-literature",
+   "objective-correlative"
+  ],
+  "body_html": "<p><strong>Close reading</strong> is the careful, sustained analysis of a short\npassage of text — paying minute attention to word choice, imagery, sound,\nsyntax, and form to show how the writing produces its meaning and effect. It's\nthe foundational skill of literary study.</p>\n\n<h2>What you actually do</h2>\n\n<p>You slow down. Instead of summarising what a passage says, you ask <em>how</em>\nit says it: why this word and not a synonym, what the metaphors imply, how the\nrhythm or sentence shape guides the reader, where the text is ambiguous or\ntense. Every detail is treated as a deliberate choice worth interrogating.</p>\n\n<h2>Where it comes from</h2>\n\n<p>Close reading was central to the \"New Criticism\" of the early-to-mid twentieth\ncentury, which insisted that the meaning of a literary work lives in the text\nitself — its words and structure — rather than in the author's biography or the\nreader's mood. The poem on the page was the evidence, and nothing else was needed\nto read it.</p>\n\n<h2>The form is part of the meaning</h2>\n\n<p>The core conviction of close reading is that form and content can't be\nseparated. How something is written <em>is</em> part of what it means. A close\nreader treats line breaks, punctuation, and sound as carriers of sense — not\npackaging around an idea, but the idea taking shape.</p>\n\n<h2>How to practise it</h2>\n\n<p>Pick a short passage and read it several times. Mark what surprises you, what\nrepeats, what jars. Ask what each notable choice does, then build a small argument\nconnecting those details to an overall effect. Good close reading turns \"I like\nthis\" into \"here is exactly how this works, and why it matters.\"</p>"
  }
 ]
