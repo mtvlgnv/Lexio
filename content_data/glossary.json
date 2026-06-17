@@ -2951,5 +2951,95 @@
    "meter-poetic"
   ],
   "body_html": "<p>An <strong>end-stopped line</strong> is a line of verse that ends with a\nnatural pause — usually marked by punctuation (a comma, semicolon, dash, or full\nstop) — where both the grammar and the sense reach a resting point. The line and\nthe unit of meaning end together.</p>\n\n<h2>What it feels like</h2>\n\n<p>Because an end-stopped line closes cleanly, it gives verse a measured,\nbalanced, self-contained quality. Each line stands as a complete thought, and the\nreader pauses at the line break. A poem built mostly from end-stopped lines feels\norderly, deliberate, sometimes formal or stately.</p>\n\n<h2>End-stopped vs. enjambment</h2>\n\n<p>The opposite technique is <em>enjambment</em>, where a line runs over its end\nwithout pause, the sense spilling into the next line. End-stopping creates\nclosure and control; enjambment creates momentum, surprise, and flow. Most poems\nmix the two, and the <em>contrast</em> between them is where much of the rhythmic\ninterest lies.</p>\n\n<h2>Why poets choose it</h2>\n\n<p>End-stopping lets a poet land emphasis on the final word of a line and give\neach idea room to settle. Pope's heroic couplets are famously end-stopped, each\nline a polished, complete statement. When a heavily enjambed poem suddenly\nend-stops a line, that closure can hit like a verdict.</p>\n\n<h2>How to read it</h2>\n\n<p>Track where lines stop and where they run on. A shift from flowing enjambment\nto firm end-stopping (or the reverse) almost always matches a shift in the poem's\nfeeling — from turbulence to resolution, or calm to rupture. The punctuation at\nthe line's edge is part of the poem's argument.</p>"
+ },
+ {
+  "slug": "ballad",
+  "term": "ballad",
+  "context": "poetic and song form",
+  "title": "What a Ballad Is in Poetry",
+  "meta_description": "A ballad is a narrative poem or song, often in four-line stanzas with a strong rhythm and refrain. Here's the form, from folk ballads to literary ones.",
+  "h1": "What a ballad is",
+  "updated": "2026-06-18",
+  "related": [
+   "refrain",
+   "rhyme-scheme",
+   "meter-poetic"
+  ],
+  "body_html": "<p>A <strong>ballad</strong> is a narrative poem — a poem that tells a story —\nwritten in a simple, songlike form meant to be sung or recited. Born in oral\nfolk tradition, the ballad is one of the oldest and most durable poetic forms in\nEnglish.</p>\n\n<h2>The ballad stanza</h2>\n\n<p>The classic shape is the <em>ballad stanza</em>: four lines (a quatrain)\nalternating between four-stress and three-stress lines, rhyming the second and\nfourth lines (an ABCB scheme). This rhythm — the meter of countless hymns and\nnursery rhymes — is instantly singable, which is exactly the point.</p>\n\n<h2>Folk roots</h2>\n\n<p>Traditional ballads were passed down orally, sung by ordinary people, and\nexisted in many versions with no single author. They favour dramatic stories —\nlove, murder, betrayal, the supernatural — told in stark, fast strokes with lots\nof dialogue, abrupt leaps between scenes, and a repeated <em>refrain</em> that\nmade them easy to remember and join in.</p>\n\n<h2>The literary ballad</h2>\n\n<p>Poets later borrowed the folk form for written \"literary ballads.\"\nColeridge's \"The Rime of the Ancient Mariner\" and Keats's \"La Belle Dame sans\nMerci\" use the plain, haunting ballad style for sophisticated ends — the simple\nform lending an eerie, timeless power to their tales.</p>\n\n<h2>How to read one</h2>\n\n<p>Read a ballad for its story first — it's built to be heard. Notice the\nrefrain, the gaps the narrative leaps over, and the steady, hypnotic beat. The\nform's plainness is a feature: it strips a dramatic tale down to its bones and\nlets the rhythm carry it.</p>"
+ },
+ {
+  "slug": "limerick",
+  "term": "limerick",
+  "context": "comic poetic form",
+  "title": "What a Limerick Is (Form & Examples)",
+  "meta_description": "A limerick is a five-line comic poem with an AABBA rhyme scheme and a bouncing rhythm. Here's the exact form, its history, and why it's built for jokes.",
+  "h1": "What a limerick is",
+  "updated": "2026-06-18",
+  "related": [
+   "rhyme-scheme",
+   "meter-poetic",
+   "metrical-feet"
+  ],
+  "body_html": "<p>A <strong>limerick</strong> is a short, comic, often nonsensical five-line poem\nwith a strict, bouncing rhythm and a single rhyme scheme. It's one of the few\nfixed forms most people can recognise instantly — and the form's tight rules are\nexactly what make it funny.</p>\n\n<h2>The form</h2>\n\n<p>A limerick has five lines rhyming AABBA. Lines 1, 2, and 5 are longer (three\nstresses each, usually anapestic) and rhyme together; lines 3 and 4 are shorter\n(two stresses) and rhyme with each other. The result is a galloping da-da-DUM\nrhythm that practically forces a sing-song delivery.</p>\n\n<h2>How the joke works</h2>\n\n<p>The structure is a joke-delivery machine. The first two lines set up a\nsituation (often \"There once was a...\"), the short middle pair builds, and the\nfifth line lands the punchline — frequently with an absurd or unexpected rhyme.\nThe rigid form sets up an expectation the final line gets to subvert.</p>\n\n<h2>Edward Lear</h2>\n\n<p>The Victorian writer Edward Lear popularised the form in his\n<em>Book of Nonsense</em> (1846), filling it with surreal characters and\ndeadpan absurdity. The limerick has been a vehicle for wordplay, nonsense, and\n(often) bawdy humour ever since — light verse at its most disciplined.</p>\n\n<h2>How to read one</h2>\n\n<p>Read it aloud — the limerick lives entirely in its rhythm and timing. Feel how\nthe meter speeds you toward the final rhyme, and notice how the best limericks\nsave their cleverest, most surprising rhyme for the very last word.</p>"
+ },
+ {
+  "slug": "epic",
+  "term": "epic",
+  "context": "literary genre",
+  "title": "What an Epic Is (Genre & Conventions)",
+  "meta_description": "An epic is a long narrative poem about heroic deeds and grand events, in an elevated style. Here are its conventions, from Homer to Milton.",
+  "h1": "What an epic is",
+  "updated": "2026-06-18",
+  "related": [
+   "epithet",
+   "in-medias-res",
+   "archetype"
+  ],
+  "body_html": "<p>An <strong>epic</strong> is a long narrative poem that recounts the heroic\ndeeds and grand adventures of a larger-than-life hero, in an elevated style and\non a scale that involves the fate of a people, a nation, or even the cosmos.\nIt's one of the oldest and most ambitious literary forms.</p>\n\n<h2>The conventions</h2>\n\n<p>Epics share a recognisable kit: a hero of great stature; a vast setting; deeds\nof valour; the involvement of gods or supernatural forces; an elevated, formal\nstyle; an opening <em>invocation</em> to a muse; a statement of theme; and a\nbeginning <em>in medias res</em> — in the middle of the action — with earlier\nevents filled in later. Stock <em>epithets</em> (\"swift-footed Achilles\") and\nlong similes are hallmarks too.</p>\n\n<h2>Folk vs. literary epic</h2>\n\n<p>\"Folk\" or oral epics — Homer's <em>Iliad</em> and <em>Odyssey</em>, the\nAnglo-Saxon <em>Beowulf</em> — grew out of spoken tradition before being written\ndown. \"Literary\" epics were composed in writing by a single poet in conscious\nimitation of that tradition: Virgil's <em>Aeneid</em>, Dante's\n<em>Divine Comedy</em>, Milton's <em>Paradise Lost</em>.</p>\n\n<h2>The epic's scope</h2>\n\n<p>What sets the epic apart is the size of its stakes. The hero's journey carries\nthe values and destiny of a whole civilisation; the poem aims to define a culture\nto itself. <em>Paradise Lost</em> raises the scope further still — its subject is\nnothing less than the fall of humanity.</p>\n\n<h2>The afterlife of the epic</h2>\n\n<p>Few write verse epics now, but the impulse survives — in the sprawling novel,\nin film franchises, in any story that reaches for civilisational scale. The\n\"mock-epic,\" which applies epic grandeur to trivial subjects for comic effect,\nshows how deeply the conventions are embedded in our sense of the grand.</p>"
+ },
+ {
+  "slug": "tragic-hero",
+  "term": "tragic hero",
+  "context": "tragedy and Aristotelian theory",
+  "title": "What a Tragic Hero Is (Traits & Examples)",
+  "meta_description": "A tragic hero is a basically good, high-standing character undone by a fatal flaw or error. Here are Aristotle's criteria, with Oedipus and Macbeth.",
+  "h1": "What a tragic hero is",
+  "updated": "2026-06-18",
+  "related": [
+   "hamartia",
+   "hubris",
+   "catharsis-greek-tragedy"
+  ],
+  "body_html": "<p>A <strong>tragic hero</strong> is the central figure of a tragedy: a person of\nsignificant stature, fundamentally admirable, whose downfall is brought about not\nby simple villainy but by a flaw, an error, or the collision of their own nature\nwith fate. Their fall is meant to move us to pity and fear.</p>\n\n<h2>Aristotle's criteria</h2>\n\n<p>In the <em>Poetics</em>, Aristotle sketched the ideal tragic hero: a person\nbetter than average and of high standing, neither perfectly virtuous nor truly\nwicked, who falls through <em>hamartia</em> — a fatal error or flaw — rather than\nthrough vice. We must be able to identify with them; their ruin has to feel like\nsomething that could befall a good person, not a punishment a monster deserves.</p>\n\n<h2>Hamartia and hubris</h2>\n\n<p>The downfall usually turns on <em>hamartia</em> (a tragic error or weakness)\nand often on <em>hubris</em> (destructive overconfidence or pride that defies the\ngods or the limits of human power). Oedipus's relentless pursuit of truth, and\nMacbeth's ambition, are the flaws that drive each toward catastrophe.</p>\n\n<h2>Recognition and reversal</h2>\n\n<p>The tragic hero typically experiences a <em>peripeteia</em> (a reversal of\nfortune) and an <em>anagnorisis</em> (a moment of recognition, when they finally\nsee their error and its consequences). That terrible clarity, arriving too late,\nis the heart of the form's emotional power.</p>\n\n<h2>Why it produces catharsis</h2>\n\n<p>Watching a worthy person fall through a flaw we can recognise in ourselves\narouses pity and fear — and, Aristotle argued, a <em>catharsis</em>, a purging\nrelease of those emotions. The tragic hero matters because their ruin makes us\nfeel the precariousness and dignity of being human.</p>"
+ },
+ {
+  "slug": "femme-fatale",
+  "term": "femme fatale",
+  "context": "character type",
+  "title": "What a Femme Fatale Is (Character Type)",
+  "meta_description": "A femme fatale is a seductive, dangerous woman who lures men to their ruin. Here's the archetype's history, from myth and noir, and what it signifies.",
+  "h1": "What a femme fatale is",
+  "updated": "2026-06-18",
+  "related": [
+   "archetype",
+   "antihero",
+   "foil-character"
+  ],
+  "body_html": "<p>A <strong>femme fatale</strong> — French for \"fatal woman\" — is a stock\ncharacter type: a mysterious, seductive woman whose charms ensnare men and lead\nthem into danger, disgrace, or death. She is alluring and dangerous in equal\nmeasure, and the danger is the point.</p>\n\n<h2>An ancient archetype</h2>\n\n<p>The figure is far older than her French name. She appears in myth and legend as\nthe siren, Circe, Delilah, and Salome — women whose beauty is a trap. The type\nencodes a recurring cultural anxiety about female power and male desire: the fear\nthat attraction itself can be a kind of destruction.</p>\n\n<h2>The noir icon</h2>\n\n<p>The femme fatale reached her most famous form in film noir and hardboiled\ncrime fiction of the mid-twentieth century. Here she is typically clever,\nindependent, and morally ambiguous — manipulating the male protagonist with\nsecrets and seduction, often as the hidden author of the plot's crime.</p>\n\n<h2>What she signifies</h2>\n\n<p>Critically, the femme fatale is double-edged. She can be read as a misogynist\nfantasy — woman as deceiver and threat — but also as one of the few female roles\nallowed real agency, intelligence, and refusal of the passive feminine ideal.\nFeminist critics have reclaimed her as a figure of subversive power as much as a\nwarning.</p>\n\n<h2>How to read her</h2>\n\n<p>When a femme fatale appears, ask whose fear and whose desire she embodies — and\nwho is telling her story. The type reveals as much about the anxieties of the\nmen who created it as about the woman on the page.</p>"
+ },
+ {
+  "slug": "psychoanalytic-criticism",
+  "term": "psychoanalytic criticism",
+  "context": "literary theory (Freud, Lacan)",
+  "title": "What Psychoanalytic Criticism Is",
+  "meta_description": "Psychoanalytic criticism reads literature through the unconscious — desire, repression, and symbols. Here's the approach, from Freud to Lacan.",
+  "h1": "What psychoanalytic criticism is",
+  "updated": "2026-06-18",
+  "related": [
+   "uncanny-literature",
+   "archetype",
+   "stream-of-consciousness"
+  ],
+  "body_html": "<p><strong>Psychoanalytic criticism</strong> reads literature through the lens of\npsychology — especially the theory of the unconscious developed by Sigmund Freud.\nIt treats texts as expressions of hidden desires, fears, and conflicts, and looks\nbeneath the surface for what a work, a character, or an author won't say\ndirectly.</p>\n\n<h2>The Freudian toolkit</h2>\n\n<p>Classic psychoanalytic criticism applies Freud's concepts: the unconscious;\nrepression; the id, ego, and superego; dreams and symbols; and the Oedipus\ncomplex. A critic might read a character's behaviour as driven by buried desires,\nor interpret recurring images as symbols of wishes the text can't openly admit.\nHamlet's hesitation, on this view, becomes a drama of unconscious conflict.</p>\n\n<h2>Three things to analyse</h2>\n\n<p>Psychoanalytic critics can train the method on the author (what unconscious\nmaterial shaped the work), the characters (treating them as psychological cases),\nor the reader (why a text grips and disturbs us). Each shifts where the\n\"unconscious\" of the work is located.</p>\n\n<h2>Lacan's turn to language</h2>\n\n<p>The French analyst Jacques Lacan rewrote Freud through structural linguistics,\narguing that \"the unconscious is structured like a language.\" This linked\npsychoanalysis to literary theory directly — desire, lack, and the slipperiness\nof meaning became textual problems, and the analysis of language became a way to\nanalyse the psyche.</p>\n\n<h2>How to read with it</h2>\n\n<p>Look for what a text represses or symbolises: the recurring image that seems\novercharged, the gap a character won't explain, the dream that says more than the\nplot. Used carelessly it becomes reductive symbol-hunting; used well it reveals\nthe hidden emotional logic driving a work.</p>"
  }
 ]
