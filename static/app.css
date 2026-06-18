@@ -1372,21 +1372,19 @@
     .app-sub-slot { max-width: 640px; margin: 4px auto 56px; padding: 0 24px; }
     .app-sub-slot:empty { display: none; }
 
-    /* Engagement row: streak panel (left) + subscription card (right).
-       No flex-wrap on desktop, so the two are ALWAYS side by side; they only
-       stack under the mobile breakpoint. Hidden until loadStreak() reveals it. */
+    /* Engagement row: streak (fixed left) | graph (fills middle) | sub (fixed right).
+       The row stretches to match the full content width. */
     .app-engage-row {
       display: none; gap: 20px;
-      align-items: stretch; justify-content: center;     /* equal-height cards */
-      max-width: 1400px; margin: 4px auto 56px; padding: 0 24px;
+      align-items: stretch;
+      margin: 4px 24px 56px; padding: 0;
     }
     .app-engage-row.shown { display: flex; }
     /* Neutralise the auto-margins the cards carry on the marketing page. */
     .app-engage-row .lp-sub-card { margin: 0; }
-    .app-engage-row .app-sub-slot { margin: 0; padding: 0; max-width: 540px; flex: 1 1 auto; min-width: 0; }
-    /* Streak panel: left-aligned, big number that grows to fill the card so it
-       matches the subscription card's height. */
-    .app-streak-panel { flex: 0 0 300px; text-align: left; display: flex; flex-direction: column; }
+    .app-engage-row .app-sub-slot { margin: 0; padding: 0; flex: 0 0 320px; min-width: 0; max-width: none; }
+    /* Streak panel: fixed width on the left */
+    .app-streak-panel { flex: 0 0 260px; text-align: left; display: flex; flex-direction: column; }
     .app-streak-panel .lp-sub-head { justify-content: space-between; }
     .app-streak-panel .streak-flame-lg { font-size: 1.4rem; line-height: 1; filter: grayscale(1) opacity(.5); transition: filter .3s; }
     .app-streak-panel.hot .streak-flame-lg { filter: none; }
@@ -1402,22 +1400,22 @@
     .streak-panel-unit { font-size: 1.1rem; color: var(--muted); }
     .streak-panel-best { font-size: 0.82rem; color: var(--muted); }
 
-    /* Activity Graph */
-    .app-activity-graph { flex: 1 1 300px; display: flex; flex-direction: column; }
+    /* Activity Graph — fills all remaining space */
+    .app-activity-graph { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
     .app-activity-graph .lp-sub-head { justify-content: space-between; align-items: baseline; }
     .activity-graph-subtitle { font-size: 0.8rem; color: var(--muted); }
     .activity-graph-container {
-      flex: 1 1 auto; margin-top: 16px;
-      display: flex; align-items: flex-end; height: 160px; overflow: hidden;
+      flex: 1 1 auto; margin-top: 12px;
+      display: flex; align-items: flex-end;
     }
-    .activity-graph-container svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+    .activity-graph-container svg { display: block; width: 100%; height: 100%; overflow: visible; }
     .activity-graph-bar { fill: var(--accent); opacity: 0.4; transition: opacity 0.2s; cursor: crosshair; }
     .activity-graph-bar:hover { opacity: 1; }
     .activity-graph-axis-text { font-size: 10px; fill: var(--muted); font-family: system-ui, sans-serif; }
     .activity-graph-grid-line { stroke: var(--border); stroke-dasharray: 3 5; stroke-width: 1; }
 
     @media (max-width: 760px) {
-      .app-engage-row { flex-wrap: wrap; }
+      .app-engage-row { flex-wrap: wrap; margin-left: 16px; margin-right: 16px; }
       .app-streak-panel, .app-activity-graph, .app-engage-row .app-sub-slot { flex: 1 1 100%; max-width: 520px; }
     }
     .brand-home { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }

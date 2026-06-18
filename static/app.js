@@ -525,16 +525,16 @@ function renderActivityGraph(activity) {
   const maxValRaw = Math.max(...activity.map(d => d.count));
   const maxVal = Math.max(5, Math.ceil(maxValRaw / 5) * 5);
 
-  // Use the container's actual pixel size so 1 SVG unit ≈ 1 px — no distortion.
+  // Measure the container so the viewBox matches actual pixels (no text distortion).
   const rect = container.getBoundingClientRect();
-  const W = Math.round(rect.width)  || 500;
-  const H = Math.round(rect.height) || 160;
-  const ml = 32, mr = 8, mt = 8, mb = 22;   // margins for axis labels
+  const W = Math.round(rect.width)  || 600;
+  const H = Math.round(rect.height) || 180;
+  const ml = 28, mr = 6, mt = 6, mb = 20;
   const gw = W - ml - mr;
   const gh = H - mt - mb;
   const bw = gw / activity.length;
 
-  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%">`;
 
   // Y-axis dotted grid lines + labels
   const ticks = [0, Math.round(maxVal / 2), maxVal];
