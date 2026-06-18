@@ -1377,7 +1377,8 @@
     .app-engage-row {
       display: none; gap: 20px;
       align-items: stretch;
-      margin: 4px 24px 56px; padding: 0;
+      width: 100%; box-sizing: border-box;
+      margin: 4px 0 56px; padding: 0 24px;
     }
     .app-engage-row.shown { display: flex; }
     /* Neutralise the auto-margins the cards carry on the marketing page. */
