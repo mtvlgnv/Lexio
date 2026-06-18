@@ -1424,7 +1424,7 @@
       grid-template-columns: 260px 1fr 320px; 
     }
     /* Neutralise the auto-margins the cards carry on the marketing page. */
-    .app-engage-row .lp-sub-card { margin: 0; }
+    .app-engage-row .lp-sub-card { margin: 0; max-width: none; }
     .app-engage-row .app-sub-slot { margin: 0; padding: 0; min-width: 0; max-width: none; }
     /* Streak panel: fixed width on the left */
     .app-streak-panel { flex: 0 0 260px; text-align: left; display: flex; flex-direction: column; }
