@@ -1816,13 +1816,18 @@
     }
     .lp-trending-compact .lp-trending-list,
     .lp-trending-compact .lp-trending-skeleton {
-      max-width: none; gap: 6px;
+      max-width: none; gap: 0;
     }
     .lp-trending-compact .lp-trending-item {
-      padding: 8px 12px; gap: 10px;
-      background: rgba(255,248,240,0.35);
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-      border-color: rgba(255,255,255,0.45);
+      padding: 12px 8px; gap: 10px;
+      background: transparent;
+      backdrop-filter: none; -webkit-backdrop-filter: none;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      border-radius: 0;
+    }
+    .lp-trending-compact .lp-trending-item:last-child {
+      border-bottom: none;
     }
     .lp-trending-compact .lp-trending-item:hover {
       transform: none;
