@@ -205,6 +205,45 @@
     }
     .menu-theme-btn.active { background:var(--accent-lt); color:var(--accent); border-color:var(--accent-mid); }
 
+    /* ── Mobile nav (Resend-style) ──────────────────────────────
+       The page nav is hidden in the top bar below 900px; on the landing
+       page the ☰ menu becomes a full-screen overlay containing the nav. */
+    .menu-mobile-nav { display: none; }
+    .menu-nav-close  { display: none; }
+    @keyframes mnavIn { from { opacity: 0; } to { opacity: 1; } }
+    @media (max-width: 900px) {
+      body.landing-page #menu-dropdown:not(.hidden) {
+        position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh;
+        min-width: 0; max-height: none; border: none; border-radius: 0;
+        box-shadow: none; overflow-y: auto; overscroll-behavior: contain;
+        z-index: 1000; padding: 14px 22px calc(28px + env(safe-area-inset-bottom));
+        animation: mnavIn .2s ease;
+      }
+      body.landing-page #menu-dropdown:not(.hidden) .menu-mobile-nav {
+        display: flex; flex-direction: column;
+      }
+      body.landing-page #menu-dropdown:not(.hidden) .menu-nav-close {
+        display: inline-flex; align-self: flex-end;
+        background: none; border: none; color: var(--text-mid);
+        cursor: pointer; padding: 8px; margin: 0 -8px 4px 0;
+      }
+      .menu-nav-links { display: flex; flex-direction: column; }
+      .menu-nav-links a {
+        display: block; padding: 16px 2px; font-size: 1.35rem; font-weight: 500;
+        color: var(--text); text-decoration: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .menu-nav-links a:hover, .menu-nav-links a:active { color: var(--accent); }
+      .menu-nav-cta {
+        display: block; text-align: center; margin: 22px 0 4px;
+        background: var(--accent); color: #fff; padding: 15px;
+        border-radius: 12px; font-weight: 600; font-size: 1.05rem; text-decoration: none;
+      }
+      .menu-nav-cta:hover { background: var(--accent-dk); }
+      /* Roomier options (theme/pro/etc.) below the nav on the full-screen menu */
+      body.landing-page #menu-dropdown:not(.hidden) .menu-item { font-size: 1rem; padding: 12px 10px; }
+    }
+
     /* ── Account button ─────────────────────────────────────── */
     .acct-btn {
       display:flex; align-items:center; justify-content:center;
@@ -1378,12 +1417,15 @@
       display: none; gap: 20px;
       align-items: stretch;
       width: 100%; box-sizing: border-box;
-      margin: 4px 0 56px; padding: 0 24px;
+      margin: 4px 0 56px; padding: 0 28px;
     }
-    .app-engage-row.shown { display: flex; }
+    .app-engage-row.shown { 
+      display: grid; 
+      grid-template-columns: 260px 1fr 320px; 
+    }
     /* Neutralise the auto-margins the cards carry on the marketing page. */
     .app-engage-row .lp-sub-card { margin: 0; }
-    .app-engage-row .app-sub-slot { margin: 0; padding: 0; flex: 0 0 320px; min-width: 0; max-width: none; }
+    .app-engage-row .app-sub-slot { margin: 0; padding: 0; min-width: 0; max-width: none; }
     /* Streak panel: fixed width on the left */
     .app-streak-panel { flex: 0 0 260px; text-align: left; display: flex; flex-direction: column; }
     .app-streak-panel .lp-sub-head { justify-content: space-between; }
@@ -1416,7 +1458,8 @@
     .activity-graph-grid-line { stroke: var(--border); stroke-dasharray: 3 5; stroke-width: 1; }
 
     @media (max-width: 760px) {
-      .app-engage-row { flex-wrap: wrap; margin-left: 16px; margin-right: 16px; }
+      .app-engage-row { margin: 4px 0 56px; padding: 0 16px; }
+      .app-engage-row.shown { display: flex; flex-wrap: wrap; margin-left: 0; margin-right: 0; }
       .app-streak-panel, .app-activity-graph, .app-engage-row .app-sub-slot { flex: 1 1 100%; max-width: 520px; }
     }
     .brand-home { text-decoration: none; color: inherit; display: inline-flex; align-items: center; gap: 8px; }

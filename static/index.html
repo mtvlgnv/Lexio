@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=16">
+  <link rel="stylesheet" href="/app.css?v=18">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -346,6 +346,25 @@
       <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="0" y1="1" x2="16" y2="1"/><line x1="0" y1="6" x2="16" y2="6"/><line x1="0" y1="11" x2="16" y2="11"/></svg>
     </button>
     <div class="menu-dropdown hidden" id="menu-dropdown">
+      <!-- Mobile navigation (Resend-style full-screen overlay). Shown only on
+           the landing page below 900px, where the top-bar nav is hidden. -->
+      <div class="menu-mobile-nav">
+        <button class="menu-nav-close" type="button" onclick="closeMenu()" aria-label="Close menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+        <nav class="menu-nav-links" aria-label="Site navigation">
+          <a href="#lp-how" onclick="closeMenu()">How it works</a>
+          <a href="#lp-features" onclick="closeMenu()">Features</a>
+          <a href="#lp-models" onclick="closeMenu()">Reading modes</a>
+          <a href="#lp-pro" onclick="closeMenu()">Pricing</a>
+          <a href="#lp-faq" onclick="closeMenu()">FAQ</a>
+          <a href="/glossary">Glossary</a>
+          <a href="/for-readers.html">For readers</a>
+          <a href="/chrome-extension.html">Chrome extension</a>
+          <a href="/credits.html">Credits</a>
+        </nav>
+        <a class="menu-nav-cta" href="/app">Try Lexio — free &rarr;</a>
+      </div>
       <div class="menu-section">
         <span class="menu-label" data-i18n="theme">Theme</span>
         <div class="menu-theme-row">
@@ -1644,7 +1663,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=16"></script>
+<script src="/app.js?v=18"></script>
 
 <script type="module">
 // Skip the WebGL gradient entirely on mobile — saves a noticeable amount of
