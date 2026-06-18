@@ -502,6 +502,7 @@ async function loadStreak() {
     set('streak-panel-days', n);
     set('streak-panel-unit', n === 1 ? 'day' : 'days');
     set('streak-panel-best', d.longest_streak ? dayWord(d.longest_streak) : '—');
+    panel.style.display = '';
     panel.classList.toggle('hot', n >= 3);
     if (row) row.classList.add('shown');
 
