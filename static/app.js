@@ -523,51 +523,49 @@ function renderActivityGraph(activity) {
   if (subtitle) subtitle.textContent = `${total} words · ${activity.length} days`;
 
   const maxValRaw = Math.max(...activity.map(d => d.count));
-  const maxVal = Math.max(5, Math.ceil(maxValRaw / 5) * 5); 
+  const maxVal = Math.max(5, Math.ceil(maxValRaw / 5) * 5);
 
-  const W = 1000, H = 300;
-  const ml = 30, mr = 10, mt = 10, mb = 30;
+  // Use the container's actual pixel size so 1 SVG unit ≈ 1 px — no distortion.
+  const rect = container.getBoundingClientRect();
+  const W = Math.round(rect.width)  || 500;
+  const H = Math.round(rect.height) || 160;
+  const ml = 32, mr = 8, mt = 8, mb = 22;   // margins for axis labels
   const gw = W - ml - mr;
   const gh = H - mt - mb;
   const bw = gw / activity.length;
 
-  let svgContent = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">`;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">`;
 
-  // Draw Y-axis grid lines
-  const ticks = [0, Math.floor(maxVal/2), maxVal];
+  // Y-axis dotted grid lines + labels
+  const ticks = [0, Math.round(maxVal / 2), maxVal];
   ticks.forEach(t => {
     const y = mt + gh - (t / maxVal) * gh;
-    svgContent += `<line x1="${ml}" y1="${y}" x2="${W - mr}" y2="${y}" class="activity-graph-grid-line" />`;
-    svgContent += `<text x="${ml - 8}" y="${y + 4}" text-anchor="end" class="activity-graph-axis-text">${t}</text>`;
+    svg += `<line x1="${ml}" y1="${y}" x2="${W - mr}" y2="${y}" class="activity-graph-grid-line"/>`;
+    svg += `<text x="${ml - 6}" y="${y + 4}" text-anchor="end" class="activity-graph-axis-text">${t}</text>`;
   });
 
-  const parseDate = (dstr) => {
-    const [y, m, day] = dstr.split('-');
-    const mStr = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(m, 10)-1];
-    return `${mStr} ${parseInt(day, 10)}`;
+  // Format "Jun 12"
+  const fmtDate = s => {
+    const [, m, day] = s.split('-');
+    return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+m - 1]
+           + ' ' + +day;
   };
 
+  // Bars + X-axis date labels
   activity.forEach((d, i) => {
-    const h = d.count === 0 ? 0 : Math.max(4, (d.count / maxVal) * gh);
+    const h = d.count === 0 ? 0 : Math.max(3, (d.count / maxVal) * gh);
     const x = ml + i * bw;
     const y = mt + gh - h;
-    
-    svgContent += `
-      <rect x="${x + bw * 0.1}" y="${y}" width="${Math.max(2, bw * 0.8)}" height="${h}" 
-            class="activity-graph-bar" rx="3"
-            title="${d.date}: ${d.count} lookups">
-        <title>${parseDate(d.date)}: ${d.count} lookups</title>
-      </rect>
-    `;
+    svg += `<rect x="${x + bw * 0.12}" y="${y}" width="${Math.max(2, bw * 0.76)}" height="${h}" class="activity-graph-bar" rx="2"><title>${fmtDate(d.date)}: ${d.count} lookups</title></rect>`;
 
-    // Date Label
+    // Show date on first, last, and every 7th bar
     if (i === 0 || i === activity.length - 1 || (activity.length > 10 && i % 7 === 0)) {
-      svgContent += `<text x="${x + bw/2}" y="${H - 5}" text-anchor="middle" class="activity-graph-axis-text">${parseDate(d.date)}</text>`;
+      svg += `<text x="${x + bw / 2}" y="${H - 4}" text-anchor="middle" class="activity-graph-axis-text">${fmtDate(d.date)}</text>`;
     }
   });
 
-  svgContent += `</svg>`;
-  container.innerHTML = svgContent;
+  svg += `</svg>`;
+  container.innerHTML = svg;
 }
 
 /* ── OCR / photo-to-text ────────────────────────────── */
