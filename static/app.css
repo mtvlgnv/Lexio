@@ -1261,20 +1261,12 @@
     #scroll-nudge:hover svg { opacity: 1; }
     #scroll-nudge.hidden { opacity: 0; pointer-events: none; }
     @media (max-width: 760px) {
-      @keyframes nudge-bounce {
-        0%, 100% { transform: translateX(-50%) translateY(0); }
-        50%       { transform: translateX(-50%) translateY(8px); }
-      }
       #scroll-nudge {
         left: 50%; right: auto;
         bottom: 24px;
-        animation: nudge-bounce 1.6s ease-in-out infinite;
+        transform: translateX(-50%);
       }
-      #scroll-nudge svg {
-        width: 30px; height: 30px;
-        animation: none;
-        opacity: 0.6;
-      }
+      #scroll-nudge svg { width: 30px; height: 30px; }
       body:not(.app-compact) #scroll-nudge { display: none; }
     }
     /* Only hidden when user is actively in-app (typing/analyzing) —
