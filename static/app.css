@@ -1576,7 +1576,7 @@
       font-size: clamp(2.1rem, 3.9vw, 3.4rem);
       font-weight: 400; line-height: 1.08; letter-spacing: -0.015em;
       color: var(--text);
-      max-width: 560px;
+      max-width: 650px;
     }
     .lp-hero h1 em { font-style: italic; color: var(--accent); }
     .lp-hero-sub {
