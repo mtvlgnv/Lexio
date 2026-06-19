@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=21">
+  <link rel="stylesheet" href="/app.css?v=22">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -364,6 +364,15 @@
           <a href="/credits.html">Credits</a>
         </nav>
         <a class="menu-nav-cta" href="/app">Try Lexio — free &rarr;</a>
+      </div>
+      <!-- Model picker — shown only on mobile where the toolbar dropdown is hidden -->
+      <div class="menu-section menu-model-section">
+        <span class="menu-label">Reading mode</span>
+        <div class="menu-theme-row">
+          <button class="menu-theme-btn" data-model-btn="fast"     onclick="_selectMode('fast');closeMenu()">Fast</button>
+          <button class="menu-theme-btn" data-model-btn="balanced" onclick="_selectMode('balanced');closeMenu()">Balanced</button>
+          <button class="menu-theme-btn" data-model-btn="deep"     onclick="_selectMode('deep');closeMenu()">Deep</button>
+        </div>
       </div>
       <div class="menu-section">
         <span class="menu-label" data-i18n="theme">Theme</span>
@@ -1663,7 +1672,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=19"></script>
+<script src="/app.js?v=22"></script>
 
 <script type="module">
 // Skip the WebGL gradient entirely on mobile — saves a noticeable amount of

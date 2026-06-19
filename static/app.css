@@ -205,6 +205,10 @@
     }
     .menu-theme-btn.active { background:var(--accent-lt); color:var(--accent); border-color:var(--accent-mid); }
 
+    /* Model picker row only appears in the ☰ menu on mobile */
+    .menu-model-section { display: none; }
+    @media (max-width: 760px) { .menu-model-section { display: block; } }
+
     /* ── Mobile nav (Resend-style) ──────────────────────────────
        The page nav is hidden in the top bar below 900px; on the landing
        page the ☰ menu becomes a full-screen overlay containing the nav. */
@@ -1212,6 +1216,13 @@
         padding: 12px 16px 14px !important;
       }
       #input-text { flex: 0 0 auto; resize: none; overflow: hidden; }
+
+      /* Hide the model picker dropdown on mobile — it flies upward over the
+         text panel (position:absolute, bottom:100%) with no clipping.
+         Mobile users always get the default model; they can change it via
+         the ☰ menu. Also hide btn-sample to keep the toolbar uncluttered. */
+      .mode-dropdown { display: none; }
+      .btn-sample    { display: none; }
 
     }
 

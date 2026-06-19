@@ -141,6 +141,11 @@ function setModel(model) {
   const trigLabel = document.getElementById('mode-trigger-label');
   if (trigLabel) trigLabel.textContent = MODEL_LABELS[model] || model;
 
+  // Sync ☰ menu model buttons (mobile)
+  document.querySelectorAll('[data-model-btn]').forEach(b =>
+    b.classList.toggle('active', b.dataset.modelBtn === model)
+  );
+
   // Update user preference if authenticated
   if (authToken) {
     fetch('/api/user-model', {
