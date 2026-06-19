@@ -1267,6 +1267,13 @@ function showResult(word, data, fromHistory=false, model) {
 
   document.getElementById('def-result').classList.remove('hidden');
 
+  // On mobile the right panel sits below the text panel; scroll it into view
+  // so the user doesn't have to discover it manually after tapping a word.
+  if (window.innerWidth <= 760) {
+    document.querySelector('.panel-right')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   if (!fromHistory) renderHistory();
 
   // Explored counter

@@ -1188,33 +1188,53 @@
       .wb-header-btn span:not(.wb-badge) { display:none; }
       .wb-header-btn { padding:6px 9px; }
       .lang-btn { display:flex; }
-      main { flex-direction:column; height:auto; padding:12px; }
-      .panel-left  { margin-right:0; margin-bottom:10px; min-height:260px; }
-      .panel-right { width:100%; min-height:300px; }
-      #input-text  { min-height:90px; }
-      #token-view  { min-height:220px; }
-      /* Compact (empty) state on mobile: hide the empty right panel so the
-         giant "w" placeholder doesn't sit between the textarea and the
-         sample-passage carousel, and shrink the textarea so the user
-         can see the carousel without scrolling much. */
+      main { flex-direction:column; height:auto; padding:8px; gap:8px; }
+      .panel-left  { margin-right:0; margin-bottom:0; min-height:0; }
+      .panel-right { width:100%; min-height:0; }
+      #input-text  { min-height:80px; }
+      #token-view  { min-height:180px; }
+
+      /* Empty state: hide the right panel so the "w" placeholder doesn't
+         waste half the screen before the user has analyzed anything. */
       body.app-compact:not(.in-app) .panel-right { display: none; }
       body.app-compact:not(.in-app) .panel-left { min-height: 0; margin-bottom: 0; }
-      body.app-compact:not(.in-app) #input-text { min-height: 90px; }
-      /* The empty-state card was locked to the 460px desktop "shrink"
-         height, which rendered as a giant blank box on phones. Let it hug
-         its content so the input starts ~3 lines tall and grows with text. */
+      body.app-compact:not(.in-app) #input-text { min-height: 80px; }
       body.app-compact:not(.in-app) main { height: auto; }
-      /* Smaller font + tighter line-height on mobile so paragraphs
-         actually fit. !important overrides setFontSize/setLineHeight
-         inline styles (which were tuned for desktop). */
+
+      /* Once a definition is showing, the right panel gets a scroll anchor
+         so the JS auto-scroll lands cleanly at its top edge. */
+      .panel-right { scroll-margin-top: 8px; }
+
+      /* Smaller font on mobile */
       #input-text, #token-view {
         font-size: 0.95rem !important;
         line-height: 1.55 !important;
         padding: 12px 16px 14px !important;
       }
-      /* Auto-grow textarea: drop flex sizing so JS-set height takes
-         effect. Width still fills the panel. */
       #input-text { flex: 0 0 auto; resize: none; overflow: hidden; }
+
+      /* ── Mobile toolbar ─────────────────────────────────────
+         Tighten the composer bar; make OCR button larger and labelled
+         so phone users immediately see "take a photo" as an option. */
+      .composer-bar { padding: 8px 10px; gap: 6px; flex-wrap: nowrap; }
+      /* OCR camera button: give it a label and make it pill-shaped */
+      .composer-icon-btn {
+        display: flex; align-items: center; gap: 5px;
+        padding: 8px 12px; border-radius: 20px;
+        background: var(--accent-lt); color: var(--accent);
+        border: 1px solid var(--accent-mid); font-size: 0.8rem;
+        font-weight: 600; white-space: nowrap;
+      }
+      .composer-icon-btn::after { content: 'Scan'; }
+      /* Shrink secondary items to give Analyze button room */
+      .btn-sample { display: none; }
+      .char-count { display: none; }
+      .mode-dropdown .mode-trigger-label { font-size: 0.75rem; }
+      #analyze-btn { min-width: 0; flex: 1; }
+      /* Usage pill: show but compact */
+      .usage-pill { font-size: 0.7rem; }
+      /* Hide lang picker in toolbar (accessible via ☰ menu) */
+      .lang-btn { display: none; }
     }
 
     /* ── Scroll nudge ───────────────────────────────────────── */
