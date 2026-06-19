@@ -3283,6 +3283,7 @@
     @media (max-width: 760px) {
       /* Keep WebGL gradients on mobile — phones handle it fine */
       .lp-warm-area { background: var(--surface); }
+      .lp-warm-area::before { display: none; }
       .lp-hero::before { display: none; }
       .lp-twin { background: var(--bg); }
       .lp-twin .lp-section-title,
