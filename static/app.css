@@ -3290,7 +3290,14 @@
         100% { background-position: 0% 50%; }
       }
       .lp-warm-area {
-        background: linear-gradient(135deg, #f0b060, #ef7040, #c2541e, #7a3b9e, #ef7040, #f0b060);
+        background: linear-gradient(135deg,
+          #f5ece4,
+          #f2d9c8,
+          #e8cfd8,
+          #ddd0e8,
+          #f0d9c0,
+          #f5ece4
+        );
         background-size: 300% 300%;
         animation: lp-grad-mobile 10s ease infinite;
       }
