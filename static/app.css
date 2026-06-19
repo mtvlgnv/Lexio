@@ -3281,17 +3281,23 @@
        drop backdrop-filter blurs, hide redundant sections, simplify
        the hero, and reduce sample-passages to a single card. */
     @media (max-width: 760px) {
-      /* Keep WebGL gradients on mobile — phones handle it fine */
-      .lp-warm-area { background: var(--surface); }
-      .lp-warm-area::before { display: none; }
-      .lp-hero::before { display: none; }
-      /* Isolate the WebGL canvas on its own GPU compositing layer so its
-         per-frame repaints don't jitter the text above it. */
-      #warm-webgl, #twin-webgl {
-        will-change: transform;
-        transform: translateZ(0);
+      /* WebGL rAF loop causes text jitter on mobile — kill the canvases
+         and replace with a smooth CSS gradient animation instead. */
+      #warm-webgl, #twin-webgl { display: none !important; }
+      @keyframes lp-grad-mobile {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
       }
-      .lp-hero-left { will-change: transform; transform: translateZ(0); }
+      .lp-warm-area {
+        background: linear-gradient(135deg, #f0b060, #ef7040, #c2541e, #7a3b9e, #ef7040, #f0b060);
+        background-size: 300% 300%;
+        animation: lp-grad-mobile 10s ease infinite;
+      }
+      .lp-warm-area::before { display: none; }
+      .lp-hero { background: transparent; }
+      .lp-hero::before { display: none; }
+      .lp-hero-veil { display: none !important; }
       .lp-twin { background: var(--bg); }
       .lp-twin .lp-section-title,
       .lp-twin .lp-section-title em { color: var(--text); }
