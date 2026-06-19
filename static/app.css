@@ -1217,8 +1217,8 @@
       }
       #input-text { flex: 0 0 auto; resize: none; overflow: hidden; }
 
-      /* On mobile, flip the dropdown to open downward so it doesn't
-         fly over the text panel. Cap width to viewport. */
+      /* On mobile, flip the dropdown to open downward and escape panel clipping. */
+      .panel { overflow: visible; }
       .mode-menu {
         bottom: auto;
         top: calc(100% + 6px);
