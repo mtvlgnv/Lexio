@@ -1217,10 +1217,17 @@
       }
       #input-text { flex: 0 0 auto; resize: none; overflow: hidden; }
 
-      /* Hide the model picker dropdown on mobile — it flies upward over the
-         text panel (position:absolute, bottom:100%) with no clipping.
-         Mobile users can change mode via the ☰ menu instead. */
-      .mode-dropdown { display: none; }
+      /* On mobile, flip the dropdown to open downward so it doesn't
+         fly over the text panel. Cap width to viewport. */
+      .mode-menu {
+        bottom: auto;
+        top: calc(100% + 6px);
+        right: 0;
+        left: auto;
+        min-width: 0;
+        width: max-content;
+        max-width: calc(100vw - 16px);
+      }
 
     }
 
