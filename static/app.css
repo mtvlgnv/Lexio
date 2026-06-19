@@ -1261,15 +1261,20 @@
     #scroll-nudge:hover svg { opacity: 1; }
     #scroll-nudge.hidden { opacity: 0; pointer-events: none; }
     @media (max-width: 760px) {
-      /* Mobile: keep the scroll cue in the bottom-right corner so a
-         first-time user knows there's more below the fold — but only in the
-         resting empty state, so it gets out of the way once they start
-         typing or are reading a result. */
-      #scroll-nudge {
-        left: auto; right: 14px; transform: none;
-        bottom: 20px;
+      @keyframes nudge-bounce {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50%       { transform: translateX(-50%) translateY(8px); }
       }
-      #scroll-nudge svg { width: 30px; height: 30px; }
+      #scroll-nudge {
+        left: 50%; right: auto;
+        bottom: 24px;
+        animation: nudge-bounce 1.6s ease-in-out infinite;
+      }
+      #scroll-nudge svg {
+        width: 30px; height: 30px;
+        animation: none;
+        opacity: 0.6;
+      }
       body:not(.app-compact) #scroll-nudge { display: none; }
     }
     /* Only hidden when user is actively in-app (typing/analyzing) —
@@ -3286,7 +3291,7 @@
       /* Hero — clean warm background, tighter padding */
       .lp-hero {
         background: transparent;
-        padding: 56px 20px 24px;
+        padding: 32px 20px 24px;
         min-height: 0;
         gap: 22px;
       }
