@@ -31,10 +31,7 @@ const STOPWORDS = new Set([
 ]);
 
 const SAMPLES = [
-  { label: 'Philosophy', text: `The phenomenon of apophenia — finding meaningful patterns in meaningless noise — haunts modern epistemology. Our pattern-seeking brains, honed by millennia of evolutionary pressure, impose narrative coherence on the chaotic flux of experience, often confabulating causes where none exist. This tendency, adaptive in the ancestral environment, becomes pathological when directed at stock charts, conspiracy theories, or the arrangement of tea leaves.` },
-  { label: 'Legal',      text: `The indemnifying party shall hold harmless, defend, and indemnify the indemnitee from any and all claims, damages, losses, liabilities, costs, and expenses, including reasonable attorneys' fees, arising out of or related to any breach of the representations and warranties set forth herein, whether or not such claims are groundless, fraudulent, or false, provided that the indemnitee notifies the indemnifying party in writing within thirty (30) days of becoming aware of any such claim.` },
-  { label: 'Neuroscience', text: `Synaptic plasticity in the hippocampal CA1 region is mediated by NMDA receptor-dependent long-term potentiation, suggesting that the consolidation of episodic memory involves a cascade of post-translational modifications that alter dendritic spine morphology and AMPA receptor trafficking. Crucially, this process requires the coordinated activity of astrocytic glutamate uptake mechanisms to prevent excitotoxic spillover.` },
-  { label: 'Literature',  text: `He had a faculty for quiescence, a studied art of making himself unobtrusive, and this equanimity — so easily mistaken for indifference — concealed an almost pathological acuity of observation. He noticed everything and remarked on nothing. People confided in him precisely because he seemed not to be listening, which was, of course, when he was most attentive.` },
+  { label: 'Fiction', text: `He smiled with a warmth that, she would later realize, was entirely adventitious.` },
 ];
 
 const PLACEHOLDERS = [
