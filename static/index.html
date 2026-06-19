@@ -1675,13 +1675,9 @@
 <script src="/app.js?v=28"></script>
 
 <script type="module">
-// Skip the WebGL gradient entirely on mobile — saves a noticeable amount of
-// CPU/GPU and prevents the scroll jank on phones. Same for reduced-motion.
-const _gradMobile = window.matchMedia('(max-width: 760px)').matches;
 const _gradReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (!_gradMobile && !_gradReduced) {
+if (!_gradReduced) {
   const { Gradient } = await import('https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js');
-  // #warm-webgl is the shared canvas that spans #try-passage + .lp-hero.
   new Gradient().initGradient('#warm-webgl');
   new Gradient().initGradient('#twin-webgl');
 }
