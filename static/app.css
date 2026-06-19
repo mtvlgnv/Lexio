@@ -3276,24 +3276,10 @@
        drop backdrop-filter blurs, hide redundant sections, simplify
        the hero, and reduce sample-passages to a single card. */
     @media (max-width: 760px) {
-      /* Kill expensive backgrounds */
-      #warm-webgl, #twin-webgl { display: none !important; }
-      /* CSS-only glow: approximates the desktop WebGL warm gradient at zero GPU cost */
-      .lp-warm-area {
-        background:
-          radial-gradient(ellipse 110% 38% at 50% 0%,
-            color-mix(in oklch, var(--accent) 18%, transparent) 0%,
-            color-mix(in oklch, var(--accent)  6%, transparent) 50%,
-            transparent 100%
-          ),
-          var(--bg);
-      }
-      .lp-hero-veil { display: none !important; }
+      /* Keep WebGL gradients on mobile — phones handle it fine */
+      .lp-warm-area { background: var(--surface); }
       .lp-hero::before { display: none; }
       .lp-twin { background: var(--bg); }
-      /* The WebGL gradient is gone on mobile, so the white section
-         titles that were designed to sit on top of it become invisible
-         against the cream background. Force them dark again. */
       .lp-twin .lp-section-title,
       .lp-twin .lp-section-title em { color: var(--text); }
 
