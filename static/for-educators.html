@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Educators — Lexio for Language &amp; Linguistics Classrooms</title>
+  <meta name="description" content="Lexio for the language and linguistics classroom: contextual definitions that keep students inside the native text, a Word Bank that exports to Anki spaced-repetition decks, etymology and contextual accuracy powered by Gemini 2.5 Flash and Claude Sonnet 4.5, and department-wide classroom licensing." />
+  <link rel="canonical" href="https://lexio.site/for-educators.html" />
+  <link rel="alternate" hreflang="en" href="https://lexio.site/for-educators.html" />
+  <link rel="alternate" hreflang="x-default" href="https://lexio.site/for-educators.html" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+  <meta name="theme-color" content="#f3ead8" />
+  <meta name="keywords" content="dictionary for language teachers, vocabulary tool for professors, linguistics classroom tool, Anki spaced repetition vocabulary, contextual dictionary for education, ESL teaching tool, language department software, reading in the original, etymology teaching tool, classroom vocabulary licensing" />
+  <meta name="author" content="Lexio" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Lexio" />
+  <meta property="og:title" content="For Educators — Lexio for the Language Classroom" />
+  <meta property="og:description" content="Keep students inside the native text. Turn reading assignments into automated spaced-repetition study guides. Department-wide licensing for language and linguistics courses." />
+  <meta property="og:url" content="https://lexio.site/for-educators.html" />
+  <meta property="og:image" content="https://lexio.site/og-image.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="For Educators — Lexio for the Language Classroom" />
+  <meta name="twitter:description" content="Contextual definitions, Anki export, etymology, and department-wide licensing — built for language and linguistics courses that read in the original." />
+  <meta name="twitter:image" content="https://lexio.site/og-image.png" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png?v=2" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png?v=2" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- ── Structured data ──────────────────────────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "For Educators — Lexio for Language & Linguistics Classrooms",
+    "description": "How Lexio supports the language and linguistics classroom: contextual accuracy, Word Bank with Anki export, etymology, and department-wide licensing.",
+    "url": "https://lexio.site/for-educators.html",
+    "datePublished": "2026-06-19",
+    "dateModified": "2026-06-19",
+    "inLanguage": "en",
+    "image": "https://lexio.site/og-image.png",
+    "author": { "@type": "Organization", "name": "Lexio", "url": "https://lexio.site/" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Lexio",
+      "url": "https://lexio.site/",
+      "logo": { "@type": "ImageObject", "url": "https://lexio.site/favicon-512.png" }
+    },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://lexio.site/for-educators.html" }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Lexio", "item": "https://lexio.site/" },
+      { "@type": "ListItem", "position": 2, "name": "For Educators", "item": "https://lexio.site/for-educators.html" }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:           oklch(96.5% 0.012 75);
+      --surface:      oklch(99.2% 0.006 75);
+      --border:       oklch(89%   0.014 75);
+      --accent:       oklch(58%   0.17  54);
+      --accent-mid:   oklch(90%   0.08  70);
+      --text:         oklch(18%   0.015 65);
+      --text-mid:     oklch(35%   0.012 65);
+      --muted:        oklch(58%   0.01  65);
+      --radius:       14px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+    }
+    html, body { background: var(--bg); color: var(--text); min-height: 100%; }
+    body { line-height: 1.55; }
+
+    /* ── Header ──────────────────────────────────────────────── */
+    .page-header {
+      height: 60px; padding: 0 28px;
+      display: flex; align-items: center; gap: 18px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo {
+      font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600;
+      letter-spacing: -0.01em; color: var(--text);
+      text-decoration: none;
+    }
+    .logo em { font-style: italic; color: var(--accent); }
+    .tagline {
+      font-size: 0.78rem; font-style: italic; color: var(--muted);
+      border-left: 1px solid var(--border); padding-left: 14px;
+    }
+    .header-spacer { flex: 1; }
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.88rem; font-weight: 500; color: var(--text-mid);
+      text-decoration: none;
+      padding: 8px 14px; border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .back-link:hover { background: var(--accent-mid); color: var(--text); }
+
+    /* ── Page intro ──────────────────────────────────────────── */
+    .page-hero {
+      padding: 64px 32px 28px;
+      max-width: 880px; margin: 0 auto;
+      text-align: center;
+    }
+    .page-hero .eyebrow {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .page-hero h1 {
+      font-family: 'Lora', serif; font-size: clamp(2rem, 4vw, 2.6rem);
+      font-weight: 600; letter-spacing: -0.015em; line-height: 1.15;
+      color: var(--text); margin-bottom: 16px;
+    }
+    .page-hero h1 em { font-style: italic; color: var(--accent); }
+    .page-hero p.lead {
+      font-size: 1.06rem; line-height: 1.75; color: var(--text-mid);
+      max-width: 680px; margin: 0 auto;
+    }
+    .page-hero p.lead em { font-style: italic; color: var(--text); }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
+      margin-top: 26px;
+    }
+    .hero-actions .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; background: var(--accent); color: white;
+      font-size: 0.95rem; font-weight: 600; text-decoration: none;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px -6px color-mix(in oklch, var(--accent) 50%, transparent);
+      transition: transform 0.15s;
+    }
+    .hero-actions .btn-primary:hover { transform: translateY(-1px); }
+    .hero-actions .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 24px; background: var(--surface); color: var(--text);
+      font-size: 0.95rem; font-weight: 600; text-decoration: none;
+      border: 1px solid var(--border); border-radius: 10px;
+      transition: border-color 0.15s;
+    }
+    .hero-actions .btn-ghost:hover { border-color: var(--accent); }
+
+    /* Anchor jump menu */
+    .jumpnav {
+      max-width: 880px; margin: 8px auto 0; padding: 0 32px;
+      display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    }
+    .jumpnav a {
+      font-size: 0.82rem; font-weight: 500;
+      color: var(--text-mid); text-decoration: none;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--surface); border: 1px solid var(--border);
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .jumpnav a:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── Section base ─────────────────────────────────────────── */
+    .section {
+      padding: 56px 32px;
+      max-width: 1180px; margin: 0 auto;
+    }
+    .section-eyebrow {
+      display: block; text-align: center;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: 'Lora', serif; font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 600; letter-spacing: -0.01em; line-height: 1.2;
+      color: var(--text); text-align: center; margin-bottom: 12px;
+    }
+    .section-title em { font-style: italic; color: var(--accent); }
+    .section-sub {
+      font-size: 0.98rem; line-height: 1.75; color: var(--text-mid);
+      max-width: 700px; margin: 0 auto 32px; text-align: center;
+    }
+    .section-sub em { font-style: italic; color: var(--text); }
+
+    /* ── Benefit cards ───────────────────────────────────────── */
+    .benefit-grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    .benefit-card {
+      padding: 24px 22px 22px;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      display: flex; flex-direction: column; gap: 9px;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .benefit-card:hover {
+      border-color: var(--accent-mid); transform: translateY(-2px);
+      box-shadow: 0 12px 28px -16px color-mix(in oklch, var(--accent) 40%, transparent);
+    }
+    .benefit-icon {
+      width: 40px; height: 40px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      background: color-mix(in oklch, var(--accent) 12%, var(--surface));
+      color: var(--accent); margin-bottom: 4px;
+    }
+    .benefit-card h3 {
+      font-family: 'Lora', serif; font-size: 1.14rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.005em;
+    }
+    .benefit-card p {
+      font-size: 0.92rem; color: var(--text-mid); line-height: 1.65;
+    }
+    .benefit-card p em { font-style: italic; color: var(--text); }
+    .benefit-card p strong { color: var(--text); font-weight: 600; }
+    .benefit-meta {
+      margin-top: 4px; padding-top: 8px;
+      font-size: 0.78rem !important; color: var(--muted) !important;
+      font-style: italic;
+      border-top: 1px dashed var(--border);
+    }
+
+    /* ── Tinted band ─────────────────────────────────────────── */
+    .section.tint {
+      background: linear-gradient(180deg, var(--bg), color-mix(in oklch, var(--accent) 3%, var(--bg)));
+      max-width: none;
+    }
+    .tint-inner { max-width: 1180px; margin: 0 auto; }
+
+    /* ── Workflow steps ──────────────────────────────────────── */
+    .steps {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      counter-reset: step;
+    }
+    .step {
+      position: relative;
+      padding: 24px 20px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; margin-bottom: 12px;
+      font-family: 'Lora', serif; font-weight: 600; font-size: 0.95rem;
+      color: white; background: var(--accent); border-radius: 8px;
+    }
+    .step h3 {
+      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .step p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.6; }
+    .step p em { font-style: italic; color: var(--text); }
+
+    /* ── Comparison cards ────────────────────────────────────── */
+    .compare-grid {
+      display: grid; gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    .compare-card {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 24px 22px 20px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .compare-head {
+      display: flex; align-items: baseline; gap: 8px;
+      padding-bottom: 10px; margin-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-vs {
+      font-family: 'Lora', serif; font-style: italic;
+      color: var(--muted); font-size: 0.9rem;
+    }
+    .compare-card h3 {
+      font-family: 'Lora', serif; font-size: 1.15rem; font-weight: 600;
+      color: var(--text); letter-spacing: -0.005em;
+    }
+    .compare-card p {
+      font-size: 0.92rem; color: var(--text-mid); line-height: 1.65;
+    }
+    .compare-best::before { content: "✓ "; color: var(--accent); font-weight: 700; }
+    .compare-worst::before { content: "✗ "; color: color-mix(in oklch, var(--text-mid) 50%, transparent); font-weight: 700; }
+    .compare-card p em { font-style: italic; color: var(--text); }
+    .compare-card p strong { color: var(--text); font-weight: 600; }
+    .compare-verdict {
+      margin-top: 6px; padding-top: 10px;
+      border-top: 1px dashed var(--border);
+      font-size: 0.88rem !important; color: var(--text) !important;
+    }
+
+    /* ── Long-form essay ─────────────────────────────────────── */
+    .section.longform { max-width: 760px; }
+    .longform-body {
+      display: flex; flex-direction: column; gap: 16px;
+      margin-top: 8px;
+    }
+    .longform-body h3 {
+      font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 600;
+      color: var(--text); margin-top: 14px; letter-spacing: -0.005em;
+    }
+    .longform-body p {
+      font-family: 'Lora', serif;
+      font-size: 1.04rem; line-height: 1.78; color: var(--text-mid);
+    }
+    .longform-body p em { font-style: italic; color: var(--text); }
+    .longform-body p strong { color: var(--text); font-weight: 600; }
+
+    /* ── Pricing callout ─────────────────────────────────────── */
+    .pricing-callout {
+      max-width: 880px; margin: 0 auto; padding: 0 32px;
+    }
+    .pricing-card {
+      display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px;
+      align-items: center;
+      padding: 36px 34px;
+      background: var(--surface);
+      border: 1.5px solid var(--accent-mid); border-radius: 18px;
+      box-shadow: 0 20px 50px -28px color-mix(in oklch, var(--accent) 45%, transparent);
+    }
+    .pricing-label {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+    }
+    .pricing-card h2 {
+      font-family: 'Lora', serif; font-size: 1.5rem; font-weight: 600;
+      color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .pricing-card > div > p {
+      font-size: 0.95rem; color: var(--text-mid); line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .pricing-perks { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .pricing-perks li {
+      position: relative; padding-left: 26px;
+      font-size: 0.92rem; color: var(--text-mid); line-height: 1.5;
+    }
+    .pricing-perks li::before {
+      content: "✓"; position: absolute; left: 0; top: 0;
+      color: var(--accent); font-weight: 700;
+    }
+    .pricing-cta-wrap {
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 22px; text-align: center;
+      background: color-mix(in oklch, var(--accent) 6%, var(--surface));
+      border-radius: 14px;
+    }
+    .pricing-price {
+      font-family: 'Lora', serif; font-size: 1.3rem; font-weight: 600;
+      color: var(--text);
+    }
+    .pricing-cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 13px 22px; background: var(--accent); color: white;
+      font-size: 0.95rem; font-weight: 600; text-decoration: none;
+      border-radius: 10px; transition: transform 0.15s;
+    }
+    .pricing-cta:hover { transform: translateY(-1px); }
+    .pricing-note { font-size: 0.78rem; color: var(--muted); font-style: italic; }
+
+    /* ── FAQ ─────────────────────────────────────────────────── */
+    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+    .faq-item {
+      padding: 20px 22px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .faq-item h3 {
+      font-family: 'Lora', serif; font-size: 1.05rem; font-weight: 600;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .faq-item p { font-size: 0.92rem; color: var(--text-mid); line-height: 1.65; }
+    .faq-item p em { font-style: italic; color: var(--text); }
+
+    /* ── Closing CTA ─────────────────────────────────────────── */
+    .closing-cta {
+      max-width: 880px; margin: 12px auto 80px; padding: 40px 32px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .closing-cta h2 {
+      font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 600;
+      color: var(--text); margin-bottom: 12px; letter-spacing: -0.01em;
+    }
+    .closing-cta p {
+      font-size: 0.98rem; line-height: 1.7; color: var(--text-mid);
+      max-width: 560px; margin: 0 auto 24px;
+    }
+    .closing-cta .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; background: var(--accent); color: white;
+      font-size: 0.98rem; font-weight: 600; text-decoration: none;
+      border-radius: 10px;
+      transition: background 0.15s, transform 0.15s;
+      box-shadow: 0 8px 20px -6px color-mix(in oklch, var(--accent) 50%, transparent);
+    }
+    .closing-cta .btn:hover { transform: translateY(-1px); }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    .page-footer {
+      max-width: 880px; margin: 0 auto; padding: 0 32px 48px;
+      text-align: center;
+      font-size: 0.84rem; color: var(--muted); font-style: italic;
+    }
+    .page-footer a { color: var(--text-mid); text-decoration: none; }
+    .page-footer a:hover { color: var(--accent); }
+
+    @media (max-width: 760px) {
+      .page-header { padding: 0 16px; gap: 12px; }
+      .tagline { display: none; }
+      .page-hero { padding: 40px 20px 20px; }
+      .section { padding: 36px 20px; }
+      .benefit-grid, .compare-grid, .steps { gap: 12px; grid-template-columns: 1fr; }
+      .benefit-card, .compare-card, .step { padding: 18px; }
+      .benefit-card h3, .compare-card h3 { font-size: 1.05rem; }
+      .benefit-card p, .compare-card p, .longform-body p { font-size: 0.92rem; line-height: 1.6; }
+      .longform-body p { font-size: 0.96rem; line-height: 1.72; }
+      .pricing-callout { padding: 0 20px; }
+      .pricing-card { grid-template-columns: 1fr; padding: 24px 22px; gap: 20px; }
+      .closing-cta { padding: 32px 20px; margin-bottom: 48px; }
+    }
+
+    /* Smooth scroll anchor offset for sticky header */
+    html { scroll-behavior: smooth; }
+    .section, .closing-cta, .pricing-callout { scroll-margin-top: 72px; }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <a class="logo" href="/">Le<em>x</em>io</a>
+  <span class="tagline">Contextual definitions for serious readers</span>
+  <div class="header-spacer"></div>
+  <a class="back-link" href="/">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Lexio
+  </a>
+</header>
+
+<div class="page-hero">
+  <span class="eyebrow">For educators</span>
+  <h1>Keep students inside the <em>native text</em> — and turn every reading into a study guide.</h1>
+  <p class="lead">Lexio is a contextual dictionary built for the way language and linguistics courses actually work: students reading in the original, looking up the word that's blocking the sentence, and building a vocabulary they keep. No translation crutch. No hallucinated definitions. And a Word Bank that exports straight to Anki, so a reading assignment becomes an automated spaced-repetition deck.</p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request&body=Hi%20Lexio%20team%2C%0A%0AI%20teach%20%5Bcourse%2Fdepartment%5D%20at%20%5Binstitution%5D%20and%20I%27d%20like%20a%20demo%20for%20classroom%20use.%0A%0AApprox.%20number%20of%20students%3A%20%0ALanguages%2Ftexts%20we%20read%3A%20%0A%0AThanks!">Request a demo</a>
+    <a class="btn-ghost" href="#pricing">See classroom pricing</a>
+  </div>
+</div>
+
+<nav class="jumpnav" aria-label="Jump links">
+  <a href="#pedagogy">Pedagogy</a>
+  <a href="#accuracy">Contextual accuracy</a>
+  <a href="#workflow">Classroom workflow</a>
+  <a href="#compare">How it compares</a>
+  <a href="#pricing">Classroom pricing</a>
+  <a href="#faq">FAQ</a>
+</nav>
+
+<!-- ── Pedagogy ───────────────────────────────────────────────── -->
+<section class="section" id="pedagogy" aria-labelledby="pedagogy-title">
+  <span class="section-eyebrow">Pedagogy focus</span>
+  <h2 class="section-title" id="pedagogy-title">Reading assignments that <em>retain</em> themselves.</h2>
+  <p class="section-sub">The hard part of vocabulary isn't the first encounter — it's the fourth and fifth, days later, when retention actually happens. Lexio is built around that arc: every lookup is captured, organized, and ready to become a spaced-repetition deck without anyone copying anything by hand.</p>
+
+  <div class="benefit-grid">
+
+    <article class="benefit-card">
+      <div class="benefit-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14"/><path d="M5 12h14"/><path d="M5 16h9"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
+      </div>
+      <h3>The Word Bank</h3>
+      <p>Every word a student looks up is saved automatically — <em>with the sentence it came from</em>. Not a bare headword on a flashcard, but the term in its living context: the passage, the author's usage, the contextual sense Lexio returned. By the end of a reading week, each student has a personal record of exactly the vocabulary <em>they</em> found hard in <em>your</em> assigned text.</p>
+      <p class="benefit-meta">Per-student, persistent across sessions and devices.</p>
+    </article>
+
+    <article class="benefit-card">
+      <div class="benefit-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15V6a2 2 0 0 0-2-2H8L3 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z"/><path d="M7 4v5H2"/><path d="M12 12l3 3 3-3"/></svg>
+      </div>
+      <h3>Anki export, one click</h3>
+      <p>The Word Bank exports directly to <strong>Anki</strong>, the spaced-repetition standard students already trust. A reading assignment becomes a deck automatically: term on the front, contextual definition and source sentence on the back, scheduled by the algorithm that's been shown to move vocabulary into long-term memory. You assign the reading; the study guide builds itself.</p>
+      <p class="benefit-meta">Standard Anki import format — no plugin required.</p>
+    </article>
+
+    <article class="benefit-card">
+      <div class="benefit-icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <h3>Active immersion, not translation</h3>
+      <p>A bilingual dictionary or Google Translate pulls students <em>out</em> of the target language and hands them an answer. Lexio keeps them <em>inside</em> the text: it explains what the word is doing in <em>this</em> sentence and lets them keep reading in the original. The reading stays the lesson — comprehension comes from the page, not from a parallel translation.</p>
+      <p class="benefit-meta">Answer language is configurable for L2 immersion or L1 scaffolding.</p>
+    </article>
+
+  </div>
+</section>
+
+<!-- ── Contextual accuracy ────────────────────────────────────── -->
+<section class="section tint" id="accuracy" aria-labelledby="accuracy-title">
+  <div class="tint-inner">
+    <span class="section-eyebrow">Contextual accuracy</span>
+    <h2 class="section-title" id="accuracy-title">Definitions you can stand behind <em>in front of a class</em>.</h2>
+    <p class="section-sub">A wrong definition is worse than no definition — it teaches the wrong thing confidently. Lexio is engineered to return the sense the author actually intended, drawn from the surrounding sentence, with the model matched to how demanding the text is.</p>
+
+    <div class="benefit-grid">
+
+      <article class="benefit-card">
+        <div class="benefit-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <h3>Balanced mode — Gemini 2.5 Flash</h3>
+        <p>For prose that rewards a careful second pass — nineteenth-century novels, dense non-fiction, journalism with a load-bearing vocabulary — <strong>Balanced</strong> mode runs on <strong>Gemini 2.5 Flash</strong>. It reads the surrounding context and returns the contextual sense fast enough to keep a whole class moving through a text together.</p>
+        <p class="benefit-meta">Recommended default for most reading assignments.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="benefit-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4.5 3 5.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3c1.8-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z"/><line x1="9" y1="22" x2="15" y2="22"/></svg>
+        </div>
+        <h3>Deep mode — Claude Sonnet 4.5</h3>
+        <p>For texts where being almost-right is wrong — philosophy, law, classical literature, scholarly criticism — <strong>Deep</strong> mode uses <strong>Claude Sonnet 4.5</strong>. It catches terms of art, archaic and period-specific senses, and the figurative weight an author is leaning on, distinguishing the intended meaning from the near-synonyms a generic dictionary would lump together.</p>
+        <p class="benefit-meta">Built for the canon, the seminar, and the close reading.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="benefit-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>
+        </div>
+        <h3>Etymology &amp; word origins</h3>
+        <p>For linguistics and philology, the <em>history</em> of a word is half the lesson. Lexio's <strong>Etymology</strong> feature traces a word back to its roots — Latin, Greek, Old English, Proto-Indo-European where relevant — so students see how a sense drifted into the meaning in front of them. Morphology and semantic change stop being abstract and become visible in the text they're reading.</p>
+        <p class="benefit-meta">Ideal for historical linguistics, classics, and philology.</p>
+      </article>
+
+      <article class="benefit-card">
+        <div class="benefit-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <h3>Grounded in the sentence, not invented</h3>
+        <p>Lexio is constrained to define the word <em>as it is used in the passage you give it</em>, not to free-associate. It handles nuance, idiom, and figurative usage by reading the actual context — so it explains why <em>this</em> word, here, rather than confidently inventing a sense that fits nothing. Idioms are read as idioms; irony and register survive intact.</p>
+        <p class="benefit-meta">Honest about ambiguity instead of papering over it.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Classroom workflow ─────────────────────────────────────── -->
+<section class="section" id="workflow" aria-labelledby="workflow-title">
+  <span class="section-eyebrow">How it fits your course</span>
+  <h2 class="section-title" id="workflow-title">From assigned reading to retained vocabulary in <em>four steps</em>.</h2>
+  <p class="section-sub">No new platform to learn and no change to how you assign reading. Lexio sits on top of the texts you already use — on the web, in PDFs, or pasted into the homepage.</p>
+
+  <div class="steps">
+    <div class="step">
+      <h3>You assign the reading</h3>
+      <p>Any text in the original — a chapter, an article, a primary source, a PDF. Nothing to upload or convert; students read it where it already lives.</p>
+    </div>
+    <div class="step">
+      <h3>Students read &amp; tap</h3>
+      <p>Stuck on a word, they click it — on the page, in the Chrome extension, or via OCR from a photo of a printed book. The contextual definition appears in under two seconds.</p>
+    </div>
+    <div class="step">
+      <h3>Lookups become a Word Bank</h3>
+      <p>Every word, with its source sentence, is saved automatically — a per-student record of exactly the vocabulary <em>they</em> found difficult in your text.</p>
+    </div>
+    <div class="step">
+      <h3>Export to Anki, review, retain</h3>
+      <p>One click turns the week's Word Bank into a spaced-repetition deck. The reading reviews itself on the schedule that actually moves words into long-term memory.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Comparison ─────────────────────────────────────────────── -->
+<section class="section tint" id="compare" aria-labelledby="compare-title">
+  <div class="tint-inner">
+    <span class="section-eyebrow">Why not the tools you already use</span>
+    <h2 class="section-title" id="compare-title">Better than the glossary handout, Quizlet, and Translate.</h2>
+    <p class="section-sub">Honest comparisons with the three things language courses usually reach for. Lexio isn't trying to replace your syllabus — it replaces the busywork around it.</p>
+
+    <div class="compare-grid">
+
+      <article class="compare-card">
+        <div class="compare-head"><span class="compare-vs">vs.</span><h3>A glossary handout</h3></div>
+        <p class="compare-best">Where the handout wins: you control exactly which terms appear, curated to the lesson.</p>
+        <p class="compare-worst">Where it fails: you write it by hand, it's the same for every student regardless of what <em>they</em> struggle with, and it's static — no review schedule, no retention loop. Lexio captures each student's real difficulties automatically and turns them into a deck they keep reviewing.</p>
+        <p class="compare-verdict"><strong>Verdict:</strong> handout for the terms you require; Lexio for everything they actually trip on.</p>
+      </article>
+
+      <article class="compare-card">
+        <div class="compare-head"><span class="compare-vs">vs.</span><h3>Quizlet &amp; manual flashcards</h3></div>
+        <p class="compare-best">Where they win: established, familiar, fine once the cards exist.</p>
+        <p class="compare-worst">Where they fail: <em>making</em> the cards. Students retype words, paste in a generic definition stripped of context, and lose the sentence the word lived in. Lexio's cards are born from real reading — term, contextual sense, and source sentence — and export to Anki with no typing at all.</p>
+        <p class="compare-verdict"><strong>Verdict:</strong> skip the card-making chore; keep the spaced repetition.</p>
+      </article>
+
+      <article class="compare-card">
+        <div class="compare-head"><span class="compare-vs">vs.</span><h3>Google Translate</h3></div>
+        <p class="compare-best">Where Translate wins: getting the gist of a whole passage fast.</p>
+        <p class="compare-worst">Where it fails the classroom: it pulls students out of the target language and flattens register, idiom, irony, and period sense into one bland equivalent. Lexio keeps the original intact and explains what each word is <em>doing</em> — immersion preserved, not short-circuited.</p>
+        <p class="compare-verdict"><strong>Verdict:</strong> Translate for tourists; Lexio for readers in the original.</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Long-form essay ────────────────────────────────────────── -->
+<section class="section longform" id="why" aria-labelledby="why-title">
+  <h2 class="section-title" id="why-title">Why this matters for language and linguistics teaching.</h2>
+  <div class="longform-body">
+    <p>The central tension in teaching reading in a target language is well known to anyone who has run a seminar: the moment a student reaches for a bilingual dictionary or a translation app, they leave the language. The sentence stops being something to <em>read</em> and becomes something to <em>decode</em>, and the comprehension that should come from the text comes instead from a parallel crutch. Lexio is designed around the opposite move. It defines the blocking word in place, in the sense the surrounding sentence demands, and hands the student straight back to the original. The reading remains the lesson.</p>
+
+    <h3>Retention is a scheduling problem, and the schedule should be automatic</h3>
+    <p>Vocabulary acquisition research has been clear for decades that spaced repetition outperforms massed review. The obstacle has never been the principle — it's the friction of building and maintaining the cards. Students who would benefit most rarely keep a deck current, because making cards from a week's reading is tedious enough to skip. Lexio removes that friction entirely. Because every lookup is already captured <em>with its source sentence</em>, the deck is a byproduct of reading rather than a separate chore. Export to Anki is one click, and the spaced-repetition algorithm takes it from there. A reading assignment, in other words, becomes a study guide without anyone sitting down to write one.</p>
+
+    <h3>Accuracy is a pedagogical requirement, not a nice-to-have</h3>
+    <p>A definition delivered to a class carries authority. A confidently wrong one teaches the wrong thing and is hard to unteach. This is why Lexio matches the model to the text: <strong>Gemini 2.5 Flash</strong> in Balanced mode for the bulk of reading, and <strong>Claude Sonnet 4.5</strong> in Deep mode for philosophy, law, and the literary canon, where terms of art and archaic senses defeat a generic dictionary. The system is constrained to define the word <em>as used in the passage</em> rather than to invent a plausible-sounding sense — it reads idiom as idiom, preserves register and irony, and is honest about genuine ambiguity instead of papering over it.</p>
+
+    <h3>Etymology turns reading into linguistics</h3>
+    <p>For philology, historical linguistics, and the classics, a word's origin is not trivia — it's the content. Lexio's Etymology feature traces a term to its roots and shows how its sense drifted into the meaning on the page, making semantic change and morphology concrete in the very text the student is reading. A vocabulary lookup becomes a small lesson in how the language got here.</p>
+
+    <h3>Built to drop into a department, not disrupt it</h3>
+    <p>None of this asks you to change how you teach. There is no new platform for students to learn, no required upload step, no reformatting of your texts. Lexio works on the web, inside a Chrome extension, and on photographs of printed pages through OCR — it meets the reading where it already is. For a course or a whole department, the Classroom plan adds volume seats, one invoice instead of dozens of personal subscriptions, and onboarding from the Lexio team so the rollout takes a class period, not a semester.</p>
+  </div>
+</section>
+
+<!-- ── Pricing callout ────────────────────────────────────────── -->
+<section class="pricing-callout" id="pricing" aria-labelledby="pricing-title">
+  <div class="pricing-card">
+    <div>
+      <div class="pricing-label">Classroom / University</div>
+      <h2 id="pricing-title">Lexio for your whole class</h2>
+      <p>Department-wide seats, one invoice, and onboarding for your students — built for language and linguistics courses that assign reading in the original.</p>
+      <ul class="pricing-perks">
+        <li>Volume seats for students &amp; faculty</li>
+        <li>Centralized billing — one invoice, not dozens of personal subscriptions</li>
+        <li>All Pro features: Deep mode, Word Bank, Anki export, Etymology</li>
+        <li>Onboarding &amp; support from the Lexio team</li>
+      </ul>
+    </div>
+    <div class="pricing-cta-wrap">
+      <span class="pricing-price">Custom pricing</span>
+      <a class="pricing-cta" href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request&body=Hi%20Lexio%20team%2C%0A%0AI%20teach%20%5Bcourse%2Fdepartment%5D%20at%20%5Binstitution%5D%20and%20I%27d%20like%20a%20demo%20for%20classroom%20use.%0A%0AApprox.%20number%20of%20students%3A%20%0ALanguages%2Ftexts%20we%20read%3A%20%0A%0AThanks!">Contact sales</a>
+      <span class="pricing-note">Usually replies within a day</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────────── -->
+<section class="section" id="faq" aria-labelledby="faq-title">
+  <span class="section-eyebrow">Questions from faculty</span>
+  <h2 class="section-title" id="faq-title">Educator FAQ</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <h3>Can I use Lexio with my class or department?</h3>
+      <p>Yes — that's exactly what the Classroom / University plan is for. It provides volume seats for students and faculty, centralized billing on a single invoice, and onboarding from our team. <a href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request">Email us</a> with your course size and the texts you read and we'll put together a quote.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What languages does it work in?</h3>
+      <p>Lexio reads English closely and defines into eleven languages, both directions — Spanish, French, German, Russian, Japanese, Chinese, Arabic, Portuguese, Italian, and Dutch alongside English. The answer language is configurable per student, so you can run full L2 immersion or provide L1 scaffolding.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does the Anki export need a plugin?</h3>
+      <p>No. The Word Bank exports in Anki's standard import format — students import the file into the regular Anki app. Term on the front, contextual definition and source sentence on the back.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is it accurate enough to use in front of a class?</h3>
+      <p>Lexio is constrained to define each word <em>as it's used in the passage</em>, and matches the model to the text — Gemini 2.5 Flash for everyday reading, Claude Sonnet 4.5 for philosophy, law, and the canon. It's built to handle idiom, register, and archaic senses rather than invent a plausible-sounding definition, and it's honest about genuine ambiguity.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What about student privacy?</h3>
+      <p>Lexio only sends the word and a short surrounding context window needed to define it, and stores only what a student chooses to keep in their Word Bank. See the <a href="/privacy.html">privacy page</a> for the full detail.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Closing CTA ────────────────────────────────────────────── -->
+<div class="closing-cta">
+  <h2>Bring Lexio to your classroom.</h2>
+  <p>Tell us what you teach and how many students you have — we'll set up a demo and a quote for your course or department.</p>
+  <a class="btn" href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request&body=Hi%20Lexio%20team%2C%0A%0AI%20teach%20%5Bcourse%2Fdepartment%5D%20at%20%5Binstitution%5D%20and%20I%27d%20like%20a%20demo%20for%20classroom%20use.%0A%0AApprox.%20number%20of%20students%3A%20%0ALanguages%2Ftexts%20we%20read%3A%20%0A%0AThanks!">
+    Request a demo
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</div>
+
+<footer class="page-footer">
+  <em>Read deeper. Understand everything.</em><br>
+  © 2026 Lexio · <a href="/">Home</a> · <a href="/for-readers.html">For readers</a> · <a href="/glossary">Glossary</a> · <a href="/privacy.html">Privacy</a> · <a href="/credits.html">Credits</a>
+</footer>
+
+<!-- Privacy-friendly analytics by Plausible -->
+<script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init()
+</script>
+
+</body>
+</html>

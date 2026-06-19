@@ -29,6 +29,7 @@ _STATIC_PAGES = [
     ("/works",                 "weekly",  "0.8"),
     ("/this-week",             "daily",   "0.6"),
     ("/for-readers.html",      "monthly", "0.7"),
+    ("/for-educators.html",    "monthly", "0.7"),
     ("/chrome-extension.html", "monthly", "0.7"),
     ("/changelog.html",        "monthly", "0.4"),
     ("/privacy.html",          "yearly",  "0.2"),
