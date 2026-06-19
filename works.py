@@ -40,6 +40,14 @@ def render_work(work: dict) -> str:
     head = _glossary._head(work["title"], work["meta_description"], canonical)
 
     import json as _json
+    import re as _re
+
+    # Strip HTML for wordCount — Google uses content depth as a quality signal.
+    _plain = _re.sub(r"<[^>]+>", " ", work["body_html"])
+    _plain = _re.sub(r"\s+", " ", _plain).strip()
+    _word_count = len(_plain.split())
+    _book_name = work["title"].split(" — ")[0]
+
     jsonld = {
         "@context": "https://schema.org",
         "@graph": [
@@ -48,18 +56,30 @@ def render_work(work: dict) -> str:
                 "headline": work["title"],
                 "description": work["meta_description"],
                 "url": canonical,
+                "datePublished": work["updated"],
                 "dateModified": work["updated"],
+                "inLanguage": "en",
+                "wordCount": _word_count,
+                "image": "https://lexio.site/og-image.png",
+                "articleSection": "Reader's guides",
+                "keywords": [_book_name, work["author"], "reader's guide", "study guide", "literary analysis", "vocabulary"],
                 "about": {
                     "@type": "Book",
-                    "name": work["title"].split(" — ")[0],
+                    "name": _book_name,
                     "author": {"@type": "Person", "name": work["author"]},
+                },
+                "author": {
+                    "@type": "Organization",
+                    "name": "Lexio",
+                    "url": "https://lexio.site/",
                 },
                 "publisher": {
                     "@type": "Organization",
                     "name": "Lexio",
+                    "url": "https://lexio.site/",
                     "logo": {"@type": "ImageObject", "url": "https://lexio.site/favicon-512.png"},
                 },
-                "mainEntityOfPage": canonical,
+                "mainEntityOfPage": {"@type": "WebPage", "@id": canonical},
             },
             {
                 "@type": "BreadcrumbList",

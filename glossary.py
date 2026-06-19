@@ -275,6 +275,7 @@ def _head(title: str, description: str, canonical: str,
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{escape(title)} — Lexio</title>
   <meta name="description" content="{escape(description)}" />
+  <meta name="author" content="Lexio" />
   <link rel="canonical" href="{escape(canonical)}" />
   <link rel="alternate" hreflang="en" href="{escape(canonical)}" />
   <link rel="alternate" hreflang="x-default" href="{escape(canonical)}" />
@@ -289,6 +290,7 @@ def _head(title: str, description: str, canonical: str,
   <meta property="og:description" content="{escape(description)}" />
   <meta property="og:url" content="{escape(canonical)}" />
   <meta property="og:image" content="{escape(og_image)}" />
+  <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Lexio" />
 
   <!-- Twitter -->
