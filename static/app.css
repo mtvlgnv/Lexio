@@ -1261,12 +1261,20 @@
     #scroll-nudge:hover svg { opacity: 1; }
     #scroll-nudge.hidden { opacity: 0; pointer-events: none; }
     @media (max-width: 760px) {
+      @keyframes nudge-bounce {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50%       { transform: translateX(-50%) translateY(8px); }
+      }
       #scroll-nudge {
         left: 50%; right: auto;
         bottom: 24px;
-        transform: translateX(-50%);
+        animation: nudge-bounce 1.6s ease-in-out infinite;
       }
-      #scroll-nudge svg { width: 30px; height: 30px; }
+      #scroll-nudge svg {
+        width: 30px; height: 30px;
+        animation: none;
+        opacity: 0.6;
+      }
       body:not(.app-compact) #scroll-nudge { display: none; }
     }
     /* Only hidden when user is actively in-app (typing/analyzing) —
@@ -3273,11 +3281,10 @@
        drop backdrop-filter blurs, hide redundant sections, simplify
        the hero, and reduce sample-passages to a single card. */
     @media (max-width: 760px) {
+      /* Keep WebGL gradients on mobile — phones handle it fine */
       .lp-warm-area { background: var(--surface); }
       .lp-warm-area::before { display: none; }
-      .lp-hero { background: transparent; }
       .lp-hero::before { display: none; }
-      .lp-hero-veil { display: none !important; }
       .lp-twin { background: var(--bg); }
       .lp-twin .lp-section-title,
       .lp-twin .lp-section-title em { color: var(--text); }
