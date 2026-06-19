@@ -3415,12 +3415,12 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const REVEAL_SELECTORS = [
     '.lp-steps', '.lp-features', '.lp-pro', '.lp-trending',
-    '.lp-twin', '.lp-faq', '.lp-modes', '.lp-ext',
+    '.lp-twin', '.lp-edu', '.lp-faq', '.lp-modes', '.lp-ext',
     '.lp-desktop', '.lp-download', '.lp-trending-compact'
   ];
   document.querySelectorAll(REVEAL_SELECTORS.join(','))
     .forEach(el => el.classList.add('lp-reveal'));
-  document.querySelectorAll('.lp-steps-grid, .lp-features-grid, .lp-pro-grid')
+  document.querySelectorAll('.lp-steps-grid, .lp-features-grid, .lp-pro-grid, .lp-edu-grid')
     .forEach(el => el.classList.add('lp-reveal-stagger'));
 
   if (reduce || !('IntersectionObserver' in window)) {
