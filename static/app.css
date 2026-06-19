@@ -1214,27 +1214,16 @@
       #input-text { flex: 0 0 auto; resize: none; overflow: hidden; }
 
       /* ── Mobile toolbar ─────────────────────────────────────
-         Tighten the composer bar; make OCR button larger and labelled
-         so phone users immediately see "take a photo" as an option. */
-      .composer-bar { padding: 8px 10px; gap: 6px; flex-wrap: nowrap; }
-      /* OCR camera button: give it a label and make it pill-shaped */
+         Only style the OCR button to be more visible — keep everything
+         else exactly as it was so the layout doesn't break. */
       .composer-icon-btn {
         display: flex; align-items: center; gap: 5px;
-        padding: 8px 12px; border-radius: 20px;
+        padding: 6px 12px; border-radius: 20px;
         background: var(--accent-lt); color: var(--accent);
         border: 1px solid var(--accent-mid); font-size: 0.8rem;
         font-weight: 600; white-space: nowrap;
       }
       .composer-icon-btn::after { content: 'Scan'; }
-      /* Shrink secondary items to give Analyze button room */
-      .btn-sample { display: none; }
-      .char-count { display: none; }
-      .mode-dropdown .mode-trigger-label { font-size: 0.75rem; }
-      #analyze-btn { min-width: 0; flex: 1; }
-      /* Usage pill: show but compact */
-      .usage-pill { font-size: 0.7rem; }
-      /* Hide lang picker in toolbar (accessible via ☰ menu) */
-      .lang-btn { display: none; }
     }
 
     /* ── Scroll nudge ───────────────────────────────────────── */
