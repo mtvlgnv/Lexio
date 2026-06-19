@@ -3278,7 +3278,16 @@
     @media (max-width: 760px) {
       /* Kill expensive backgrounds */
       #warm-webgl, #twin-webgl { display: none !important; }
-      .lp-warm-area { background: var(--bg); }
+      /* CSS-only glow: approximates the desktop WebGL warm gradient at zero GPU cost */
+      .lp-warm-area {
+        background:
+          radial-gradient(ellipse 110% 38% at 50% 0%,
+            color-mix(in oklch, var(--accent) 18%, transparent) 0%,
+            color-mix(in oklch, var(--accent)  6%, transparent) 50%,
+            transparent 100%
+          ),
+          var(--bg);
+      }
       .lp-hero-veil { display: none !important; }
       .lp-hero::before { display: none; }
       .lp-twin { background: var(--bg); }
@@ -3290,8 +3299,8 @@
 
       /* Hero — clean warm background, tighter padding */
       .lp-hero {
-        background: var(--bg);
-        padding: 32px 20px 24px;
+        background: transparent;
+        padding: 56px 20px 24px;
         min-height: 0;
         gap: 22px;
       }
