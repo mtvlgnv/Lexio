@@ -3281,26 +3281,7 @@
        drop backdrop-filter blurs, hide redundant sections, simplify
        the hero, and reduce sample-passages to a single card. */
     @media (max-width: 760px) {
-      /* WebGL rAF loop causes text jitter on mobile — kill the canvases
-         and replace with a smooth CSS gradient animation instead. */
-      #warm-webgl, #twin-webgl { display: none !important; }
-      @keyframes lp-grad-mobile {
-        0%   { background-position: 0% 50%; }
-        50%  { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-      .lp-warm-area {
-        background: linear-gradient(135deg,
-          #f5ece4,
-          #f2d9c8,
-          #e8cfd8,
-          #ddd0e8,
-          #f0d9c0,
-          #f5ece4
-        );
-        background-size: 300% 300%;
-        animation: lp-grad-mobile 10s ease infinite;
-      }
+      .lp-warm-area { background: var(--surface); }
       .lp-warm-area::before { display: none; }
       .lp-hero { background: transparent; }
       .lp-hero::before { display: none; }
