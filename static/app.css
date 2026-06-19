@@ -3285,6 +3285,13 @@
       .lp-warm-area { background: var(--surface); }
       .lp-warm-area::before { display: none; }
       .lp-hero::before { display: none; }
+      /* Isolate the WebGL canvas on its own GPU compositing layer so its
+         per-frame repaints don't jitter the text above it. */
+      #warm-webgl, #twin-webgl {
+        will-change: transform;
+        transform: translateZ(0);
+      }
+      .lp-hero-left { will-change: transform; transform: translateZ(0); }
       .lp-twin { background: var(--bg); }
       .lp-twin .lp-section-title,
       .lp-twin .lp-section-title em { color: var(--text); }
