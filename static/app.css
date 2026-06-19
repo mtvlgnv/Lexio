@@ -1219,10 +1219,8 @@
 
       /* Hide the model picker dropdown on mobile — it flies upward over the
          text panel (position:absolute, bottom:100%) with no clipping.
-         Mobile users always get the default model; they can change it via
-         the ☰ menu. Also hide btn-sample to keep the toolbar uncluttered. */
+         Mobile users can change mode via the ☰ menu instead. */
       .mode-dropdown { display: none; }
-      .btn-sample    { display: none; }
 
     }
 
