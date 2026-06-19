@@ -1222,8 +1222,9 @@
       .mode-menu {
         bottom: auto;
         top: calc(100% + 6px);
-        right: 0;
-        left: auto;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
         min-width: 0;
         width: max-content;
         max-width: calc(100vw - 16px);
