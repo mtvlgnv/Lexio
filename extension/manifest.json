@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Lexio",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "AI-powered contextual definitions. Select any word to see exactly what it means in that sentence.",
 
   "permissions": ["storage", "contextMenus"],
