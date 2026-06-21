@@ -183,7 +183,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
     # ── AI call (no debit until we have a valid response) ──────────────────
     def _call_and_parse():
         if actual_model == "fast":
-            text = ai._call_openai(prompt)          # GPT-4o Mini
+            text = ai._call_groq(prompt)            # Llama 3.1 8B Instant (Groq)
         elif actual_model == "balanced":
             text = ai._call_google(prompt)          # Gemini 2.5 Flash
         else:  # deep

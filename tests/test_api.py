@@ -35,6 +35,7 @@ def _mock_ai(monkeypatch):
     # /define lives in app.routers.define and calls ai._call_* by attribute,
     # so patch the provider wrappers on the app.ai module.
     monkeypatch.setattr("app.ai._call_openai", lambda prompt: VALID_AI_JSON)
+    monkeypatch.setattr("app.ai._call_groq", lambda prompt: VALID_AI_JSON)
     monkeypatch.setattr("app.ai._call_google", lambda prompt: VALID_AI_JSON)
     monkeypatch.setattr("app.ai._call_anthropic", lambda prompt, model="": VALID_AI_JSON)
 

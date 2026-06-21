@@ -26,7 +26,7 @@ Lexio from "paste your own text" into "a beautiful library of books you read in-
 - Python · FastAPI · SQLAlchemy · SQLite (`lexio.db`) · slowapi rate limiting.
 - Core endpoint: `POST /define` (word + context + lang + mode → contextual definition).
 - Three modes routed to three AI providers (all SDKs already integrated):
-  - **Fast** — GPT-4o mini (free, 1 credit)
+  - **Fast** — Llama 3.1 8B Instant via Groq (free, 1 credit)
   - **Balanced** — Gemini 2.5 Flash (Pro, 2 credits)
   - **Deep** — Claude Sonnet 4.5 (Pro, 3 credits)
 - Other: `/ocr`, `/fetch-text`, `/auth/{register,login,google,apple}`, `/api/{usage,pro-status}`,
