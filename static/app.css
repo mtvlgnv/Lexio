@@ -2367,9 +2367,9 @@
       text-transform: uppercase; padding: 2px 7px; border-radius: 4px; white-space: nowrap;
     }
     .lp-model-badge-anthropic { background: var(--accent-lt); color: var(--accent); border: 1px solid var(--accent-mid); }
-    .lp-model-badge-openai { background: oklch(92% 0.04 145); color: oklch(36% 0.14 145); border: 1px solid oklch(84% 0.07 145); }
+    .lp-model-badge-groq { background: oklch(94% 0.04 40); color: oklch(52% 0.19 40); border: 1px solid oklch(86% 0.08 40); }
     .lp-model-badge-google  { background: oklch(92% 0.04 240); color: oklch(38% 0.15 240); border: 1px solid oklch(84% 0.07 240); }
-    [data-theme="dark"] .lp-model-badge-openai { background: oklch(24% 0.04 145); color: oklch(70% 0.12 145); border-color: oklch(34% 0.06 145); }
+    [data-theme="dark"] .lp-model-badge-groq { background: oklch(26% 0.06 40); color: oklch(74% 0.14 40); border-color: oklch(36% 0.08 40); }
     [data-theme="dark"] .lp-model-badge-google  { background: oklch(22% 0.04 240); color: oklch(68% 0.12 240); border-color: oklch(32% 0.06 240); }
 
     /* Dark-mode transparent cards & pills — match the "How it works" panel */

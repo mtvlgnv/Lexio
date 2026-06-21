@@ -58,7 +58,7 @@
     <g>
     <rect x="560" y="336" width="150" height="66" rx="12" fill="#2c2018" stroke="#e7822b"/>
     <text x="576" y="362" class="sans" fill="#fff5e8" font-size="17" font-weight="800">Fast</text>
-    <text x="576" y="385" class="sans" fill="#8f7f72" font-size="13" font-weight="700">GPT-4o Mini</text>
+    <text x="576" y="385" class="sans" fill="#8f7f72" font-size="13" font-weight="700">Llama 3.1 8B</text>
     
   </g>
     <g>

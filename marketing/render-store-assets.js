@@ -254,7 +254,7 @@ function settingsPanel(x, y) {
     <text x="${x + 40}" y="${y + 112}" class="sans" fill="${C.orange}" font-size="15" font-weight="900" letter-spacing=".12em">BEHAVIOR</text>
     ${settingRow(x, y + 144, 'Auto-popup on selection', 'On', true)}
     <text x="${x + 40}" y="${y + 226}" class="sans" fill="${C.orange}" font-size="15" font-weight="900" letter-spacing=".12em">AI MODE</text>
-    ${modeButton(x + 40, y + 250, 'Fast', 'GPT-4o Mini', true)}
+    ${modeButton(x + 40, y + 250, 'Fast', 'Llama 3.1 8B', true)}
     ${modeButton(x + 220, y + 250, 'Balanced', 'Gemini 2.5', false, 'PRO')}
     ${modeButton(x + 400, y + 250, 'Deep', 'Claude', false, 'PRO')}
     <text x="${x + 40}" y="${y + 350}" class="sans" fill="${C.orange}" font-size="15" font-weight="900" letter-spacing=".12em">LANGUAGE</text>
