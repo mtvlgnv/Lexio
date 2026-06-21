@@ -6,6 +6,12 @@
 const MAX_HISTORY = 5;
 const WB_KEY      = 'lexio_wbv1';
 
+/* ── Analytics: educator/classroom CTA clicks (Apollo campaign attribution) ── */
+function trackEducatorCTA(location) {
+  try { window.plausible && plausible('Educator CTA', { props: { location } }); } catch (e) {}
+  try { window.posthog && posthog.capture('educator_cta_click', { location }); } catch (e) {}
+}
+
 /* ── Desktop app auth handoff ───────────────────────────────── */
 // After login, if opened from the Mac app, redirect token back via lexio:// scheme
 function _maybeRedirectDesktop(token, user) {
