@@ -68,7 +68,8 @@ nano .env
 |---|---|
 | `SECRET_KEY` | JWT signing key. Generate with `python3 -c 'import secrets; print(secrets.token_urlsafe(48))'`. **Never commit.** |
 | `ANTHROPIC_API_KEY` | Powers **Deep** mode (Claude Sonnet 4.5). |
-| `OPENAI_API_KEY` | Powers **Fast** mode (GPT-4o Mini) and OCR fallback. |
+| `GROQ_API_KEY` | Powers **Fast** mode (Llama 3.1 8B Instant). |
+| `OPENAI_API_KEY` | OCR fallback (no longer used for Fast mode). |
 | `GOOGLE_API_KEY` | Powers **Balanced** mode (Gemini 2.5 Flash) and primary OCR. |
 
 You need at least one AI key for the app to start, but only the mode whose key is set will work.
