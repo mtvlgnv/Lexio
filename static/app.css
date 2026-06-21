@@ -520,6 +520,17 @@
     #token-view { flex:1; padding:14px 24px 16px; font-size:1rem; line-height:1.9; overflow-y:auto; word-break:break-word; font-weight:300; }
     #token-view.hidden, #input-text.hidden { display:none; }
 
+    /* Fills leftover blank space below short passages so it reads as an
+       affordance, not a broken layout. */
+    .space-filler-hint {
+      margin-top:28px; padding:16px 18px; border:1px dashed var(--border); border-radius:10px;
+      display:flex; align-items:flex-start; gap:10px; max-width:420px;
+      color:var(--muted); font-size:0.82rem; line-height:1.55; font-weight:400;
+    }
+    .space-filler-hint svg { flex-shrink:0; color:var(--accent-mid); margin-top:1px; }
+    .space-filler-hint .filler-edit-link { color:var(--accent); cursor:pointer; font-weight:600; text-decoration:underline; text-decoration-color:var(--accent-lt); }
+    .space-filler-hint .filler-edit-link:hover { color:var(--accent-dk); }
+
     /* Staggered wave-in animation */
     @keyframes token-appear {
       from { opacity:0; transform:translateY(3px); }

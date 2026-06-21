@@ -861,6 +861,29 @@ function analyze() {
   showSmartPlaceholder(raw);
   advanceTooltip(1);
   if (typeof updateAppCompact === 'function') updateAppCompact();
+  maybeShowSpaceFiller();
+}
+
+// Short passages leave a lot of blank space below the text, which reads as
+// broken rather than intentional. Fill it with a dashed drop-zone hint that
+// doubles as a discoverable "add more text" affordance.
+function maybeShowSpaceFiller() {
+  const tv = document.getElementById('token-view');
+  if (!tv) return;
+  const existing = tv.querySelector('.space-filler-hint');
+  if (existing) existing.remove();
+  requestAnimationFrame(() => {
+    if (tv.classList.contains('hidden')) return;
+    if (tv.clientHeight - tv.scrollHeight < 160) return;
+    const hint = document.createElement('div');
+    hint.className = 'space-filler-hint';
+    hint.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Got more to read? Drag &amp; drop a .txt file, or <span class="filler-edit-link" id="filler-edit-link">paste a longer passage</span>.</span>
+    `;
+    tv.appendChild(hint);
+    document.getElementById('filler-edit-link').addEventListener('click', resetToEdit);
+  });
 }
 
 function computeReadingStats(text) {
