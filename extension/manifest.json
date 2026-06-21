@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Lexio",
+  "name": "Lexio – Contextual Dictionary",
   "version": "1.0.5",
-  "description": "AI-powered contextual definitions. Select any word to see exactly what it means in that sentence.",
+  "description": "Click any word on any page or PDF for an AI definition that fits the exact sentence — a contextual dictionary for readers.",
 
   "permissions": ["storage", "contextMenus"],
   "host_permissions": ["https://lexio.site/*"],
