@@ -361,9 +361,9 @@ async def get_models():
             {
                 "id": "fast",
                 "name": "Fast",
-                "provider": "OpenAI",
-                "model": "GPT-4o Mini",
-                "available": bool(os.getenv("OPENAI_API_KEY")),
+                "provider": "Groq",
+                "model": "Llama 3.1 8B Instant",
+                "available": bool(os.getenv("GROQ_API_KEY")),
                 "description": "Quick answers, instant lookups"
             },
             {

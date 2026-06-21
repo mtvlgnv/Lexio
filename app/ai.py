@@ -18,6 +18,8 @@ from google import genai as google_genai
 from google.genai import types as genai_types
 
 # ── API Clients ──────────────────────────────────────────────────────────────
+# openai_client is kept for the /ocr vision fallback in routers/account.py;
+# OpenAI is no longer used for the /define fast tier (that's Groq below).
 anthropic_client = anthropic.Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 openai_client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY", ""))
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY", ""))
@@ -34,18 +36,6 @@ def _call_anthropic(prompt: str, model: str = "claude-haiku-4-5-20251001") -> st
         messages=[{"role": "user", "content": prompt}],
     )
     return message.content[0].text.strip()
-
-
-def _call_openai(prompt: str) -> str:
-    """Call OpenAI API (GPT-4 mini) and return the response text."""
-    if not os.getenv("OPENAI_API_KEY"):
-        raise ValueError("OPENAI_API_KEY not configured")
-    response = openai_client.chat.completions.create(
-        model="gpt-4o-mini",
-        max_tokens=600,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return response.choices[0].message.content.strip()
 
 
 def _call_groq(prompt: str) -> str:
