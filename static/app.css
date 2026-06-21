@@ -866,14 +866,26 @@
     .tweak-row:last-child { margin-bottom:0; }
 
     /* ── Right panel — placeholder ──────────────────────────── */
-    #def-placeholder { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 28px; text-align:center; gap:14px; }
+    #def-placeholder { position:relative; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 28px; text-align:center; gap:14px; overflow:hidden; isolation:isolate; }
+
+    #def-placeholder::before {
+      content:''; position:absolute; top:50%; left:50%; width:340px; height:340px;
+      background:radial-gradient(circle, var(--accent-mid) 0%, transparent 70%);
+      opacity:0.35; filter:blur(40px); transform:translate(-50%,-50%) scale(1);
+      z-index:-1; pointer-events:none; animation:glow-breathe 6s ease-in-out infinite;
+    }
+
+    @keyframes glow-breathe {
+      0%,100% { opacity:0.25; transform:translate(-50%,-50%) scale(0.92); }
+      50%     { opacity:0.4;  transform:translate(-50%,-50%) scale(1.06); }
+    }
 
     @keyframes glyph-breathe {
       0%,100% { opacity:0.35; transform:scale(1); }
       50%     { opacity:0.55; transform:scale(1.05); }
     }
     .placeholder-glyph { font-family:'Fraunces',serif; font-size:3.5rem; font-style:italic; color:var(--accent-mid); line-height:1; user-select:none; animation:glyph-breathe 5s ease-in-out infinite; }
-    .placeholder-title { font-family:'Fraunces',serif; font-size:1rem; font-weight:500; color:var(--text-mid); }
+    .placeholder-title { font-family:'Fraunces',serif; font-size:1.15rem; font-weight:500; color:var(--text-mid); transition:opacity 0.2s; }
     #def-placeholder p { font-size:0.82rem; max-width:220px; line-height:1.65; color:var(--muted); }
 
     /* Suggested word chips */

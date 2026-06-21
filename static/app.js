@@ -1848,6 +1848,27 @@ document.addEventListener('click', e => {
 let authToken = null;
 let authUser  = null;
 
+const GREETING_TEMPLATES = [
+  n => `Ready, ${n}?`,
+  n => `Your words, ${n}.`,
+  n => `Pick a word, ${n}.`,
+  n => `What'll it be, ${n}?`,
+];
+
+function updateGreeting() {
+  const title = document.querySelector('#def-placeholder .placeholder-title');
+  if (!title) return;
+  const raw = authUser && (authUser.name || authUser.email);
+  if (raw) {
+    const first = raw.split('@')[0].split(' ')[0];
+    const name  = first.charAt(0).toUpperCase() + first.slice(1);
+    const pick  = GREETING_TEMPLATES[Math.floor(Math.random() * GREETING_TEMPLATES.length)];
+    title.textContent = pick(name);
+  } else {
+    title.textContent = 'Click any word';
+  }
+}
+
 function updateAcctBtn() {
   const btn = document.getElementById('acct-btn');
   if (authUser) {
@@ -1859,6 +1880,7 @@ function updateAcctBtn() {
     btn.classList.remove('signed-in');
     btn.title = 'Sign in';
   }
+  updateGreeting();
   // The word bank is an account feature — hide its header chip when signed out.
   const wbBtn = document.querySelector('.wb-header-btn');
   if (wbBtn) wbBtn.style.display = authUser ? '' : 'none';
