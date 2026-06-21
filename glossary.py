@@ -332,13 +332,23 @@ def _related_block(slugs: Iterable[str]) -> str:
   </div>"""
 
 
-def _cta_block() -> str:
-    return """
+def _cta_block(term: str | None = None) -> str:
+    """Generic CTA by default. Pass an entry's term to personalize the
+    headline and, for single-word terms, deep-link straight into the tool
+    with that word preloaded (see prefillWord() in app.js)."""
+    if term:
+        from urllib.parse import quote as _urlquote
+        href = f"/app?word={_urlquote(term, safe='')}" if " " not in term.strip() else "/"
+        headline = f'Look up "{escape(term)}" like this — in any book, in any browser.'
+    else:
+        href = "/"
+        headline = "Look up any word like this — in any book, in any browser."
+    return f"""
   <div class="cta">
     <span class="cta-eyebrow">Try Lexio</span>
-    <h3>Look up any word like this — in any book, in any browser.</h3>
+    <h3>{headline}</h3>
     <p>Lexio is a free Chrome extension and web app that reads a word's actual context and tells you what it means <em>in this sentence</em>, not from a generic dictionary.</p>
-    <a class="cta-btn" href="/">Try Lexio — free →</a>
+    <a class="cta-btn" href="{href}">Try Lexio — free →</a>
   </div>"""
 
 
@@ -430,7 +440,7 @@ def render_entry(entry: dict) -> str:
 
   {entry['body_html']}
 
-  {_cta_block()}
+  {_cta_block(entry['term'])}
   {_related_block(entry.get('related', []))}
 
   <p class="closing">
