@@ -3490,33 +3490,22 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
   document.querySelectorAll('.lp-reveal, .lp-reveal-stagger')
     .forEach(el => io.observe(el));
 
-  // ── Hero-specific reveal ──────────────────────────────────────
-  // The hero often peeks above the bottom of the viewport on first
-  // paint (because the compact app area + carousel above is shorter
-  // than 100vh on tall screens), which would fire the standard
-  // observer immediately. We want the hero to stay hidden until the
-  // user has actively scrolled into it.
-  //
-  // Trick: rootMargin "-40% 0px -40% 0px" effectively shrinks the
-  // viewport to its middle 20%. Elements only count as "intersecting"
-  // when they cross that thin central band — i.e. when the user has
-  // genuinely scrolled the hero into view.
+  // ════════ HERO REVEAL — revertible block B (added 2026-06-27) ════════
+  // The hero is ABOVE the fold, so it must be visible on load — it must NOT
+  // be gated behind a scroll. The old code used a central-band
+  // IntersectionObserver, which left the hero permanently blank (opacity:0)
+  // for any viewport where it never crossed the band and the user didn't
+  // scroll (e.g. a 1-second bounce). CSS now reveals it on load (lpHeroIn);
+  // this adds `is-visible` immediately as defense-in-depth, plus a timed
+  // failsafe so the hero can never stay hidden even if something interferes.
+  // To revert: restore the IntersectionObserver version above.
   const heroEls = document.querySelectorAll('.lp-hero-anim');
   if (heroEls.length) {
-    if (reduce) {
-      heroEls.forEach(el => el.classList.add('is-visible'));
-    } else {
-      const heroIo = new IntersectionObserver(function(entries) {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-visible');
-            heroIo.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0, rootMargin: '-30% 0px -45% 0px' });
-      heroEls.forEach(el => heroIo.observe(el));
-    }
+    const showHero = () => heroEls.forEach(el => el.classList.add('is-visible'));
+    showHero();                  // reveal on load (immediate)
+    setTimeout(showHero, 1200);  // failsafe net — guarantees visibility
   }
+  // ════════ end revertible block B ════════
 })();
 
 // ── Hero word swap: DISABLED ────────────────────────────────────

@@ -3379,32 +3379,39 @@
       50%      { box-shadow: 0 0 0 10px color-mix(in oklch, var(--accent) 0%,  transparent); }
     }
 
-    /* ── Hero-specific reveal (triggers only when user has scrolled
-       into the hero — not on first paint when it peeks at the bottom). */
+    /* ════════ HERO REVEAL — revertible block A (added 2026-06-27) ════════
+       Above-the-fold hero now reveals on LOAD via a one-shot CSS animation
+       instead of a scroll-gated JS observer. Base state is opacity:1 so the
+       hero can NEVER be stuck blank if JS fails to run or the observer never
+       fires. The legacy `.is-visible` rules are kept as harmless no-ops.
+       To revert: restore the opacity:0 + transition + .is-visible version. */
     .lp-hero-anim {
-      opacity: 0;
-      transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 1;
+      animation: lpHeroIn 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
       will-change: opacity, transform;
     }
-    .lp-hero-anim-fade { transform: translateY(20px); }
+    .lp-hero-anim-fade { /* translateY now handled by the lpHeroIn keyframes */ }
     .lp-hero-anim.is-visible { opacity: 1; transform: none; }
     /* Staggered children (h1, sub, CTA, trust line) */
-    .lp-hero-anim-stagger { opacity: 1; }  /* the container stays — only the children animate */
+    .lp-hero-anim-stagger { opacity: 1; animation: none; }  /* container stays put; children animate */
     .lp-hero-anim-stagger > * {
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 1;
+      animation: lpHeroIn 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
     }
+    .lp-hero-anim-stagger > *:nth-child(1) { animation-delay: 0ms;   }
+    .lp-hero-anim-stagger > *:nth-child(2) { animation-delay: 90ms;  }
+    .lp-hero-anim-stagger > *:nth-child(3) { animation-delay: 180ms; }
+    .lp-hero-anim-stagger > *:nth-child(4) { animation-delay: 270ms; }
     .lp-hero-anim-stagger.is-visible > * { opacity: 1; transform: none; }
-    .lp-hero-anim-stagger.is-visible > *:nth-child(1) { transition-delay: 0ms;   }
-    .lp-hero-anim-stagger.is-visible > *:nth-child(2) { transition-delay: 90ms;  }
-    .lp-hero-anim-stagger.is-visible > *:nth-child(3) { transition-delay: 180ms; }
-    .lp-hero-anim-stagger.is-visible > *:nth-child(4) { transition-delay: 270ms; }
+    @keyframes lpHeroIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+    /* ════════ end revertible block A ════════ */
 
     @media (prefers-reduced-motion: reduce) {
       .lp-reveal, .lp-reveal-stagger > * { opacity: 1; transform: none; transition: none; }
-      .lp-hero-anim, .lp-hero-anim-stagger > * { opacity: 1; transform: none; transition: none; }
+      .lp-hero-anim, .lp-hero-anim-stagger > * { opacity: 1; transform: none; transition: none; animation: none; }
       .lp-hero::after { animation: none; opacity: 0.7; }
       .lp-btn-primary { animation: none; }
       .lp-hero h1 em { transition: none; }
