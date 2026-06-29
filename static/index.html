@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=41">
+  <link rel="stylesheet" href="/app.css?v=42">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -619,14 +619,15 @@
         </label>
       </div>
 
-      <div class="def-section hidden" id="def-definition-section">
-        <span class="def-label" data-i18n="meaning">Meaning</span>
-        <p id="def-definition" class="def-text"></p>
-      </div>
-
+      <!-- Contextual meaning first — it's the answer users actually want. -->
       <div class="def-section">
         <span class="def-label" data-i18n="inContext">In this context</span>
         <p id="def-contextual" class="def-text"></p>
+      </div>
+
+      <div class="def-section hidden" id="def-definition-section">
+        <span class="def-label" data-i18n="meaning">General definition</span>
+        <p id="def-definition" class="def-text"></p>
       </div>
 
       <button class="more-toggle" id="more-toggle" style="display:none" onclick="toggleMoreSection()">
@@ -1733,7 +1734,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=41"></script>
+<script src="/app.js?v=42"></script>
 
 <script type="module">
 const _gradReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
