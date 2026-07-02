@@ -51,23 +51,39 @@ const MARGIN_BOTTOM = 10;
 const COLLAPSED = { width: 44, height: 42 };
 const EXPANDED  = { width: 460, height: 580 };
 
-// Roughly how long macOS's own native window-resize animation takes for a
-// move of this size — used only to keep the CSS content crossfade in
-// pill.html roughly in sync with the window's own growth. Not a real
-// duration we control (see animateBounds below).
-const EXPAND_MS   = 380;
+// Duration/easing for the custom smooth window-grow (see animateBounds
+// below) — tuned to read as a visible, deliberate "blend" from pill to
+// full app, similar in spirit to the reference clip of the redesigned
+// Siri "Search or Ask" bar growing from a small dot into its full pill
+// shape (measured at roughly 1.2s in that clip; we use a brisker 480ms
+// since this is a utility trigger, not a marketing demo — easy to retune).
+const EXPAND_MS   = 480;
 const COLLAPSE_MS = 260;
+function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
 
-// Smooth resize via macOS's native Core Animation-driven window resize
-// (the 2nd `true` arg to setBounds). A hand-rolled JS timer loop (the
-// previous approach) runs on Node's main-process event loop, which is
-// prone to jitter under any concurrent work — visibly less smooth than
-// letting the OS itself, GPU/vsync-composited, own the animation. We lose
-// precise duration control (macOS decides the timing), but "smoother" is
-// the actual goal here, and native resize looks identical to every other
-// macOS window animation the user already knows.
-function animateBounds(bounds) {
-  if (win && !win.isDestroyed()) win.setBounds(bounds, true);
+// Manually steps a window's bounds from `from` to `to` over `duration`ms.
+// (Tried switching this to native setBounds(bounds, true) for a GPU/vsync
+// -composited resize, expecting it to be smoother — it wasn't; this custom
+// stepped version reads better in practice, so it's back.) Also gives full
+// control over duration/easing, which native animation doesn't expose.
+function animateBounds(from, to, duration, easing) {
+  return new Promise((resolve) => {
+    const start = Date.now();
+    function step() {
+      if (!win || win.isDestroyed()) return resolve();
+      const t = Math.min(1, (Date.now() - start) / duration);
+      const e = easing(t);
+      win.setBounds({
+        x:      Math.round(from.x      + (to.x      - from.x)      * e),
+        y:      Math.round(from.y      + (to.y      - from.y)      * e),
+        width:  Math.round(from.width  + (to.width  - from.width)  * e),
+        height: Math.round(from.height + (to.height - from.height) * e),
+      }, false);
+      if (t < 1) setTimeout(step, 1000 / 60);
+      else resolve();
+    }
+    step();
+  });
 }
 
 const BLANK_ICON = nativeImage.createFromDataURL(
@@ -156,15 +172,17 @@ async function expand() {
   try {
     if (!win || win.isDestroyed()) { console.warn('[overlay] window was gone — recreating.'); createWindow(); }
     const selection = await captureSelection();   // BEFORE resize/show/focus — see note above
-    // Content crossfade (pill.html's CSS) starts now, alongside the window's
-    // own native smooth resize below — both tuned to ~EXPAND_MS so they
+    const fromBounds = win.getBounds();
+    const toBounds    = boundsFor(EXPANDED);
+    // Content crossfade (pill.html's CSS) starts now, in parallel with the
+    // window smoothly growing below — both tuned to ~EXPAND_MS so they
     // land together instead of the content "arriving" before/after the
     // window has finished resizing.
     win.webContents.send('overlay:expand', { text: selection });
     win.setIgnoreMouseEvents(false);
     win.show();
     win.focus();
-    animateBounds(boundsFor(EXPANDED));
+    await animateBounds(fromBounds, toBounds, EXPAND_MS, easeOutCubic);
   } catch (err) {
     console.error('[overlay] expand() failed:', err);
     expanded = false;   // never leave the toggle stuck — next trigger should get a clean retry
@@ -175,7 +193,8 @@ function collapse() {
   if (!expanded) return;
   expanded = false;
   win.webContents.send('overlay:collapse');
-  animateBounds(boundsFor(COLLAPSED));
+  const fromBounds = win.getBounds();
+  animateBounds(fromBounds, boundsFor(COLLAPSED), COLLAPSE_MS, easeOutCubic);
 }
 
 function toggle() { expanded ? collapse() : expand(); }
