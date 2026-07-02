@@ -4,40 +4,70 @@
   "description": "Lexio — floating contextual dictionary",
   "main": "main.js",
   "scripts": {
-    "start":       "electron .",
-    "start-app":   "electron main-app.js",
+    "start": "electron .",
+    "start-app": "electron main-app.js",
+    "start-overlay": "electron main-overlay.js",
     "create-icon": "node_modules/.bin/electron create-icon.js",
     "build-icons": "bash scripts/build-icons.sh",
-    "dist":        "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64",
-    "dist-app":    "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64 --config electron-builder-app.json"
+    "dist": "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64",
+    "dist-app": "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64 --config electron-builder-app.json"
   },
   "devDependencies": {
-    "electron":         "^34.0.0",
+    "electron": "^43.0.0",
     "electron-builder": "^25.0.0"
   },
+  "optionalDependencies": {
+    "uiohook-napi": "^1.5.4"
+  },
   "build": {
-    "appId":       "site.lexio.mini",
+    "appId": "site.lexio.mini",
     "productName": "Lexio Mini",
-    "afterSign":   "scripts/after-sign.js",
-    "files": ["main.js"],
+    "afterSign": "scripts/after-sign.js",
+    "files": [
+      "main.js"
+    ],
     "protocols": [
-      { "name": "Lexio", "schemes": ["lexio"] }
+      {
+        "name": "Lexio",
+        "schemes": [
+          "lexio"
+        ]
+      }
     ],
     "mac": {
       "category": "public.app-category.education",
-      "icon":     "build/icon.icns",
-      "target":   [{ "target": "dmg", "arch": ["arm64"] }],
+      "icon": "build/icon.icns",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
       "identity": null
     },
     "dmg": {
-      "title":        "Lexio Mini",
+      "title": "Lexio Mini",
       "artifactName": "Lexio-Mini-${version}-arm64.dmg",
-      "icon":         "build/icon.icns",
+      "icon": "build/icon.icns",
       "contents": [
-        { "x": 130, "y": 220, "type": "file"    },
-        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+        {
+          "x": 130,
+          "y": 220,
+          "type": "file"
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
       ],
-      "window": { "width": 540, "height": 380 }
+      "window": {
+        "width": 540,
+        "height": 380
+      }
     }
   }
 }
