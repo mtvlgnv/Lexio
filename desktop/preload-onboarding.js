@@ -4,10 +4,10 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('lexioOnboarding', {
-  getAccessibilityStatus: () => ipcRenderer.invoke('onboarding:accessibility-status'),
-  requestAccessibility:   () => ipcRenderer.invoke('onboarding:request-accessibility'),
-  openSignIn:             () => ipcRenderer.send('onboarding:open-signin'),
-  setLaunchAtLogin:       (v) => ipcRenderer.send('onboarding:set-launch-at-login', v),
+  getAccessibilityStatus: () => ipcRenderer.invoke('app:accessibility-status'),
+  requestAccessibility:   () => ipcRenderer.invoke('app:request-accessibility'),
+  openSignIn:             () => ipcRenderer.send('app:open-signin'),
+  setLaunchAtLogin:       (v) => ipcRenderer.send('app:set-launch-at-login', v),
   finish:                 () => ipcRenderer.send('onboarding:finish'),
 
   // Main → renderer: pushed once the lexio://auth deep link lands, or once

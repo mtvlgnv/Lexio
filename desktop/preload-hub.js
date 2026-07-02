@@ -1,0 +1,20 @@
+// Preload for the Hub (menu-bar dashboard: Recent / Settings / Account).
+// Exposes a minimal, safe IPC surface to hub.html — no Node in the renderer.
+const { contextBridge, ipcRenderer } = require('electron');
+
+contextBridge.exposeInMainWorld('lexioHub', {
+  getRecent: () => ipcRenderer.invoke('hub:get-recent'),
+  getAuth:   () => ipcRenderer.invoke('hub:get-auth'),
+  signOut:   () => ipcRenderer.send('hub:sign-out'),
+
+  getAccessibilityStatus: () => ipcRenderer.invoke('app:accessibility-status'),
+  requestAccessibility:   () => ipcRenderer.invoke('app:request-accessibility'),
+  openSignIn:             () => ipcRenderer.send('app:open-signin'),
+  getLaunchAtLogin:       () => ipcRenderer.invoke('app:get-launch-at-login'),
+  setLaunchAtLogin:       (v) => ipcRenderer.send('app:set-launch-at-login', v),
+  getHotkey:              () => ipcRenderer.invoke('app:get-hotkey'),
+  showOnboarding:         () => ipcRenderer.send('app:show-onboarding'),
+
+  onRecentUpdated: (cb) => ipcRenderer.on('hub:recent-updated', (_e, payload) => cb(payload || [])),
+  onAuthUpdated:   (cb) => ipcRenderer.on('hub:auth-updated',   (_e, payload) => cb(payload || null)),
+});

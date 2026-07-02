@@ -47,7 +47,9 @@ if (process.platform === 'darwin') app.dock.hide();   // live as an overlay, not
 let win  = null;
 let tray = null;
 let onboardingWin = null;
+let hubWin = null;
 let expanded = false;
+let activeFallbackShortcut = null;
 
 // Bottom margin and the two window sizes the pill morphs between.
 // The collapsed pill is a 36px gradient disc (see pill.html). COLLAPSED is
@@ -172,6 +174,11 @@ async function captureSelection() {
     return null;
   }
   console.log(`[overlay] capture: got ${captured.length} chars`);
+
+  const recentLookups = [{ word: captured.slice(0, 80), at: Date.now() }, ...store.get().recentLookups].slice(0, 50);
+  store.set({ recentLookups });
+  if (hubWin && !hubWin.isDestroyed()) hubWin.webContents.send('hub:recent-updated', recentLookups);
+
   // If the onboarding wizard is open on its practice-run step, this real
   // capture is what it's waiting for — let it advance itself instead of
   // requiring a manual "Next" click.
@@ -287,20 +294,65 @@ function createOnboardingWindow() {
   onboardingWin.on('closed', () => { onboardingWin = null; });
 }
 
+/* ── Hub window ─────────────────────────────────────────────────────
+   A small dropdown-style dashboard anchored under the tray icon —
+   Recent lookups / Settings / Account, per the master plan (Settings
+   merged into the Hub rather than its own window). Closes on blur, like
+   a normal menu-bar dropdown, unlike the onboarding wizard. */
+function createHubWindow() {
+  if (hubWin && !hubWin.isDestroyed()) { hubWin.focus(); return; }
+  // Same anchoring math as main.js's getPosition() for its tray dropdown.
+  const trayBounds = tray ? tray.getBounds() : null;
+  const width = 380, height = 520;
+  hubWin = new BrowserWindow({
+    width,
+    height,
+    x: trayBounds ? Math.round(trayBounds.x + trayBounds.width / 2 - width / 2) : undefined,
+    y: trayBounds ? Math.round(trayBounds.y + trayBounds.height + 6) : undefined,
+    resizable: false,
+    frame: false,
+    backgroundColor: '#f5efe8',
+    roundedCorners: true,
+    alwaysOnTop: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload-hub.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+    show: false,
+  });
+  hubWin.loadFile(path.join(__dirname, 'hub.html'));
+  hubWin.once('ready-to-show', () => hubWin.show());
+  hubWin.on('blur', () => { if (hubWin && !hubWin.isDestroyed()) hubWin.close(); });
+  hubWin.on('closed', () => { hubWin = null; });
+}
+
 /* ── Renderer → main IPC ────────────────────────────────────────── */
 ipcMain.on('overlay:expand-request',   () => expand());
 ipcMain.on('overlay:collapse-request', () => collapse());
 
-ipcMain.handle('onboarding:accessibility-status', () => checkAccessibility());
-ipcMain.handle('onboarding:request-accessibility', () => ensureAccessibility());
-ipcMain.on('onboarding:open-signin', () => shell.openExternal(SIGNIN_URL));
-ipcMain.on('onboarding:set-launch-at-login', (_e, value) => {
+// Shared between the onboarding wizard and the Hub's Settings/Account tabs.
+ipcMain.handle('app:accessibility-status', () => checkAccessibility());
+ipcMain.handle('app:request-accessibility', () => ensureAccessibility());
+ipcMain.on('app:open-signin', () => shell.openExternal(SIGNIN_URL));
+ipcMain.handle('app:get-launch-at-login', () => store.get().settings.launchAtLogin);
+ipcMain.on('app:set-launch-at-login', (_e, value) => {
   app.setLoginItemSettings({ openAtLogin: !!value });
   store.set({ settings: { ...store.get().settings, launchAtLogin: !!value } });
 });
+ipcMain.handle('app:get-hotkey', () => activeFallbackShortcut);
+ipcMain.on('app:show-onboarding', () => createOnboardingWindow());
+
 ipcMain.on('onboarding:finish', () => {
   store.set({ onboardingComplete: true });
   if (onboardingWin && !onboardingWin.isDestroyed()) onboardingWin.close();
+});
+
+ipcMain.handle('hub:get-recent', () => store.get().recentLookups);
+ipcMain.handle('hub:get-auth',   () => store.get().auth);
+ipcMain.on('hub:sign-out', () => {
+  store.set({ auth: null });
+  if (hubWin && !hubWin.isDestroyed()) hubWin.webContents.send('hub:auth-updated', null);
 });
 
 /* ── lexio:// URL scheme — auth handoff from the website ──────────
@@ -323,6 +375,9 @@ app.on('open-url', (event, url) => {
         if (onboardingWin && !onboardingWin.isDestroyed()) {
           onboardingWin.webContents.send('onboarding:auth-complete', { token, user });
         }
+        if (hubWin && !hubWin.isDestroyed()) {
+          hubWin.webContents.send('hub:auth-updated', { token, user });
+        }
       }
     }
   } catch (err) {
@@ -334,17 +389,22 @@ app.on('open-url', (event, url) => {
 function createTray() {
   tray = new Tray(BLANK_ICON);
   tray.setTitle(' Lx ');
-  tray.setToolTip('Lexio Glance — double-tap ⌘ or click to open');
+  tray.setToolTip('Lexio Glance — click for recent lookups & settings, double-tap ⌘ to look something up');
   const menu = Menu.buildFromTemplate([
-    { label: 'Open Lexio',      click: () => expand() },
-    { label: 'Hide',            click: () => collapse() },
+    { label: 'Open Lexio',        click: () => expand() },
+    { label: 'Hide',              click: () => collapse() },
     { type: 'separator' },
-    { label: 'Getting Started', click: () => createOnboardingWindow() },
+    { label: 'Recent & Settings', click: () => createHubWindow() },
+    { label: 'Getting Started',   click: () => createOnboardingWindow() },
     { type: 'separator' },
-    { label: 'Quit Lexio',      click: () => app.quit() },
+    { label: 'Quit Lexio',        click: () => app.quit() },
   ]);
   tray.on('right-click', () => tray.popUpContextMenu(menu));
-  tray.on('click', () => toggle());
+  // Left-click opens the Hub (dashboard), matching the Wispr/Raycast
+  // pattern — the pill itself is already the quick-action trigger
+  // (hover/click/double-tap ⌘), so the tray icon's own job is the
+  // dashboard, not a second way to toggle the pill.
+  tray.on('click', () => createHubWindow());
 }
 
 /* ── Trigger: double-tap ⌘ (native), with fallback shortcut ─────── */
@@ -356,7 +416,7 @@ function registerFallbackShortcut() {
   const candidates = ['CommandOrControl+Shift+L', 'CommandOrControl+Shift+K', 'Alt+CommandOrControl+L'];
   for (const accel of candidates) {
     const ok = globalShortcut.register(accel, () => toggle());
-    if (ok) { console.log(`[overlay] fallback shortcut active: ${accel}`); return accel; }
+    if (ok) { console.log(`[overlay] fallback shortcut active: ${accel}`); activeFallbackShortcut = accel; return accel; }
     console.warn(`[overlay] could not register ${accel} — likely taken by another app`);
   }
   console.error('[overlay] no fallback shortcut could be registered — use double-tap ⌘ or the tray icon.');

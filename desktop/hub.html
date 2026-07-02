@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lexio Glance — Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #f5efe8;
+    --surface: #fffdfa;
+    --border:  #e4ddd4;
+    --text:    #1a1612;
+    --muted:   #7a7269;
+    --accent:  #c35500;
+    --accent2: #ff7a18;
+    --good:    #4a7c3f;
+  }
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: var(--text);
+    overflow: hidden;
+    cursor: default;
+  }
+  .titlebar {
+    -webkit-app-region: drag;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px 6px;
+  }
+  .mark { font-family: 'Fraunces', serif; font-weight: 600; font-size: 0.95rem; }
+  .mark em { color: var(--accent); font-style: italic; }
+  .titlebar-close {
+    -webkit-app-region: no-drag;
+    width: 22px; height: 22px; border: none; border-radius: 6px;
+    background: transparent; color: var(--muted); cursor: pointer; font-size: 0.85rem;
+  }
+  .titlebar-close:hover { background: var(--border); color: var(--text); }
+
+  .tabs {
+    -webkit-app-region: no-drag;
+    display: flex; gap: 4px; padding: 0 12px 10px; border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    flex: 1; text-align: center; font-size: 0.82rem; font-weight: 600; color: var(--muted);
+    background: transparent; border: none; border-radius: 8px; padding: 7px 0; cursor: pointer;
+  }
+  .tab:hover { background: var(--surface); }
+  .tab.active { color: var(--accent); background: var(--surface); box-shadow: inset 0 0 0 1px var(--border); }
+
+  .panel { display: none; flex-direction: column; height: calc(100% - 84px); }
+  .panel.active { display: flex; }
+
+  /* ── Recent ── */
+  .recent-list { flex: 1; overflow-y: auto; padding: 8px 10px; }
+  .recent-item {
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 9px 10px; border-radius: 9px;
+  }
+  .recent-item:hover { background: var(--surface); }
+  .recent-word { font-size: 0.88rem; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .recent-time { font-size: 0.72rem; color: var(--muted); }
+  .empty-state {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 20px; text-align: center; color: var(--muted); font-size: 0.85rem;
+  }
+
+  /* ── Settings / Account (shared layout) ── */
+  .stack { flex: 1; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .row-label { font-size: 0.85rem; }
+  .row-hint { font-size: 0.76rem; color: var(--muted); margin-top: 2px; }
+  .divider { height: 1px; background: var(--border); }
+
+  .switch {
+    -webkit-app-region: no-drag;
+    position: relative; width: 36px; height: 20px; border-radius: 10px; flex-shrink: 0;
+    background: var(--border); border: none; cursor: pointer; transition: background 0.2s;
+  }
+  .switch::after {
+    content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+    border-radius: 50%; background: var(--surface); transition: transform 0.2s;
+  }
+  .switch.on { background: var(--accent); }
+  .switch.on::after { transform: translateX(16px); }
+
+  button.link {
+    -webkit-app-region: no-drag;
+    background: transparent; border: none; color: var(--accent); font-weight: 600;
+    font-size: 0.82rem; cursor: pointer; text-align: left; padding: 0;
+  }
+  button.primary, button.secondary {
+    -webkit-app-region: no-drag;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem;
+    border-radius: 9px; padding: 9px 16px; cursor: pointer; border: none;
+  }
+  button.primary {
+    color: #fff9f2;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    box-shadow: 0 5px 14px -6px rgba(195,85,0,0.5);
+  }
+  button.primary:active { transform: scale(0.97); }
+  button.secondary { color: var(--muted); background: var(--surface); box-shadow: inset 0 0 0 1px var(--border); }
+  button.secondary:hover { color: var(--text); }
+
+  .status-row { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: var(--muted); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
+  .status-dot.granted { background: var(--good); }
+
+  .account-name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.05rem; }
+  .account-email { font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="titlebar">
+    <span class="mark">Le<em>x</em>io <span style="color:var(--muted); font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.7rem;">GLANCE</span></span>
+    <button class="titlebar-close" id="close" title="Close">✕</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="recent">Recent</button>
+    <button class="tab" data-tab="settings">Settings</button>
+    <button class="tab" data-tab="account">Account</button>
+  </div>
+
+  <div class="panel active" data-panel="recent">
+    <div class="recent-list" id="recent-list"></div>
+  </div>
+
+  <div class="panel" data-panel="settings">
+    <div class="stack">
+      <div class="row">
+        <div>
+          <div class="row-label">Launch Lexio Glance at login</div>
+        </div>
+        <button class="switch" id="login-switch"></button>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="row-label">Trigger</div>
+        <div class="row-hint">Double-tap ⌘ anywhere, or the fallback shortcut <span id="hotkey-text">—</span>.</div>
+      </div>
+      <div class="divider"></div>
+      <div>
+        <div class="row-label">Accessibility permission</div>
+        <div class="status-row" style="margin-top:6px;">
+          <span class="status-dot" id="access-dot"></span>
+          <span id="access-text">Checking…</span>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <button class="link" id="show-onboarding">Show onboarding again</button>
+    </div>
+  </div>
+
+  <div class="panel" data-panel="account">
+    <div class="stack" id="account-stack"></div>
+  </div>
+
+<script>
+  const tabs   = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    tabs.forEach((x) => x.classList.toggle('active', x === t));
+    panels.forEach((p) => p.classList.toggle('active', p.dataset.panel === t.dataset.tab));
+  }));
+
+  document.getElementById('close').addEventListener('click', () => window.close());
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') window.close(); });
+
+  // ── Recent ──────────────────────────────────────────────────────
+  function timeAgo(ts) {
+    const s = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+    if (s < 60) return 'just now';
+    const m = Math.floor(s / 60); if (m < 60) return `${m}m ago`;
+    const h = Math.floor(m / 60); if (h < 24) return `${h}h ago`;
+    const d = Math.floor(h / 24); if (d < 7) return `${d}d ago`;
+    return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  }
+  function renderRecent(list) {
+    const el = document.getElementById('recent-list');
+    if (!list || !list.length) {
+      el.innerHTML = '';
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.innerHTML = '<div>Nothing yet</div><div>Double-tap ⌘ on any selected text to look something up.</div>';
+      el.appendChild(empty);
+      return;
+    }
+    el.innerHTML = list.map((item) => `
+      <div class="recent-item">
+        <div class="recent-word">${escapeHtml(item.word)}</div>
+        <div class="recent-time">${timeAgo(item.at)}</div>
+      </div>
+    `).join('');
+  }
+  function escapeHtml(s) {
+    return (s || '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+  window.lexioHub?.getRecent().then(renderRecent);
+  window.lexioHub?.onRecentUpdated(renderRecent);
+
+  // ── Settings ────────────────────────────────────────────────────
+  let launchAtLogin = false;
+  window.lexioHub?.getLaunchAtLogin().then((v) => {
+    launchAtLogin = !!v;
+    document.getElementById('login-switch').classList.toggle('on', launchAtLogin);
+  });
+  document.getElementById('login-switch').addEventListener('click', (e) => {
+    launchAtLogin = !launchAtLogin;
+    e.currentTarget.classList.toggle('on', launchAtLogin);
+    window.lexioHub?.setLaunchAtLogin(launchAtLogin);
+  });
+  window.lexioHub?.getHotkey().then((accel) => {
+    document.getElementById('hotkey-text').textContent = accel || 'none registered';
+  });
+  async function refreshAccessStatus() {
+    const granted = await window.lexioHub?.getAccessibilityStatus();
+    document.getElementById('access-dot').classList.toggle('granted', !!granted);
+    document.getElementById('access-text').textContent = granted ? 'Granted' : 'Not granted — open System Settings › Privacy & Security › Accessibility';
+  }
+  refreshAccessStatus();
+  document.getElementById('show-onboarding').addEventListener('click', () => window.lexioHub?.showOnboarding());
+
+  // ── Account ─────────────────────────────────────────────────────
+  function renderAccount(auth) {
+    const el = document.getElementById('account-stack');
+    if (auth && auth.token) {
+      const name  = auth.user?.name  || 'Signed in';
+      const email = auth.user?.email || '';
+      el.innerHTML = `
+        <div>
+          <div class="account-name">${escapeHtml(name)}</div>
+          ${email ? `<div class="account-email">${escapeHtml(email)}</div>` : ''}
+        </div>
+        <div class="divider"></div>
+        <button class="secondary" id="sign-out">Sign out</button>
+      `;
+      document.getElementById('sign-out').addEventListener('click', () => window.lexioHub?.signOut());
+    } else {
+      el.innerHTML = `
+        <div class="row-hint">Sign in to sync your saved words and lookup history across devices.</div>
+        <button class="primary" id="sign-in">Sign in with Lexio</button>
+      `;
+      document.getElementById('sign-in').addEventListener('click', () => window.lexioHub?.openSignIn());
+    }
+  }
+  window.lexioHub?.getAuth().then(renderAccount);
+  window.lexioHub?.onAuthUpdated(renderAccount);
+</script>
+</body>
+</html>
