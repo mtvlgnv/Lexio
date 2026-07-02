@@ -436,7 +436,8 @@
 </div>
 
 <script>
-const urlParams = new URLSearchParams(window.location.search);
+// File URLs often strip query parameters in Electron webviews, so we use hash fragments instead
+const urlParams = new URLSearchParams(window.location.hash.substring(1));
 if (urlParams.get('desktop') === '1') {
   document.getElementById('titlebar').style.display = 'none';
 }
@@ -468,7 +469,7 @@ async function checkProStatus() {
   try {
     const token = localStorage.getItem('lexio_token');
     if (!token) { lockFreeModels(); return; }
-    const r = await fetch('/api/pro-status', { headers: { Authorization: 'Bearer ' + token } });
+    const r = await fetch('https://lexio.site/api/pro-status', { headers: { Authorization: 'Bearer ' + token } });
     if (!r.ok) { lockFreeModels(); return; }
     const d = await r.json();
     if (d.is_pro) {
@@ -626,7 +627,7 @@ async function fetchDef(word) {
     const tok = localStorage.getItem('lexio_token');
     const hdrs = { 'Content-Type': 'application/json' };
     if (tok) hdrs['Authorization'] = 'Bearer ' + tok;
-    const resp = await fetch('/define', {
+    const resp = await fetch('https://lexio.site/define', {
       method: 'POST',
       headers: hdrs,
       body: JSON.stringify({ word, context, lang: 'auto', model }),
