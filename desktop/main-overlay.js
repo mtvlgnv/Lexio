@@ -24,9 +24,16 @@
  * for users who haven't granted it yet.
  */
 const { app, BrowserWindow, globalShortcut, screen, Tray, Menu, nativeImage, ipcMain,
-        clipboard, systemPreferences } = require('electron');
+        clipboard, systemPreferences, shell } = require('electron');
 const { execFile } = require('child_process');
 const path = require('path');
+const store = require('./store');
+
+// Same handoff the website already implements for main.js (see
+// static/app.js _maybeRedirectDesktop): opening lexio.site with
+// ?desktop_auth=1 makes it redirect to lexio://auth?token=...&user=...
+// after a successful login/signup, instead of staying on the site.
+const SIGNIN_URL = 'https://lexio.site?desktop_auth=1';
 
 // Surface anything that would otherwise fail silently — a background
 // overlay with no console attached is easy to leave in a broken state
@@ -39,6 +46,7 @@ if (process.platform === 'darwin') app.dock.hide();   // live as an overlay, not
 
 let win  = null;
 let tray = null;
+let onboardingWin = null;
 let expanded = false;
 
 // Bottom margin and the two window sizes the pill morphs between.
@@ -124,6 +132,14 @@ function ensureAccessibility() {
   return ok;
 }
 
+// Non-prompting status check, safe to poll from the onboarding UI —
+// isTrustedAccessibilityClient(true) instead shows the system prompt every
+// time it's called, which would spam the user if polled on an interval.
+function checkAccessibility() {
+  if (process.platform !== 'darwin') return true;
+  return systemPreferences.isTrustedAccessibilityClient(false);
+}
+
 function sendCmdC() {
   return new Promise((resolve) => {
     execFile('osascript',
@@ -156,6 +172,12 @@ async function captureSelection() {
     return null;
   }
   console.log(`[overlay] capture: got ${captured.length} chars`);
+  // If the onboarding wizard is open on its practice-run step, this real
+  // capture is what it's waiting for — let it advance itself instead of
+  // requiring a manual "Next" click.
+  if (onboardingWin && !onboardingWin.isDestroyed()) {
+    onboardingWin.webContents.send('onboarding:practice-capture', { text: captured });
+  }
   return captured;
 }
 
@@ -239,9 +261,74 @@ function createWindow() {
   win.on('closed', () => { win = null; expanded = false; });
 }
 
+/* ── Onboarding window ─────────────────────────────────────────────
+   A normal-sized (not pill-shaped) window shown on first launch, and
+   reopenable later from the tray. Only one instance at a time — a second
+   request just focuses the existing window. */
+function createOnboardingWindow() {
+  if (onboardingWin && !onboardingWin.isDestroyed()) { onboardingWin.focus(); return; }
+  onboardingWin = new BrowserWindow({
+    width: 560,
+    height: 620,
+    resizable: false,
+    frame: false,
+    backgroundColor: '#f5efe8',
+    roundedCorners: true,
+    alwaysOnTop: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload-onboarding.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+    show: false,
+  });
+  onboardingWin.loadFile(path.join(__dirname, 'onboarding.html'));
+  onboardingWin.once('ready-to-show', () => onboardingWin.show());
+  onboardingWin.on('closed', () => { onboardingWin = null; });
+}
+
 /* ── Renderer → main IPC ────────────────────────────────────────── */
 ipcMain.on('overlay:expand-request',   () => expand());
 ipcMain.on('overlay:collapse-request', () => collapse());
+
+ipcMain.handle('onboarding:accessibility-status', () => checkAccessibility());
+ipcMain.handle('onboarding:request-accessibility', () => ensureAccessibility());
+ipcMain.on('onboarding:open-signin', () => shell.openExternal(SIGNIN_URL));
+ipcMain.on('onboarding:set-launch-at-login', (_e, value) => {
+  app.setLoginItemSettings({ openAtLogin: !!value });
+  store.set({ settings: { ...store.get().settings, launchAtLogin: !!value } });
+});
+ipcMain.on('onboarding:finish', () => {
+  store.set({ onboardingComplete: true });
+  if (onboardingWin && !onboardingWin.isDestroyed()) onboardingWin.close();
+});
+
+/* ── lexio:// URL scheme — auth handoff from the website ──────────
+   Mirrors the same mechanism main.js already uses: the site redirects to
+   lexio://auth?token=...&user=... after a successful login/signup when it
+   was opened with ?desktop_auth=1 (see SIGNIN_URL above). */
+app.setAsDefaultProtocolClient('lexio');
+
+app.on('open-url', (event, url) => {
+  event.preventDefault();
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === 'auth') {
+      const token = parsed.searchParams.get('token');
+      const rawUser = parsed.searchParams.get('user');
+      if (token) {
+        let user = null;
+        try { user = rawUser ? JSON.parse(rawUser) : null; } catch {}
+        store.set({ auth: { token, user } });
+        if (onboardingWin && !onboardingWin.isDestroyed()) {
+          onboardingWin.webContents.send('onboarding:auth-complete', { token, user });
+        }
+      }
+    }
+  } catch (err) {
+    console.error('[overlay] failed to handle lexio:// URL:', err);
+  }
+});
 
 /* ── Tray (so the floating widget is always quittable) ──────────── */
 function createTray() {
@@ -249,10 +336,12 @@ function createTray() {
   tray.setTitle(' Lx ');
   tray.setToolTip('Lexio Glance — double-tap ⌘ or click to open');
   const menu = Menu.buildFromTemplate([
-    { label: 'Open Lexio',  click: () => expand() },
-    { label: 'Hide',        click: () => collapse() },
+    { label: 'Open Lexio',      click: () => expand() },
+    { label: 'Hide',            click: () => collapse() },
     { type: 'separator' },
-    { label: 'Quit Lexio',  click: () => app.quit() },
+    { label: 'Getting Started', click: () => createOnboardingWindow() },
+    { type: 'separator' },
+    { label: 'Quit Lexio',      click: () => app.quit() },
   ]);
   tray.on('right-click', () => tray.popUpContextMenu(menu));
   tray.on('click', () => toggle());
@@ -306,6 +395,7 @@ if (!app.requestSingleInstanceLock()) {
     createWindow();
     createTray();
     registerTriggers();
+    if (!store.get().onboardingComplete) createOnboardingWindow();
     app.on('activate', () => { if (!win) createWindow(); });
   });
 }
