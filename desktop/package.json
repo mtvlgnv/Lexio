@@ -2,7 +2,7 @@
   "name": "lexio-desktop",
   "version": "1.0.0",
   "description": "Lexio — floating contextual dictionary",
-  "main": "main.js",
+  "main": "main-overlay.js",
   "scripts": {
     "start": "electron .",
     "start-app": "electron main-app.js",
@@ -16,16 +16,16 @@
     "electron": "^43.0.0",
     "electron-builder": "^25.0.0"
   },
+  "overrides": {
+    "node-abi": "latest"
+  },
   "optionalDependencies": {
     "uiohook-napi": "^1.5.4"
   },
   "build": {
-    "appId": "site.lexio.mini",
-    "productName": "Lexio Mini",
+    "appId": "site.lexio.glance",
+    "productName": "Lexio Glance",
     "afterSign": "scripts/after-sign.js",
-    "files": [
-      "main.js"
-    ],
     "protocols": [
       {
         "name": "Lexio",

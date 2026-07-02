@@ -16,6 +16,11 @@
     --muted:   #7a7269;
     --accent:  #c35500;
     --accent2: #ff7a18;
+    /* Same warm palette as the marketing site's WebGL hero gradient. */
+    --gradient-color-1: #ef7040;
+    --gradient-color-2: #c2541e;
+    --gradient-color-3: #7a3b9e;
+    --gradient-color-4: #f0b060;
   }
   html, body {
     width: 100%; height: 100%;
@@ -37,19 +42,27 @@
   }
 
   /* ── Collapsed pill ─────────────────────────────────────────────
-     A small disc filled with the same animated WebGL gradient used on
-     the marketing site (identical --gradient-color-* tokens, same
-     whatamesh library). Hovering it now triggers the full expand (see
-     the mouseenter listener below) rather than a separate cosmetic
-     scale/shadow hover state, so there's no lingering "grow slightly"
-     micro-interaction to clash with the real expand animation starting
-     at the same time. */
+     A small disc filled with a pure-CSS animated gradient — 4 soft,
+     independently-drifting radial blobs in the marketing site's brand
+     colors. NOT WebGL: whatamesh's mesh gradient sizes its detail off
+     the canvas's absolute pixel dimensions, so at a real 36px it only
+     ever shows a tiny, mostly-flat slice of the pattern (confirmed by
+     testing both a scaled-down full render and a cropped window into a
+     larger one — both still looked flat/banded, not swirly). A CSS
+     radial-gradient doesn't have that problem: its position/size are
+     percentages of the ELEMENT's own box, so the blobs are always
+     correctly proportioned regardless of how small the element is.
+     Hovering the pill triggers the full expand (see the mouseenter
+     listener below) rather than a separate cosmetic scale/shadow hover
+     state, so there's no lingering "grow slightly" micro-interaction to
+     clash with the real expand animation starting at the same time. */
   .pill {
     -webkit-app-region: drag;          /* let users drag the widget */
+    position: relative;
     width: 36px; height: 36px;
     margin: 0 auto 4px;
     border-radius: 50%;
-    overflow: hidden;                  /* clips the square canvas into a disc */
+    overflow: hidden;                  /* clips the blob layer into a disc */
     cursor: pointer;
     box-shadow: 0 6px 16px -6px rgba(80,40,0,0.4), 0 1px 4px rgba(0,0,0,0.1);
     /* opacity kept in sync with .panel's 0.42s fade-in above, so the pill
@@ -58,9 +71,33 @@
     transition: opacity 0.42s cubic-bezier(0.16,1,0.3,1), filter 0.15s ease-out;
   }
   .pill:hover { filter: brightness(1.08) saturate(1.1); }
-  .pill canvas {
+  .pill-blobs {
     -webkit-app-region: no-drag;
-    display: block; width: 100%; height: 100%;
+    position: absolute; inset: -8%;   /* small oversize so drift never reveals a blank edge */
+    /* Each blob's "opaque" core is only ~85% opacity (color-mix against
+       transparent), so ordinary layer stacking still lets earlier blobs
+       partially show through later ones instead of the last one simply
+       winning wherever they overlap. Tried background-blend-mode:screen
+       first — it genuinely blended, but pushed everything toward washed-
+       out pastel/white, losing the warm saturated look entirely. Plain
+       alpha compositing is gentler and keeps the colors true. */
+    background-image:
+      radial-gradient(circle, color-mix(in srgb, var(--gradient-color-1) 85%, transparent), transparent 78%),
+      radial-gradient(circle, color-mix(in srgb, var(--gradient-color-4) 85%, transparent), transparent 75%),
+      radial-gradient(circle, color-mix(in srgb, var(--gradient-color-3) 85%, transparent), transparent 78%),
+      radial-gradient(circle, color-mix(in srgb, var(--gradient-color-2) 85%, transparent), transparent 75%);
+    background-size: 85% 85%;
+    background-repeat: no-repeat;
+    background-position: 15% 15%, 80% 25%, 25% 80%, 80% 80%;
+    animation: pillBlobDrift 9s ease-in-out infinite;
+  }
+  @keyframes pillBlobDrift {
+    0%, 100% { background-position: 15% 15%, 80% 25%, 25% 80%, 80% 80%; }
+    33%      { background-position: 28%  8%, 70% 38%, 38% 70%, 68% 92%; }
+    66%      { background-position:  6% 30%, 90% 12%, 12% 90%, 92% 68%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pill-blobs { animation: none; }
   }
 
   /* ── Expanded panel ─────────────────────────────────────── */
@@ -126,16 +163,11 @@
 </head>
 <body>
   <div class="shell">
-    <!-- Collapsed pill (default): just the animated gradient, same as the
-         marketing site's hero (same colors, same whatamesh library). No
-         caption text — the explanation lives in the hover tooltip. -->
+    <!-- Collapsed pill (default): a small CSS blob-gradient disc, same
+         brand colors as the marketing site's hero. No caption text —
+         the explanation lives in the hover tooltip. -->
     <div class="pill" id="pill" title="Click or double-tap ⌘ to open Lexio Glance">
-      <canvas id="pill-webgl" style="
-        --gradient-color-1:#ef7040;
-        --gradient-color-2:#c2541e;
-        --gradient-color-3:#7a3b9e;
-        --gradient-color-4:#f0b060;
-      "></canvas>
+      <div class="pill-blobs"></div>
     </div>
 
     <!-- Expanded panel -->
@@ -181,7 +213,10 @@
     frame.setAttribute('allowpopups', '');
     frame.addEventListener('dom-ready', () => { frameReady = true; flushPending(); });
     panelBody.appendChild(frame);
-    frame.src = COMPACT_URL;
+    
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const localCompactUrl = window.location.href.replace('pill.html', 'compact.html');
+    frame.src = `${localCompactUrl}#desktop=1&theme=${isDark ? 'dark' : 'light'}`;
   }
 
   // ── Phase 2: pipe a captured selection straight into the lookup ──
@@ -247,16 +282,6 @@
   // when it captured a selection (Phase 2), passes the text along.
   window.lexioOverlay?.onExpand((payload) => expand(payload?.text));
   window.lexioOverlay?.onCollapse(() => collapse());
-</script>
-
-<!-- Same animated gradient + library as the marketing site's hero
-     (index.html), same reduced-motion guard. -->
-<script type="module">
-  const _reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!_reduced) {
-    const { Gradient } = await import('https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js');
-    new Gradient().initGradient('#pill-webgl');
-  }
 </script>
 </body>
 </html>
