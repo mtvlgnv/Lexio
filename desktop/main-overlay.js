@@ -466,6 +466,10 @@ if (!app.requestSingleInstanceLock()) {
   app.on('second-instance', () => { if (win) toggle(); });
 
   app.whenReady().then(() => {
+    // The double-tap-⌘ hook (uiohook) silently receives ZERO events without
+    // Accessibility (and on newer macOS, Input Monitoring) — log the status
+    // at boot so "trigger does nothing" is diagnosable from the log alone.
+    console.log(`[overlay] accessibility permission: ${checkAccessibility() ? 'granted' : 'NOT granted — double-tap ⌘ and selection capture will not work'}`);
     createWindow();
     createTray();
     registerTriggers();

@@ -222,8 +222,13 @@
   function injectAndAnalyze(text) {
     const script = `
       (function() {
+        const t = ${JSON.stringify(text)};
+        // Preferred path: compact.html decides — short selection is defined
+        // instantly full-panel, long passage gets the tappable token view.
+        if (typeof lexioDesktopInput === 'function') { lexioDesktopInput(t); return; }
+        // Fallback for an older compact.html without the direct-mode API.
         const ta = document.getElementById('paste-area');
-        if (ta) ta.value = ${JSON.stringify(text)};
+        if (ta) ta.value = t;
         if (typeof analyze === 'function') analyze();
       })();
     `;

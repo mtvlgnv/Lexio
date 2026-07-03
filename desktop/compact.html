@@ -351,9 +351,9 @@
       font-family: 'Lora', serif;
     }
 
-    /* Copy button */
-    #copy-btn {
-      align-self: flex-start;
+    /* Copy / new-lookup buttons */
+    .def-actions { display: flex; gap: 6px; }
+    #copy-btn, #new-btn {
       background: none;
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -364,7 +364,18 @@
       cursor: pointer;
       transition: background 0.12s, color 0.12s;
     }
-    #copy-btn:hover { background: var(--bg); color: var(--text); }
+    #copy-btn:hover, #new-btn:hover { background: var(--bg); color: var(--text); }
+
+    /* ── Direct mode ────────────────────────────────────────────
+       Highlight a word anywhere → double-tap ⌘ → the definition IS the
+       app. No paste box, no token view, no extra click. */
+    body.direct #input-zone,
+    body.direct #empty-state,
+    body.direct #token-view { display: none !important; }
+    body.direct #def-panel { border-top: none; max-height: none; flex: 1; }
+    body.direct #loading { border-top: none; }
+    body.direct #def-word { font-size: 1.8rem; }
+    body.direct #def-contextual { font-size: 0.95rem; }
 
     /* Model selector */
     #model-select {
@@ -432,7 +443,10 @@
   <p id="def-contextual"></p>
   <p id="def-why" class="hidden"></p>
   <p id="def-etymology" class="hidden"></p>
-  <button id="copy-btn" onclick="copyDef()">Copy</button>
+  <div class="def-actions">
+    <button id="copy-btn" onclick="copyDef()">Copy</button>
+    <button id="new-btn" class="hidden" onclick="exitDirect()">New lookup</button>
+  </div>
 </div>
 
 <script>
@@ -547,6 +561,45 @@ textarea.addEventListener('input', () => {
 textarea.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') analyze();
 });
+
+/* ── Desktop entry point ───────────────────────────────────
+   Called by pill.html when the overlay captured a selection. A short
+   selection (a word or brief phrase) is what the product is FOR — define
+   it immediately, full-panel, zero extra clicks. Longer passages fall
+   back to the token flow so any word inside stays tappable. */
+function lexioDesktopInput(text) {
+  const t = (text || '').trim();
+  if (!t) return;
+  const words = t.split(/\s+/);
+  if (words.length <= 3 && t.length <= 48) {
+    directDefine(t);
+  } else {
+    exitDirectQuiet();
+    textarea.value = t;
+    const n = t.length;
+    charCount.textContent = n > 0 ? n.toLocaleString() + ' chars' : '';
+    analyze();
+  }
+}
+
+function directDefine(t) {
+  context = t;
+  document.body.classList.add('direct');
+  document.getElementById('new-btn').classList.remove('hidden');
+  document.getElementById('error-msg').classList.add('hidden');
+  document.getElementById('def-panel').classList.add('hidden');
+  fetchDef(t);
+}
+
+function exitDirectQuiet() {
+  document.body.classList.remove('direct');
+  document.getElementById('new-btn').classList.add('hidden');
+}
+
+function exitDirect() {
+  exitDirectQuiet();
+  resetToEdit();
+}
 
 /* ── Analyze ───────────────────────────────────────────── */
 function analyze() {
@@ -689,6 +742,13 @@ function showError(msg) {
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('error-msg').textContent = msg;
   document.getElementById('error-msg').classList.remove('hidden');
+  // Direct mode hides every other control — drop back to the editor so a
+  // failed lookup never strands the user on a bare error strip.
+  if (document.body.classList.contains('direct')) {
+    exitDirectQuiet();
+    textarea.value = context;
+    document.getElementById('empty-state').classList.remove('hidden');
+  }
 }
 function hideError() { document.getElementById('error-msg').classList.add('hidden'); }
 
