@@ -350,6 +350,15 @@ ipcMain.on('app:set-launch-at-login', (_e, value) => {
 ipcMain.handle('app:get-hotkey', () => activeFallbackShortcut);
 ipcMain.on('app:show-onboarding', () => createOnboardingWindow());
 
+ipcMain.handle('app:get-trigger-key', () => activeTriggerKey);
+ipcMain.handle('app:get-trigger-symbol', () => TRIGGER_KEYS[activeTriggerKey].symbol);
+ipcMain.handle('app:get-trigger-options', () =>
+  Object.entries(TRIGGER_KEYS).map(([id, d]) => ({ id, label: d.label, symbol: d.symbol })));
+ipcMain.on('app:set-trigger-key', (_e, key) => {
+  applyTriggerKey(key);
+  store.set({ settings: { ...store.get().settings, doubleTapKey: activeTriggerKey } });
+});
+
 ipcMain.on('onboarding:finish', () => {
   store.set({ onboardingComplete: true });
   if (onboardingWin && !onboardingWin.isDestroyed()) onboardingWin.close();
@@ -400,10 +409,16 @@ app.on('open-url', (event, url) => {
 });
 
 /* ── Tray (so the floating widget is always quittable) ──────────── */
+function updateTrayToolTip() {
+  if (!tray) return;
+  const symbol = TRIGGER_KEYS[activeTriggerKey].symbol;
+  tray.setToolTip(`Lexio Glance — click for recent lookups & settings, double-tap ${symbol} to look something up`);
+}
+
 function createTray() {
   tray = new Tray(BLANK_ICON);
   tray.setTitle(' Lx ');
-  tray.setToolTip('Lexio Glance — click for recent lookups & settings, double-tap ⌘ to look something up');
+  updateTrayToolTip();
   const menu = Menu.buildFromTemplate([
     { label: 'Open Lexio',        click: () => expand() },
     { label: 'Hide',              click: () => collapse() },
@@ -421,7 +436,29 @@ function createTray() {
   tray.on('click', () => createHubWindow());
 }
 
-/* ── Trigger: double-tap ⌘ (native), with fallback shortcut ─────── */
+/* ── Trigger: double-tap a modifier key (native), with fallback shortcut ──
+   ⌘ was the original default, but it collides with Siri's own "press ⌘
+   twice" binding on macOS with no way for us to detect or work around
+   that collision — Siri simply wins. Control has no default macOS or
+   Siri binding, so it's the new default; Option/Shift/Command remain
+   selectable in the Hub for anyone whose own setup already claims ⌃.
+   Codes are uiohook-napi's UiohookKey values, inlined so this list works
+   even before uiohook-napi has been `require`d (e.g. it's not installed). */
+const TRIGGER_KEYS = {
+  ctrl:  { label: 'Control', symbol: '⌃', codes: [29, 3613] },
+  alt:   { label: 'Option',  symbol: '⌥', codes: [56, 3640] },
+  shift: { label: 'Shift',   symbol: '⇧', codes: [42, 54] },
+  meta:  { label: 'Command', symbol: '⌘', codes: [3675, 3676] },
+};
+let activeTriggerKey = 'ctrl';
+let activeTriggerCodes = new Set(TRIGGER_KEYS.ctrl.codes);
+
+function applyTriggerKey(key) {
+  activeTriggerKey = TRIGGER_KEYS[key] ? key : 'ctrl';
+  activeTriggerCodes = new Set(TRIGGER_KEYS[activeTriggerKey].codes);
+  updateTrayToolTip();
+}
+
 // globalShortcut.register() returns false (not an exception) when another
 // app already owns the combo — Cmd+Shift+L is a common one (bookmark
 // managers, browsers, etc.), so we try a short list and log what actually
@@ -433,27 +470,26 @@ function registerFallbackShortcut() {
     if (ok) { console.log(`[overlay] fallback shortcut active: ${accel}`); activeFallbackShortcut = accel; return accel; }
     console.warn(`[overlay] could not register ${accel} — likely taken by another app`);
   }
-  console.error('[overlay] no fallback shortcut could be registered — use double-tap ⌘ or the tray icon.');
+  console.error('[overlay] no fallback shortcut could be registered — use the double-tap trigger or the tray icon.');
   return null;
 }
 
 function registerTriggers() {
   registerFallbackShortcut();
+  applyTriggerKey(store.get().settings.doubleTapKey || 'ctrl');
 
-  // Preferred: double-tap the ⌘ (Meta) key, like Wispr's double-tap Fn.
   try {
-    const { uIOhook, UiohookKey } = require('uiohook-napi');
-    const METAS = new Set([UiohookKey.Meta, UiohookKey.MetaRight]);
+    const { uIOhook } = require('uiohook-napi');
     const DOUBLE_TAP_MS = 320;
     let lastTap = 0;
     uIOhook.on('keydown', (e) => {
-      if (!METAS.has(e.keycode)) return;
+      if (!activeTriggerCodes.has(e.keycode)) return;
       const now = Date.now();
       if (now - lastTap < DOUBLE_TAP_MS) { lastTap = 0; toggle(); }
       else { lastTap = now; }
     });
     uIOhook.start();
-    console.log('[overlay] double-tap ⌘ trigger active');
+    console.log(`[overlay] double-tap trigger active: ${TRIGGER_KEYS[activeTriggerKey].label} (${TRIGGER_KEYS[activeTriggerKey].symbol})`);
   } catch (err) {
     console.warn('[overlay] uiohook-napi unavailable — using ⌘⇧L fallback only.', err.message);
   }
@@ -469,7 +505,7 @@ if (!app.requestSingleInstanceLock()) {
     // The double-tap-⌘ hook (uiohook) silently receives ZERO events without
     // Accessibility (and on newer macOS, Input Monitoring) — log the status
     // at boot so "trigger does nothing" is diagnosable from the log alone.
-    console.log(`[overlay] accessibility permission: ${checkAccessibility() ? 'granted' : 'NOT granted — double-tap ⌘ and selection capture will not work'}`);
+    console.log(`[overlay] accessibility permission: ${checkAccessibility() ? 'granted' : 'NOT granted — the double-tap trigger and selection capture will not work'}`);
     createWindow();
     createTray();
     registerTriggers();

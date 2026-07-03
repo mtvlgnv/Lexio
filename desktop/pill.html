@@ -162,7 +162,7 @@
     <!-- Collapsed pill (default): a small CSS blob-gradient disc, same
          brand colors as the marketing site's hero. No caption text —
          the explanation lives in the hover tooltip. -->
-    <div class="pill" id="pill" title="Click or double-tap ⌘ to open Lexio Glance">
+    <div class="pill" id="pill" title="Click or double-tap ⌃ to open Lexio Glance">
       <div class="pill-blobs"></div>
     </div>
 
@@ -310,6 +310,10 @@
   // when it captured a selection (Phase 2), passes the text along.
   window.lexioOverlay?.onExpand((payload) => expand(payload?.text));
   window.lexioOverlay?.onCollapse(() => collapse());
+
+  window.lexioOverlay?.getTriggerSymbol().then((sym) => {
+    if (sym) pill.title = `Click or double-tap ${sym} to open Lexio Glance`;
+  });
 </script>
 </body>
 </html>

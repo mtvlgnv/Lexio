@@ -15,6 +15,10 @@ contextBridge.exposeInMainWorld('lexioHub', {
   getHotkey:              () => ipcRenderer.invoke('app:get-hotkey'),
   showOnboarding:         () => ipcRenderer.send('app:show-onboarding'),
 
+  getTriggerKey:          () => ipcRenderer.invoke('app:get-trigger-key'),
+  getTriggerOptions:      () => ipcRenderer.invoke('app:get-trigger-options'),
+  setTriggerKey:          (id) => ipcRenderer.send('app:set-trigger-key', id),
+
   onRecentUpdated: (cb) => ipcRenderer.on('hub:recent-updated', (_e, payload) => cb(payload || [])),
   onAuthUpdated:   (cb) => ipcRenderer.on('hub:auth-updated',   (_e, payload) => cb(payload || null)),
 });

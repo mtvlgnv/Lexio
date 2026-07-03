@@ -112,6 +112,14 @@
 
   .account-name { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.05rem; }
   .account-email { font-size: 0.8rem; color: var(--muted); }
+
+  .trigger-select {
+    -webkit-app-region: no-drag;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 7px;
+    padding: 4px 8px; font-family: inherit; font-size: 0.8rem; color: var(--text);
+    cursor: pointer; outline: none;
+  }
+  .trigger-select:focus { border-color: var(--accent); }
 </style>
 </head>
 <body>
@@ -139,10 +147,13 @@
         <button class="switch" id="login-switch"></button>
       </div>
       <div class="divider"></div>
+      <div class="row">
+        <div class="row-label">Double-tap trigger</div>
+        <select class="trigger-select" id="trigger-select"></select>
+      </div>
       <div>
-        <div class="row-label">Trigger</div>
-        <div class="row-hint">Double-tap ⌘ anywhere, or the fallback shortcut <span id="hotkey-text">—</span>.</div>
-        <div class="row-hint">If double-tap ⌘ opens Siri instead, change Siri's keyboard shortcut away from "Press ⌘ twice" in System Settings → Apple Intelligence &amp; Siri.</div>
+        <div class="row-hint">Or the fallback shortcut <span id="hotkey-text">—</span>.</div>
+        <div class="row-hint" id="siri-hint">If double-tap ⌘ opens Siri instead, change Siri's keyboard shortcut away from "Press ⌘ twice" in System Settings → Apple Intelligence &amp; Siri.</div>
       </div>
       <div class="divider"></div>
       <div>
@@ -181,13 +192,16 @@
     const d = Math.floor(h / 24); if (d < 7) return `${d}d ago`;
     return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
+  let triggerSymbol = '⌃';
+  let lastRecentList = null;
   function renderRecent(list) {
+    lastRecentList = list;
     const el = document.getElementById('recent-list');
     if (!list || !list.length) {
       el.innerHTML = '';
       const empty = document.createElement('div');
       empty.className = 'empty-state';
-      empty.innerHTML = '<div>Nothing yet</div><div>Double-tap ⌘ on any selected text to look something up.</div>';
+      empty.innerHTML = `<div>Nothing yet</div><div>Double-tap ${triggerSymbol} on any selected text to look something up.</div>`;
       el.appendChild(empty);
       return;
     }
@@ -218,6 +232,35 @@
   window.lexioHub?.getHotkey().then((accel) => {
     document.getElementById('hotkey-text').textContent = accel || 'none registered';
   });
+
+  // Trigger key picker — populate from the actual registered options rather
+  // than hardcoding them here, so main-overlay.js stays the single source
+  // of truth for what's supported.
+  const triggerSelect = document.getElementById('trigger-select');
+  Promise.all([
+    window.lexioHub?.getTriggerOptions(),
+    window.lexioHub?.getTriggerKey(),
+  ]).then(([options, current]) => {
+    (options || []).forEach((opt) => {
+      const o = document.createElement('option');
+      o.value = opt.id;
+      o.textContent = `${opt.label} (${opt.symbol})`;
+      triggerSelect.appendChild(o);
+    });
+    triggerSelect.value = current;
+    applyTriggerDisplay(options, current);
+  });
+  triggerSelect.addEventListener('change', () => {
+    window.lexioHub?.setTriggerKey(triggerSelect.value);
+    window.lexioHub?.getTriggerOptions().then((options) => applyTriggerDisplay(options, triggerSelect.value));
+  });
+  function applyTriggerDisplay(options, key) {
+    const opt = (options || []).find((o) => o.id === key);
+    triggerSymbol = opt?.symbol || '⌃';
+    // The Siri-conflict warning only applies if Command is the chosen key.
+    document.getElementById('siri-hint').style.display = key === 'meta' ? '' : 'none';
+    renderRecent(lastRecentList);
+  }
   async function refreshAccessStatus() {
     const granted = await window.lexioHub?.getAccessibilityStatus();
     document.getElementById('access-dot').classList.toggle('granted', !!granted);

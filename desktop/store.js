@@ -13,7 +13,7 @@ const DEFAULTS = {
   onboardingComplete: false,
   auth: null,                          // { token, user } once signed in
   recentLookups: [],                   // { word, at } — newest first (Hub, later)
-  settings: { launchAtLogin: false },
+  settings: { launchAtLogin: false, doubleTapKey: 'ctrl' },
 };
 
 function storePath() {

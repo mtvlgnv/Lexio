@@ -18,4 +18,8 @@ contextBridge.exposeInMainWorld('lexioOverlay', {
   // null on sign-out). pill.html forwards it into the compact.html webview,
   // whose partitioned localStorage is where auth actually needs to live.
   onAuth: (cb) => ipcRenderer.on('overlay:auth', (_e, payload) => cb(payload ?? null)),
+
+  // Display-only — which key the double-tap trigger currently listens for,
+  // so the pill's tooltip doesn't lie after it's changed in Hub Settings.
+  getTriggerSymbol: () => ipcRenderer.invoke('app:get-trigger-symbol'),
 });

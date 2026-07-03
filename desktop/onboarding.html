@@ -165,7 +165,7 @@
     <div class="step active" data-step="0">
       <div class="blob"><div class="blob-inner"></div></div>
       <h1>Welcome to Le<em>x</em>io Glance</h1>
-      <p class="sub">Double-tap <kbd>⌘</kbd> anywhere to look up whatever you've just selected — no switching apps, no pasting.</p>
+      <p class="sub">Double-tap <kbd class="trigger-symbol">⌘</kbd> anywhere to look up whatever you've just selected — no switching apps, no pasting.</p>
     </div>
 
     <!-- Step 1: Sign in -->
@@ -181,7 +181,7 @@
     <!-- Step 2: Permissions -->
     <div class="step" data-step="2">
       <h1>Grant Accessibility access</h1>
-      <p class="sub">Lexio Glance needs Accessibility permission to detect your selection and the double-tap <kbd>⌘</kbd> shortcut.</p>
+      <p class="sub">Lexio Glance needs Accessibility permission to detect your selection and the double-tap <kbd class="trigger-symbol">⌘</kbd> shortcut.</p>
       <div class="status-row">
         <span class="status-dot" id="access-dot"></span>
         <span id="access-text">Not granted yet</span>
@@ -192,7 +192,7 @@
     <!-- Step 3: Practice run -->
     <div class="step" data-step="3">
       <h1>Try it for real</h1>
-      <p class="sub">Select a word or phrase below, then double-tap <kbd>⌘</kbd> to look it up.</p>
+      <p class="sub">Select a word or phrase below, then double-tap <kbd class="trigger-symbol">⌘</kbd> to look it up.</p>
       <div class="sample">He smiled with a warmth that, she would later realize, was entirely adventitious.</div>
       <div class="status-row" id="practice-status">
         <span class="status-dot pending" id="practice-dot"></span>
@@ -203,7 +203,7 @@
     <!-- Step 4: Done -->
     <div class="step" data-step="4">
       <h1>You're all set</h1>
-      <p class="sub">Double-tap <kbd>⌘</kbd> anytime, anywhere. Find Lexio Glance again from the menu bar icon.</p>
+      <p class="sub">Double-tap <kbd class="trigger-symbol">⌘</kbd> anytime, anywhere. Find Lexio Glance again from the menu bar icon.</p>
       <div class="switch-row">
         <button class="switch" id="login-switch"></button>
         <span>Launch Lexio Glance at login</span>
@@ -320,6 +320,11 @@
   });
 
   document.getElementById('close').addEventListener('click', () => window.close());
+
+  window.lexioOnboarding?.getTriggerSymbol().then((sym) => {
+    if (!sym) return;
+    document.querySelectorAll('.trigger-symbol').forEach((el) => el.textContent = sym);
+  });
 
   render();
 </script>
