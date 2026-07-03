@@ -48,8 +48,8 @@
       "identity": null
     },
     "dmg": {
-      "title": "Lexio Mini",
-      "artifactName": "Lexio-Mini-${version}-arm64.dmg",
+      "title": "Lexio Glance",
+      "artifactName": "Lexio-Glance-${version}-arm64.dmg",
       "icon": "build/icon.icns",
       "contents": [
         {

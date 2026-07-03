@@ -207,7 +207,7 @@
     frame = document.createElement('webview');
     frame.setAttribute('partition', 'persist:lexio');
     frame.setAttribute('allowpopups', '');
-    frame.addEventListener('dom-ready', () => { frameReady = true; flushPending(); });
+    frame.addEventListener('dom-ready', () => { frameReady = true; flushPending(); flushPendingAuth(); });
     panelBody.appendChild(frame);
     
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -235,6 +235,33 @@
       injectAndAnalyze(t);
     }
   }
+
+  // ── Auth handoff into the webview ────────────────────────────────
+  // compact.html keeps sign-in state in its own partitioned localStorage
+  // and listens for a 'lexio-auth' event (same contract the legacy Lexio
+  // Mini app uses) — store.js alone can't sign the embedded app in.
+  let pendingAuth;          // latest auth payload waiting for the webview
+  let hasPendingAuth = false;
+  function applyAuth(auth) {
+    if (!frameReady) { pendingAuth = auth; hasPendingAuth = true; return; }
+    const script = auth ? `
+      localStorage.setItem('lexio_token', ${JSON.stringify(auth.token)});
+      ${auth.user ? `localStorage.setItem('lexio_user', ${JSON.stringify(JSON.stringify(auth.user))});` : ''}
+      window.dispatchEvent(new CustomEvent('lexio-auth', { detail: { token: ${JSON.stringify(auth.token)}, user: ${auth.user ? JSON.stringify(auth.user) : 'null'} } }));
+    ` : `
+      localStorage.removeItem('lexio_token');
+      localStorage.removeItem('lexio_user');
+      location.reload();
+    `;
+    frame.executeJavaScript(script).catch(() => {});
+  }
+  function flushPendingAuth() {
+    if (frameReady && hasPendingAuth) {
+      const a = pendingAuth; pendingAuth = undefined; hasPendingAuth = false;
+      applyAuth(a);
+    }
+  }
+  window.lexioOverlay?.onAuth((payload) => applyAuth(payload));
 
   function expand(text) {
     ensureFrame();

@@ -21,6 +21,15 @@ function _maybeRedirectDesktop(token, user) {
   u.searchParams.set('user', JSON.stringify(user));
   window.location.href = u.toString();
 }
+// Already signed in? The login success handlers never run, so hand the
+// existing session straight back to the desktop app on arrival.
+document.addEventListener('DOMContentLoaded', () => {
+  const tok = localStorage.getItem('lexio_token');
+  if (!tok) return;
+  let user = null;
+  try { user = JSON.parse(localStorage.getItem('lexio_user')); } catch {}
+  _maybeRedirectDesktop(tok, user || {});
+});
 const TWEAKS_KEY  = 'lexio_tweaks';
 const VISITED_KEY = 'lexio_visited';
 

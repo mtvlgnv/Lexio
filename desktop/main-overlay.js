@@ -259,6 +259,13 @@ function createWindow() {
   win.loadFile(path.join(__dirname, 'pill.html'));
   win.once('ready-to-show', () => win.show());
 
+  // Replay any stored sign-in so the webview is authenticated from the first
+  // open, not only after a fresh lexio://auth handoff in this session.
+  win.webContents.on('did-finish-load', () => {
+    const auth = store.get().auth;
+    if (auth) win.webContents.send('overlay:auth', auth);
+  });
+
   // Click-away collapses (but keeps the pill on screen).
   win.on('blur', () => collapse());
 
@@ -353,6 +360,7 @@ ipcMain.handle('hub:get-auth',   () => store.get().auth);
 ipcMain.on('hub:sign-out', () => {
   store.set({ auth: null });
   if (hubWin && !hubWin.isDestroyed()) hubWin.webContents.send('hub:auth-updated', null);
+  if (win && !win.isDestroyed()) win.webContents.send('overlay:auth', null);
 });
 
 /* ── lexio:// URL scheme — auth handoff from the website ──────────
@@ -377,6 +385,12 @@ app.on('open-url', (event, url) => {
         }
         if (hubWin && !hubWin.isDestroyed()) {
           hubWin.webContents.send('hub:auth-updated', { token, user });
+        }
+        // The embedded compact.html webview keeps its own localStorage in the
+        // persist:lexio partition — it never sees store.js. Forward the token
+        // so pill.html can inject it (mirrors what main.js does for Lexio Mini).
+        if (win && !win.isDestroyed()) {
+          win.webContents.send('overlay:auth', { token, user });
         }
       }
     }

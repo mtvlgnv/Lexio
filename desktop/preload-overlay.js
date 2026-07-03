@@ -13,4 +13,9 @@ contextBridge.exposeInMainWorld('lexioOverlay', {
   // was selected or Accessibility permission hasn't been granted yet.
   onExpand:   (cb) => ipcRenderer.on('overlay:expand',   (_e, payload) => cb(payload || {})),
   onCollapse: (cb) => ipcRenderer.on('overlay:collapse', () => cb()),
+
+  // Main → renderer: sign-in state changed (payload = { token, user } or
+  // null on sign-out). pill.html forwards it into the compact.html webview,
+  // whose partitioned localStorage is where auth actually needs to live.
+  onAuth: (cb) => ipcRenderer.on('overlay:auth', (_e, payload) => cb(payload ?? null)),
 });
