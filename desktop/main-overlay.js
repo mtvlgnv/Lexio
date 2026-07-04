@@ -29,7 +29,7 @@ const { execFile } = require('child_process');
 const path = require('path');
 const store = require('./store');
 const { installFileLogging, logPath } = require('./lib/log');
-const { TRAY_ICON } = require('./lib/icons');
+const { menuBarTrayIcon } = require('./lib/icons');
 const { parseAuthUrl } = require('./lib/auth');
 const { startContextRead } = require('./lib/context');
 
@@ -87,6 +87,15 @@ const EXPANDED  = { width: 460, height: 580 };
 const EXPAND_MS   = 250;
 const COLLAPSE_MS = 250;
 
+// Bump when onboarding steps change — users who finished an older wizard
+// (or have a stale dev-store flag) see it again on next launch.
+const ONBOARDING_VERSION = 2;
+
+function needsOnboarding() {
+  const s = store.get();
+  return !s.onboardingComplete || (s.onboardingAppVersion || 0) < ONBOARDING_VERSION;
+}
+
 /* ── Position helpers — bottom-center of the active display ──────── */
 function boundsFor(size) {
   const cursor  = screen.getCursorScreenPoint();
@@ -127,19 +136,26 @@ function boundsFor(size) {
        permission from Accessibility, granted per-pair of apps under
        System Settings → Privacy & Security → Automation). If this
        hasn't been granted, osascript exits non-zero every time. */
+const ACCESSIBILITY_SETTINGS_URL =
+  'x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility';
+
+function checkAccessibility() {
+  if (process.platform !== 'darwin') return true;
+  return systemPreferences.isTrustedAccessibilityClient(false);
+}
+
+// Never call isTrustedAccessibilityClient(true) — on a rebuilt/notarized
+// binary macOS often keeps a stale TCC entry (toggle looks ON in Settings
+// but returns false here) and the system dialog loops without fixing it.
 function ensureAccessibility() {
   if (process.platform !== 'darwin') return true;
-  const ok = systemPreferences.isTrustedAccessibilityClient(true);
+  const ok = checkAccessibility();
   if (!ok) console.warn('[overlay] Accessibility permission not granted — skipping capture.');
   return ok;
 }
 
-// Non-prompting status check, safe to poll from the onboarding UI —
-// isTrustedAccessibilityClient(true) instead shows the system prompt every
-// time it's called, which would spam the user if polled on an interval.
-function checkAccessibility() {
-  if (process.platform !== 'darwin') return true;
-  return systemPreferences.isTrustedAccessibilityClient(false);
+function openAccessibilitySettings() {
+  shell.openExternal(ACCESSIBILITY_SETTINGS_URL);
 }
 
 function sendCmdC() {
@@ -301,6 +317,17 @@ function collapse() {
 
 function toggle() { expanded ? collapse() : expand(); }
 
+// Lexio Glance is a menu-bar background app (no Dock icon). Clicking it in
+// Applications while already running used to silently toggle a 44px pill or
+// quit the second process — users reasonably expect a window to appear.
+function presentApp() {
+  if (needsOnboarding()) {
+    createOnboardingWindow();
+    return;
+  }
+  createHubWindow();
+}
+
 /* ── Window ─────────────────────────────────────────────────────── */
 function createWindow() {
   const b = boundsFor(COLLAPSED);
@@ -431,7 +458,12 @@ ipcMain.on('overlay:set-pinned', (_e, value) => { pinned = !!value; });
 
 // Shared between the onboarding wizard and the Hub's Settings/Account tabs.
 ipcMain.handle('app:accessibility-status', () => checkAccessibility());
-ipcMain.handle('app:request-accessibility', () => ensureAccessibility());
+ipcMain.handle('app:request-accessibility', () => {
+  if (checkAccessibility()) return true;
+  openAccessibilitySettings();
+  return false;
+});
+ipcMain.on('app:open-accessibility-settings', () => openAccessibilitySettings());
 ipcMain.on('app:open-signin', () => shell.openExternal(SIGNIN_URL));
 // uiohook's global keyboard tap needs Input Monitoring — a SEPARATE
 // permission from Accessibility on macOS 10.15+, gating any passive
@@ -460,7 +492,7 @@ ipcMain.on('app:set-trigger-key', (_e, key) => {
 });
 
 ipcMain.on('onboarding:finish', () => {
-  store.set({ onboardingComplete: true });
+  store.set({ onboardingComplete: true, onboardingAppVersion: ONBOARDING_VERSION });
   if (onboardingWin && !onboardingWin.isDestroyed()) onboardingWin.close();
 });
 
@@ -524,13 +556,16 @@ function updateTrayToolTip() {
 }
 
 function createTray() {
-  tray = new Tray(TRAY_ICON);
+  tray = new Tray(menuBarTrayIcon());
+  // A 1×1 transparent tray image is invisible on its own — the label is what
+  // users actually see in the menu bar (same pattern as Lexio Mini).
+  if (process.platform === 'darwin') tray.setTitle('Lx');
   updateTrayToolTip();
   const menu = Menu.buildFromTemplate([
     { label: 'Open Lexio',        click: () => expand() },
     { label: 'Hide',              click: () => collapse() },
     { type: 'separator' },
-    { label: 'Recent & Settings', click: () => createHubWindow() },
+    { label: 'Recent & Settings', click: () => presentApp() },
     { label: 'Getting Started',   click: () => createOnboardingWindow() },
     { type: 'separator' },
     { label: 'Quit Lexio',        click: () => app.quit() },
@@ -540,7 +575,7 @@ function createTray() {
   // pattern — the pill itself is already the quick-action trigger
   // (hover/click/double-tap ⌘), so the tray icon's own job is the
   // dashboard, not a second way to toggle the pill.
-  tray.on('click', () => createHubWindow());
+  tray.on('click', () => presentApp());
 }
 
 /* ── Trigger: double-tap a modifier key (native), with fallback shortcut ──
@@ -627,7 +662,10 @@ function registerTriggers() {
 if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {
-  app.on('second-instance', () => { if (win) toggle(); });
+  app.on('second-instance', () => {
+    console.log('[overlay] second-instance — presenting UI');
+    presentApp();
+  });
 
   app.whenReady().then(() => {
     // The double-tap-⌘ hook (uiohook) silently receives ZERO events without
@@ -637,8 +675,14 @@ if (!app.requestSingleInstanceLock()) {
     createWindow();
     createTray();
     registerTriggers();
-    if (!store.get().onboardingComplete) createOnboardingWindow();
-    app.on('activate', () => { if (!win) createWindow(); });
+    if (needsOnboarding()) {
+      console.log('[overlay] showing onboarding wizard');
+      createOnboardingWindow();
+    }
+    app.on('activate', () => {
+      presentApp();
+      if (!win || win.isDestroyed()) createWindow();
+    });
   });
 }
 

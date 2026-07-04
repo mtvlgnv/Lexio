@@ -11,6 +11,7 @@ const path = require('path');
 
 const DEFAULTS = {
   onboardingComplete: false,
+  onboardingAppVersion: 0,              // bumped when onboarding content changes
   auth: null,                          // { token, user } once signed in
   recentLookups: [],                   // { word, at } — newest first (Hub, later)
   settings: { launchAtLogin: false, doubleTapKey: 'ctrl' },

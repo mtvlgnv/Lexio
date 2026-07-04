@@ -10,5 +10,13 @@ const BLANK_ICON = nativeImage.createFromDataURL(
 
 const path = require('path');
 const TRAY_ICON = nativeImage.createFromPath(path.join(__dirname, 'trayIconTemplate.png'));
+if (!TRAY_ICON.isEmpty()) TRAY_ICON.setTemplateImage(true);
 
-module.exports = { BLANK_ICON, TRAY_ICON };
+// Glance uses a text label in the menu bar. On macOS, tray.setTitle() is only
+// shown when the tray image is empty — a 1×1 transparent PNG still counts as
+// an image, so setTitle('Lx') was silently ignored.
+function menuBarTrayIcon() {
+  return nativeImage.createEmpty();
+}
+
+module.exports = { BLANK_ICON, TRAY_ICON, menuBarTrayIcon };
