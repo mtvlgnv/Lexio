@@ -473,6 +473,8 @@ ipcMain.on('app:open-signin', () => shell.openExternal(SIGNIN_URL));
 // only deep-link straight to the pane so the user can add it themselves.
 ipcMain.on('app:open-input-monitoring-settings', () =>
   shell.openExternal('x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent'));
+ipcMain.on('app:open-screen-recording-settings', () =>
+  shell.openExternal('x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture'));
 ipcMain.on('app:open-log-file', () => shell.showItemInFolder(logPath()));
 ipcMain.handle('app:get-launch-at-login', () => store.get().settings.launchAtLogin);
 ipcMain.on('app:set-launch-at-login', (_e, value) => {
