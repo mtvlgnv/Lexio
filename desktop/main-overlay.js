@@ -322,6 +322,7 @@ function toggle() { expanded ? collapse() : expand(); }
 // quit the second process — users reasonably expect a window to appear.
 function presentApp() {
   if (needsOnboarding()) {
+    console.log('[overlay] showing onboarding wizard');
     createOnboardingWindow();
     return;
   }
@@ -675,10 +676,7 @@ if (!app.requestSingleInstanceLock()) {
     createWindow();
     createTray();
     registerTriggers();
-    if (needsOnboarding()) {
-      console.log('[overlay] showing onboarding wizard');
-      createOnboardingWindow();
-    }
+    presentApp();
     app.on('activate', () => {
       presentApp();
       if (!win || win.isDestroyed()) createWindow();
