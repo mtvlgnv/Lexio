@@ -10,6 +10,7 @@ main's namespace (main re-imports them), so the existing tests that monkeypatch
 `main._call_*` continue to work unchanged.
 """
 import os
+import time
 
 import anthropic
 import openai
@@ -64,6 +65,9 @@ DEFINE_PHRASE_SCHEMA = {
 }
 
 GROQ_FAST_MODEL = os.getenv("GROQ_FAST_MODEL", "openai/gpt-oss-20b")
+# Strict constrained decoding can burn tokens on retries; 600 was too low
+# (Groq: "max completion tokens reached before generating a valid document").
+GROQ_FAST_MAX_TOKENS = int(os.getenv("GROQ_FAST_MAX_TOKENS", "1200"))
 
 
 # ── Model wrappers ───────────────────────────────────────────────────────────
@@ -78,43 +82,42 @@ def _call_anthropic(prompt: str, model: str = "claude-haiku-4-5-20251001") -> st
     return message.content[0].text.strip()
 
 
+def _groq_schema_call(prompt: str, schema: dict, name: str, *, strict: bool) -> str:
+    response = groq_client.chat.completions.create(
+        model=GROQ_FAST_MODEL,
+        max_tokens=GROQ_FAST_MAX_TOKENS,
+        response_format={
+            "type": "json_schema",
+            "json_schema": {"name": name, "strict": strict, "schema": schema},
+        },
+        messages=[{"role": "user", "content": prompt}],
+    )
+    content = response.choices[0].message.content
+    if not content:
+        raise ValueError("Groq returned empty content")
+    return content.strip()
+
+
 def _call_groq(prompt: str, *, phrase: bool = False) -> str:
     """Call Groq Fast tier with constrained-decoding JSON schema.
 
-    Defaults to GPT-OSS 20B (`openai/gpt-oss-20b`), which supports Groq
-    Structured Outputs with strict: true — the model cannot emit syntactically
-    invalid JSON or omit required fields. Override via GROQ_FAST_MODEL.
-    Retries Groq-side json_validate_failed 400s before surfacing an error.
+    Defaults to GPT-OSS 20B (`openai/gpt-oss-20b`). Tries strict schema first,
+    then best-effort schema — Groq occasionally returns 400 json_validate_failed
+    under strict mode, especially with long or quote-heavy context text.
     """
     if not os.getenv("GROQ_API_KEY"):
         raise ValueError("GROQ_API_KEY not configured")
     schema = DEFINE_PHRASE_SCHEMA if phrase else DEFINE_WORD_SCHEMA
+    name   = "lexio_define_phrase" if phrase else "lexio_define_word"
     last_err: Exception | None = None
-    for attempt in range(3):
-        try:
-            response = groq_client.chat.completions.create(
-                model=GROQ_FAST_MODEL,
-                max_tokens=600,
-                response_format={
-                    "type": "json_schema",
-                    "json_schema": {
-                        "name": "lexio_define_phrase" if phrase else "lexio_define_word",
-                        "strict": True,
-                        "schema": schema,
-                    },
-                },
-                messages=[{"role": "user", "content": prompt}],
-            )
-            content = response.choices[0].message.content
-            if not content:
-                raise ValueError("Groq returned empty content")
-            return content.strip()
-        except BadRequestError as exc:
-            last_err = exc
-            # Groq occasionally rejects a strict-json sample before returning it.
-            if attempt < 2:
-                continue
-            raise
+    # (strict mode, attempt count)
+    for strict, attempts in ((True, 4), (False, 3)):
+        for attempt in range(attempts):
+            try:
+                return _groq_schema_call(prompt, schema, name, strict=strict)
+            except BadRequestError as exc:
+                last_err = exc
+                time.sleep(0.2 * (attempt + 1))
     raise last_err or ValueError("Groq call failed")
 
 

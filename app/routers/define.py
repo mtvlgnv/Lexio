@@ -5,6 +5,7 @@ import datetime
 import logging
 
 import anthropic
+from groq import BadRequestError
 from typing import Optional
 from fastapi import APIRouter, Request, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session as DBSession
@@ -153,30 +154,22 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
     word_count = len(req.word.strip().split())
     is_phrase   = word_count > 1
 
+    # json.dumps so quotes/newlines in AX-captured context can't break the prompt.
+    # Cap context length — long documents shouldn't inflate the prompt or token budget.
+    word_lit = json.dumps(req.word.strip()[:60])
+    ctx_lit  = json.dumps(req.context.strip()[:3000])
+    concise  = "Keep each field to 1-2 short sentences. Respond in JSON only."
+
     if is_phrase:
-        # Phrase / sentence: skip pos & ipa, focus on meaning and usage
         prompt = (
-            f'The phrase or sentence "{req.word}" appears in this text: "{req.context}"\n'
-            f"{lang_note} Respond ONLY in valid JSON with no markdown:\n"
-            '{\"definition\": \"meaning of this phrase/sentence, 1-2 sentences\", '
-            '\"contextual\": \"what it specifically means in this passage, 1-2 sentences\", '
-            '\"why\": \"why the author chose this phrasing, 1 sentence\", '
-            '\"register\": \"exactly one of these English labels: formal, literary, technical, colloquial, neutral, archaic\"}'
+            f"The phrase or sentence {word_lit} appears in this text: {ctx_lit}\n"
+            f"{lang_note} {concise}"
         )
         required_keys = ("definition", "contextual")
     else:
-        # Single word: full analysis
         prompt = (
-            f'The word "{req.word}" appears in this text: "{req.context}"\n'
-            f"{lang_note} Respond ONLY in valid JSON with no markdown:\n"
-            '{\"pos\": \"English label: noun, verb, adjective, adverb, etc.\", '
-            '\"ipa\": \"IPA transcription e.g. /ɪˈfɛm.ər.əl/ — or null if uncertain\", '
-            '\"definition\": \"general dictionary definition, 1 sentence\", '
-            '\"contextual\": \"definition as used in this passage, 1-2 sentences\", '
-            '\"why\": \"why this word rather than a simpler synonym, 1 sentence\", '
-            '\"simpler\": \"simplest English one-word synonym, or null if none applies\", '
-            '\"etymology\": \"brief word origin, e.g. from Latin ephemeron — or null if uncertain\", '
-            '\"register\": \"exactly one of these English labels: formal, literary, technical, colloquial, neutral, archaic\"}'
+            f"The word {word_lit} appears in this text: {ctx_lit}\n"
+            f"{lang_note} {concise} Use null for ipa, simpler, or etymology when uncertain."
         )
         required_keys = ("pos", "contextual")
 
@@ -212,10 +205,10 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
             try:
                 result = await asyncio.to_thread(_call_and_parse)
                 break
-            except (json.JSONDecodeError, ValueError) as exc:
+            except (json.JSONDecodeError, ValueError, BadRequestError) as exc:
                 last_exc = exc
                 if attempt < _DEFINE_ATTEMPTS - 1:
-                    logger.warning("/define %s parse failed (%s) — retry %d/%d",
+                    logger.warning("/define %s attempt failed (%s) — retry %d/%d",
                                    actual_model, exc, attempt + 1, _DEFINE_ATTEMPTS)
         if result is None:
             raise last_exc
@@ -224,6 +217,9 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
         raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
     except ValueError as exc:
         logger.error("/define value error: %s", exc)
+        raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
+    except BadRequestError as exc:
+        logger.error("/define Groq error: %s", exc)
         raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
     except anthropic.APIError as exc:
         logger.error("/define Anthropic error: %s", exc)

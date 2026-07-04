@@ -70,6 +70,7 @@ nano .env
 | `ANTHROPIC_API_KEY` | Powers **Deep** mode (Claude Sonnet 4.5). |
 | `GROQ_API_KEY` | Powers **Fast** mode (GPT-OSS 20B via Groq). |
 | `GROQ_FAST_MODEL` | Optional override for Fast tier (default: `openai/gpt-oss-20b`). |
+| `GROQ_FAST_MAX_TOKENS` | Max completion tokens for Fast tier (default: `1200`). |
 | `OPENAI_API_KEY` | OCR fallback (no longer used for Fast mode). |
 | `GOOGLE_API_KEY` | Powers **Balanced** mode (Gemini 2.5 Flash) and primary OCR. |
 
