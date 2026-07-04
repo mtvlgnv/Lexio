@@ -1,28 +1,17 @@
 /**
  * Best-effort "auto-expand to the surrounding sentence" for a captured
- * selection — the whole point of the product is highlight ONE WORD, get a
- * CONTEXTUAL definition, but a bare Cmd+C only ever captures exactly what
- * was highlighted. If that's a single word, the model would otherwise
- * receive that word as its own "context", which isn't context at all.
+ * selection — highlight ONE WORD, get a CONTEXTUAL definition.
  *
- * Reads the frontmost app's focused UI element's text content via the macOS
- * Accessibility API, then locates the already-captured word inside it and
- * expands to sentence boundaries.
- *
- * PRIMARY: ax-reader.py — a lightweight Python script that calls the AX API
- * directly via ctypes. Runs in ~100ms. Works with native apps AND Electron/
- * Chromium apps (Claude, VS Code, Slack) by walking the AX tree to collect
- * text from AXStaticText child nodes.
- *
- * FALLBACK: The original System Events JXA approach (slow, ~6.5s, but
- * battle-tested on native apps).
+ * Three parallel strategies (first good win inside the resolver):
+ *   1. DOM block read — when Lexio Glance itself is frontmost (our windows)
+ *   2. ax-reader.py — ctypes AX API with cursor anchoring + Chromium tree flip
+ *   3. JXA / System Events — slow fallback for native apps
  */
 const { execFile } = require('child_process');
 const path = require('path');
 
 const AX_READER_PATH = path.join(__dirname, 'ax-reader.py');
 
-// Fallback: slow System Events JXA approach
 const READ_VALUE_JXA = `
   function run() {
     try {
@@ -30,13 +19,16 @@ const READ_VALUE_JXA = `
       var proc = se.applicationProcesses.whose({ frontmost: true })[0];
       var focused = proc.attributes.byName("AXFocusedUIElement").value();
 
-      // Try AXValue on focused element
+      try {
+        var sel = focused.attributes.byName("AXSelectedText").value();
+        if (sel && sel.length > 1) return sel;
+      } catch(e) {}
+
       try {
         var val = focused.attributes.byName("AXValue").value();
         if (val && val.length > 1) return val;
       } catch(e) {}
 
-      // Walk UP the tree
       try {
         var el = focused;
         for (var i = 0; i < 6; i++) {
@@ -48,7 +40,6 @@ const READ_VALUE_JXA = `
         }
       } catch(e) {}
 
-      // Walk DOWN collecting AXStaticText children
       function collectText(element, depth) {
         if (depth > 5) return "";
         var result = "";
@@ -61,7 +52,7 @@ const READ_VALUE_JXA = `
             } catch(e) {}
             return result;
           }
-          if (role === "AXTextField" || role === "AXTextArea") {
+          if (role === "AXTextField" || role === "AXTextArea" || role === "AXWebArea") {
             try {
               var fv = element.attributes.byName("AXValue").value();
               if (fv && fv.length > 1) return fv;
@@ -82,7 +73,6 @@ const READ_VALUE_JXA = `
       var collected = collectText(focused, 0);
       if (collected.trim().length > 1) return collected.trim();
 
-      // Try parent's subtree
       try {
         var parent = focused.attributes.byName("AXParent").value();
         var parentCollected = collectText(parent, 0);
@@ -98,10 +88,6 @@ const READ_VALUE_JXA = `
 
 const AX_READER_TIMEOUT_MS = 3000;
 const JXA_TIMEOUT_MS = 8000;
-
-// Chars to look each direction before trimming down to sentence boundaries —
-// generous enough that real sentences fit, small enough to keep the eventual
-// model prompt cheap regardless of how long the source document is.
 const WINDOW = 240;
 
 function expandToSentence(fullText, matchIndex, matchLen) {
@@ -122,19 +108,39 @@ function expandToSentence(fullText, matchIndex, matchLen) {
   return (trimmedBefore + match + trimmedAfter).trim();
 }
 
-// Starts the (possibly slow) context read immediately, and returns a
-// function that, given the already-captured word, resolves to the best
-// available context — never throws, degrades to the word itself if the
-// read didn't find it.
-//
-// The returned function also carries a `.cancel()` method (bug #16): the
-// read starts before captureSelection() knows whether anything was even
-// selected, so a trigger that turns out empty (an accidental hover, no
-// text under the cursor) used to leave its ax-reader.py/osascript child
-// process running to completion for no reason — harmless once, but a real
-// pile-up if triggers fire in quick succession. The caller cancels it as
-// soon as it knows the read's result will never be used.
-function startContextRead() {
+function findWordInText(fullText, word) {
+  const w = (word || '').trim();
+  if (!w || !fullText) return null;
+
+  let idx = fullText.indexOf(w);
+  if (idx >= 0) return { idx, len: w.length };
+
+  const lower = fullText.toLowerCase();
+  const lw = w.toLowerCase();
+  idx = lower.indexOf(lw);
+  if (idx >= 0) return { idx, len: w.length };
+
+  const bare = w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+  if (bare && bare !== w) {
+    idx = fullText.indexOf(bare);
+    if (idx >= 0) return { idx, len: bare.length };
+    idx = lower.indexOf(bare.toLowerCase());
+    if (idx >= 0) return { idx, len: bare.length };
+  }
+  return null;
+}
+
+function contextFromText(fullText, word, source) {
+  if (!fullText || fullText.length <= word.length) return null;
+  const hit = findWordInText(fullText, word);
+  if (!hit) return null;
+  const sentence = expandToSentence(fullText, hit.idx, hit.len);
+  if (sentence.length <= word.length) return null;
+  console.log(`[overlay] context: ${source} → ${sentence.length} chars`);
+  return sentence;
+}
+
+function startContextRead({ cursor, domSnapshot } = {}) {
   let activeChild = null;
   let cancelled = false;
 
@@ -156,28 +162,45 @@ function startContextRead() {
     });
   }
 
-  const pending = (async () => {
-    // Primary: Python ctypes (~100ms)
-    const fast = await spawn('ax-reader.py', '/usr/bin/python3', [AX_READER_PATH], AX_READER_TIMEOUT_MS);
+  const axArgs = [AX_READER_PATH];
+  if (cursor && Number.isFinite(cursor.x) && Number.isFinite(cursor.y)) {
+    axArgs.push(String(Math.round(cursor.x)), String(Math.round(cursor.y)));
+  }
+
+  const axPending = (async () => {
+    const fast = await spawn('ax-reader.py', '/usr/bin/python3', axArgs, AX_READER_TIMEOUT_MS);
     if (cancelled) return '';
     if (fast && fast.length > 1) return fast;
 
-    // Fallback: JXA via System Events (~6.5s)
     console.log('[overlay] ax-reader.py returned empty, falling back to JXA...');
     return spawn('JXA fallback', 'osascript', ['-l', 'JavaScript', '-e', READ_VALUE_JXA], JXA_TIMEOUT_MS);
   })();
 
   const resolver = async (word) => {
-    const fullText = await pending;
-    if (!fullText || fullText.length <= word.length) return word;
-    const idx = fullText.indexOf(word);
-    return idx === -1 ? word : expandToSentence(fullText, idx, word.length);
+    if (domSnapshot) {
+      const domText = await domSnapshot;
+      if (!cancelled && domText) {
+        const fromDom = contextFromText(domText, word, 'dom');
+        if (fromDom) return fromDom;
+      }
+    }
+
+    const axText = await axPending;
+    if (!cancelled && axText) {
+      const fromAx = contextFromText(axText, word, 'ax');
+      if (fromAx) return fromAx;
+    }
+
+    console.log('[overlay] context: none available (using selection as-is)');
+    return word;
   };
+
   resolver.cancel = () => {
     cancelled = true;
     if (activeChild) { try { activeChild.kill('SIGKILL'); } catch {} }
   };
+
   return resolver;
 }
 
-module.exports = { startContextRead };
+module.exports = { startContextRead, expandToSentence, findWordInText };

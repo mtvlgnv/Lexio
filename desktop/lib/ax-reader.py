@@ -140,7 +140,7 @@ def collect_text(element, depth=0, max_depth=8):
     if role == "AXStaticText":
         val = ax_get_str(element, "AXValue")
         return (val + " ") if val else ""
-    if role in ("AXTextField", "AXTextArea"):
+    if role in ("AXTextField", "AXTextArea", "AXWebArea"):
         val = ax_get_str(element, "AXValue")
         if val and len(val) > 1:
             return val + " "
@@ -162,10 +162,10 @@ def climb_for_text(element, hops=10):
         if current is None or time.monotonic() > DEADLINE:
             return None
         val = ax_get_str(current, "AXValue")
-        if val and len(val) > 60:
+        if val and len(val) > 30:
             return val
         collected = collect_text(current, max_depth=4).strip()
-        if len(collected) > 60:
+        if len(collected) > 30:
             return collected
         current = ax_get(current, "AXParent")
     return None
@@ -218,9 +218,19 @@ def main():
             else:
                 log(f"at-position err: {err}")
 
-        # Strategy 2: focused element — native text fields/areas.
+        # Strategy 2: focused element — native fields, web areas, selection.
         focused = ax_get(app, "AXFocusedUIElement")
         if focused:
+            sel = ax_get_str(focused, "AXSelectedText")
+            if sel and len(sel) > 1:
+                parent = ax_get(focused, "AXParent")
+                if parent:
+                    doc = climb_for_text(parent, hops=8)
+                    if doc and sel.lower() in doc.lower():
+                        log("strategy: selection-in-parent")
+                        return doc
+                log("strategy: AXSelectedText-only")
+                return sel
             val = ax_get_str(focused, "AXValue")
             if val and len(val) > 1:
                 log("strategy: focused AXValue")
@@ -251,7 +261,7 @@ def main():
         # A Chromium tree we just enabled may still be building — give it a
         # beat and try once more.
         log("first pass empty, settling for a11y tree build...")
-        time.sleep(0.35)
+        time.sleep(0.5)
         text = attempt()
 
     if text:

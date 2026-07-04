@@ -32,7 +32,8 @@ const { installFileLogging, logPath } = require('./lib/log');
 const { menuBarTrayIcon } = require('./lib/icons');
 const { parseAuthUrl } = require('./lib/auth');
 const { startContextRead } = require('./lib/context');
-const { practiceContextFor } = require('./lib/onboarding-practice');
+const { beginDomContextCapture } = require('./lib/dom-context');
+const { getFrontmostPid } = require('./lib/frontmost');
 
 // A packaged .app has no attached terminal — without this, "check the log"
 // is impossible for a field report like this week's real-hardware trigger
@@ -182,11 +183,14 @@ async function captureSelection() {
   const sent = await sendCmdC();
   if (!sent) { clipboard.writeText(original); return null; }
 
-  // Start the context read HERE, immediately after ⌘C, while frontmost is
-  // still guaranteed to be the source app — not after the clipboard wait
-  // below, which is exactly the gap that let our own window steal frontmost
-  // before an earlier version's context read ran (see lib/context.js).
-  const resolveContext = startContextRead();
+  // Start context reads HERE, immediately after ⌘C, while frontmost is still
+  // the source app. Two parallel paths:
+  //   • DOM block read when *we* are frontmost (Electron AX is blind to HTML)
+  //   • ax-reader.py everywhere else (cursor-anchored + Chromium tree flip)
+  const cursor = screen.getCursorScreenPoint();
+  const frontPid = await getFrontmostPid();
+  const domSnapshot = beginDomContextCapture(frontPid === process.pid);
+  const resolveContext = startContextRead({ cursor, domSnapshot });
 
   await new Promise((r) => setTimeout(r, 150));      // give the OS a beat to complete the copy
   const captured = clipboard.readText();
@@ -213,24 +217,7 @@ async function captureSelection() {
     onboardingWin.webContents.send('onboarding:practice-capture', { text: word });
   }
 
-  // Electron windows don't expose their HTML to the AX tree, so the normal
-  // context read always fails during the onboarding practice sentence — feed
-  // the known sample instead so "adventitious" gets its real literary sense.
-  const practiceContext = onboardingOpen ? practiceContextFor(word) : null;
-  if (practiceContext) {
-    resolveContext.cancel();
-    console.log(`[overlay] context: onboarding practice sentence (${practiceContext.length} chars)`);
-    return { word, contextPromise: Promise.resolve(practiceContext) };
-  }
-
-  // Deliberately NOT awaited — see the function-level comment above. The
-  // caller streams this in once it resolves instead of blocking on it here.
-  const contextPromise = resolveContext(word).then((context) => {
-    console.log(context === word
-      ? '[overlay] context: none available (using selection as-is)'
-      : `[overlay] context: expanded to ${context.length} chars`);
-    return context;
-  });
+  const contextPromise = resolveContext(word);
 
   return { word, contextPromise };
 }
