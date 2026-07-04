@@ -1,6 +1,6 @@
 {
   "name": "lexio-desktop",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Lexio — floating contextual dictionary",
   "main": "main-overlay.js",
   "scripts": {
@@ -9,8 +9,8 @@
     "start-overlay": "electron main-overlay.js",
     "create-icon": "node_modules/.bin/electron create-icon.js",
     "build-icons": "bash scripts/build-icons.sh",
-    "dist": "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64",
-    "dist-app": "npm run create-icon && npm run build-icons && CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --arm64 --config electron-builder-app.json"
+    "dist": "npm run create-icon && npm run build-icons && electron-builder --mac --arm64",
+    "dist-app": "npm run create-icon && npm run build-icons && electron-builder --mac --arm64 --config electron-builder-app.json"
   },
   "devDependencies": {
     "electron": "^43.0.0",
@@ -25,7 +25,21 @@
   "build": {
     "appId": "site.lexio.glance",
     "productName": "Lexio Glance",
-    "afterSign": "scripts/after-sign.js",
+    "files": [
+      "main-overlay.js",
+      "store.js",
+      "lib/**/*",
+      "pill.html",
+      "onboarding.html",
+      "hub.html",
+      "compact.html",
+      "tokens.css",
+      "preload-overlay.js",
+      "preload-onboarding.js",
+      "preload-hub.js",
+      "node_modules/**/*",
+      "package.json"
+    ],
     "protocols": [
       {
         "name": "Lexio",
@@ -37,6 +51,10 @@
     "mac": {
       "category": "public.app-category.education",
       "icon": "build/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
       "target": [
         {
           "target": "dmg",
@@ -44,8 +62,7 @@
             "arm64"
           ]
         }
-      ],
-      "identity": null
+      ]
     },
     "dmg": {
       "title": "Lexio Glance",

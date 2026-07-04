@@ -1,0 +1,111 @@
+/* Lexio Glance — Unified Design Tokens */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  /* Light Mode Palette */
+  --bg:       oklch(96.5% 0.012 75);
+  --surface:  oklch(99.2% 0.006 75);
+  --border:   oklch(89%   0.014 75);
+  --accent:   oklch(65%   0.22  45);
+  --accent-dk:oklch(55%   0.22  45);
+  --accent-lt:oklch(96%   0.06  75);
+  --accent2:  oklch(70%   0.15  40);
+  --text:     oklch(18%   0.015 65);
+  --text-mid: oklch(35%   0.012 65);
+  --muted:    oklch(58%   0.01  65);
+  --good:     oklch(62%   0.13  145);
+  --danger:   oklch(55%   0.2   25);
+  --danger-bg:oklch(97%   0.03  25);
+
+  /* Gradient Blobs (Pill Chrome) */
+  --gradient-color-1: #ef7040;
+  --gradient-color-2: #c2541e;
+  --gradient-color-3: #7a3b9e;
+  --gradient-color-4: #f0b060;
+
+  --font-display: 'Fraunces', serif;
+  --font-ui: 'DM Sans', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light-theme) {
+    --bg:       oklch(14%  0.01  65);
+    --surface:  oklch(19%  0.012 65);
+    --border:   oklch(28%  0.015 65);
+    --accent:   oklch(65%  0.22  45);
+    --accent-dk:oklch(72%  0.20  45);
+    --accent-lt:oklch(22%  0.04  65);
+    --accent2:  oklch(75%  0.14  40);
+    --text:     oklch(92%  0.008 75);
+    --text-mid: oklch(75%  0.008 75);
+    --muted:    oklch(55%  0.008 70);
+    --good:     oklch(65%  0.13  145);
+    --danger-bg:oklch(20%  0.03  25);
+  }
+}
+
+:root.dark-theme {
+  --bg:       oklch(14%  0.01  65);
+  --surface:  oklch(19%  0.012 65);
+  --border:   oklch(28%  0.015 65);
+  --accent:   oklch(65%  0.22  45);
+  --accent-dk:oklch(72%  0.20  45);
+  --accent-lt:oklch(22%  0.04  65);
+  --accent2:  oklch(75%  0.14  40);
+  --text:     oklch(92%  0.008 75);
+  --text-mid: oklch(75%  0.008 75);
+  --muted:    oklch(55%  0.008 70);
+  --good:     oklch(65%  0.13  145);
+  --danger-bg:oklch(20%  0.03  25);
+}
+
+html, body {
+  font-family: var(--font-ui);
+  color: var(--text);
+}
+
+/* Shared Button Styles */
+.btn-primary {
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dk) 100%);
+  color: #fff;
+  border: 1px solid var(--accent-dk);
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 5px -1px color-mix(in srgb, var(--accent) 40%, transparent), inset 0 1px 0 rgba(255,255,255,0.15);
+  transition: all 0.15s;
+}
+.btn-primary:hover { 
+  background: var(--accent-dk);
+  box-shadow: 0 3px 6px -1px color-mix(in srgb, var(--accent) 50%, transparent), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.btn-ghost {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  transition: all 0.12s;
+}
+.btn-ghost:hover { 
+  background: var(--surface); 
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--border) 80%, var(--text) 20%);
+}
+.btn-ghost:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}

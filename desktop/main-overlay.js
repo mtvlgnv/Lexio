@@ -23,11 +23,20 @@
  * panel still opens — just empty, same as Phase 1 — so nothing breaks
  * for users who haven't granted it yet.
  */
-const { app, BrowserWindow, globalShortcut, screen, Tray, Menu, nativeImage, ipcMain,
-        clipboard, systemPreferences, shell } = require('electron');
+const { app, BrowserWindow, globalShortcut, screen, Tray, Menu, ipcMain,
+        clipboard, systemPreferences, shell, nativeTheme } = require('electron');
 const { execFile } = require('child_process');
 const path = require('path');
 const store = require('./store');
+const { installFileLogging, logPath } = require('./lib/log');
+const { TRAY_ICON } = require('./lib/icons');
+const { parseAuthUrl } = require('./lib/auth');
+const { startContextRead } = require('./lib/context');
+
+// A packaged .app has no attached terminal — without this, "check the log"
+// is impossible for a field report like this week's real-hardware trigger
+// bug. Installed before any other logging so every line below is captured.
+installFileLogging();
 
 // Same handoff the website already implements for main.js (see
 // static/app.js _maybeRedirectDesktop): opening lexio.site with
@@ -49,7 +58,20 @@ let tray = null;
 let onboardingWin = null;
 let hubWin = null;
 let expanded = false;
+let pinned = false;   // when true, losing focus (blur) does not auto-collapse
 let activeFallbackShortcut = null;
+
+// BUG #5 FIX: expand() awaits captureSelection() (clipboard dance + ⌘C,
+// ~0.5-1s) before touching the window. A second trigger during that window
+// used to run toggle() -> collapse() (expanded was already true) while the
+// FIRST expand()'s continuation was still in flight — it would then resume,
+// set bounds to EXPANDED, and show/focus the window regardless, leaving the
+// panel visibly open with `expanded === false` (collapse() no-ops, and the
+// next trigger's synthesized ⌘C could even land on Lexio's own now-focused
+// window). Every collapse bumps this counter; any expand() run started
+// before the bump checks it after its await and abandons itself if a newer
+// trigger has since superseded it.
+let captureGeneration = 0;
 
 // Bottom margin and the two window sizes the pill morphs between.
 // The collapsed pill is a 36px gradient disc (see pill.html). COLLAPSED is
@@ -61,44 +83,9 @@ const MARGIN_BOTTOM = 10;
 const COLLAPSED = { width: 44, height: 42 };
 const EXPANDED  = { width: 460, height: 580 };
 
-// Duration/easing for the custom smooth window-grow (see animateBounds
-// below) — tuned to read as a visible, deliberate "blend" from pill to
-// full app, similar in spirit to the reference clip of the redesigned
-// Siri "Search or Ask" bar growing from a small dot into its full pill
-// shape (measured at roughly 1.2s in that clip; we use a brisker 480ms
-// since this is a utility trigger, not a marketing demo — easy to retune).
-const EXPAND_MS   = 480;
-const COLLAPSE_MS = 260;
-function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-
-// Manually steps a window's bounds from `from` to `to` over `duration`ms.
-// (Tried switching this to native setBounds(bounds, true) for a GPU/vsync
-// -composited resize, expecting it to be smoother — it wasn't; this custom
-// stepped version reads better in practice, so it's back.) Also gives full
-// control over duration/easing, which native animation doesn't expose.
-function animateBounds(from, to, duration, easing) {
-  return new Promise((resolve) => {
-    const start = Date.now();
-    function step() {
-      if (!win || win.isDestroyed()) return resolve();
-      const t = Math.min(1, (Date.now() - start) / duration);
-      const e = easing(t);
-      win.setBounds({
-        x:      Math.round(from.x      + (to.x      - from.x)      * e),
-        y:      Math.round(from.y      + (to.y      - from.y)      * e),
-        width:  Math.round(from.width  + (to.width  - from.width)  * e),
-        height: Math.round(from.height + (to.height - from.height) * e),
-      }, false);
-      if (t < 1) setTimeout(step, 1000 / 60);
-      else resolve();
-    }
-    step();
-  });
-}
-
-const BLANK_ICON = nativeImage.createFromDataURL(
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
-);
+// Duration for CSS transition timings (handled in pill.html)
+const EXPAND_MS   = 250;
+const COLLAPSE_MS = 250;
 
 /* ── Position helpers — bottom-center of the active display ──────── */
 function boundsFor(size) {
@@ -118,9 +105,22 @@ function boundsFor(size) {
    without disturbing the user's real clipboard. Must run BEFORE we
    show/focus our own window, or the ⌘C would hit us instead of them.
 
-   Two DIFFERENT macOS permissions gate this, and failures here were
-   previously silent — logging every branch below so a stuck/broken
-   capture is diagnosable from the log instead of guessed at:
+   Also starts a best-effort attempt to auto-expand to the surrounding
+   sentence via Accessibility — the whole point of "highlight ONE WORD, get
+   a CONTEXTUAL definition" — but does NOT wait for it here. That read takes
+   several real seconds on a typical Mac (measured, not assumed — see
+   lib/context.js's header). Per explicit direction, correctness beats
+   latency: the caller (expand()) opens the panel immediately on the word
+   alone, and only fires the actual /define request once the returned
+   `contextPromise` resolves — so the several-second wait happens as a
+   visible "reading context" state, not as an invisible race that quietly
+   loses and ships a wrong definition (which is exactly what happened
+   before this: "bat" defined as the animal in a baseball sentence, because
+   context silently never arrived in time).
+
+   Two DIFFERENT macOS permissions gate the capture itself, and failures
+   here were previously silent — logging every branch below so a
+   stuck/broken capture is diagnosable from the log instead of guessed at:
      • Accessibility        — lets us detect the double-tap ⌘ at all
      • Automation            — lets us tell System Events to send ⌘C
        ("<App> wants to control System Events.app" — a SEPARATE
@@ -165,27 +165,46 @@ async function captureSelection() {
   const sent = await sendCmdC();
   if (!sent) { clipboard.writeText(original); return null; }
 
+  // Start the context read HERE, immediately after ⌘C, while frontmost is
+  // still guaranteed to be the source app — not after the clipboard wait
+  // below, which is exactly the gap that let our own window steal frontmost
+  // before an earlier version's context read ran (see lib/context.js).
+  const resolveContext = startContextRead();
+
   await new Promise((r) => setTimeout(r, 150));      // give the OS a beat to complete the copy
   const captured = clipboard.readText();
   clipboard.writeText(original);                     // restore the user's real clipboard immediately
 
   if (!captured || captured === sentinel) {
     console.log('[overlay] capture: nothing was selected');
+    resolveContext.cancel();   // its result will never be used — bug #16
     return null;
   }
-  console.log(`[overlay] capture: got ${captured.length} chars`);
+  const word = captured.trim();
+  console.log(`[overlay] capture: got ${word.length} chars`);
 
-  const recentLookups = [{ word: captured.slice(0, 80), at: Date.now() }, ...store.get().recentLookups].slice(0, 50);
-  store.set({ recentLookups });
-  if (hubWin && !hubWin.isDestroyed()) hubWin.webContents.send('hub:recent-updated', recentLookups);
+  // NOTE: recentLookups is recorded from the actual defined word, reported
+  // back by the webview once a lookup resolves (see 'overlay:report-lookup'
+  // below) — not from the raw captured selection, which is often a whole
+  // sentence rather than the word the user was after.
 
   // If the onboarding wizard is open on its practice-run step, this real
   // capture is what it's waiting for — let it advance itself instead of
   // requiring a manual "Next" click.
   if (onboardingWin && !onboardingWin.isDestroyed()) {
-    onboardingWin.webContents.send('onboarding:practice-capture', { text: captured });
+    onboardingWin.webContents.send('onboarding:practice-capture', { text: word });
   }
-  return captured;
+
+  // Deliberately NOT awaited — see the function-level comment above. The
+  // caller streams this in once it resolves instead of blocking on it here.
+  const contextPromise = resolveContext(word).then((context) => {
+    console.log(context === word
+      ? '[overlay] context: none available (using selection as-is)'
+      : `[overlay] context: expanded to ${context.length} chars`);
+    return context;
+  });
+
+  return { word, contextPromise };
 }
 
 /* ── Expand / collapse ──────────────────────────────────────────── */
@@ -195,23 +214,66 @@ async function captureSelection() {
 // stuck at true forever, and every future trigger silently no-ops into
 // collapse() instead of expand(). This is almost certainly what "worked
 // once, then nothing" was: the first run's error left this stuck.
-async function expand() {
-  if (expanded) return;
+// `forcedText`, when passed (e.g. re-running a Recent-tab item), skips the
+// real selection capture entirely and feeds that text straight into the
+// panel instead — a relookup shouldn't touch the clipboard or require
+// anything to be selected in the frontmost app.
+async function expand(forcedText) {
+  // A relookup (forcedText, from the Hub's Recent tab) only has the word
+  // itself, not the sentence it originally came from — reuse it as its own
+  // context, same as the old pre-auto-context behavior.
+  const forced = forcedText !== undefined ? { word: forcedText, context: forcedText } : undefined;
+
+  if (expanded) {
+    // Already open — most likely pinned. A relookup should swap the
+    // content into the existing panel rather than silently no-op, since
+    // pin exists specifically so the panel can stay open across other
+    // actions like picking a Recent-tab item from the Hub.
+    if (forced && win && !win.isDestroyed()) {
+      win.webContents.send('overlay:expand', forced);
+      win.show();
+      win.focus();
+    }
+    return;
+  }
   expanded = true;
+  const myGeneration = ++captureGeneration;
   try {
     if (!win || win.isDestroyed()) { console.warn('[overlay] window was gone — recreating.'); createWindow(); }
-    const selection = await captureSelection();   // BEFORE resize/show/focus — see note above
-    const fromBounds = win.getBounds();
-    const toBounds    = boundsFor(EXPANDED);
-    // Content crossfade (pill.html's CSS) starts now, in parallel with the
-    // window smoothly growing below — both tuned to ~EXPAND_MS so they
-    // land together instead of the content "arriving" before/after the
-    // window has finished resizing.
-    win.webContents.send('overlay:expand', { text: selection });
+
+    // A relookup already has its {word, context} up front (no waiting
+    // needed). A real capture only has the word yet — the panel opens on
+    // that immediately, and the eventual context arrives later as a
+    // separate 'overlay:context-ready' message once captureSelection()'s
+    // contextPromise resolves (several real seconds — see its comment).
+    let payload = {};
+    if (forced) {
+      payload = forced;
+    } else {
+      const captured = await captureSelection();   // BEFORE resize/show/focus — see note above
+      // A newer trigger may have collapsed us (bumping captureGeneration)
+      // while we were awaiting the capture — bail out rather than clobber
+      // whatever state that newer trigger already established (bug #5).
+      if (myGeneration !== captureGeneration) return;
+      if (captured) {
+        payload = { word: captured.word, contextPending: true };
+        captured.contextPromise.then((context) => {
+          if (myGeneration === captureGeneration && win && !win.isDestroyed()) {
+            win.webContents.send('overlay:context-ready', { word: captured.word, context });
+          }
+        });
+      }
+    }
+
+    const toBounds = boundsFor(EXPANDED);
+    // Snapping the transparent window to max size instantly allows the
+    // CSS to run butter-smooth GPU-accelerated animations natively without
+    // fighting Electron's window resizing loop!
+    win.setBounds(toBounds);
+    win.webContents.send('overlay:expand', payload);
     win.setIgnoreMouseEvents(false);
     win.show();
     win.focus();
-    await animateBounds(fromBounds, toBounds, EXPAND_MS, easeOutCubic);
   } catch (err) {
     console.error('[overlay] expand() failed:', err);
     expanded = false;   // never leave the toggle stuck — next trigger should get a clean retry
@@ -221,9 +283,20 @@ async function expand() {
 function collapse() {
   if (!expanded) return;
   expanded = false;
-  win.webContents.send('overlay:collapse');
-  const fromBounds = win.getBounds();
-  animateBounds(fromBounds, boundsFor(COLLAPSED), COLLAPSE_MS, easeOutCubic);
+  captureGeneration++;   // invalidate any in-flight expand() a newer trigger has superseded (bug #5)
+  // Bug #19: this previously assumed `win` was always alive whenever
+  // `expanded` was true — true today only because the 'closed' handler
+  // happens to reset `expanded` first, which is easy to break by accident
+  // in a future change. Guard it directly instead of relying on that.
+  if (win && !win.isDestroyed()) win.webContents.send('overlay:collapse');
+
+  // Wait for the CSS genie animation to visually squish down into the pill
+  // before we snap the OS window bounds back to the tiny 44x42 box.
+  setTimeout(() => {
+    if (!expanded && win && !win.isDestroyed()) {
+      win.setBounds(boundsFor(COLLAPSED));
+    }
+  }, COLLAPSE_MS);
 }
 
 function toggle() { expanded ? collapse() : expand(); }
@@ -266,13 +339,23 @@ function createWindow() {
     if (auth) win.webContents.send('overlay:auth', auth);
   });
 
-  // Click-away collapses (but keeps the pill on screen).
-  win.on('blur', () => collapse());
+  // Click-away collapses (but keeps the pill on screen) — unless the user
+  // pinned the panel open, e.g. to read it alongside another app.
+  win.on('blur', () => { if (!pinned) collapse(); });
 
   // If the window is ever destroyed (crash, accidental close), drop the
   // stale reference so expand() knows to recreate it instead of throwing
   // "Object has been destroyed" on the next trigger.
-  win.on('closed', () => { win = null; expanded = false; });
+  win.on('closed', () => { win = null; expanded = false; pinned = false; });
+}
+
+// Bug #17: these two chrome windows hardcoded a light-mode background —
+// tokens.css has had proper dark values for a while, and pill.html already
+// live-toggles the embedded webview's theme, but a dark-mode user still saw
+// a cream flash (and cream rounded corners, since `backgroundColor` paints
+// through until content loads) around otherwise-dark Hub/Onboarding content.
+function chromeBackgroundColor() {
+  return nativeTheme.shouldUseDarkColors ? '#1f1c1a' : '#f5efe8';
 }
 
 /* ── Onboarding window ─────────────────────────────────────────────
@@ -286,7 +369,7 @@ function createOnboardingWindow() {
     height: 620,
     resizable: false,
     frame: false,
-    backgroundColor: '#f5efe8',
+    backgroundColor: chromeBackgroundColor(),
     roundedCorners: true,
     alwaysOnTop: true,
     webPreferences: {
@@ -318,7 +401,7 @@ function createHubWindow() {
     y: trayBounds ? Math.round(trayBounds.y + trayBounds.height + 6) : undefined,
     resizable: false,
     frame: false,
-    backgroundColor: '#f5efe8',
+    backgroundColor: chromeBackgroundColor(),
     roundedCorners: true,
     alwaysOnTop: true,
     webPreferences: {
@@ -337,11 +420,28 @@ function createHubWindow() {
 /* ── Renderer → main IPC ────────────────────────────────────────── */
 ipcMain.on('overlay:expand-request',   () => expand());
 ipcMain.on('overlay:collapse-request', () => collapse());
+ipcMain.on('overlay:start-drag', (e) => {
+  const senderWin = BrowserWindow.fromWebContents(e.sender);
+  if (senderWin) senderWin.startWindowDrag();
+});
+// Pin/keep-open: while pinned, the blur handler above won't auto-collapse —
+// the one thing an always-on-top overlay is for is staying open alongside
+// another app instead of vanishing the moment you click into it to read.
+ipcMain.on('overlay:set-pinned', (_e, value) => { pinned = !!value; });
 
 // Shared between the onboarding wizard and the Hub's Settings/Account tabs.
 ipcMain.handle('app:accessibility-status', () => checkAccessibility());
 ipcMain.handle('app:request-accessibility', () => ensureAccessibility());
 ipcMain.on('app:open-signin', () => shell.openExternal(SIGNIN_URL));
+// uiohook's global keyboard tap needs Input Monitoring — a SEPARATE
+// permission from Accessibility on macOS 10.15+, gating any passive
+// listen-all key tap (vs. a registered hotkey, which only needs
+// Accessibility). There's no systemPreferences API for it like
+// isTrustedAccessibilityClient(), so we can't check or prompt for it —
+// only deep-link straight to the pane so the user can add it themselves.
+ipcMain.on('app:open-input-monitoring-settings', () =>
+  shell.openExternal('x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent'));
+ipcMain.on('app:open-log-file', () => shell.showItemInFolder(logPath()));
 ipcMain.handle('app:get-launch-at-login', () => store.get().settings.launchAtLogin);
 ipcMain.on('app:set-launch-at-login', (_e, value) => {
   app.setLoginItemSettings({ openAtLogin: !!value });
@@ -364,8 +464,26 @@ ipcMain.on('onboarding:finish', () => {
   if (onboardingWin && !onboardingWin.isDestroyed()) onboardingWin.close();
 });
 
+// The webview reports the word it actually defined (bridged through
+// pill.html's console-message listener — see pill.html/compact.html for
+// why that's the mechanism) — this is what belongs in Recent, not the raw
+// captured selection, which is often a whole sentence.
+ipcMain.on('overlay:report-lookup', (_e, word) => {
+  const w = (word || '').toString().trim().slice(0, 80);
+  if (!w) return;
+  const recentLookups = [{ word: w, at: Date.now() }, ...store.get().recentLookups].slice(0, 50);
+  store.set({ recentLookups });
+  if (hubWin && !hubWin.isDestroyed()) hubWin.webContents.send('hub:recent-updated', recentLookups);
+});
+
 ipcMain.handle('hub:get-recent', () => store.get().recentLookups);
 ipcMain.handle('hub:get-auth',   () => store.get().auth);
+// Clicking a Recent-tab item re-runs that exact lookup in the panel.
+ipcMain.on('hub:relookup', (_e, word) => {
+  if (!word) return;
+  if (hubWin && !hubWin.isDestroyed()) hubWin.close();
+  expand(word);
+});
 ipcMain.on('hub:sign-out', () => {
   store.set({ auth: null });
   if (hubWin && !hubWin.isDestroyed()) hubWin.webContents.send('hub:auth-updated', null);
@@ -380,31 +498,21 @@ app.setAsDefaultProtocolClient('lexio');
 
 app.on('open-url', (event, url) => {
   event.preventDefault();
-  try {
-    const parsed = new URL(url);
-    if (parsed.hostname === 'auth') {
-      const token = parsed.searchParams.get('token');
-      const rawUser = parsed.searchParams.get('user');
-      if (token) {
-        let user = null;
-        try { user = rawUser ? JSON.parse(rawUser) : null; } catch {}
-        store.set({ auth: { token, user } });
-        if (onboardingWin && !onboardingWin.isDestroyed()) {
-          onboardingWin.webContents.send('onboarding:auth-complete', { token, user });
-        }
-        if (hubWin && !hubWin.isDestroyed()) {
-          hubWin.webContents.send('hub:auth-updated', { token, user });
-        }
-        // The embedded compact.html webview keeps its own localStorage in the
-        // persist:lexio partition — it never sees store.js. Forward the token
-        // so pill.html can inject it (mirrors what main.js does for Lexio Mini).
-        if (win && !win.isDestroyed()) {
-          win.webContents.send('overlay:auth', { token, user });
-        }
-      }
-    }
-  } catch (err) {
-    console.error('[overlay] failed to handle lexio:// URL:', err);
+  const auth = parseAuthUrl(url);
+  if (!auth) return;
+  const { token, user } = auth;
+  store.set({ auth: { token, user } });
+  if (onboardingWin && !onboardingWin.isDestroyed()) {
+    onboardingWin.webContents.send('onboarding:auth-complete', { token, user });
+  }
+  if (hubWin && !hubWin.isDestroyed()) {
+    hubWin.webContents.send('hub:auth-updated', { token, user });
+  }
+  // The embedded compact.html webview keeps its own localStorage in the
+  // persist:lexio partition — it never sees store.js. Forward the token
+  // so pill.html can inject it (mirrors what main.js does for Lexio Mini).
+  if (win && !win.isDestroyed()) {
+    win.webContents.send('overlay:auth', { token, user });
   }
 });
 
@@ -416,8 +524,7 @@ function updateTrayToolTip() {
 }
 
 function createTray() {
-  tray = new Tray(BLANK_ICON);
-  tray.setTitle(' Lx ');
+  tray = new Tray(TRAY_ICON);
   updateTrayToolTip();
   const menu = Menu.buildFromTemplate([
     { label: 'Open Lexio',        click: () => expand() },
@@ -481,12 +588,33 @@ function registerTriggers() {
   try {
     const { uIOhook } = require('uiohook-napi');
     const DOUBLE_TAP_MS = 320;
-    let lastTap = 0;
+    let lastBareTapAt = 0;
+    let triggerHeld = false;
+    let interrupted = false;
+
+    // BUG #13 FIX: counting any two trigger-key keydowns within
+    // DOUBLE_TAP_MS also fired on ⌃C, ⌃V, or any other real shortcut that
+    // happens to use this modifier — holding ⌃ while working in a terminal
+    // or editor could pop the panel open mid-keystroke. A genuine double-tap
+    // requires the modifier to be pressed and released BARE (no other key
+    // in between) on both taps — this now tracks keyup too and disqualifies
+    // a tap the moment any other key is pressed while the modifier is held,
+    // the same way Wispr Flow's Fn-Fn trigger behaves.
     uIOhook.on('keydown', (e) => {
+      if (activeTriggerCodes.has(e.keycode)) {
+        triggerHeld = true;
+        interrupted = false;
+      } else if (triggerHeld) {
+        interrupted = true;
+      }
+    });
+    uIOhook.on('keyup', (e) => {
       if (!activeTriggerCodes.has(e.keycode)) return;
+      triggerHeld = false;
+      if (interrupted) return;   // part of a real shortcut, not a bare tap
       const now = Date.now();
-      if (now - lastTap < DOUBLE_TAP_MS) { lastTap = 0; toggle(); }
-      else { lastTap = now; }
+      if (now - lastBareTapAt < DOUBLE_TAP_MS) { lastBareTapAt = 0; toggle(); }
+      else { lastBareTapAt = now; }
     });
     uIOhook.start();
     console.log(`[overlay] double-tap trigger active: ${TRIGGER_KEYS[activeTriggerKey].label} (${TRIGGER_KEYS[activeTriggerKey].symbol})`);

@@ -1,3 +1,9 @@
+<!--
+  CANONICAL SOURCE — also served as the website's /compact.html
+  (static/compact.html is a plain copy, not a symlink; see the comment in
+  desktop/compact.html's <script> for why). After editing this file, run:
+    bash desktop/scripts/sync-compact.sh
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,54 +12,13 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Lexio</title>
   <meta name="darkreader-lock">
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --bg:       oklch(96.5% 0.012 75);
-      --surface:  oklch(99.2% 0.006 75);
-      --border:   oklch(89%   0.014 75);
-      --accent:   oklch(58%   0.17  54);
-      --accent-dk:oklch(50%   0.17  54);
-      --accent-lt:oklch(96%   0.06  75);
-      --text:     oklch(18%   0.015 65);
-      --text-mid: oklch(35%   0.012 65);
-      --muted:    oklch(58%   0.01  65);
-      --danger:   oklch(55%   0.2   25);
-      --danger-bg:oklch(97%   0.03  25);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root:not(.light-theme) {
-        --bg:       oklch(14%  0.01  65);
-        --surface:  oklch(19%  0.012 65);
-        --border:   oklch(28%  0.015 65);
-        --accent:   oklch(68%  0.17  54);
-        --accent-dk:oklch(75%  0.15  54);
-        --accent-lt:oklch(22%  0.04  65);
-        --text:     oklch(92%  0.008 75);
-        --text-mid: oklch(75%  0.008 75);
-        --muted:    oklch(55%  0.008 70);
-        --danger-bg:oklch(20%  0.03  25);
-      }
-    }
-    :root.dark-theme {
-        --bg:       oklch(14%  0.01  65);
-        --surface:  oklch(19%  0.012 65);
-        --border:   oklch(28%  0.015 65);
-        --accent:   oklch(68%  0.17  54);
-        --accent-dk:oklch(75%  0.15  54);
-        --accent-lt:oklch(22%  0.04  65);
-        --text:     oklch(92%  0.008 75);
-        --text-mid: oklch(75%  0.008 75);
-        --muted:    oklch(55%  0.008 70);
-        --danger-bg:oklch(20%  0.03  25);
-    }
-
     html, body {
       height: 100%;
-      font-family: 'DM Sans', system-ui, sans-serif;
+      font-family: var(--font-ui);
       background: var(--surface);
       color: var(--text);
     }
@@ -77,7 +42,7 @@
     }
 
     .brand {
-      font-family: 'Lora', serif;
+      font-family: var(--font-display);
       font-size: 0.95rem;
       font-weight: 600;
       color: var(--text);
@@ -114,13 +79,13 @@
 
     #paste-area {
       width: 100%;
-      min-height: 72px;
+      min-height: 38px;
       max-height: 130px;
       resize: none;
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 10px 14px;
-      font-family: 'DM Sans', system-ui, sans-serif;
+      padding: 8px 14px;
+      font-family: var(--font-ui);
       font-size: 0.88rem;
       line-height: 1.65;
       color: var(--text);
@@ -131,9 +96,10 @@
     }
     #paste-area:focus { 
       border-color: var(--accent);
+      min-height: 72px;
       box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent), inset 0 2px 4px rgba(0,0,0,0.02);
     }
-    #paste-area::placeholder { color: var(--muted); font-style: italic; font-family: 'Lora', serif; }
+    #paste-area::placeholder { color: var(--muted); font-style: italic; font-family: var(--font-display); }
 
     /* Collapsed state after analyze */
     #paste-area.collapsed { min-height: 0; max-height: 38px; overflow: hidden; }
@@ -144,50 +110,6 @@
       gap: 6px;
     }
     #char-count { font-size: 0.7rem; color: var(--muted); flex: 1; font-variant-numeric: tabular-nums; }
-
-    .btn-primary {
-      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dk) 100%);
-      color: #fff;
-      border: 1px solid var(--accent-dk);
-      border-radius: 8px;
-      padding: 6px 18px;
-      font-family: inherit;
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      box-shadow: 0 2px 5px -1px color-mix(in srgb, var(--accent) 40%, transparent), inset 0 1px 0 rgba(255,255,255,0.15);
-      transition: all 0.15s;
-    }
-    .btn-primary:hover { 
-      background: var(--accent-dk);
-      box-shadow: 0 3px 6px -1px color-mix(in srgb, var(--accent) 50%, transparent), inset 0 1px 0 rgba(255,255,255,0.1);
-    }
-    .btn-primary:active {
-      transform: scale(0.97);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-    }
-
-    .btn-ghost {
-      background: linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-family: inherit;
-      font-size: 0.8rem;
-      color: var(--text-mid);
-      cursor: pointer;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
-      transition: all 0.12s;
-    }
-    .btn-ghost:hover { 
-      background: var(--surface); 
-      color: var(--text);
-      border-color: color-mix(in srgb, var(--border) 80%, var(--text) 20%);
-    }
-    .btn-ghost:active {
-      transform: scale(0.97);
-      box-shadow: none;
-    }
 
     .hidden { display: none !important; }
 
@@ -211,6 +133,7 @@
       transition: background 0.1s, color 0.1s;
     }
     .word-token:hover { background: oklch(93% 0.06 72); }
+    .word-token:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
     @media (prefers-color-scheme: dark) {
       html:not(.light-theme) .word-token:hover { background: oklch(26% 0.04 65); }
@@ -243,12 +166,17 @@
       color: var(--muted);
     }
     #empty-state .glyph {
-      font-family: 'Lora', serif;
-      font-style: italic;
+      font-family: var(--font-display);
+      font-weight: 600;
       font-size: 2.2rem;
       color: oklch(88% 0.06 70);
       margin-bottom: 10px;
       display: block;
+      animation: bounceHint 2s infinite ease-in-out;
+    }
+    @keyframes bounceHint {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
     }
 
     @media (prefers-color-scheme: dark) {
@@ -259,13 +187,22 @@
     /* ── Loading ────────────────────────────────────────────── */
     #loading {
       border-top: 1px solid var(--border);
-      padding: 14px 16px;
-      font-size: 0.8rem;
+      padding: 20px;
+      font-size: 0.9rem;
       color: var(--muted);
-      font-style: italic;
-      font-family: 'Lora', serif;
+      font-family: var(--font-ui);
       flex-shrink: 0;
     }
+    .skeleton-line {
+      height: 14px;
+      background: var(--border);
+      border-radius: 4px;
+      margin-bottom: 10px;
+      opacity: 0.5;
+      animation: pulse 1.5s infinite;
+    }
+    .skeleton-line:last-child { width: 60%; }
+    @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
 
     /* ── Error ──────────────────────────────────────────────── */
     #error-msg {
@@ -277,58 +214,50 @@
       flex-shrink: 0;
     }
 
-    /* ── Definition panel ───────────────────────────────────── */
+    /* ── Definition sheet ───────────────────────────────────── */
     #def-panel {
       border-top: 1px solid var(--border);
-      padding: 14px 16px;
+      padding: 20px;
+      background: var(--bg);
       flex-shrink: 0;
+      max-height: 60vh;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 9px;
-      max-height: 54vh;
-      overflow-y: auto;
+      gap: 12px;
     }
 
     .def-head {
       display: flex;
       align-items: baseline;
-      gap: 9px;
       flex-wrap: wrap;
+      gap: 8px;
     }
 
     #def-word {
-      font-family: 'Lora', serif;
-      font-size: 1.45rem;
-      font-weight: 500;
-      letter-spacing: -0.3px;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 600;
       color: var(--text);
-      line-height: 1.1;
+      letter-spacing: -0.02em;
     }
 
     #def-pos {
-      font-size: 0.64rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 2px 8px;
-      border-radius: 20px;
-      background: oklch(95% 0.05 65);
-      color: oklch(48% 0.16 65);
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 500;
+      text-transform: lowercase;
+      font-family: var(--font-display);
+      font-style: italic;
     }
-
-    @media (prefers-color-scheme: dark) {
-      html:not(.light-theme) #def-pos { background: oklch(22% 0.04 65); color: oklch(72% 0.14 65); }
-    }
-    html.dark-theme #def-pos { background: oklch(22% 0.04 65); color: oklch(72% 0.14 65); }
 
     #def-ipa {
       font-size: 0.8rem;
       color: var(--muted);
-      font-family: 'Lora', serif;
+      font-family: var(--font-ui);
     }
 
     #def-contextual {
-      font-size: 0.87rem;
       line-height: 1.68;
       color: var(--text);
       font-weight: 300;
@@ -339,7 +268,7 @@
       line-height: 1.6;
       color: var(--text-mid);
       font-style: italic;
-      font-family: 'Lora', serif;
+      font-family: var(--font-display);
       padding-left: 10px;
       border-left: 2px solid var(--border);
     }
@@ -348,12 +277,12 @@
       font-size: 0.75rem;
       color: var(--muted);
       font-style: italic;
-      font-family: 'Lora', serif;
+      font-family: var(--font-display);
     }
 
-    /* Copy button */
-    #copy-btn {
-      align-self: flex-start;
+    /* Copy / new-lookup buttons */
+    .def-actions { display: flex; gap: 6px; }
+    #copy-btn, #new-btn {
       background: none;
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -364,23 +293,67 @@
       cursor: pointer;
       transition: background 0.12s, color 0.12s;
     }
-    #copy-btn:hover { background: var(--bg); color: var(--text); }
+    #copy-btn:hover, #new-btn:hover { background: var(--bg); color: var(--text); }
 
-    /* Model selector */
-    #model-select {
+    /* ── Direct mode ────────────────────────────────────────────
+       Highlight a word anywhere → double-tap ⌘ → the definition IS the
+       app. No paste box, no token view, no extra click. */
+    body.direct #input-zone,
+    body.direct #empty-state,
+    body.direct #token-view { display: none !important; }
+    body.direct #def-panel { border-top: none; max-height: none; flex: 1; }
+    body.direct #loading { border-top: none; }
+    body.direct #def-word { font-size: 1.8rem; }
+    body.direct #def-contextual { font-size: 0.95rem; }
+
+    /* Model selector (Segmented Control) */
+    .model-toggle {
+      display: flex;
       background: var(--surface);
       border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 2px;
+    }
+    .model-toggle button {
+      background: transparent;
+      border: none;
       border-radius: 6px;
-      padding: 3px 6px;
-      font-family: inherit;
-      font-size: 0.7rem;
+      padding: 4px 10px;
+      font-family: var(--font-ui);
+      font-size: 0.75rem;
+      font-weight: 500;
       color: var(--muted);
       cursor: pointer;
-      outline: none;
-      -webkit-appearance: none;
-      appearance: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
     }
-    #model-select:focus { border-color: var(--accent); color: var(--text); }
+    .model-toggle button.active {
+      background: var(--bg);
+      color: var(--text);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .model-toggle button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .pro-chip {
+      font-size: 0.6rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: oklch(95% 0.05 65);
+      color: oklch(48% 0.16 65);
+      padding: 1px 4px;
+      border-radius: 4px;
+    }
+    html.dark-theme .pro-chip {
+      background: oklch(22% 0.04 65);
+      color: oklch(72% 0.14 65);
+    }
+    @media (prefers-color-scheme: dark) {
+      html:not(.light-theme) .pro-chip {
+        background: oklch(22% 0.04 65);
+        color: oklch(72% 0.14 65);
+      }
+    }
   </style>
 </head>
 <body>
@@ -398,11 +371,10 @@
   <textarea id="paste-area" placeholder="Paste any text…" spellcheck="false"></textarea>
   <div class="input-row">
     <span id="char-count"></span>
-    <select id="model-select" title="AI model" onchange="saveModel(this.value)">
-      <option value="haiku">Fast</option>
-      <option value="gemini">Gemini 🔒</option>
-      <option value="sonnet">Sonnet 4.5 🔒</option>
-    </select>
+    <div class="model-toggle" id="model-toggle">
+      <button data-val="haiku" onclick="saveModel('haiku')">Fast</button>
+      <button data-val="sonnet" onclick="saveModel('sonnet')">Precise <span class="pro-chip">Pro</span></button>
+    </div>
     <button id="edit-btn" class="btn-ghost hidden" onclick="resetToEdit()">← Edit</button>
     <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze</button>
   </div>
@@ -414,8 +386,8 @@
 <!-- Empty state -->
 <div id="empty-state">
   <div>
-    <span class="glyph">w</span>
-    <p>Paste any text above, click Analyze,<br>then tap any word.</p>
+    <span class="glyph">⌘</span>
+    <p>Select text anywhere,<br>then double-tap <b id="trigger-hint">⌃</b></p>
   </div>
 </div>
 
@@ -429,14 +401,31 @@
     <span id="def-pos"></span>
     <span id="def-ipa" class="hidden"></span>
   </div>
+  <p id="context-note" class="hidden" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin:-4px 0 0;"></p>
   <p id="def-contextual"></p>
   <p id="def-why" class="hidden"></p>
   <p id="def-etymology" class="hidden"></p>
-  <button id="copy-btn" onclick="copyDef()">Copy</button>
+  <div class="def-actions">
+    <button id="copy-btn" onclick="copyDef()">Copy</button>
+    <button id="new-btn" class="hidden" onclick="exitDirect()">New lookup</button>
+  </div>
 </div>
 
 <script>
-const urlParams = new URLSearchParams(window.location.search);
+// This exact file is served both as the website's own /compact.html (over
+// https://lexio.site) and, unmodified, as the desktop app's embedded lookup
+// UI (loaded from a local file:// URL inside pill.html's webview) — a
+// symlink keeps static/compact.html and this file byte-identical, so the
+// two behavioral differences they used to require separate copies for are
+// resolved here at runtime instead of by hand-copying:
+//   • File URLs often strip query parameters in Electron webviews, so the
+//     desktop app passes state via the hash fragment instead — read hash
+//     first, falling back to the query string for the website.
+//   • The website can use relative API paths; the desktop app, loaded from
+//     file://, needs the absolute origin.
+const IS_DESKTOP = location.protocol === 'file:';
+const API_BASE = IS_DESKTOP ? 'https://lexio.site' : '';
+const urlParams = new URLSearchParams(location.hash.substring(1) || location.search);
 if (urlParams.get('desktop') === '1') {
   document.getElementById('titlebar').style.display = 'none';
 }
@@ -445,6 +434,12 @@ if (urlParams.get('theme') === 'dark') {
 } else if (urlParams.get('theme') === 'light') {
   document.documentElement.classList.add('light-theme');
 }
+// Bug #17: the empty-state hint used to hardcode "⌘ or ⌃" regardless of
+// which key is actually configured as the double-tap trigger (Hub Settings
+// already reflects the real one dynamically) — pill.html passes the current
+// symbol through so this can match.
+const triggerHintEl = document.getElementById('trigger-hint');
+if (triggerHintEl) triggerHintEl.textContent = urlParams.get('trigger') || '⌃';
 
 let context = '';
 let activeToken = null;
@@ -453,11 +448,28 @@ let currentResult = null;
 
 // ── Model preference ────────────────────────────────────────
 const MODEL_KEY = 'lexio_compact_model';
-const modelSelect = document.getElementById('model-select');
-const savedModel = localStorage.getItem(MODEL_KEY) || 'haiku';
-modelSelect.value = savedModel;
+const VALID_MODELS = ['haiku', 'sonnet'];
+const modelToggleBtns = document.querySelectorAll('#model-toggle button');
+let savedModel = localStorage.getItem(MODEL_KEY) || 'haiku';
+if (!VALID_MODELS.includes(savedModel)) {
+  // Migrate legacy values (e.g. 'gemini' from the old dropdown-style model
+  // picker, before it was rebuilt as this Fast/Precise segmented control) —
+  // otherwise this keeps getting sent to /define forever with no UI
+  // reflecting it (bug #15).
+  savedModel = 'haiku';
+  localStorage.setItem(MODEL_KEY, savedModel);
+}
+
+function updateModelUI(val) {
+  modelToggleBtns.forEach(b => b.classList.toggle('active', b.dataset.val === val));
+}
+updateModelUI(savedModel);
+
 function saveModel(val) {
+  const btn = document.querySelector(`#model-toggle button[data-val="${val}"]`);
+  if (btn && btn.disabled) return;
   localStorage.setItem(MODEL_KEY, val);
+  updateModelUI(val);
   cache.clear();
 }
 function getModel() { return localStorage.getItem(MODEL_KEY) || 'haiku'; }
@@ -468,13 +480,13 @@ async function checkProStatus() {
   try {
     const token = localStorage.getItem('lexio_token');
     if (!token) { lockFreeModels(); return; }
-    const r = await fetch('/api/pro-status', { headers: { Authorization: 'Bearer ' + token } });
+    const r = await fetch(API_BASE + '/api/pro-status', { headers: { Authorization: 'Bearer ' + token } });
     if (!r.ok) { lockFreeModels(); return; }
     const d = await r.json();
     if (d.is_pro) {
-      ['gpt-4-mini', 'gemini', 'sonnet'].forEach(m => {
-        const opt = modelSelect.querySelector(`option[value="${m}"]`);
-        if (opt) { opt.disabled = false; opt.textContent = opt.textContent.replace(' 🔒',''); }
+      ['sonnet'].forEach(m => {
+        const btn = document.querySelector(`#model-toggle button[data-val="${m}"]`);
+        if (btn) btn.disabled = false;
       });
     } else { lockFreeModels(); }
   } catch { lockFreeModels(); }
@@ -482,12 +494,11 @@ async function checkProStatus() {
 checkProStatus();
 
 function lockFreeModels() {
-  ['gpt-4-mini', 'gemini', 'sonnet'].forEach(m => {
-    const opt = modelSelect.querySelector(`option[value="${m}"]`);
-    if (opt) opt.disabled = true;
+  ['sonnet'].forEach(m => {
+    const btn = document.querySelector(`#model-toggle button[data-val="${m}"]`);
+    if (btn) btn.disabled = true;
   });
-  if (['gpt-4-mini', 'gemini', 'sonnet'].includes(modelSelect.value)) {
-    modelSelect.value = 'haiku';
+  if (['sonnet'].includes(getModel())) {
     saveModel('haiku');
   }
 }
@@ -547,6 +558,131 @@ textarea.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') analyze();
 });
 
+/* ── Desktop entry point ───────────────────────────────────
+   Called by pill.html when the overlay captured a selection. `word` is
+   exactly what was highlighted; `ctx` is the surrounding sentence
+   main-overlay.js tries to auto-expand to via Accessibility — but that read
+   takes several real seconds (measured, not occasional — see
+   desktop/lib/context.js), so it's essentially never ready yet at this
+   point. `ctx === null` means "still coming": show that honestly and wait
+   for lexioContextReady() below, rather than guessing with just the word —
+   guessing is exactly how "bat" got defined as the flying mammal in a
+   baseball sentence. A short selection (a word or brief phrase) is what the
+   product is FOR — define it, full-panel, zero extra clicks, once real
+   context exists. Longer passages fall back to the token flow immediately,
+   where the passage itself already IS the context and any word inside
+   stays tappable — no auto-expansion needed or attempted there. */
+let pendingContextWord = null;   // guards against a late/stale context arriving after the user moved on
+let contextTimeoutId = null;     // belt-and-braces: never wait unbounded on a single IPC message (bug #1)
+
+function lexioDesktopInput(word, ctx) {
+  const w = (word || '').trim();
+  if (!w) return;
+  const words = w.split(/\s+/);
+  if (words.length <= 3 && w.length <= 48) {
+    if (ctx === null) {
+      pendingContextWord = w;
+      document.body.classList.add('direct');
+      document.getElementById('new-btn').classList.remove('hidden');
+      document.getElementById('error-msg').classList.add('hidden');
+      document.getElementById('def-panel').classList.add('hidden');
+      document.getElementById('loading').textContent = `Reading context for "${w}"…`;
+      document.getElementById('loading').classList.remove('hidden');
+      // If lexioContextReady never arrives (a dropped IPC message, a killed
+      // osascript process, pill.html and this webview disagreeing about
+      // load order — see the fix note in pill.html's onContextReady), don't
+      // strand the user on "Reading context…" forever. Define with just the
+      // word instead once this fires; lexioContextReady clears it if it
+      // wins the race normally.
+      clearTimeout(contextTimeoutId);
+      contextTimeoutId = setTimeout(() => {
+        if (pendingContextWord === w) {
+          pendingContextWord = null;
+          directDefine(w, w);
+        }
+      }, 10000);
+    } else {
+      directDefine(w, ctx || w);
+    }
+  } else {
+    pendingContextWord = null;
+    clearTimeout(contextTimeoutId);
+    exitDirectQuiet();
+    textarea.value = w;
+    const n = w.length;
+    charCount.textContent = n > 0 ? n.toLocaleString() + ' chars' : '';
+    analyze();
+  }
+}
+
+// Called once main-overlay.js's Accessibility context read resolves.
+// Ignored if the user has since closed/replaced this lookup — otherwise a
+// context arriving after that could silently overwrite whatever they've
+// moved on to.
+function lexioContextReady(word, ctx) {
+  if (word !== pendingContextWord) return;
+  pendingContextWord = null;
+  clearTimeout(contextTimeoutId);
+  directDefine(word, ctx || word);
+}
+
+function directDefine(word, ctx) {
+  context = ctx;
+  // Bug #2: never silently pretend a word-only fallback is a real
+  // contextual definition — show it plainly instead (Gemini can restyle
+  // this note; the point for now is that it exists and isn't hidden).
+  const note = document.getElementById('context-note');
+  if (ctx === word) {
+    note.textContent = "Couldn't read the surrounding text — defining the word alone.";
+    note.classList.remove('hidden');
+  } else {
+    note.classList.add('hidden');
+  }
+  document.body.classList.add('direct');
+  document.getElementById('new-btn').classList.remove('hidden');
+  document.getElementById('error-msg').classList.add('hidden');
+  document.getElementById('def-panel').classList.add('hidden');
+  fetchDef(word);
+}
+
+function exitDirectQuiet() {
+  document.body.classList.remove('direct');
+  document.getElementById('new-btn').classList.add('hidden');
+  pendingContextWord = null;   // a context arriving after this must not reopen a lookup the user left
+  clearTimeout(contextTimeoutId);
+}
+
+function exitDirect() {
+  exitDirectQuiet();
+  resetToEdit();
+}
+
+// Called by pill.html when the panel opens on an EMPTY capture (nothing was
+// selected, or Accessibility permission isn't granted yet). Without this,
+// the panel re-opened showing whatever was left from the last lookup —
+// including a stuck "Reading context…" if that lookup never finished, or a
+// definition for a word looked up an hour ago (bug #10).
+function lexioReset() {
+  clearTimeout(contextTimeoutId);
+  pendingContextWord = null;
+  exitDirectQuiet();
+  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('error-msg').classList.add('hidden');
+  document.getElementById('def-panel').classList.add('hidden');
+  document.getElementById('token-view').classList.add('hidden');
+  document.getElementById('empty-state').classList.remove('hidden');
+}
+
+// Bug #12: Esc only collapsed the overlay when pill.html's own document had
+// focus. Once the user clicks into this panel (the common case — the panel
+// is the whole point of opening it), keystrokes go to this webview instead,
+// and pill.html's Esc listener never sees them. No preload/nodeIntegration
+// is exposed here, so — same bridge as the LEXIO_LOOKUP:: one — a tagged
+// console.log is how this webview asks the host to collapse.
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') console.log('LEXIO_ESCAPE::');
+});
+
 /* ── Analyze ───────────────────────────────────────────── */
 function analyze() {
   const raw = textarea.value.trim();
@@ -589,13 +725,48 @@ function renderTokens(text) {
       const span = document.createElement('span');
       span.className = 'word-token';
       span.textContent = part;
+      span.tabIndex = 0;
       span.addEventListener('click', () => handleClick(span, part));
+      span.addEventListener('keydown', (e) => handleTokenKeydown(e, span, part));
       container.appendChild(span);
     } else {
       container.appendChild(document.createTextNode(part));
     }
   });
 }
+
+/* \u2500\u2500 Keyboard navigation between tokens \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+   Arrow keys move focus token-to-token (Tab already does this for free via
+   tabIndex, but a keyboard-triggered tool should support arrows too);
+   Enter/Space on a focused token opens it, same as a click. */
+function handleTokenKeydown(e, span, word) {
+  const tokens = Array.from(document.querySelectorAll('.word-token'));
+  const idx = tokens.indexOf(span);
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    (tokens[idx + 1] || tokens[0])?.focus();
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    (tokens[idx - 1] || tokens[tokens.length - 1])?.focus();
+  } else if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    handleClick(span, word);
+  }
+}
+
+// Enter re-opens the last-shown definition from anywhere else in the panel
+// (e.g. focus landed on the document body after a click-away/refocus) \u2014
+// skipped when focus is on a token (handled above), or on an actual input/
+// button, where Enter already has its own normal meaning.
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' || !currentResult) return;
+  const active = document.activeElement;
+  const tag = active?.tagName;
+  if (tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'SELECT') return;
+  if (active?.classList?.contains('word-token')) return;
+  e.preventDefault();
+  showResult(currentResult.word, currentResult.data);
+});
 
 function clearHighlights() {
   document.querySelectorAll('.word-token.active, .word-token.pulsing')
@@ -622,14 +793,20 @@ async function fetchDef(word) {
   }
 
   showLoading(word);
+  // Bug #9: without this, a hung connection (captive portal, server stall —
+  // the 502s seen during testing were real) left the skeleton loader up
+  // forever, indistinguishable from the "reading context" hang (bug #1).
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
   try {
     const tok = localStorage.getItem('lexio_token');
     const hdrs = { 'Content-Type': 'application/json' };
     if (tok) hdrs['Authorization'] = 'Bearer ' + tok;
-    const resp = await fetch('/define', {
+    const resp = await fetch(API_BASE + '/define', {
       method: 'POST',
       headers: hdrs,
       body: JSON.stringify({ word, context, lang: 'auto', model }),
+      signal: controller.signal,
     });
     if (!resp.ok) {
       if (resp.status === 402) {
@@ -645,15 +822,27 @@ async function fetchDef(word) {
     cache.set(key, data);
     if (activeToken) activeToken.classList.remove('pulsing');
     showResult(word, data);
+    // Bug #11: this used to live in showResult(), which also runs on cache
+    // hits and the Enter-to-reopen shortcut — neither is a new lookup, so
+    // the Hub's Recent tab was filling up with duplicate entries of the
+    // same word. Report it here instead, exactly once per real fetch.
+    console.log('LEXIO_LOOKUP::' + JSON.stringify({ word }));
   } catch (err) {
     clearHighlights(); activeToken = null;
-    showError(err.message);
+    showError(err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message);
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
 
 /* ── States ────────────────────────────────────────────── */
 function showLoading(word) {
-  document.getElementById('loading').textContent = `Looking up "${word}"…`;
+  document.getElementById('loading').innerHTML = `
+    <div style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">${word}</div>
+    <div class="skeleton-line"></div>
+    <div class="skeleton-line"></div>
+    <div class="skeleton-line"></div>
+  `;
   document.getElementById('loading').classList.remove('hidden');
   document.getElementById('def-panel').classList.add('hidden');
 }
@@ -661,6 +850,11 @@ function showLoading(word) {
 function showResult(word, data) {
   document.getElementById('loading').classList.add('hidden');
   currentResult = { word, data };
+
+  // NOTE: the LEXIO_LOOKUP:: bridge to pill.html (which forwards to main for
+  // the Hub's Recent tab) is reported from fetchDef()'s success path, not
+  // here — showResult() also runs on cache hits and the Enter-to-reopen
+  // shortcut, neither of which is a new lookup (bug #11).
 
   document.getElementById('def-word').textContent = word;
   document.getElementById('def-pos').textContent  = data.pos || '';
@@ -688,6 +882,13 @@ function showError(msg) {
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('error-msg').textContent = msg;
   document.getElementById('error-msg').classList.remove('hidden');
+  // Direct mode hides every other control — drop back to the editor so a
+  // failed lookup never strands the user on a bare error strip.
+  if (document.body.classList.contains('direct')) {
+    exitDirectQuiet();
+    textarea.value = context;
+    document.getElementById('empty-state').classList.remove('hidden');
+  }
 }
 function hideError() { document.getElementById('error-msg').classList.add('hidden'); }
 

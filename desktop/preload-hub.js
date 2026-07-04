@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('lexioHub', {
   getRecent: () => ipcRenderer.invoke('hub:get-recent'),
   getAuth:   () => ipcRenderer.invoke('hub:get-auth'),
   signOut:   () => ipcRenderer.send('hub:sign-out'),
+  relookup:  (word) => ipcRenderer.send('hub:relookup', word),
 
   getAccessibilityStatus: () => ipcRenderer.invoke('app:accessibility-status'),
   requestAccessibility:   () => ipcRenderer.invoke('app:request-accessibility'),
@@ -14,6 +15,8 @@ contextBridge.exposeInMainWorld('lexioHub', {
   setLaunchAtLogin:       (v) => ipcRenderer.send('app:set-launch-at-login', v),
   getHotkey:              () => ipcRenderer.invoke('app:get-hotkey'),
   showOnboarding:         () => ipcRenderer.send('app:show-onboarding'),
+  openInputMonitoringSettings: () => ipcRenderer.send('app:open-input-monitoring-settings'),
+  openLogFile: () => ipcRenderer.send('app:open-log-file'),
 
   getTriggerKey:          () => ipcRenderer.invoke('app:get-trigger-key'),
   getTriggerOptions:      () => ipcRenderer.invoke('app:get-trigger-options'),

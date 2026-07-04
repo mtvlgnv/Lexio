@@ -1,4 +1,6 @@
-const { app, BrowserWindow, globalShortcut, Menu, shell, Tray, nativeImage } = require('electron');
+const { app, BrowserWindow, globalShortcut, Menu, shell, Tray } = require('electron');
+const { TRAY_ICON } = require('./lib/icons');
+const { parseAuthUrl } = require('./lib/auth');
 
 app.setName('Lexio Mini');
 
@@ -8,15 +10,9 @@ if (process.platform === 'darwin') app.dock.hide();
 let win  = null;
 let tray = null;
 
-// Minimal 1×1 transparent PNG — the visible label comes from tray.setTitle()
-const BLANK_ICON = nativeImage.createFromDataURL(
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='
-);
-
 /* ── Tray ───────────────────────────────────────────────── */
 function createTray() {
-  tray = new Tray(BLANK_ICON);
-  tray.setTitle(' Lx ');
+  tray = new Tray(TRAY_ICON);
   tray.setToolTip('Lexio — contextual definitions');
 
   // Left-click: toggle window
@@ -103,21 +99,16 @@ app.setAsDefaultProtocolClient('lexio');
 
 app.on('open-url', (event, url) => {
   event.preventDefault();
-  try {
-    const parsed = new URL(url);
-    if (parsed.hostname === 'auth') {
-      const token = parsed.searchParams.get('token');
-      const user  = parsed.searchParams.get('user');
-      if (token && win) {
-        // Inject token into compact.html's localStorage and fire event
-        win.webContents.executeJavaScript(`
-          localStorage.setItem('lexio_token', ${JSON.stringify(token)});
-          ${user ? `localStorage.setItem('lexio_user', ${JSON.stringify(user)});` : ''}
-          window.dispatchEvent(new CustomEvent('lexio-auth', { detail: { token: ${JSON.stringify(token)}, user: ${user ? JSON.stringify(JSON.parse(user)) : 'null'} } }));
-        `).catch(() => {});
-      }
-    }
-  } catch {}
+  const auth = parseAuthUrl(url);
+  if (auth && win) {
+    const { token, user } = auth;
+    // Inject token into compact.html's localStorage and fire event
+    win.webContents.executeJavaScript(`
+      localStorage.setItem('lexio_token', ${JSON.stringify(token)});
+      ${user ? `localStorage.setItem('lexio_user', ${JSON.stringify(JSON.stringify(user))});` : ''}
+      window.dispatchEvent(new CustomEvent('lexio-auth', { detail: { token: ${JSON.stringify(token)}, user: ${user ? JSON.stringify(user) : 'null'} } }));
+    `).catch(() => {});
+  }
   showWindow();
 });
 

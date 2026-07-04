@@ -6,22 +6,9 @@
 <title>Lexio Glance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg:      #f5efe8;
-    --surface: #fffdfa;
-    --border:  #e4ddd4;
-    --text:    #1a1612;
-    --muted:   #7a7269;
-    --accent:  #c35500;
-    --accent2: #ff7a18;
-    /* Same warm palette as the marketing site's WebGL hero gradient. */
-    --gradient-color-1: #ef7040;
-    --gradient-color-2: #c2541e;
-    --gradient-color-3: #7a3b9e;
-    --gradient-color-4: #f0b060;
-  }
   html, body {
     width: 100%; height: 100%;
     background: transparent;          /* Electron window is transparent */
@@ -38,49 +25,28 @@
     position: absolute; left: 50%; bottom: 0; transform: translateX(-50%);
     width: 100%; height: 100%;
     display: flex; flex-direction: column;
-    justify-content: flex-end;
+    align-items: center; justify-content: flex-end;
   }
 
-  /* ── Collapsed pill ─────────────────────────────────────────────
-     A small disc filled with a pure-CSS animated gradient — 4 soft,
-     independently-drifting radial blobs in the marketing site's brand
-     colors. NOT WebGL: whatamesh's mesh gradient sizes its detail off
-     the canvas's absolute pixel dimensions, so at a real 36px it only
-     ever shows a tiny, mostly-flat slice of the pattern (confirmed by
-     testing both a scaled-down full render and a cropped window into a
-     larger one — both still looked flat/banded, not swirly). A CSS
-     radial-gradient doesn't have that problem: its position/size are
-     percentages of the ELEMENT's own box, so the blobs are always
-     correctly proportioned regardless of how small the element is.
-     Hovering the pill triggers the full expand (see the mouseenter
-     listener below) rather than a separate cosmetic scale/shadow hover
-     state, so there's no lingering "grow slightly" micro-interaction to
-     clash with the real expand animation starting at the same time. */
-  .pill {
-    -webkit-app-region: drag;          /* let users drag the widget */
+  /* ── Morphing Container (Siri-style animation) ── */
+  .morph-container {
+    -webkit-app-region: no-drag;
     position: relative;
     width: 36px; height: 36px;
-    margin: 0 auto 4px;
     border-radius: 50%;
-    overflow: hidden;                  /* clips the blob layer into a disc */
+    margin: 0 auto;
+    background: var(--surface);
+    box-shadow: 0 4px 12px rgba(194,96,26,0.3);
+    overflow: hidden;
     cursor: pointer;
-    box-shadow: 0 6px 16px -6px rgba(80,40,0,0.4), 0 1px 4px rgba(0,0,0,0.1);
-    /* opacity kept in sync with .panel's 0.42s fade-in above, so the pill
-       and panel crossfade together instead of leaving a gap where neither
-       is visible; filter (hover feedback) stays snappy/independent. */
-    transition: opacity 0.42s cubic-bezier(0.16,1,0.3,1), filter 0.15s ease-out;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .pill:hover { filter: brightness(1.08) saturate(1.1); }
+  .morph-container:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(194,96,26,0.4); }
+  .morph-container:active { transform: scale(0.95); }
+
   .pill-blobs {
-    -webkit-app-region: no-drag;
-    position: absolute; inset: -8%;   /* small oversize so drift never reveals a blank edge */
-    /* Each blob's "opaque" core is only ~85% opacity (color-mix against
-       transparent), so ordinary layer stacking still lets earlier blobs
-       partially show through later ones instead of the last one simply
-       winning wherever they overlap. Tried background-blend-mode:screen
-       first — it genuinely blended, but pushed everything toward washed-
-       out pastel/white, losing the warm saturated look entirely. Plain
-       alpha compositing is gentler and keeps the colors true. */
+    position: absolute; width: 40px; height: 40px; 
+    bottom: -2px; left: 50%; margin-left: -20px;
     background-image:
       radial-gradient(circle, color-mix(in srgb, var(--gradient-color-1) 85%, transparent), transparent 78%),
       radial-gradient(circle, color-mix(in srgb, var(--gradient-color-4) 85%, transparent), transparent 75%),
@@ -90,94 +56,85 @@
     background-repeat: no-repeat;
     background-position: 15% 15%, 80% 25%, 25% 80%, 80% 80%;
     animation: pillBlobDrift 9s ease-in-out infinite;
+    opacity: 1;
+    transition: opacity 0.3s ease;
   }
   @keyframes pillBlobDrift {
     0%, 100% { background-position: 15% 15%, 80% 25%, 25% 80%, 80% 80%; }
     33%      { background-position: 28%  8%, 70% 38%, 38% 70%, 68% 92%; }
     66%      { background-position:  6% 30%, 90% 12%, 12% 90%, 92% 68%; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .pill-blobs { animation: none; }
+  @media (prefers-reduced-motion: reduce) { .pill-blobs { animation: none; } }
+  @keyframes pulseCapture {
+    0% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.15); filter: brightness(1.4); }
+    100% { transform: scale(1); filter: brightness(1); }
   }
+  .morph-container.capturing .pill-blobs { animation: pulseCapture 0.3s ease-out; }
 
   /* ── Expanded panel ─────────────────────────────────────── */
-  /* Content crossfade timed to land alongside the ~480ms smooth window
-     grow driven from main-overlay.js (animateBounds), so the pill visibly
-     blends into the full app rather than snapping — inspired by the
-     reference clip of the redesigned Siri "Search or Ask" bar smoothly
-     growing from a small dot into its full pill shape. (Wispr Flow's own
-     UI, by contrast, snaps in near-instantly — that was the right model
-     for the earlier "trigger this from anywhere" pass, but isn't what's
-     being asked for here.) */
-  .panel {
+  .panel-content {
     -webkit-app-region: no-drag;
-    /* flex:0 + height:0 while collapsed — NOT just opacity:0 — because the
-       <webview> inside has its own explicit background (var(--bg)) and,
-       being a real embedded guest surface, doesn't reliably respect the
-       parent's CSS opacity the way a normal DOM child would. Without a
-       zero-size box here, that background painted as a visible card
-       filling whatever flex space the panel claimed, even while "hidden". */
-    flex: 0 0 0; height: 0; margin: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    box-shadow: 0 20px 60px -16px rgba(80,40,0,0.45);
+    position: absolute;
+    bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 460px; height: 580px;
     display: flex; flex-direction: column;
-    overflow: hidden;
-    opacity: 0; transform: scale(0.92);
-    transition: opacity 0.42s cubic-bezier(0.16,1,0.3,1), transform 0.42s cubic-bezier(0.16,1,0.3,1);
-    pointer-events: none;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.05s ease;
   }
   .panel-head {
     -webkit-app-region: drag;
     display: flex; align-items: center; gap: 8px;
     padding: 12px 14px; border-bottom: 1px solid var(--border);
-    background: var(--bg);
+    background: linear-gradient(135deg, var(--gradient-color-4) 0%, var(--gradient-color-1) 40%, var(--gradient-color-3) 100%);
   }
-  .panel-mark { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.35rem; display: flex; align-items: baseline; gap: 5px; }
-  .panel-mark em { color: var(--accent); font-style: italic; }
-  .panel-tag { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.35rem; }
+  .panel-mark { font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; display: flex; align-items: baseline; gap: 6px; color: white; }
+  .panel-tag { font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; font-style: italic; color: white; }
   .panel-spacer { flex: 1; }
-  .panel-close {
+  .panel-close, .panel-pin {
     -webkit-app-region: no-drag;
     width: 26px; height: 26px; border: none; border-radius: 7px;
-    background: transparent; color: var(--muted); cursor: pointer; font-size: 1rem;
+    background: transparent; color: rgba(255,255,255,0.8); cursor: pointer; font-size: 1rem;
     display: flex; align-items: center; justify-content: center;
   }
-  .panel-close:hover { background: var(--border); color: var(--text); }
+  .panel-close:hover, .panel-pin:hover { background: rgba(255,255,255,0.2); color: white; }
+  .panel-pin.active { color: white; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+  .panel-pin svg { fill: none; transition: fill 0.15s; }
+  .panel-pin.active svg { fill: currentColor; }
   .panel-body { flex: 1; min-height: 0; display: flex; }
   .panel-body webview { flex: 1; width: 100%; height: 100%; background: var(--bg); }
 
   /* ── State switching ────────────────────────────────────── */
-  /* No `transition` shorthand here on purpose — it would silently override
-     the consolidated one on the base .pill rule above (shorthand replaces,
-     doesn't merge, across rules of equal specificity). */
-  .pill                 { opacity: 1; }
-  body.expanded .pill   { opacity: 0; pointer-events: none; height: 0; margin: 0; overflow: hidden; }
-  body.expanded .panel  { flex: 1; height: auto; opacity: 1; transform: none; pointer-events: auto; }
+  body.expanded .morph-container {
+    width: 100%; height: 100%; margin: 0; border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px -16px rgba(80,40,0,0.45);
+    cursor: default; transform: none !important;
+  }
+  body.expanded .pill-blobs { opacity: 0; }
+  body.expanded .panel-content {
+    opacity: 1; pointer-events: auto;
+    transition: opacity 0.1s ease 0.05s;
+  }
 </style>
 </head>
 <body>
   <div class="shell">
-    <!-- Collapsed pill (default): a small CSS blob-gradient disc, same
-         brand colors as the marketing site's hero. No caption text —
-         the explanation lives in the hover tooltip. -->
-    <div class="pill" id="pill" title="Click or double-tap ⌃ to open Lexio Glance">
+    <div class="morph-container" id="pill" title="Click or double-tap ⌃ to open Lexio Glance">
       <div class="pill-blobs"></div>
-    </div>
-
-    <!-- Expanded panel -->
-    <div class="panel" id="panel">
-      <div class="panel-head">
-        <span class="panel-mark">Le<em>x</em>io <span class="panel-tag">Glance</span></span>
-        <span class="panel-spacer"></span>
-        <button class="panel-close" id="close" title="Close (Esc)">✕</button>
-      </div>
-      <div class="panel-body" id="panel-body">
-        <!-- The <webview> itself is created dynamically in JS on first
-             expand — see the note by ensureFrame() below for why it can't
-             just sit here (even hidden/zero-sized) the way it originally
-             did. -->
+      <div class="panel-content" id="panel">
+        <div class="panel-head">
+          <span class="panel-mark">Lexio <span class="panel-tag">Glance</span></span>
+          <span class="panel-spacer"></span>
+          <button class="panel-pin" id="pin" title="Keep open (ignore click-away)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.68V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3v4.68a2 2 0 0 1-1.11 1.87l-1.78.9A2 2 0 0 0 5 15.24Z"></path></svg>
+          </button>
+          <button class="panel-close" id="close" title="Close (Esc)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="panel-body" id="panel-body">
+        </div>
       </div>
     </div>
   </div>
@@ -186,8 +143,25 @@
   const body       = document.body;
   const pill       = document.getElementById('pill');
   const close      = document.getElementById('close');
+  const pinBtn     = document.getElementById('pin');
   const panelBody  = document.getElementById('panel-body');
+
+  // Pin resets on every open — it's a "keep this particular lookup open"
+  // affordance, not a sticky setting to remember across sessions.
+  let pinned = false;
+  function setPinned(v) {
+    pinned = v;
+    pinBtn.classList.toggle('active', pinned);
+    window.lexioOverlay?.setPinned(pinned);
+  }
+  pinBtn.addEventListener('click', () => setPinned(!pinned));
   const COMPACT_URL = 'https://lexio.site/compact.html';
+
+  // Populated below from main before ensureFrame() is ever called in
+  // practice (it only runs on the first real expand, which requires user
+  // interaction) — defaults to the shipped default (Control) if that
+  // hasn't resolved yet for some reason (bug #17's compact.html half).
+  let triggerSymbol = '⌃';
 
   // The <webview> is created here, in JS, on first expand — NOT present
   // in the static HTML at all, not even hidden/zero-sized. Its mere
@@ -208,38 +182,115 @@
     frame.setAttribute('partition', 'persist:lexio');
     frame.setAttribute('allowpopups', '');
     frame.addEventListener('dom-ready', () => { frameReady = true; flushPending(); flushPendingAuth(); });
+    // Bridge: compact.html has no preload/nodeIntegration, so it can't reach
+    // ipcRenderer directly. Tagged console.log messages are how it asks the
+    // host to do things on its behalf — LEXIO_LOOKUP:: reports the actually-
+    // defined word (for the Hub's Recent tab), LEXIO_ESCAPE:: asks to
+    // collapse the panel (bug #12 — Esc previously only worked when THIS
+    // document had focus, not once the user clicked into the lookup panel).
+    frame.addEventListener('console-message', (e) => {
+      if (!e.message) return;
+      if (e.message.startsWith('LEXIO_LOOKUP::')) {
+        try {
+          const { word } = JSON.parse(e.message.slice('LEXIO_LOOKUP::'.length));
+          if (word) window.lexioOverlay?.reportLookup(word);
+        } catch {}
+      } else if (e.message === 'LEXIO_ESCAPE::') {
+        window.lexioOverlay?.requestCollapse();
+      }
+    });
     panelBody.appendChild(frame);
-    
+
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const localCompactUrl = window.location.href.replace('pill.html', 'compact.html');
-    frame.src = `${localCompactUrl}#desktop=1&theme=${isDark ? 'dark' : 'light'}`;
+    // Bug #17: the trigger symbol is passed through so compact.html's empty
+    // state can name the actually-configured key instead of hardcoding one.
+    frame.src = `${localCompactUrl}#desktop=1&theme=${isDark ? 'dark' : 'light'}&trigger=${encodeURIComponent(triggerSymbol)}`;
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (frameReady) {
+        frame.executeJavaScript(`
+          document.documentElement.classList.toggle('dark-theme', ${e.matches});
+          document.documentElement.classList.toggle('light-theme', ${!e.matches});
+        `);
+      }
+    });
   }
 
   // ── Phase 2: pipe a captured selection straight into the lookup ──
   // Sets compact.html's paste box and runs its existing analyze() flow —
   // identical to a user pasting text and clicking Analyze themselves.
-  let pendingText;   // text captured before the webview finished loading
-  function injectAndAnalyze(text) {
+  // `word` is exactly what was highlighted; `context` is the surrounding
+  // sentence main-overlay.js tries to auto-expand to via Accessibility.
+  //
+  // BUG #1 FIX: the context read now regularly finishes in ~150-500ms (it
+  // used to take several real seconds, which is what "no queuing needed"
+  // below assumed when this was written). That means 'overlay:context-ready'
+  // can now arrive from main BEFORE the initial word has even been injected
+  // into the webview — either because the frame is still loading (cold
+  // start) or because the 250ms .capturing pulse in expand() below hasn't
+  // finished yet. Landing lexioContextReady() ahead of lexioDesktopInput()
+  // meant compact.html's pendingContextWord guard silently dropped the
+  // context (it wasn't set yet) and the panel was left waiting forever for
+  // an event that had already fired. Fix: track whether the initial payload
+  // has actually been injected, and stash any context that arrives before
+  // that until right after — both queues drain through the same funnel
+  // (flushPending), so ordering is guaranteed by construction rather than by
+  // which one happens to resolve first.
+  let pendingPayload;    // {word, context|contextPending} — waiting for the webview to be ready
+  let pendingContext;    // {word, context} — waiting for pendingPayload to actually be injected first
+  let initialInjected = false;
+
+  function injectAndAnalyze(payload) {
+    initialInjected = true;
     const script = `
       (function() {
-        const t = ${JSON.stringify(text)};
+        const w = ${JSON.stringify(payload.word)};
+        const c = ${payload.contextPending ? 'null' : JSON.stringify(payload.context)};
         // Preferred path: compact.html decides — short selection is defined
-        // instantly full-panel, long passage gets the tappable token view.
-        if (typeof lexioDesktopInput === 'function') { lexioDesktopInput(t); return; }
+        // (once context resolves) full-panel, long passage gets the
+        // tappable token view immediately, since the passage itself IS its
+        // own context and needs no auto-expansion.
+        if (typeof lexioDesktopInput === 'function') { lexioDesktopInput(w, c); return; }
         // Fallback for an older compact.html without the direct-mode API.
         const ta = document.getElementById('paste-area');
-        if (ta) ta.value = t;
+        if (ta) ta.value = w;
         if (typeof analyze === 'function') analyze();
       })();
     `;
     frame.executeJavaScript(script).catch(() => {});
-  }
-  function flushPending() {
-    if (frameReady && pendingText !== undefined) {
-      const t = pendingText; pendingText = undefined;
-      injectAndAnalyze(t);
+    // A context for THIS payload may have arrived while we were still
+    // waiting to inject the word itself — send it now, right behind the
+    // word injection (executeJavaScript calls on the same webContents run
+    // in the order they're issued, so this ordering is guaranteed).
+    if (pendingContext) {
+      const c = pendingContext; pendingContext = undefined;
+      injectContextReady(c);
     }
   }
+  function flushPending() {
+    if (frameReady && pendingPayload !== undefined) {
+      const p = pendingPayload; pendingPayload = undefined;
+      injectAndAnalyze(p);
+    }
+  }
+
+  // ── Streamed-in context, once the (now often-fast, occasionally still
+  // slow) Accessibility read resolves ──
+  function injectContextReady(payload) {
+    const script = `
+      (function() {
+        if (typeof lexioContextReady === 'function') {
+          lexioContextReady(${JSON.stringify(payload.word)}, ${JSON.stringify(payload.context)});
+        }
+      })();
+    `;
+    frame.executeJavaScript(script).catch(() => {});
+  }
+  window.lexioOverlay?.onContextReady((payload) => {
+    if (frameReady && initialInjected) injectContextReady(payload);
+    else pendingContext = payload;   // drained by injectAndAnalyze, right after the word it belongs to
+  });
 
   // ── Auth handoff into the webview ────────────────────────────────
   // compact.html keeps sign-in state in its own partitioned localStorage
@@ -268,25 +319,61 @@
   }
   window.lexioOverlay?.onAuth((payload) => applyAuth(payload));
 
-  function expand(text) {
-    ensureFrame();
-    body.classList.add('expanded');
-    if (text) { pendingText = text; flushPending(); }
-  }
-  function collapse() { body.classList.remove('expanded'); }
+  // BUG #7 FIX: this timer used to fire unconditionally 250ms after expand()
+  // was called, even if the user had already collapsed (mouse-left, Esc,
+  // clicked away) during that window — re-adding .expanded right after
+  // collapse() had just removed it, sometimes after main-overlay.js had
+  // already started shrinking the OS window back down, so the full panel
+  // briefly rendered clipped inside the tiny 44x42 pill bounds. Tracking the
+  // timer and clearing it on collapse() closes that race.
+  let expandTimer = null;
 
-  // Hover blends the pill into the full app — a short debounce (80ms)
-  // avoids triggering on a quick, incidental mouse pass-over rather than
-  // an actual pause on the pill. Click still works too (trackpad taps /
-  // accessibility can land as a click without a clean hover first).
-  let hoverTimer = null;
-  pill.addEventListener('mouseenter', () => {
-    hoverTimer = setTimeout(() => window.lexioOverlay?.requestExpand(), 80);
+  function expand(payload) {
+    ensureFrame();
+    if (payload?.word) {
+      // A brand new lookup starts clean — any context still waiting on a
+      // previous, never-fully-injected lookup must not leak into this one.
+      initialInjected = false;
+      pendingContext = undefined;
+      pill.classList.add('capturing');
+      clearTimeout(expandTimer);
+      expandTimer = setTimeout(() => {
+        expandTimer = null;
+        pill.classList.remove('capturing');
+        body.classList.add('expanded');
+        pendingPayload = payload; flushPending();
+      }, 250);
+    } else {
+      body.classList.add('expanded');
+      // Bug #10: nothing was captured (no selection, or Accessibility not
+      // granted yet) — without this, the panel re-opened showing whatever
+      // was left over from the LAST lookup (a stuck "Reading context…", or
+      // someone else's definition from an hour ago).
+      if (frameReady) frame.executeJavaScript(`if (typeof lexioReset === 'function') lexioReset();`).catch(() => {});
+    }
+  }
+  function collapse() {
+    clearTimeout(expandTimer);
+    expandTimer = null;
+    pill.classList.remove('capturing');
+    body.classList.remove('expanded');
+    setPinned(false);
+  }
+
+  // Hover is purely cosmetic now (see CSS .pill:hover). 
+  // Clicking the pill expands it.
+  // Cmd/Ctrl + Drag allows repositioning the window.
+  pill.addEventListener('mousedown', (e) => {
+    if (e.metaKey || e.ctrlKey) {
+      e.preventDefault();
+      window.lexioOverlay?.startDrag();
+    }
   });
-  pill.addEventListener('mouseleave', () => {
-    if (hoverTimer) { clearTimeout(hoverTimer); hoverTimer = null; }
+  pill.addEventListener('click', (e) => {
+    if (!e.metaKey && !e.ctrlKey) {
+      window.lexioOverlay?.requestExpand();
+    }
   });
-  pill.addEventListener('click', () => window.lexioOverlay?.requestExpand());
   close.addEventListener('click', () => window.lexioOverlay?.requestCollapse());
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') window.lexioOverlay?.requestCollapse();
@@ -300,6 +387,7 @@
   // from closing the panel out from under the user.
   let leaveTimer = null;
   document.body.addEventListener('mouseleave', () => {
+    if (pinned) return;   // pinned: stay open even once the cursor leaves
     leaveTimer = setTimeout(() => window.lexioOverlay?.requestCollapse(), 200);
   });
   document.body.addEventListener('mouseenter', () => {
@@ -307,12 +395,15 @@
   });
 
   // Main process drives the actual state (it owns the window size) and,
-  // when it captured a selection (Phase 2), passes the text along.
-  window.lexioOverlay?.onExpand((payload) => expand(payload?.text));
+  // when it captured a selection (Phase 2), passes {word, context} along.
+  window.lexioOverlay?.onExpand((payload) => expand(payload));
   window.lexioOverlay?.onCollapse(() => collapse());
 
   window.lexioOverlay?.getTriggerSymbol().then((sym) => {
-    if (sym) pill.title = `Click or double-tap ${sym} to open Lexio Glance`;
+    if (sym) {
+      triggerSymbol = sym;
+      pill.title = `Click or double-tap ${sym} to open Lexio Glance`;
+    }
   });
 </script>
 </body>

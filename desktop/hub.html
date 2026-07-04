@@ -6,18 +6,9 @@
 <title>Lexio Glance — Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..600;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="tokens.css" />
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg:      #f5efe8;
-    --surface: #fffdfa;
-    --border:  #e4ddd4;
-    --text:    #1a1612;
-    --muted:   #7a7269;
-    --accent:  #c35500;
-    --accent2: #ff7a18;
-    --good:    #4a7c3f;
-  }
   html, body {
     width: 100%; height: 100%;
     background: var(--bg);
@@ -58,7 +49,7 @@
   .recent-list { flex: 1; overflow-y: auto; padding: 8px 10px; }
   .recent-item {
     display: flex; flex-direction: column; gap: 2px;
-    padding: 9px 10px; border-radius: 9px;
+    padding: 9px 10px; border-radius: 9px; cursor: pointer;
   }
   .recent-item:hover { background: var(--surface); }
   .recent-word { font-size: 0.88rem; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
@@ -164,6 +155,14 @@
         </div>
       </div>
       <div class="divider"></div>
+      <div>
+        <div class="row-label">Input Monitoring permission</div>
+        <div class="row-hint">A second, separate permission the double-tap trigger also needs — macOS doesn't let apps check or request this one, so if double-tap does nothing at all (not even opening Siri), turn it on manually.</div>
+        <button class="link" id="open-input-monitoring" style="margin-top:6px;">Open Input Monitoring settings</button>
+      </div>
+      <div class="divider"></div>
+      <button class="link" id="open-log-file">Open log file</button>
+      <div class="divider"></div>
       <button class="link" id="show-onboarding">Show onboarding again</button>
     </div>
   </div>
@@ -205,12 +204,18 @@
       el.appendChild(empty);
       return;
     }
-    el.innerHTML = list.map((item) => `
-      <div class="recent-item">
+    el.innerHTML = list.map((item, i) => `
+      <div class="recent-item" data-index="${i}" title="Click to look up again">
         <div class="recent-word">${escapeHtml(item.word)}</div>
         <div class="recent-time">${timeAgo(item.at)}</div>
       </div>
     `).join('');
+    el.querySelectorAll('.recent-item').forEach((row) => {
+      row.addEventListener('click', () => {
+        const item = lastRecentList[Number(row.dataset.index)];
+        if (item) window.lexioHub?.relookup(item.word);
+      });
+    });
   }
   function escapeHtml(s) {
     return (s || '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
@@ -268,6 +273,8 @@
   }
   refreshAccessStatus();
   document.getElementById('show-onboarding').addEventListener('click', () => window.lexioHub?.showOnboarding());
+  document.getElementById('open-input-monitoring').addEventListener('click', () => window.lexioHub?.openInputMonitoringSettings());
+  document.getElementById('open-log-file').addEventListener('click', () => window.lexioHub?.openLogFile());
 
   // ── Account ─────────────────────────────────────────────────────
   function renderAccount(auth) {

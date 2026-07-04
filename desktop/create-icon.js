@@ -48,23 +48,23 @@ function roundedRect(r) {
 /* ── background gradient ───────────────────────────── */
 roundedRect(R);
 const g = ctx.createLinearGradient(0, 0, S, S);
-g.addColorStop(0, '#faf4ed');
-g.addColorStop(1, '#ece0d0');
+g.addColorStop(0, '#ff7b00'); // vibrant orange
+g.addColorStop(1, '#e34900'); // darker orange
 ctx.fillStyle = g;
 ctx.fill();
 
 /* ── subtle inner shadow ring ──────────────────────── */
 roundedRect(R);
-ctx.strokeStyle = 'rgba(0,0,0,0.07)';
-ctx.lineWidth = 6;
+ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+ctx.lineWidth = 8;
 ctx.stroke();
 
-/* ── lettermark "w" ────────────────────────────────── */
-ctx.font         = 'bold 560px Georgia, serif';
-ctx.fillStyle    = '#9c6b3c';
+/* ── lettermark "L" ────────────────────────────────── */
+ctx.font         = 'bold 640px Georgia, serif';
+ctx.fillStyle    = '#ffffff';
 ctx.textAlign    = 'center';
 ctx.textBaseline = 'middle';
-ctx.fillText('w', S / 2, S / 2 + 24);
+ctx.fillText('L', S / 2, S / 2 + 24);
 
 document.title = 'done';
 </script>
