@@ -32,6 +32,7 @@ const { installFileLogging, logPath } = require('./lib/log');
 const { menuBarTrayIcon } = require('./lib/icons');
 const { parseAuthUrl } = require('./lib/auth');
 const { startContextRead } = require('./lib/context');
+const { practiceContextFor } = require('./lib/onboarding-practice');
 
 // A packaged .app has no attached terminal — without this, "check the log"
 // is impossible for a field report like this week's real-hardware trigger
@@ -207,8 +208,19 @@ async function captureSelection() {
   // If the onboarding wizard is open on its practice-run step, this real
   // capture is what it's waiting for — let it advance itself instead of
   // requiring a manual "Next" click.
-  if (onboardingWin && !onboardingWin.isDestroyed()) {
+  const onboardingOpen = onboardingWin && !onboardingWin.isDestroyed();
+  if (onboardingOpen) {
     onboardingWin.webContents.send('onboarding:practice-capture', { text: word });
+  }
+
+  // Electron windows don't expose their HTML to the AX tree, so the normal
+  // context read always fails during the onboarding practice sentence — feed
+  // the known sample instead so "adventitious" gets its real literary sense.
+  const practiceContext = onboardingOpen ? practiceContextFor(word) : null;
+  if (practiceContext) {
+    resolveContext.cancel();
+    console.log(`[overlay] context: onboarding practice sentence (${practiceContext.length} chars)`);
+    return { word, contextPromise: Promise.resolve(practiceContext) };
   }
 
   // Deliberately NOT awaited — see the function-level comment above. The
