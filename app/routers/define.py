@@ -17,7 +17,7 @@ from app.limits import (
     _get_client_ip, _check_hourly_limit, _consume_hourly_credits,
     _check_usage, _consume_usage, _has_pro_access,
 )
-from app.json_utils import _safe_json_loads
+from app.json_utils import _safe_json_loads, _normalize_define_keys
 from app.ratelimit import limiter
 from app.schemas import DefineRequest
 
@@ -183,7 +183,7 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
     # ── AI call (no debit until we have a valid response) ──────────────────
     def _call_and_parse():
         if actual_model == "fast":
-            text = ai._call_groq(prompt)            # Llama 3.1 8B Instant (Groq)
+            text = ai._call_groq(prompt, phrase=is_phrase)  # GPT-OSS 20B, strict JSON
         elif actual_model == "balanced":
             text = ai._call_google(prompt)          # Gemini 2.5 Flash
         else:  # deep
@@ -194,24 +194,31 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
             lines = text.splitlines()
             text  = "\n".join(l for l in lines if not l.startswith("```")).strip()
 
-        parsed = _safe_json_loads(text)
+        parsed = _normalize_define_keys(_safe_json_loads(text))
         for key in required_keys:
             if key not in parsed:
-                raise ValueError(f"Missing key: {key}")
+                raise ValueError(f"Missing key: {key} (got {list(parsed.keys())})")
         return parsed
 
-    # Single retry on parse/value errors — Gemini occasionally produces
-    # malformed JSON on the first call; a fresh sample usually succeeds.
-    # The provider SDKs are synchronous: run them in a thread so the
-    # multi-second AI call doesn't block the event loop for every other
-    # request on this worker.
+    # Up to 3 attempts on parse/value errors — providers occasionally produce
+    # malformed JSON or wrong keys on the first sample; a fresh draw usually
+    # succeeds. Provider SDKs are synchronous: run them in a thread so the
+    # multi-second AI call doesn't block the event loop for other requests.
+    _DEFINE_ATTEMPTS = 3
+    result = None
+    last_exc: Exception | None = None
     try:
-        try:
-            result = await asyncio.to_thread(_call_and_parse)
-        except (json.JSONDecodeError, ValueError) as first_exc:
-            logger.warning("/define %s parse failed (%s) — retrying once",
-                           actual_model, first_exc)
-            result = await asyncio.to_thread(_call_and_parse)
+        for attempt in range(_DEFINE_ATTEMPTS):
+            try:
+                result = await asyncio.to_thread(_call_and_parse)
+                break
+            except (json.JSONDecodeError, ValueError) as exc:
+                last_exc = exc
+                if attempt < _DEFINE_ATTEMPTS - 1:
+                    logger.warning("/define %s parse failed (%s) — retry %d/%d",
+                                   actual_model, exc, attempt + 1, _DEFINE_ATTEMPTS)
+        if result is None:
+            raise last_exc
     except json.JSONDecodeError as exc:
         logger.error("/define JSON parse error: %s", exc)
         raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")

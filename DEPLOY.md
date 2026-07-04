@@ -68,7 +68,8 @@ nano .env
 |---|---|
 | `SECRET_KEY` | JWT signing key. Generate with `python3 -c 'import secrets; print(secrets.token_urlsafe(48))'`. **Never commit.** |
 | `ANTHROPIC_API_KEY` | Powers **Deep** mode (Claude Sonnet 4.5). |
-| `GROQ_API_KEY` | Powers **Fast** mode (Llama 3.1 8B Instant). |
+| `GROQ_API_KEY` | Powers **Fast** mode (GPT-OSS 20B via Groq). |
+| `GROQ_FAST_MODEL` | Optional override for Fast tier (default: `openai/gpt-oss-20b`). |
 | `OPENAI_API_KEY` | OCR fallback (no longer used for Fast mode). |
 | `GOOGLE_API_KEY` | Powers **Balanced** mode (Gemini 2.5 Flash) and primary OCR. |
 

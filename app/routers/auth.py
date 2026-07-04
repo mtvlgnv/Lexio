@@ -362,7 +362,7 @@ async def get_models():
                 "id": "fast",
                 "name": "Fast",
                 "provider": "Groq",
-                "model": "Llama 3.1 8B Instant",
+                "model": "GPT-OSS 20B",
                 "available": bool(os.getenv("GROQ_API_KEY")),
                 "description": "Quick answers, instant lookups"
             },

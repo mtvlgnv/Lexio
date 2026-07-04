@@ -84,6 +84,24 @@ def _repair_json_strings(text: str) -> str:
     return "".join(out)
 
 
+_DEFINE_KEY_ALIASES = {
+    "part_of_speech": "pos",
+    "partOfSpeech": "pos",
+    "meaning": "definition",
+    "contextual_meaning": "contextual",
+    "context": "contextual",
+    "in_context": "contextual",
+}
+
+
+def _normalize_define_keys(parsed: dict) -> dict:
+    """Map common model key variants onto the Lexio /define schema."""
+    for alias, canonical in _DEFINE_KEY_ALIASES.items():
+        if alias in parsed and canonical not in parsed:
+            parsed[canonical] = parsed[alias]
+    return parsed
+
+
 def _safe_json_loads(text: str) -> dict:
     """
     Parse model output as JSON. Try in order:
