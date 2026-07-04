@@ -16,7 +16,6 @@ contextBridge.exposeInMainWorld('lexioHub', {
   getHotkey:              () => ipcRenderer.invoke('app:get-hotkey'),
   showOnboarding:         () => ipcRenderer.send('app:show-onboarding'),
   openInputMonitoringSettings: () => ipcRenderer.send('app:open-input-monitoring-settings'),
-  openScreenRecordingSettings: () => ipcRenderer.send('app:open-screen-recording-settings'),
   openLogFile: () => ipcRenderer.send('app:open-log-file'),
 
   getTriggerKey:          () => ipcRenderer.invoke('app:get-trigger-key'),

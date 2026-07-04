@@ -161,12 +161,6 @@
         <button class="link" id="open-input-monitoring" style="margin-top:6px;">Open Input Monitoring settings</button>
       </div>
       <div class="divider"></div>
-      <div>
-        <div class="row-label">Screen Recording permission</div>
-        <div class="row-hint">Lets Lexio read text near your cursor via OCR when Accessibility can't (subtitles, images, locked PDFs). Required for universal tap-to-define.</div>
-        <button class="link" id="open-screen-recording" style="margin-top:6px;">Open Screen Recording settings</button>
-      </div>
-      <div class="divider"></div>
       <button class="link" id="open-log-file">Open log file</button>
       <div class="divider"></div>
       <button class="link" id="show-onboarding">Show onboarding again</button>
@@ -280,7 +274,6 @@
   refreshAccessStatus();
   document.getElementById('show-onboarding').addEventListener('click', () => window.lexioHub?.showOnboarding());
   document.getElementById('open-input-monitoring').addEventListener('click', () => window.lexioHub?.openInputMonitoringSettings());
-  document.getElementById('open-screen-recording').addEventListener('click', () => window.lexioHub?.openScreenRecordingSettings());
   document.getElementById('open-log-file').addEventListener('click', () => window.lexioHub?.openLogFile());
 
   // ── Account ─────────────────────────────────────────────────────
