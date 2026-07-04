@@ -1,6 +1,6 @@
 {
   "name": "lexio-desktop",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Lexio — floating contextual dictionary",
   "main": "main-overlay.js",
   "scripts": {
@@ -26,6 +26,9 @@
     "appId": "site.lexio.glance",
     "productName": "Lexio Glance",
     "afterSign": "scripts/notarize.js",
+    "asarUnpack": [
+      "lib/ax-reader.py"
+    ],
     "files": [
       "main-overlay.js",
       "store.js",

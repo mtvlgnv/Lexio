@@ -8,9 +8,7 @@
  *   3. JXA / System Events — slow fallback for native apps
  */
 const { execFile } = require('child_process');
-const path = require('path');
-
-const AX_READER_PATH = path.join(__dirname, 'ax-reader.py');
+const { axReaderPath } = require('./ax-path');
 
 const READ_VALUE_JXA = `
   function run() {
@@ -162,7 +160,7 @@ function startContextRead({ cursor, domSnapshot } = {}) {
     });
   }
 
-  const axArgs = [AX_READER_PATH];
+  const axArgs = [axReaderPath()];
   if (cursor && Number.isFinite(cursor.x) && Number.isFinite(cursor.y)) {
     axArgs.push(String(Math.round(cursor.x)), String(Math.round(cursor.y)));
   }
