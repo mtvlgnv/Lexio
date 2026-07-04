@@ -25,6 +25,7 @@
   "build": {
     "appId": "site.lexio.glance",
     "productName": "Lexio Glance",
+    "afterSign": "scripts/notarize.js",
     "files": [
       "main-overlay.js",
       "store.js",
