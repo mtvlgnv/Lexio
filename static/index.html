@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=43">
+  <link rel="stylesheet" href="/app.css?v=44">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -434,26 +434,6 @@
 
     <div id="error-banner" class="hidden"></div>
 
-    <div id="url-bar" class="hidden">
-      <svg class="url-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-      <span id="url-preview"></span>
-      <button id="url-fetch-btn" onclick="fetchArticle()" data-i18n="fetchArticle">Fetch article</button>
-    </div>
-
-    <div id="input-area">
-      <textarea id="input-text" placeholder="Paste any text here — an article, a quote, a paragraph…" spellcheck="false"></textarea>
-      <div id="token-view" class="hidden" aria-label="Click any word for its contextual definition"></div>
-    </div>
-
-    <!-- Model-switch confirmation bar -->
-    <div id="model-switch-confirm" class="model-switch-confirm hidden">
-      <span id="model-switch-msg"></span>
-      <div class="model-switch-actions">
-        <button class="model-switch-cancel" onclick="cancelModelSwitch()">Cancel</button>
-        <button class="model-switch-go" id="model-switch-go">Compare →</button>
-      </div>
-    </div>
-
     <!-- Unified composer toolbar -->
     <div class="composer-bar">
       <button class="composer-icon-btn" onclick="triggerOCR()" title="Scan text from a photo" aria-label="Scan image">
@@ -498,6 +478,28 @@
       <button id="edit-btn" class="btn-secondary hidden" onclick="resetToEdit()" data-i18n="edit">← Edit</button>
       <button id="analyze-btn" class="btn-primary" onclick="analyze()" data-i18n="analyzeText">Analyze text</button>
     </div>
+
+    <div id="url-bar" class="hidden">
+      <svg class="url-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span id="url-preview"></span>
+      <button id="url-fetch-btn" onclick="fetchArticle()" data-i18n="fetchArticle">Fetch article</button>
+    </div>
+
+    <div id="input-area">
+      <textarea id="input-text" placeholder="Paste any text here — an article, a quote, a paragraph…" spellcheck="false"></textarea>
+      <div id="token-view" class="hidden" aria-label="Click any word for its contextual definition"></div>
+    </div>
+
+    <!-- Model-switch confirmation bar -->
+    <div id="model-switch-confirm" class="model-switch-confirm hidden">
+      <span id="model-switch-msg"></span>
+      <div class="model-switch-actions">
+        <button class="model-switch-cancel" onclick="cancelModelSwitch()">Cancel</button>
+        <button class="model-switch-go" id="model-switch-go">Compare →</button>
+      </div>
+    </div>
+
+
 
     <div id="tweaks-panel">
       <div class="tweaks-title" data-i18n="tweaks">Tweaks</div>
