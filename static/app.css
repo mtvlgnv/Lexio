@@ -468,8 +468,9 @@
 
     /* Reading stats */
     .reading-stats {
-      padding:5px 24px 0; font-size:0.72rem; color:var(--muted);
+      font-size:0.75rem; color:var(--muted);
       font-variant-numeric:tabular-nums; flex-shrink:0;
+      padding:0; margin:0;
     }
     .reading-stats.hidden { display:none; }
 
