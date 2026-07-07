@@ -1,6 +1,6 @@
 {
   "name": "lexio-desktop",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "description": "Lexio — floating contextual dictionary",
   "main": "main-overlay.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "start-overlay": "electron main-overlay.js",
     "create-icon": "node_modules/.bin/electron create-icon.js",
     "build-icons": "bash scripts/build-icons.sh",
-    "dist": "npm run create-icon && npm run build-icons && electron-builder --mac --arm64",
+    "build-ocr": "bash native/build-ocr.sh",
+    "dist": "npm run create-icon && npm run build-icons && npm run build-ocr && electron-builder --mac --arm64",
     "dist-app": "npm run create-icon && npm run build-icons && electron-builder --mac --arm64 --config electron-builder-app.json"
   },
   "devDependencies": {
@@ -27,12 +28,14 @@
     "productName": "Lexio Glance",
     "afterSign": "scripts/notarize.js",
     "asarUnpack": [
-      "lib/ax-reader.py"
+      "lib/ax-reader.py",
+      "bin/lexio-ocr"
     ],
     "files": [
       "main-overlay.js",
       "store.js",
       "lib/**/*",
+      "bin/**/*",
       "pill.html",
       "onboarding.html",
       "hub.html",
@@ -59,6 +62,9 @@
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+      "extendInfo": {
+        "NSScreenCaptureUsageDescription": "Lexio Glance reads text near your cursor to provide contextual word definitions, including subtitles and text that can't be selected."
+      },
       "target": [
         {
           "target": "dmg",

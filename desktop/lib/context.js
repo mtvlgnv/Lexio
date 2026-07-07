@@ -2,13 +2,21 @@
  * Best-effort "auto-expand to the surrounding sentence" for a captured
  * selection — highlight ONE WORD, get a CONTEXTUAL definition.
  *
- * Three parallel strategies (first good win inside the resolver):
+ * Strategies, in order (first guarded win inside the resolver):
  *   1. DOM block read — when Lexio Glance itself is frontmost (our windows)
  *   2. ax-reader.py — ctypes AX API with cursor anchoring + Chromium tree flip
  *   3. JXA / System Events — slow fallback for native apps
+ *   4. Screen OCR — reads the PIXELS around the cursor via Vision. Last
+ *      resort, but the ONLY thing that works for display/received text in
+ *      custom-draw apps (Telegram/Discord/WhatsApp messages, subtitles,
+ *      images, locked PDFs) — where the text isn't in ANY accessibility
+ *      tree and there's no caret to extend a selection from. Needs Screen
+ *      Recording permission; degrades to word-only without it.
  */
 const { execFile } = require('child_process');
 const { axReaderPath } = require('./ax-path');
+const { contextFromText } = require('./text-utils');
+const { runScreenOcr } = require('./ocr-context');
 
 const READ_VALUE_JXA = `
   function run() {
@@ -86,57 +94,6 @@ const READ_VALUE_JXA = `
 
 const AX_READER_TIMEOUT_MS = 3000;
 const JXA_TIMEOUT_MS = 8000;
-const WINDOW = 240;
-
-function expandToSentence(fullText, matchIndex, matchLen) {
-  const start = Math.max(0, matchIndex - WINDOW);
-  const end = Math.min(fullText.length, matchIndex + matchLen + WINDOW);
-  const slice = fullText.slice(start, end);
-  const localIndex = matchIndex - start;
-  const before = slice.slice(0, localIndex);
-  const match = slice.slice(localIndex, localIndex + matchLen);
-  const after = slice.slice(localIndex + matchLen);
-
-  const sentenceStart = Math.max(before.lastIndexOf('. '), before.lastIndexOf('! '), before.lastIndexOf('? '), before.lastIndexOf('\n'));
-  const trimmedBefore = sentenceStart >= 0 ? before.slice(sentenceStart + 2) : before;
-
-  const sentenceEnd = after.search(/[.!?](?=\s|$)/);
-  const trimmedAfter = sentenceEnd >= 0 ? after.slice(0, sentenceEnd + 1) : after;
-
-  return (trimmedBefore + match + trimmedAfter).trim();
-}
-
-function findWordInText(fullText, word) {
-  const w = (word || '').trim();
-  if (!w || !fullText) return null;
-
-  let idx = fullText.indexOf(w);
-  if (idx >= 0) return { idx, len: w.length };
-
-  const lower = fullText.toLowerCase();
-  const lw = w.toLowerCase();
-  idx = lower.indexOf(lw);
-  if (idx >= 0) return { idx, len: w.length };
-
-  const bare = w.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
-  if (bare && bare !== w) {
-    idx = fullText.indexOf(bare);
-    if (idx >= 0) return { idx, len: bare.length };
-    idx = lower.indexOf(bare.toLowerCase());
-    if (idx >= 0) return { idx, len: bare.length };
-  }
-  return null;
-}
-
-function contextFromText(fullText, word, source) {
-  if (!fullText || fullText.length <= word.length) return null;
-  const hit = findWordInText(fullText, word);
-  if (!hit) return null;
-  const sentence = expandToSentence(fullText, hit.idx, hit.len);
-  if (sentence.length <= word.length) return null;
-  console.log(`[overlay] context: ${source} → ${sentence.length} chars`);
-  return sentence;
-}
 
 function startContextRead({ cursor, domSnapshot } = {}) {
   let activeChild = null;
@@ -189,6 +146,21 @@ function startContextRead({ cursor, domSnapshot } = {}) {
       if (fromAx) return fromAx;
     }
 
+    // Last resort: OCR the pixels around the cursor. This is the only source
+    // that reaches display/received text in custom-draw apps (chat messages,
+    // subtitles, images) — nothing above can. Runs lazily (only once DOM+AX
+    // have failed) since it's the slowest path and needs Screen Recording
+    // permission. Its output is guarded by the same contextFromText, so a
+    // misread that grabs UI chrome degrades to word-only rather than
+    // shipping a wrong definition.
+    if (!cancelled && cursor && Number.isFinite(cursor.x) && Number.isFinite(cursor.y)) {
+      const ocr = await runScreenOcr({ x: cursor.x, y: cursor.y, hint: word });
+      if (!cancelled && ocr && ocr.context) {
+        const fromOcr = contextFromText(ocr.context, word, 'ocr');
+        if (fromOcr) return fromOcr;
+      }
+    }
+
     console.log('[overlay] context: none available (using selection as-is)');
     return word;
   };
@@ -201,4 +173,4 @@ function startContextRead({ cursor, domSnapshot } = {}) {
   return resolver;
 }
 
-module.exports = { startContextRead, expandToSentence, findWordInText };
+module.exports = { startContextRead };

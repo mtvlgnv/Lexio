@@ -168,12 +168,15 @@
     <!-- Step 2: Permissions -->
     <div class="step" data-step="2">
       <h1>Grant Accessibility access</h1>
-      <p class="sub">Lexio Glance needs Accessibility permission to detect your selection and the double-tap <kbd class="trigger-symbol">⌘</kbd> shortcut.</p>
+      <p class="sub">Lexio Glance needs Accessibility permission to detect your selection and the double-tap <kbd class="trigger-symbol">⌘</kbd> shortcut. Install the app in <strong>Applications</strong> first — running from the DMG does not work reliably.</p>
+      <p class="sub" id="access-stale-hint" style="display:none;font-size:0.82rem;color:var(--muted,#8f7f72);">
+        Toggle already on but still blocked? Remove <strong>Lexio Glance</strong> from the list with <strong>−</strong>, then re-enable it.
+      </p>
       <div class="status-row">
         <span class="status-dot" id="access-dot"></span>
         <span id="access-text">Not granted yet</span>
       </div>
-      <button class="secondary" id="grant-access">Grant Access</button>
+      <button class="secondary" id="grant-access">Open Accessibility Settings</button>
     </div>
 
     <!-- Step 3: Practice run -->
@@ -264,12 +267,15 @@
   });
 
   // ── Step 2: accessibility permission ────────────────────────────
+  let accessPolls = 0;
   async function refreshAccessStatus() {
     const granted = await window.lexioOnboarding?.getAccessibilityStatus();
     const dot  = document.getElementById('access-dot');
     const text = document.getElementById('access-text');
+    const hint = document.getElementById('access-stale-hint');
     dot.classList.toggle('granted', !!granted);
     text.textContent = granted ? 'Granted ✓' : 'Not granted yet';
+    if (!granted && step === 2 && ++accessPolls >= 3) hint.style.display = '';
     return granted;
   }
   function startAccessPolling() {
