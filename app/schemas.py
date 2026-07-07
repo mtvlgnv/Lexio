@@ -23,10 +23,15 @@ class WBSyncRequest(BaseModel):
 
 
 class DefineRequest(BaseModel):
-    word:    str = Field(..., min_length=1, max_length=60)
-    context: str = Field(..., min_length=1, max_length=8_000)
-    lang:    str = Field(default="auto", max_length=40)
-    model:   str = Field(default="sonnet", max_length=40)  # haiku, gemini, gpt-4-mini, sonnet
+    # Text-based lookup: word + surrounding context, both required.
+    # Image-based lookup (Lexio Glance's screen-point mode): image_base64
+    # instead, word/context are unknown up front (the model identifies the
+    # word itself) so both become optional and are validated in the route.
+    word:          Optional[str] = Field(default=None, max_length=60)
+    context:       Optional[str] = Field(default=None, max_length=8_000)
+    image_base64:  Optional[str] = Field(default=None, max_length=8_000_000)
+    lang:          str = Field(default="auto", max_length=40)
+    model:         str = Field(default="sonnet", max_length=40)  # haiku, gemini, gpt-4-mini, sonnet
 
 
 class FetchRequest(BaseModel):

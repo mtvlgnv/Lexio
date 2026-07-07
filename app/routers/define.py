@@ -1,5 +1,7 @@
 """/define endpoint + anonymous search logging (Phase 2 extract)."""
 import asyncio
+import base64
+import binascii
 import json
 import datetime
 import logging
@@ -65,12 +67,141 @@ LANG_NAMES = {
     'ar':'Arabic','hi':'Hindi','nl':'Dutch','pl':'Polish','tr':'Turkish','sv':'Swedish',
 }
 
+VISION_MAX_IMAGE_BYTES = 6 * 1024 * 1024  # base64 inflates ~33%; keep the decoded image well under Gemini's limits
+
+async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
+                              user: Optional[User], db: DBSession, ip: str):
+    """Lexio Glance's screen-point mode: no word/context up front — the model
+    identifies the word itself from a screenshot centered on the cursor.
+    Always routed through Gemini (only vision-capable provider wired here),
+    so it's billed at "balanced" hourly weight regardless of req.model, and
+    metered against the existing image-lookup bucket (kind="ocr" — same
+    monthly caps as the printed-page scanner: FREE_OCR_LIMIT free/anon,
+    PRO_OCR_MONTHLY_CAP for Pro) rather than the Pro-only balanced/deep gate,
+    since this mode has no free-tier text alternative to fall back to.
+    """
+    try:
+        image_bytes = base64.b64decode(req.image_base64, validate=True)
+    except (binascii.Error, ValueError):
+        raise HTTPException(status_code=422, detail="image_base64 is not valid base64.")
+    if not image_bytes or len(image_bytes) > VISION_MAX_IMAGE_BYTES:
+        raise HTTPException(status_code=422, detail="Image is missing or too large.")
+
+    actual_model = "balanced"  # Gemini 2.5 Flash — the only vision-capable model wired here
+
+    hourly = _check_hourly_limit(db, user, actual_model)
+    if not hourly["allowed"]:
+        if hourly.get("kind") == "monthly":
+            raise HTTPException(
+                status_code=402,
+                detail={"code": "limit_exceeded", "kind": "monthly_credit",
+                        "used": hourly["month_used"], "limit": hourly["month_limit"],
+                        "weight": hourly["weight"], "model": actual_model},
+            )
+        raise HTTPException(
+            status_code=429,
+            detail={"code": "hourly_limit", "weight": hourly["weight"], "used": hourly["used"],
+                    "limit": hourly["limit"], "reset_in": hourly["reset_in"], "model": actual_model},
+            headers={"Retry-After": str(hourly["reset_in"])},
+        )
+
+    usage = _check_usage(db, user, ip, "ocr")
+    if not usage["allowed"]:
+        raise HTTPException(
+            status_code=402,
+            detail={"code": "limit_exceeded", "kind": "ocr", "used": usage["used"], "limit": usage["limit"]},
+        )
+
+    lang_code = (req.lang or "auto").strip().lower()
+    lang_name = LANG_NAMES.get(lang_code)
+    if lang_name:
+        lang_note = (
+            f"The semantic fields (definition, contextual, why, etymology) MUST be written entirely in {lang_name}. "
+            f"The structural/label fields (word, pos, ipa, simpler, register) MUST remain in English, except "
+            f"'word' itself which must be transcribed exactly as it appears in the image."
+        )
+    else:
+        lang_note = (
+            "Write semantic fields (definition, contextual, why, etymology) in the same language the image's text "
+            "is written in. Keep structural/label fields (pos, ipa, simpler, register) in English."
+        )
+
+    prompt = (
+        "This is a screenshot of whatever the user is currently reading on their screen. "
+        "The user's cursor/pointer is at the exact CENTER of this image. "
+        "Identify the single word or short phrase closest to the center point — that is what they want defined. "
+        f"{lang_note} "
+        "Respond in JSON only, with these keys: word (the exact word/phrase you identified), pos, ipa, "
+        "definition, contextual (what it means in this specific sentence), why (why the author chose this word "
+        "here), simpler, etymology, register. Use null for ipa, simpler, or etymology when uncertain. "
+        "Keep each field to 1-2 short sentences."
+    )
+
+    def _call_and_parse():
+        text = ai._call_google_vision(prompt, image_bytes)
+        if text.startswith("```"):
+            lines = text.splitlines()
+            text = "\n".join(l for l in lines if not l.startswith("```")).strip()
+        parsed = _normalize_define_keys(_safe_json_loads(text))
+        if "word" not in parsed or not str(parsed["word"]).strip():
+            raise ValueError(f"Missing key: word (got {list(parsed.keys())})")
+        return parsed
+
+    _DEFINE_ATTEMPTS = 3
+    result = None
+    last_exc: Exception | None = None
+    try:
+        for attempt in range(_DEFINE_ATTEMPTS):
+            try:
+                result = await asyncio.to_thread(_call_and_parse)
+                break
+            except (json.JSONDecodeError, ValueError) as exc:
+                last_exc = exc
+                if attempt < _DEFINE_ATTEMPTS - 1:
+                    logger.warning("/define (image) attempt failed (%s) — retry %d/%d",
+                                   exc, attempt + 1, _DEFINE_ATTEMPTS)
+        if result is None:
+            raise last_exc
+    except (json.JSONDecodeError, ValueError) as exc:
+        logger.error("/define (image) parse error: %s", exc)
+        raise HTTPException(status_code=502, detail="The AI model returned an unexpected response. Please try again.")
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("/define (image) unexpected error: %s", exc, exc_info=True)
+        raise HTTPException(status_code=502, detail="An unexpected error occurred. Please try again.")
+
+    hourly_post = _consume_hourly_credits(db, user, actual_model)
+    usage_post = _consume_usage(db, user, ip, "ocr")
+
+    word = str(result.get("word", "")).strip()
+    bg.add_task(_log_search, word)
+    if user:
+        bg.add_task(_log_user_search, user.id, word)
+
+    return {
+        **result,
+        "_usage":  {"used": usage_post["used"], "limit": usage_post["limit"]},
+        "_hourly": {
+            "used": hourly_post["used"], "limit": hourly_post["limit"], "weight": hourly_post["weight"],
+            "reset_in": hourly_post["reset_in"], "month_used": hourly_post["month_used"],
+            "month_limit": hourly_post["month_limit"],
+        },
+    }
+
+
 @router.post("/define")
 @limiter.limit("20/minute")
 async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
                       user: Optional[User] = Depends(optional_user),
                       db: DBSession = Depends(get_db)):
     ip = _get_client_ip(request)
+
+    if req.image_base64:
+        return await _define_from_image(req, bg, user, db, ip)
+
+    if not req.word or not req.context:
+        raise HTTPException(status_code=422, detail="word and context are required for a text-based lookup.")
 
     # Resolve the requested mode up-front so we can weight the hourly check.
     _model_map = {

@@ -31,9 +31,7 @@ const store = require('./store');
 const { installFileLogging, logPath } = require('./lib/log');
 const { menuBarTrayIcon } = require('./lib/icons');
 const { parseAuthUrl } = require('./lib/auth');
-const { startContextRead } = require('./lib/context');
-const { beginDomContextCapture } = require('./lib/dom-context');
-const { getFrontmostPid } = require('./lib/frontmost');
+const { captureScreenPoint } = require('./lib/vision-capture');
 
 // A packaged .app has no attached terminal — without this, "check the log"
 // is impossible for a field report like this week's real-hardware trigger
@@ -172,54 +170,32 @@ function sendCmdC() {
   });
 }
 
-async function captureSelection() {
-  if (process.platform !== 'darwin') return null;   // Phase 2 is macOS-only for now
-  if (!ensureAccessibility()) return null;           // not granted yet — caller falls back gracefully
+// Screen-point capture: no selection, no clipboard, no Accessibility read.
+// The user just points the cursor at a word (no drag-select needed) and
+// double-taps. We grab the pixels around the cursor and let the backend's
+// multimodal model (Gemini 2.5 Flash) both identify the word AND define it
+// from the image in one call — see lib/vision-capture.js and
+// app/routers/define.py's _define_from_image.
+async function captureScreenshot() {
+  if (process.platform !== 'darwin') return null;   // macOS-only for now
 
-  const original = clipboard.readText();
-  const sentinel = `__lexio_empty_${Date.now()}__`;
-  clipboard.writeText(sentinel);                     // so we can detect "nothing was selected"
-
-  const sent = await sendCmdC();
-  if (!sent) { clipboard.writeText(original); return null; }
-
-  // Start context reads HERE, immediately after ⌘C, while frontmost is still
-  // the source app. Two parallel paths:
-  //   • DOM block read when *we* are frontmost (Electron AX is blind to HTML)
-  //   • ax-reader.py everywhere else (cursor-anchored + Chromium tree flip)
   const cursor = screen.getCursorScreenPoint();
-  const frontPid = await getFrontmostPid();
-  const domSnapshot = beginDomContextCapture(frontPid === process.pid);
-  const resolveContext = startContextRead({ cursor, domSnapshot });
-
-  await new Promise((r) => setTimeout(r, 150));      // give the OS a beat to complete the copy
-  const captured = clipboard.readText();
-  clipboard.writeText(original);                     // restore the user's real clipboard immediately
-
-  if (!captured || captured === sentinel) {
-    console.log('[overlay] capture: nothing was selected');
-    resolveContext.cancel();   // its result will never be used — bug #16
+  const shot = await captureScreenPoint({ x: cursor.x, y: cursor.y });
+  if (!shot || !shot.image_base64) {
+    console.log('[overlay] capture: screen capture failed (check Screen Recording permission)');
     return null;
   }
-  const word = captured.trim();
-  console.log(`[overlay] capture: got ${word.length} chars`);
-
-  // NOTE: recentLookups is recorded from the actual defined word, reported
-  // back by the webview once a lookup resolves (see 'overlay:report-lookup'
-  // below) — not from the raw captured selection, which is often a whole
-  // sentence rather than the word the user was after.
+  console.log(`[overlay] capture: got ${shot.width}x${shot.height} image in ${shot.ms}ms`);
 
   // If the onboarding wizard is open on its practice-run step, this real
   // capture is what it's waiting for — let it advance itself instead of
   // requiring a manual "Next" click.
   const onboardingOpen = onboardingWin && !onboardingWin.isDestroyed();
   if (onboardingOpen) {
-    onboardingWin.webContents.send('onboarding:practice-capture', { text: word });
+    onboardingWin.webContents.send('onboarding:practice-capture', { text: '(screen capture)' });
   }
 
-  const contextPromise = resolveContext(word);
-
-  return { word, contextPromise };
+  return { imageBase64: shot.image_base64 };
 }
 
 /* ── Expand / collapse ──────────────────────────────────────────── */
@@ -257,27 +233,28 @@ async function expand(forcedText) {
     if (!win || win.isDestroyed()) { console.warn('[overlay] window was gone — recreating.'); createWindow(); }
 
     // A relookup already has its {word, context} up front (no waiting
-    // needed). A real capture only has the word yet — the panel opens on
-    // that immediately, and the eventual context arrives later as a
-    // separate 'overlay:context-ready' message once captureSelection()'s
-    // contextPromise resolves (several real seconds — see its comment).
+    // needed). A real capture has neither yet — the panel opens showing a
+    // "reading the screen" state immediately, and the captured image
+    // arrives shortly after as a separate 'overlay:image-ready' message.
+    // The word itself isn't known until the backend's vision call responds
+    // (it identifies the word AND defines it from the image in one shot).
     let payload = {};
     if (forced) {
       payload = forced;
     } else {
-      const captured = await captureSelection();   // BEFORE resize/show/focus — see note above
-      // A newer trigger may have collapsed us (bumping captureGeneration)
-      // while we were awaiting the capture — bail out rather than clobber
-      // whatever state that newer trigger already established (bug #5).
-      if (myGeneration !== captureGeneration) return;
-      if (captured) {
-        payload = { word: captured.word, contextPending: true };
-        captured.contextPromise.then((context) => {
-          if (myGeneration === captureGeneration && win && !win.isDestroyed()) {
-            win.webContents.send('overlay:context-ready', { word: captured.word, context });
-          }
-        });
-      }
+      const capturePromise = captureScreenshot();   // BEFORE resize/show/focus — see note above
+      payload = { imagePending: true };
+      capturePromise.then((captured) => {
+        // A newer trigger may have collapsed us (bumping captureGeneration)
+        // while we were awaiting the capture — bail out rather than clobber
+        // whatever state that newer trigger already established (bug #5).
+        if (myGeneration !== captureGeneration || !win || win.isDestroyed()) return;
+        if (captured) {
+          win.webContents.send('overlay:image-ready', { imageBase64: captured.imageBase64 });
+        } else {
+          win.webContents.send('overlay:image-ready', { imageBase64: null });
+        }
+      });
     }
 
     const toBounds = boundsFor(EXPANDED);

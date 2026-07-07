@@ -139,3 +139,33 @@ def _call_google(prompt: str) -> str:
         ),
     )
     return response.text.strip()
+
+
+def _call_google_vision(prompt: str, image_bytes: bytes, mime_type: str = "image/png") -> str:
+    """Call Gemini with an image + text prompt (Lexio Glance's screen-point
+    mode) and return the response text. Same strict-JSON mode as
+    _call_google; same fallback-to-parts read as the /ocr endpoint, since
+    thinking mode can leave response.text empty even on success.
+    """
+    if not os.getenv("GOOGLE_API_KEY"):
+        raise ValueError("GOOGLE_API_KEY not configured")
+    response = google_client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=[
+            genai_types.Part.from_bytes(data=image_bytes, mime_type=mime_type),
+            prompt,
+        ],
+        config=genai_types.GenerateContentConfig(
+            response_mime_type="application/json",
+        ),
+    )
+    text = (response.text or "").strip()
+    if not text:
+        try:
+            parts = response.candidates[0].content.parts
+            text = " ".join(
+                p.text for p in parts if getattr(p, "text", None) and not getattr(p, "thought", False)
+            ).strip()
+        except Exception:
+            pass
+    return text

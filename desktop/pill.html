@@ -217,55 +217,52 @@
     });
   }
 
-  // ── Phase 2: pipe a captured selection straight into the lookup ──
-  // Sets compact.html's paste box and runs its existing analyze() flow —
-  // identical to a user pasting text and clicking Analyze themselves.
-  // `word` is exactly what was highlighted; `context` is the surrounding
-  // sentence main-overlay.js tries to auto-expand to via Accessibility.
+  // ── Screen-point capture: pipe the captured screenshot straight into the
+  // lookup ── No word is known up front (that's the point — no selection
+  // needed, just point and double-tap). compact.html shows a "reading the
+  // screen" state until the image arrives, then sends it straight to the
+  // backend, which identifies the word AND defines it from the image.
   //
-  // BUG #1 FIX: the context read now regularly finishes in ~150-500ms (it
-  // used to take several real seconds, which is what "no queuing needed"
-  // below assumed when this was written). That means 'overlay:context-ready'
-  // can now arrive from main BEFORE the initial word has even been injected
-  // into the webview — either because the frame is still loading (cold
-  // start) or because the 250ms .capturing pulse in expand() below hasn't
-  // finished yet. Landing lexioContextReady() ahead of lexioDesktopInput()
-  // meant compact.html's pendingContextWord guard silently dropped the
-  // context (it wasn't set yet) and the panel was left waiting forever for
-  // an event that had already fired. Fix: track whether the initial payload
-  // has actually been injected, and stash any context that arrives before
-  // that until right after — both queues drain through the same funnel
-  // (flushPending), so ordering is guaranteed by construction rather than by
-  // which one happens to resolve first.
-  let pendingPayload;    // {word, context|contextPending} — waiting for the webview to be ready
-  let pendingContext;    // {word, context} — waiting for pendingPayload to actually be injected first
+  // Same ordering guard as the old word/context race (see prior history):
+  // 'overlay:image-ready' can arrive from main before the initial pending
+  // payload has been injected into the webview (frame still loading, or the
+  // .capturing pulse in expand() below hasn't finished). Track whether the
+  // initial payload has actually been injected, and stash any image that
+  // arrives before that until right after — both queues drain through the
+  // same funnel (flushPending), so ordering is guaranteed by construction.
+  let pendingPayload;    // {imagePending: true} — waiting for the webview to be ready
+  let pendingImage;      // {imageBase64} — waiting for pendingPayload to actually be injected first
   let initialInjected = false;
 
   function injectAndAnalyze(payload) {
     initialInjected = true;
-    const script = `
+    // Two shapes arrive here: a fresh screen-point capture ({imagePending})
+    // and a relookup from the Hub's Recent tab ({word, context} — re-running
+    // a past lookup by word alone, no new screenshot involved).
+    const script = payload.imagePending ? `
+      (function() {
+        if (typeof lexioImageInput === 'function') { lexioImageInput(); return; }
+        const ta = document.getElementById('paste-area');
+        if (ta) ta.value = '';
+      })();
+    ` : `
       (function() {
         const w = ${JSON.stringify(payload.word)};
-        const c = ${payload.contextPending ? 'null' : JSON.stringify(payload.context)};
-        // Preferred path: compact.html decides — short selection is defined
-        // (once context resolves) full-panel, long passage gets the
-        // tappable token view immediately, since the passage itself IS its
-        // own context and needs no auto-expansion.
+        const c = ${JSON.stringify(payload.context)};
         if (typeof lexioDesktopInput === 'function') { lexioDesktopInput(w, c); return; }
-        // Fallback for an older compact.html without the direct-mode API.
         const ta = document.getElementById('paste-area');
         if (ta) ta.value = w;
         if (typeof analyze === 'function') analyze();
       })();
     `;
     frame.executeJavaScript(script).catch(() => {});
-    // A context for THIS payload may have arrived while we were still
-    // waiting to inject the word itself — send it now, right behind the
-    // word injection (executeJavaScript calls on the same webContents run
-    // in the order they're issued, so this ordering is guaranteed).
-    if (pendingContext) {
-      const c = pendingContext; pendingContext = undefined;
-      injectContextReady(c);
+    // An image for THIS payload may have arrived while we were still
+    // waiting to inject the pending state — send it now, right behind
+    // (executeJavaScript calls on the same webContents run in the order
+    // they're issued, so this ordering is guaranteed).
+    if (payload.imagePending && pendingImage) {
+      const img = pendingImage; pendingImage = undefined;
+      injectImageReady(img);
     }
   }
   function flushPending() {
@@ -275,21 +272,21 @@
     }
   }
 
-  // ── Streamed-in context, once the (now often-fast, occasionally still
-  // slow) Accessibility read resolves ──
-  function injectContextReady(payload) {
+  // ── Streamed-in screenshot, once ScreenCaptureKit resolves (typically
+  // well under a second) ──
+  function injectImageReady(payload) {
     const script = `
       (function() {
-        if (typeof lexioContextReady === 'function') {
-          lexioContextReady(${JSON.stringify(payload.word)}, ${JSON.stringify(payload.context)});
+        if (typeof lexioImageReady === 'function') {
+          lexioImageReady(${JSON.stringify(payload.imageBase64)});
         }
       })();
     `;
     frame.executeJavaScript(script).catch(() => {});
   }
-  window.lexioOverlay?.onContextReady((payload) => {
-    if (frameReady && initialInjected) injectContextReady(payload);
-    else pendingContext = payload;   // drained by injectAndAnalyze, right after the word it belongs to
+  window.lexioOverlay?.onImageReady((payload) => {
+    if (frameReady && initialInjected) injectImageReady(payload);
+    else pendingImage = payload;   // drained by injectAndAnalyze, right after the pending state it belongs to
   });
 
   // ── Auth handoff into the webview ────────────────────────────────

@@ -9,20 +9,19 @@ contextBridge.exposeInMainWorld('lexioOverlay', {
   startDrag:       () => ipcRenderer.send('overlay:start-drag'),
 
   // Main → renderer: the window finished resizing; switch visual state.
-  // `payload.word` (Phase 2) carries whatever was captured from the user's
-  // selection in the app they were reading — absent if nothing was
-  // selected or Accessibility permission hasn't been granted yet.
-  // `payload.contextPending` means the surrounding-sentence read is still
-  // in flight — the real 'overlay:context-ready' event below follows once
-  // it resolves (a real few-second wait — see lib/context.js).
+  // `payload.imagePending` means a screenshot of the area around the
+  // cursor is being captured — no word is known yet (the point of this
+  // mode: no selection needed). The real 'overlay:image-ready' event below
+  // follows once the capture resolves (see lib/vision-capture.js).
   onExpand:   (cb) => ipcRenderer.on('overlay:expand',   (_e, payload) => cb(payload || {})),
   onCollapse: (cb) => ipcRenderer.on('overlay:collapse', () => cb()),
 
-  // Main → renderer: the auto-expanded context for the CURRENT capture
-  // finally resolved — fires once, sometime after onExpand's
-  // contextPending: true, carrying the same word plus the real context
-  // (or the word itself again if none could be found in time).
-  onContextReady: (cb) => ipcRenderer.on('overlay:context-ready', (_e, payload) => cb(payload)),
+  // Main → renderer: the screenshot for the CURRENT capture finally
+  // resolved — fires once, sometime after onExpand's imagePending: true,
+  // carrying the base64 PNG (or null if the capture failed / Screen
+  // Recording isn't granted). The backend identifies the word AND defines
+  // it from this image in one call.
+  onImageReady: (cb) => ipcRenderer.on('overlay:image-ready', (_e, payload) => cb(payload)),
 
   // Main → renderer: sign-in state changed (payload = { token, user } or
   // null on sign-out). pill.html forwards it into the compact.html webview,

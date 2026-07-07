@@ -657,6 +657,35 @@ function exitDirect() {
   resetToEdit();
 }
 
+// ── Screen-point capture mode ──────────────────────────────────────
+// No word is known up front here (that's the point — point at a word and
+// double-tap, no drag-select needed). lexioImageInput() shows a "reading
+// the screen" state; lexioImageReady() arrives shortly after with the
+// captured screenshot (or null if the capture failed / Screen Recording
+// isn't granted) and sends it straight to the backend, which identifies
+// the word AND defines it from the image in one call.
+function lexioImageInput() {
+  clearHighlights(); activeToken = null;
+  document.body.classList.add('direct');
+  document.getElementById('new-btn').classList.remove('hidden');
+  document.getElementById('error-msg').classList.add('hidden');
+  document.getElementById('def-panel').classList.add('hidden');
+  document.getElementById('loading').innerHTML = `
+    <div style="font-family: var(--font-display); font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 12px;">Reading what's on screen…</div>
+    <div class="skeleton-line"></div>
+    <div class="skeleton-line"></div>
+  `;
+  document.getElementById('loading').classList.remove('hidden');
+}
+
+function lexioImageReady(imageBase64) {
+  if (!imageBase64) {
+    showError("Couldn't capture the screen — check that Screen Recording permission is granted to Lexio Glance.");
+    return;
+  }
+  fetchDefFromImage(imageBase64);
+}
+
 // Called by pill.html when the panel opens on an EMPTY capture (nothing was
 // selected, or Accessibility permission isn't granted yet). Without this,
 // the panel re-opened showing whatever was left from the last lookup —
@@ -829,6 +858,46 @@ async function fetchDef(word) {
     console.log('LEXIO_LOOKUP::' + JSON.stringify({ word }));
   } catch (err) {
     clearHighlights(); activeToken = null;
+    showError(err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message);
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+// Screen-point capture mode: no word/context known up front — send the
+// screenshot itself. The backend identifies the word AND defines it from
+// the image in one call, so the response carries `word` too (unlike
+// fetchDef(), where the caller already knows it). Not cached: a screen
+// capture is unique to the moment it was taken, unlike a repeatable
+// word+context pair.
+async function fetchDefFromImage(imageBase64) {
+  hideError();
+  const model = getModel();
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 20000);   // vision calls run slower than text-only
+  try {
+    const tok = localStorage.getItem('lexio_token');
+    const hdrs = { 'Content-Type': 'application/json' };
+    if (tok) hdrs['Authorization'] = 'Bearer ' + tok;
+    const resp = await fetch(API_BASE + '/define', {
+      method: 'POST',
+      headers: hdrs,
+      body: JSON.stringify({ image_base64: imageBase64, lang: 'auto', model }),
+      signal: controller.signal,
+    });
+    if (!resp.ok) {
+      if (resp.status === 402) {
+        throw new Error('Monthly screen-lookup limit reached. Upgrade to Pro at lexio.site for a much higher cap.');
+      }
+      const e = await resp.json().catch(() => ({ detail: resp.statusText }));
+      throw new Error(e.detail || `HTTP ${resp.status}`);
+    }
+    const data = await resp.json();
+    const word = (data.word || '').trim();
+    context = data.contextual || word;   // no separate context text in this mode; keep it non-empty for the panel
+    showResult(word || '—', data);
+    console.log('LEXIO_LOOKUP::' + JSON.stringify({ word }));
+  } catch (err) {
     showError(err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message);
   } finally {
     clearTimeout(timeoutId);
