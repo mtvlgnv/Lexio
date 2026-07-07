@@ -662,8 +662,8 @@
     button.btn-primary.btn-glow { background-image:none; }
     button.btn-primary:hover  { background-color:var(--accent-dk); }
     button.btn-primary:active { transform:scale(0.97); }
-    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:500; padding:9px 20px; transition:background 0.15s,color 0.15s; background:transparent; color:var(--muted); }
-    button.btn-secondary:hover { background:var(--bg); color:var(--text); }
+    button.btn-secondary { cursor:pointer; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:'DM Sans',inherit; font-size:0.875rem; font-weight:600; padding:9px 20px; transition:background 0.15s,color 0.15s,border-color 0.15s; background:var(--surface); color:var(--text); }
+    button.btn-secondary:hover { background:var(--bg); color:var(--text); border-color:var(--text-mid); }
     button.hidden { display:none !important; }
 
     /* ── Model selector ─────────────────────────────────────── */
@@ -2062,15 +2062,33 @@
 
     /* ── TikTok / social instant-demo (?try=1) ──────────────────── */
     .word-token.demo-pulse {
+      position: relative;
       opacity: 1;
       background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 32%, transparent) 62%);
       color: var(--accent);
       border-radius: 4px;
       animation: demoPulse 1.5s ease-in-out infinite;
     }
+    .word-token.demo-pulse::after {
+      content: '';
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      margin-left: -4px;
+      background-color: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent) 50%, transparent);
+      animation: demoDotBounce 1.5s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+    }
     @keyframes demoPulse {
       0%, 100% { background-color: transparent; }
       50%      { background-color: color-mix(in oklch, var(--accent) 16%, transparent); }
+    }
+    @keyframes demoDotBounce {
+      0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent) 60%, transparent); }
+      50% { transform: translateY(-6px) scale(1.1); box-shadow: 0 0 0 8px color-mix(in oklch, var(--accent) 0%, transparent); }
     }
     .demo-coachmark {
       position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
