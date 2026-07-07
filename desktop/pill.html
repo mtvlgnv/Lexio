@@ -327,7 +327,7 @@
 
   function expand(payload) {
     ensureFrame();
-    if (payload?.word) {
+    if (payload?.word || payload?.imagePending) {
       // A brand new lookup starts clean — any context still waiting on a
       // previous, never-fully-injected lookup must not leak into this one.
       initialInjected = false;
