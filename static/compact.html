@@ -302,7 +302,19 @@
     #def-capture.expanded { max-height: none; object-fit: contain; cursor: zoom-out; }
 
     /* Copy / new-lookup buttons */
-    .def-actions { display: flex; gap: 6px; }
+    .def-actions { display: flex; gap: 6px; align-items: center; }
+    #lang-select {
+      margin-left: auto;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 6px;
+      font-family: inherit;
+      font-size: 0.72rem;
+      color: var(--text-mid);
+      cursor: pointer;
+      max-width: 110px;
+    }
     #copy-btn, #new-btn {
       background: none;
       border: 1px solid var(--border);
@@ -433,6 +445,25 @@
   <div class="def-actions">
     <button id="copy-btn" onclick="copyDef()">Copy</button>
     <button id="new-btn" class="hidden" onclick="exitDirect()">New lookup</button>
+    <select id="lang-select" title="Language for definitions">
+      <option value="auto">Auto</option>
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+      <option value="it">Italiano</option>
+      <option value="pt">Português</option>
+      <option value="ru">Русский</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="ar">العربية</option>
+      <option value="hi">हिन्दी</option>
+      <option value="nl">Nederlands</option>
+      <option value="pl">Polski</option>
+      <option value="tr">Türkçe</option>
+      <option value="sv">Svenska</option>
+    </select>
   </div>
 </div>
 
@@ -470,6 +501,7 @@ let context = '';
 let activeToken = null;
 let cache = new Map();
 let currentResult = null;
+let lastImage = null;   // {b64, mime} of the current screen-point capture — lets a language switch re-run it
 
 // ── Model preference ────────────────────────────────────────
 const MODEL_KEY = 'lexio_compact_model';
@@ -498,6 +530,27 @@ function saveModel(val) {
   cache.clear();
 }
 function getModel() { return localStorage.getItem(MODEL_KEY) || 'haiku'; }
+
+// ── Definition language ("explained in your own language") ────
+// Codes must match the backend's LANG_NAMES map in routers/define.py.
+// 'auto' = match the language of the looked-up text.
+const LANG_KEY = 'lexio_lang';
+function getLang() { return localStorage.getItem(LANG_KEY) || 'auto'; }
+function saveLang(v) {
+  localStorage.setItem(LANG_KEY, v);
+  cache.clear();   // cached definitions are in the old language
+  // Re-render the lookup the user is currently reading in the new language.
+  if (lastImage) fetchDefFromImage(lastImage.b64, lastImage.mime);
+  else if (currentResult?.word) fetchDef(currentResult.word);
+}
+function initLangSelect() {
+  const sel = document.getElementById('lang-select');
+  if (!sel) return;
+  sel.value = getLang();
+  if (sel.selectedIndex === -1) sel.value = 'auto';
+  sel.addEventListener('change', () => saveLang(sel.value));
+}
+initLangSelect();
 
 // ── Pro status — lock non-Haiku for free users ───────────────
 lockFreeModels(); // lock immediately; unlock below if Pro confirmed
@@ -719,6 +772,7 @@ function lexioImageReady(imageBase64, imageMime) {
 function lexioReset() {
   clearTimeout(contextTimeoutId);
   pendingContextWord = null;
+  lastImage = null;
   exitDirectQuiet();
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('error-msg').classList.add('hidden');
@@ -838,8 +892,10 @@ function handleClick(span, word) {
 /* ── Fetch ─────────────────────────────────────────────── */
 async function fetchDef(word) {
   hideError();
+  lastImage = null;   // a language switch should now re-run THIS word, not an old capture
   const model = getModel();
-  const key = word.toLowerCase() + '::' + context.slice(0, 120) + '::' + model;
+  const lang = getLang();
+  const key = word.toLowerCase() + '::' + context.slice(0, 120) + '::' + model + '::' + lang;
   if (cache.has(key)) {
     if (activeToken) activeToken.classList.remove('pulsing');
     showResult(word, cache.get(key));
@@ -859,7 +915,7 @@ async function fetchDef(word) {
     const resp = await fetch(API_BASE + '/define', {
       method: 'POST',
       headers: hdrs,
-      body: JSON.stringify({ word, context, lang: 'auto', model }),
+      body: JSON.stringify({ word, context, lang, model }),
       signal: controller.signal,
     });
     if (!resp.ok) {
@@ -897,6 +953,7 @@ async function fetchDef(word) {
 // word+context pair.
 async function fetchDefFromImage(imageBase64, imageMime = 'image/png') {
   hideError();
+  lastImage = { b64: imageBase64, mime: imageMime };   // kept so a language switch can re-run this capture
   const model = getModel();
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);   // vision calls run slower than text-only
@@ -907,7 +964,7 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png') {
     const resp = await fetch(API_BASE + '/define', {
       method: 'POST',
       headers: hdrs,
-      body: JSON.stringify({ image_base64: imageBase64, image_mime: imageMime, lang: 'auto', model }),
+      body: JSON.stringify({ image_base64: imageBase64, image_mime: imageMime, lang: getLang(), model }),
       signal: controller.signal,
     });
     if (!resp.ok) {
