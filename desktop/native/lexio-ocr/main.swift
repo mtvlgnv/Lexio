@@ -43,6 +43,7 @@ struct Args {
     var ry: Double? = nil
     var rw = 800.0
     var rh = 500.0
+    var excludeWindows: [UInt32] = []
 }
 
 func parseArgs() -> Args {
@@ -57,6 +58,7 @@ func parseArgs() -> Args {
         case "--ry": i += 1; if i < v.count { a.ry = Double(v[i]) }
         case "--rw", "--width", "-w": i += 1; if i < v.count { a.rw = Double(v[i]) ?? a.rw }
         case "--rh", "--height", "-h": i += 1; if i < v.count { a.rh = Double(v[i]) ?? a.rh }
+        case "--exclude-window": i += 1; if i < v.count, let id = UInt32(v[i]) { a.excludeWindows.append(id) }
         default: break
         }
         i += 1
@@ -87,7 +89,7 @@ func regionInDisplaySpace(_ electronRect: CGRect) -> (CGRect, NSScreen) {
     return (local, screen)
 }
 
-func captureRegion(_ electronRect: CGRect) -> (CGImage, CGFloat)? {
+func captureRegion(_ electronRect: CGRect, excludeIDs: Set<UInt32>) -> (CGImage, CGFloat)? {
     guard #available(macOS 14.0, *) else {
         fputs("lexio-ocr requires macOS 14+\n", stderr)
         return nil
@@ -104,12 +106,14 @@ func captureRegion(_ electronRect: CGRect) -> (CGImage, CGFloat)? {
                 fputs("no display for capture region\n", stderr)
                 return
             }
-            // Exclude every window owned by our parent process — the Lexio
-            // Glance app that spawned us. The overlay panel expands while
-            // this capture is in flight; without this it lands in the shot.
-            let ownPid = getppid()
-            let ownWindows = content.windows.filter { $0.owningApplication?.processID == ownPid }
-            let filter = SCContentFilter(display: display, excludingWindows: ownWindows)
+            // Exclude the specific window IDs the caller named — the overlay
+            // panel, which expands while this capture is in flight and would
+            // otherwise land in its own shot. Only that window: excluding
+            // everything owned by the parent process would also hide the
+            // onboarding wizard, whose practice step asks the user to point
+            // at sample text INSIDE a Lexio window.
+            let excluded = content.windows.filter { excludeIDs.contains($0.windowID) }
+            let filter = SCContentFilter(display: display, excludingWindows: excluded)
             let config = SCStreamConfiguration()
             let scale = screen.backingScaleFactor
             config.sourceRect = localRect
@@ -171,7 +175,7 @@ let region = CGRect(
     height: args.rh
 )
 
-guard let (raw, scale) = captureRegion(region) else { exit(2) }
+guard let (raw, scale) = captureRegion(region, excludeIDs: Set(args.excludeWindows)) else { exit(2) }
 let marked = drawMarker(
     on: raw,
     atX: CGFloat(args.x - region.minX) * scale,

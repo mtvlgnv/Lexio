@@ -180,7 +180,16 @@ async function captureScreenshot() {
   if (process.platform !== 'darwin') return null;   // macOS-only for now
 
   const cursor = screen.getCursorScreenPoint();
-  const shot = await captureScreenPoint({ x: cursor.x, y: cursor.y });
+  // Keep the overlay panel out of its own screenshot — it expands while
+  // the capture is in flight. getMediaSourceId() → "window:<CGWindowID>:<n>".
+  const excludeWindowIds = [];
+  if (win && !win.isDestroyed()) {
+    try {
+      const id = parseInt(win.getMediaSourceId().split(':')[1], 10);
+      if (Number.isFinite(id)) excludeWindowIds.push(id);
+    } catch {}
+  }
+  const shot = await captureScreenPoint({ x: cursor.x, y: cursor.y, excludeWindowIds });
   if (!shot || !shot.image_base64) {
     console.log('[overlay] capture: screen capture failed (check Screen Recording permission)');
     return null;

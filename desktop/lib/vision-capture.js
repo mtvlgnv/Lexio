@@ -34,8 +34,12 @@ function captureBinaryPath() {
   return candidates[0];
 }
 
-// Resolves to { image_base64, width, height, ms } or null.
-function captureScreenPoint({ x, y, width = 800, height = 500 }) {
+// Resolves to { image_base64, mime, width, height, ms } or null.
+// `excludeWindowIds`: CGWindowIDs to leave out of the capture — the overlay
+// panel, which expands while the capture is in flight. Scoped per-window
+// (not per-app) so other Lexio windows like the onboarding wizard, whose
+// practice step is pointed at directly, still appear in the shot.
+function captureScreenPoint({ x, y, width = 800, height = 500, excludeWindowIds = [] }) {
   const bin = captureBinaryPath();
   if (!fs.existsSync(bin)) {
     console.log('[overlay] lexio-ocr binary missing — screen capture unavailable (run npm run build-ocr)');
@@ -52,6 +56,9 @@ function captureScreenPoint({ x, y, width = 800, height = 500 }) {
   const ry = Math.max(d.y, Math.min(Math.round(y - rh / 2), d.y + d.height - rh));
   const args = ['--x', String(Math.round(x)), '--y', String(Math.round(y)),
     '--rx', String(rx), '--ry', String(ry), '--rw', String(rw), '--rh', String(rh)];
+  for (const id of excludeWindowIds) {
+    if (Number.isFinite(id)) args.push('--exclude-window', String(id));
+  }
 
   return new Promise((resolve) => {
     const t0 = Date.now();
