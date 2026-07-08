@@ -30,6 +30,7 @@ import ScreenCaptureKit
 
 struct CaptureResult: Codable {
     let image_base64: String
+    let mime: String
     let width: Int
     let height: Int
     let ms: Int
@@ -152,9 +153,12 @@ func drawMarker(on image: CGImage, atX mx: CGFloat, atYTopLeft myTop: CGFloat) -
     return ctx.makeImage() ?? image
 }
 
-func pngBase64(_ image: CGImage) -> String? {
+// JPEG, not PNG: a retina text screenshot is 250KB–3.5MB as PNG but
+// ~10x smaller at JPEG q0.8, and the vision model reads it just as well.
+// Every lookup uploads this, so the difference is user-visible latency.
+func jpegBase64(_ image: CGImage) -> String? {
     let rep = NSBitmapImageRep(cgImage: image)
-    guard let data = rep.representation(using: .png, properties: [:]) else { return nil }
+    guard let data = rep.representation(using: .jpeg, properties: [.compressionFactor: 0.8]) else { return nil }
     return data.base64EncodedString()
 }
 
@@ -173,13 +177,13 @@ let marked = drawMarker(
     atX: CGFloat(args.x - region.minX) * scale,
     atYTopLeft: CGFloat(args.y - region.minY) * scale
 )
-guard let b64 = pngBase64(marked) else {
-    fputs("png encode failed\n", stderr)
+guard let b64 = jpegBase64(marked) else {
+    fputs("jpeg encode failed\n", stderr)
     exit(3)
 }
 
 let ms = Int((DispatchTime.now().uptimeNanoseconds - start.uptimeNanoseconds) / 1_000_000)
-let result = CaptureResult(image_base64: b64, width: marked.width, height: marked.height, ms: ms)
+let result = CaptureResult(image_base64: b64, mime: "image/jpeg", width: marked.width, height: marked.height, ms: ms)
 
 let enc = JSONEncoder()
 enc.outputFormatting = [.sortedKeys]

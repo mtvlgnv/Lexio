@@ -278,7 +278,7 @@
     const script = `
       (function() {
         if (typeof lexioImageReady === 'function') {
-          lexioImageReady(${JSON.stringify(payload.imageBase64)});
+          lexioImageReady(${JSON.stringify(payload.imageBase64)}, ${JSON.stringify(payload.imageMime || 'image/png')});
         }
       })();
     `;

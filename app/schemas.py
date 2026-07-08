@@ -30,6 +30,7 @@ class DefineRequest(BaseModel):
     word:          Optional[str] = Field(default=None, max_length=60)
     context:       Optional[str] = Field(default=None, max_length=8_000)
     image_base64:  Optional[str] = Field(default=None, max_length=8_000_000)
+    image_mime:    str = Field(default="image/png", max_length=40)
     lang:          str = Field(default="auto", max_length=40)
     model:         str = Field(default="sonnet", max_length=40)  # haiku, gemini, gpt-4-mini, sonnet
 

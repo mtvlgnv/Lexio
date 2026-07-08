@@ -86,6 +86,9 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
         raise HTTPException(status_code=422, detail="image_base64 is not valid base64.")
     if not image_bytes or len(image_bytes) > VISION_MAX_IMAGE_BYTES:
         raise HTTPException(status_code=422, detail="Image is missing or too large.")
+    mime = (req.image_mime or "image/png").lower().strip()
+    if mime not in ("image/png", "image/jpeg"):
+        raise HTTPException(status_code=422, detail="image_mime must be image/png or image/jpeg.")
 
     actual_model = "balanced"  # Gemini 2.5 Flash — the only vision-capable model wired here
 
@@ -144,7 +147,7 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
     )
 
     def _call_and_parse():
-        text = ai._call_google_vision(prompt, image_bytes)
+        text = ai._call_google_vision(prompt, image_bytes, mime_type=mime)
         if text.startswith("```"):
             lines = text.splitlines()
             text = "\n".join(l for l in lines if not l.startswith("```")).strip()

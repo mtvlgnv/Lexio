@@ -185,7 +185,7 @@ async function captureScreenshot() {
     console.log('[overlay] capture: screen capture failed (check Screen Recording permission)');
     return null;
   }
-  console.log(`[overlay] capture: got ${shot.width}x${shot.height} image in ${shot.ms}ms`);
+  console.log(`[overlay] capture: got ${shot.width}x${shot.height} ${shot.mime || 'image/png'} in ${shot.ms}ms`);
 
   // If the onboarding wizard is open on its practice-run step, this real
   // capture is what it's waiting for — let it advance itself instead of
@@ -195,7 +195,7 @@ async function captureScreenshot() {
     onboardingWin.webContents.send('onboarding:practice-capture', {});
   }
 
-  return { imageBase64: shot.image_base64 };
+  return { imageBase64: shot.image_base64, imageMime: shot.mime || 'image/png' };
 }
 
 /* ── Expand / collapse ──────────────────────────────────────────── */
@@ -250,7 +250,7 @@ async function expand(forcedText) {
         // whatever state that newer trigger already established (bug #5).
         if (myGeneration !== captureGeneration || !win || win.isDestroyed()) return;
         if (captured) {
-          win.webContents.send('overlay:image-ready', { imageBase64: captured.imageBase64 });
+          win.webContents.send('overlay:image-ready', { imageBase64: captured.imageBase64, imageMime: captured.imageMime });
         } else {
           win.webContents.send('overlay:image-ready', { imageBase64: null });
         }
