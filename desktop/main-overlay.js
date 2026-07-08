@@ -192,7 +192,7 @@ async function captureScreenshot() {
   // requiring a manual "Next" click.
   const onboardingOpen = onboardingWin && !onboardingWin.isDestroyed();
   if (onboardingOpen) {
-    onboardingWin.webContents.send('onboarding:practice-capture', { text: '(screen capture)' });
+    onboardingWin.webContents.send('onboarding:practice-capture', {});
   }
 
   return { imageBase64: shot.image_base64 };
@@ -435,6 +435,11 @@ ipcMain.on('overlay:set-pinned', (_e, value) => { pinned = !!value; });
 
 // Shared between the onboarding wizard and the Hub's Settings/Account tabs.
 ipcMain.handle('app:accessibility-status', () => checkAccessibility());
+// Screen Recording gates every lookup now (the capture IS the context
+// source), so onboarding needs its live status. Note macOS may require an
+// app relaunch after granting before captures actually succeed.
+ipcMain.handle('app:screen-recording-status', () =>
+  process.platform !== 'darwin' || systemPreferences.getMediaAccessStatus('screen') === 'granted');
 ipcMain.handle('app:request-accessibility', () => {
   if (checkAccessibility()) return true;
   openAccessibilitySettings();

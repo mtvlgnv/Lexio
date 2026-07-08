@@ -167,26 +167,31 @@
 
     <!-- Step 2: Permissions -->
     <div class="step" data-step="2">
-      <h1>Grant Accessibility access</h1>
-      <p class="sub">Lexio Glance needs Accessibility permission to detect your selection and the double-tap <kbd class="trigger-symbol">⌘</kbd> shortcut. Install the app in <strong>Applications</strong> first — running from the DMG does not work reliably.</p>
+      <h1>Grant two permissions</h1>
+      <p class="sub"><strong>Accessibility</strong> lets Lexio Glance detect the double-tap <kbd class="trigger-symbol">⌘</kbd> shortcut. <strong>Screen Recording</strong> lets it read the word at your pointer. Install the app in <strong>Applications</strong> first — running from the DMG does not work reliably.</p>
       <p class="sub" id="access-stale-hint" style="display:none;font-size:0.82rem;color:var(--muted,#8f7f72);">
-        Toggle already on but still blocked? Remove <strong>Lexio Glance</strong> from the list with <strong>−</strong>, then re-enable it.
+        Toggle already on but still blocked? Remove <strong>Lexio Glance</strong> from the list with <strong>−</strong>, then re-enable it. macOS may also ask to relaunch the app after granting Screen Recording.
       </p>
       <div class="status-row">
         <span class="status-dot" id="access-dot"></span>
-        <span id="access-text">Not granted yet</span>
+        <span id="access-text">Accessibility — not granted yet</span>
       </div>
       <button class="secondary" id="grant-access">Open Accessibility Settings</button>
+      <div class="status-row" style="margin-top:12px;">
+        <span class="status-dot" id="screen-dot"></span>
+        <span id="screen-text">Screen Recording — not granted yet</span>
+      </div>
+      <button class="secondary" id="grant-screen">Open Screen Recording Settings</button>
     </div>
 
     <!-- Step 3: Practice run -->
     <div class="step" data-step="3">
       <h1>Try it for real</h1>
-      <p class="sub">Select a word or phrase below, then double-tap <kbd class="trigger-symbol">⌘</kbd> to look it up.</p>
+      <p class="sub">Point your cursor at a word below — no need to select it — then double-tap <kbd class="trigger-symbol">⌘</kbd> to look it up.</p>
       <div class="sample">He smiled with a warmth that, she would later realize, was entirely adventitious.</div>
       <div class="status-row" id="practice-status">
         <span class="status-dot pending" id="practice-dot"></span>
-        <span id="practice-text">Waiting for your selection…</span>
+        <span id="practice-text">Waiting for your double-tap…</span>
       </div>
     </div>
 
@@ -266,17 +271,23 @@
     if (step === 1) setTimeout(next, 900);
   });
 
-  // ── Step 2: accessibility permission ────────────────────────────
+  // ── Step 2: permissions (Accessibility + Screen Recording) ──────
   let accessPolls = 0;
   async function refreshAccessStatus() {
-    const granted = await window.lexioOnboarding?.getAccessibilityStatus();
-    const dot  = document.getElementById('access-dot');
-    const text = document.getElementById('access-text');
+    const [access, scr] = await Promise.all([
+      window.lexioOnboarding?.getAccessibilityStatus(),
+      window.lexioOnboarding?.getScreenRecordingStatus?.() ?? true,
+    ]);
     const hint = document.getElementById('access-stale-hint');
-    dot.classList.toggle('granted', !!granted);
-    text.textContent = granted ? 'Granted ✓' : 'Not granted yet';
-    if (!granted && step === 2 && ++accessPolls >= 3) hint.style.display = '';
-    return granted;
+    document.getElementById('access-dot').classList.toggle('granted', !!access);
+    document.getElementById('access-text').textContent =
+      access ? 'Accessibility — granted ✓' : 'Accessibility — not granted yet';
+    document.getElementById('screen-dot').classList.toggle('granted', !!scr);
+    document.getElementById('screen-text').textContent =
+      scr ? 'Screen Recording — granted ✓' : 'Screen Recording — not granted yet';
+    const both = !!access && !!scr;
+    if (!both && step === 2 && ++accessPolls >= 3) hint.style.display = '';
+    return both;
   }
   function startAccessPolling() {
     refreshAccessStatus();
@@ -291,6 +302,9 @@
   }
   document.getElementById('grant-access').addEventListener('click', () => {
     window.lexioOnboarding?.requestAccessibility();
+  });
+  document.getElementById('grant-screen').addEventListener('click', () => {
+    window.lexioOnboarding?.openScreenRecordingSettings();
   });
 
   // ── Step 3: practice capture ─────────────────────────────────────

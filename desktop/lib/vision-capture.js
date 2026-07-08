@@ -15,7 +15,7 @@
 const { execFile } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { app } = require('electron');
+const { app, screen } = require('electron');
 
 const CAPTURE_TIMEOUT_MS = 4000;
 
@@ -41,8 +41,17 @@ function captureScreenPoint({ x, y, width = 800, height = 500 }) {
     console.log('[overlay] lexio-ocr binary missing — screen capture unavailable (run npm run build-ocr)');
     return Promise.resolve(null);
   }
+  // Clamp the region to the display holding the cursor. Near a screen edge
+  // the cursor can't stay centered — the helper draws its marker ring at the
+  // true cursor offset within this rect, so the region's exact position must
+  // be decided HERE, where display bounds are known, not re-derived there.
+  const d = screen.getDisplayNearestPoint({ x: Math.round(x), y: Math.round(y) }).bounds;
+  const rw = Math.min(width, d.width);
+  const rh = Math.min(height, d.height);
+  const rx = Math.max(d.x, Math.min(Math.round(x - rw / 2), d.x + d.width - rw));
+  const ry = Math.max(d.y, Math.min(Math.round(y - rh / 2), d.y + d.height - rh));
   const args = ['--x', String(Math.round(x)), '--y', String(Math.round(y)),
-    '--width', String(width), '--height', String(height)];
+    '--rx', String(rx), '--ry', String(ry), '--rw', String(rw), '--rh', String(rh)];
 
   return new Promise((resolve) => {
     const t0 = Date.now();

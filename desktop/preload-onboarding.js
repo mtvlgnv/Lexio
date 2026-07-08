@@ -6,6 +6,8 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('lexioOnboarding', {
   getAccessibilityStatus: () => ipcRenderer.invoke('app:accessibility-status'),
   requestAccessibility:   () => ipcRenderer.invoke('app:request-accessibility'),
+  getScreenRecordingStatus:    () => ipcRenderer.invoke('app:screen-recording-status'),
+  openScreenRecordingSettings: () => ipcRenderer.send('app:open-screen-recording-settings'),
   openSignIn:             () => ipcRenderer.send('app:open-signin'),
   setLaunchAtLogin:       (v) => ipcRenderer.send('app:set-launch-at-login', v),
   getTriggerSymbol:       () => ipcRenderer.invoke('app:get-trigger-symbol'),
