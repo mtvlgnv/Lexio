@@ -912,7 +912,7 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png') {
     });
     if (!resp.ok) {
       if (resp.status === 402) {
-        throw new Error('Monthly screen-lookup limit reached. Upgrade to Pro at lexio.site for a much higher cap.');
+        throw new Error('Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.');
       }
       const e = await resp.json().catch(() => ({ detail: resp.statusText }));
       throw new Error(e.detail || `HTTP ${resp.status}`);

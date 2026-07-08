@@ -74,11 +74,14 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
     """Lexio Glance's screen-point mode: no word/context up front — the model
     identifies the word itself from a screenshot centered on the cursor.
     Always routed through Gemini (only vision-capable provider wired here),
-    so it's billed at "balanced" hourly weight regardless of req.model, and
-    metered against the existing image-lookup bucket (kind="ocr" — same
-    monthly caps as the printed-page scanner: FREE_OCR_LIMIT free/anon,
-    PRO_OCR_MONTHLY_CAP for Pro) rather than the Pro-only balanced/deep gate,
-    since this mode has no free-tier text alternative to fall back to.
+    so it's billed at "balanced" hourly weight regardless of req.model,
+    without the Pro-only balanced/deep gate, since this mode has no
+    free-tier text alternative to fall back to.
+
+    Metered as a normal LOOKUP (kind="lookup": ANON_LOOKUP_LIMIT anon,
+    FREE_LOOKUP_LIMIT free, unbounded Pro) — NOT the photo-scanner bucket
+    (kind="ocr", 3/month): screen lookups are the desktop app's every-single
+    -lookup path now, and the marketing promise is "20 free lookups/month".
     """
     try:
         image_bytes = base64.b64decode(req.image_base64, validate=True)
@@ -108,11 +111,11 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
             headers={"Retry-After": str(hourly["reset_in"])},
         )
 
-    usage = _check_usage(db, user, ip, "ocr")
+    usage = _check_usage(db, user, ip, "lookup")
     if not usage["allowed"]:
         raise HTTPException(
             status_code=402,
-            detail={"code": "limit_exceeded", "kind": "ocr", "used": usage["used"], "limit": usage["limit"]},
+            detail={"code": "limit_exceeded", "kind": "lookup", "used": usage["used"], "limit": usage["limit"]},
         )
 
     lang_code = (req.lang or "auto").strip().lower()
@@ -181,7 +184,7 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
         raise HTTPException(status_code=502, detail="An unexpected error occurred. Please try again.")
 
     hourly_post = _consume_hourly_credits(db, user, actual_model)
-    usage_post = _consume_usage(db, user, ip, "ocr")
+    usage_post = _consume_usage(db, user, ip, "lookup")
 
     word = str(result.get("word", "")).strip()
     bg.add_task(_log_search, word)
