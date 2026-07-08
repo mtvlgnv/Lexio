@@ -63,30 +63,25 @@ func parseArgs() -> Args {
     return a
 }
 
-/// Electron screen coords: origin top-left of primary display. Cocoa: bottom-left.
-func electronToCocoa(_ point: CGPoint) -> CGPoint {
-    for screen in NSScreen.screens {
-        let flipped = CGPoint(x: point.x, y: screen.frame.maxY - point.y)
-        if screen.frame.contains(flipped) { return flipped }
-    }
-    if let s = NSScreen.main {
-        return CGPoint(x: point.x, y: s.frame.maxY - point.y)
-    }
-    return point
-}
-
-func electronRectToCocoa(_ rect: CGRect) -> (CGRect, NSScreen) {
-    let topLeft = CGPoint(x: rect.minX, y: rect.minY)
-    let bottomRight = CGPoint(x: rect.maxX, y: rect.maxY)
-    let cTL = electronToCocoa(topLeft)
-    let cBR = electronToCocoa(bottomRight)
-    let cocoaRect = CGRect(x: min(cTL.x, cBR.x), y: min(cTL.y, cBR.y), width: abs(cBR.x - cTL.x), height: abs(cTL.y - cBR.y))
-    let screen = NSScreen.screens.first { $0.frame.intersects(cocoaRect) } ?? NSScreen.main!
+/// Electron global coords: origin at the PRIMARY display's top-left, y down.
+/// SCStreamConfiguration.sourceRect wants the display's own coordinate space
+/// with origin at ITS top-left, y down — so the only transform needed is
+/// subtracting the display's electron-space origin. No cocoa y-flip: feeding
+/// bottom-left-origin cocoa rects here is exactly the bug that made captures
+/// grab a region mirrored about the display's horizontal midline (cursor in
+/// the top third → screenshot of the bottom third).
+func regionInDisplaySpace(_ electronRect: CGRect) -> (CGRect, NSScreen) {
+    let primaryMaxY = NSScreen.screens.first?.frame.maxY ?? 0
+    // Pick the display containing the rect's center (cocoa space for the test).
+    let center = CGPoint(x: electronRect.midX, y: primaryMaxY - electronRect.midY)
+    let screen = NSScreen.screens.first { $0.frame.contains(center) } ?? NSScreen.main!
+    // The display's own origin expressed in electron global coords.
+    let originE = CGPoint(x: screen.frame.minX, y: primaryMaxY - screen.frame.maxY)
     let local = CGRect(
-        x: cTL.x - screen.frame.minX,
-        y: cBR.y - screen.frame.minY,
-        width: cBR.x - cTL.x,
-        height: cTL.y - cBR.y
+        x: electronRect.minX - originE.x,
+        y: electronRect.minY - originE.y,
+        width: electronRect.width,
+        height: electronRect.height
     )
     return (local, screen)
 }
@@ -102,7 +97,7 @@ func captureRegion(_ electronRect: CGRect) -> (CGImage, CGFloat)? {
         defer { sem.signal() }
         do {
             let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
-            let (localRect, screen) = electronRectToCocoa(electronRect)
+            let (localRect, screen) = regionInDisplaySpace(electronRect)
             let displayID = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID
             guard let display = content.displays.first(where: { $0.displayID == displayID }) ?? content.displays.first else {
                 fputs("no display for capture region\n", stderr)
