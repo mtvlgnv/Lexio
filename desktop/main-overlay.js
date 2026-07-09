@@ -330,10 +330,10 @@ function presentApp() {
 function createHomeWindow() {
   if (homeWin && !homeWin.isDestroyed()) { homeWin.show(); homeWin.focus(); return; }
   homeWin = new BrowserWindow({
-    width: 920,
-    height: 600,
-    minWidth: 720,
-    minHeight: 460,
+    width: 1120,
+    height: 720,
+    minWidth: 820,
+    minHeight: 540,
     title: 'Lexio Glance',
     titleBarStyle: 'hiddenInset',
     backgroundColor: chromeBackgroundColor(),
