@@ -209,6 +209,24 @@ complexity), preferred tone.
 5. Cache note: web text-mode client cache keys must include a profile
    hash or be cleared on profile change (image mode is uncached).
 
+**Phase 1.5 — the profile interview (founder idea, added 2026-07-09):**
+a short, warm, PURELY OPTIONAL interview that fills the profile
+conversationally instead of via a form. Two entry points:
+- Onboarding: one optional step after the practice run — "Want Lexio to
+  know you a little? 3 quick questions (skippable, editable later)."
+- Later, after real usage (e.g. the 15th lookup or 5th saved word): a
+  one-time Hub Home card — "You've saved 5 words! Answer 3 questions so
+  definitions fit your world better." Dismiss = never shown again
+  (store a `profileInterviewDismissed` flag).
+Questions (3–4 max, one screen each, skippable individually): what do
+you do / what are you into (free text) · your English level (choices,
+"not sure" allowed → infer later) · what do you mostly read in English
+(news / work / fiction / study — multi-select) · native language
+(pre-filled from the definition-language setting). Answers just write
+the same `profile_json` as Phase 1's form — the interview IS the form,
+in a friendlier costume. Every answer visible and editable in Hub →
+Account afterwards. Never gate any feature on completing it.
+
 **Phase 2 — learned memory (later, ~2-3 days):** weekly job summarizes
 UserSearchLog + word bank into SUGGESTED profile lines the user confirms
 in the Hub ("You read a lot about woodworking — tailor definitions?
@@ -217,6 +235,43 @@ privacy-policy paragraph. Never silently inferred-and-applied.
 
 Synergy: the profile feeds BOTH normal and Thinking-mode prompts; the
 two features compound (deep analysis calibrated to your level and world).
+
+## P1-6 · Hub content expansion (researched 2026-07-09)
+
+What comparable products put in their "home base", and what maps to
+Lexio. Sources: Wispr Flow's Hub (stats card: words dictated / WPM /
+streak, adaptive welcome text, real-time recent-activity feed, custom
+Dictionary, referral); WordUp (Knowledge Map of known vs unknown words,
+25k words ranked by real-world frequency, daily spaced-repetition
+review with multiple challenge types); Readlang/LingQ (words saved from
+real reading become flashcards; known-words counters as the core
+progress metric).
+
+Ranked backlog for the Hub, highest value first:
+1. **Review mode (spaced repetition on the Word Bank)** — THE missing
+   loop; every comparable app has it. A "Review" section (or Home card:
+   "5 words due today"): flashcard = the saved sentence with the word
+   blanked → reveal definition → Again/Good buttons → SM-2-lite
+   intervals stored per entry (`reviewAt`, `interval` fields on the
+   existing wb entries; local-first like saves). ~1-2 days. This turns
+   Lexio from "lookup tool" into "learning system" and directly earns
+   the "words truly learned" stat.
+2. **Words-learned metric** — once review exists: a word graduating 3
+   successful reviews counts as "learned"; Home stat card + the
+   WordUp-style known-words framing ("214 words in your English").
+3. **Weekly recap card on Home** — lookups, new words, streak vs last
+   week; reuses the existing `/email` digest infra server-side for a
+   matching weekly email (endpoint skeleton exists — see
+   /email/unsubscribe).
+4. **Trending among Lexio readers** — the site's trending-words data
+   (SearchLog) as a small Home card: "readers this week are looking up
+   *tariff*, *stopgap*…" — tap → lookup. Zero backend work, endpoint
+   feeds the homepage already.
+5. **Referral card** — Wispr-style "give a friend a month of Pro" —
+   AFTER retention loops exist, needs backend referral codes.
+Skip (considered, rejected for now): generic daily-goal setting (streak
+already covers the habit mechanic); word-frequency rank badges (needs a
+frequency dataset; revisit with review mode's grading).
 
 ---
 

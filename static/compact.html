@@ -420,7 +420,7 @@
 <!-- Empty state -->
 <div id="empty-state">
   <div>
-    <span class="glyph">⌘</span>
+    <span class="glyph" id="trigger-glyph">⌃</span>
     <p>Point at any word,<br>then double-tap <b id="trigger-hint">⌃</b></p>
   </div>
 </div>
@@ -498,6 +498,10 @@ if (urlParams.get('theme') === 'dark') {
 // symbol through so this can match.
 const triggerHintEl = document.getElementById('trigger-hint');
 if (triggerHintEl) triggerHintEl.textContent = urlParams.get('trigger') || '⌃';
+// The big empty-state ornament must show the SAME key as the hint text —
+// it was hardcoded ⌘ while the default trigger is ⌃.
+const triggerGlyphEl = document.getElementById('trigger-glyph');
+if (triggerGlyphEl) triggerGlyphEl.textContent = urlParams.get('trigger') || '⌃';
 
 let context = '';
 let activeToken = null;

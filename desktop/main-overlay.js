@@ -226,7 +226,7 @@ async function captureScreenshot() {
 // real selection capture entirely and feeds that text straight into the
 // panel instead — a relookup shouldn't touch the clipboard or require
 // anything to be selected in the frontmost app.
-async function expand(forcedText) {
+async function expand(forcedText, { capture = true } = {}) {
   // A relookup (forcedText, from the Hub's Recent tab) only has the word
   // itself, not the sentence it originally came from — reuse it as its own
   // context, same as the old pre-auto-context behavior.
@@ -258,6 +258,13 @@ async function expand(forcedText) {
     let payload = {};
     if (forced) {
       payload = forced;
+    } else if (!capture) {
+      // Pill click / tray "Open Lexio": the cursor is ON the pill (or in a
+      // menu), so capturing "around the cursor" just photographs our own UI
+      // and defines whatever noise sits behind it. Open the panel in its
+      // manual state instead (paste box + trigger hint) — the empty payload
+      // routes pill.html to lexioReset(). Lookups belong to the double-tap.
+      payload = {};
     } else {
       const capturePromise = captureScreenshot();   // BEFORE resize/show/focus — see note above
       payload = { imagePending: true };
@@ -502,7 +509,7 @@ function createHubWindow() {
 }
 
 /* ── Renderer → main IPC ────────────────────────────────────────── */
-ipcMain.on('overlay:expand-request',   () => expand());
+ipcMain.on('overlay:expand-request',   () => expand(undefined, { capture: false }));
 ipcMain.on('overlay:collapse-request', () => collapse());
 ipcMain.on('overlay:start-drag', (e) => {
   const senderWin = BrowserWindow.fromWebContents(e.sender);
@@ -647,7 +654,7 @@ function createTray() {
   if (process.platform === 'darwin') tray.setTitle('Lx');
   updateTrayToolTip();
   const menu = Menu.buildFromTemplate([
-    { label: 'Open Lexio',        click: () => expand() },
+    { label: 'Open Lexio',        click: () => expand(undefined, { capture: false }) },
     { label: 'Hide',              click: () => collapse() },
     { type: 'separator' },
     { label: 'Lexio Hub',         click: () => presentApp() },
