@@ -1,0 +1,16 @@
+app,category,tier,effective_rating,automated_status,automated_chars,automated_strategy,manual_status,manual_chars,manual_strategy,word_lookup,notes
+TextEdit,native,full_contextual,full_contextual,full,126,at-cursor,,,,true,Plain text editor; at-cursor strategy.
+Safari,browser,full_contextual,full_contextual,full,102,at-cursor,full,3455,focused-climb,true,Works on file:// and live web (Wikipedia tested).
+Notes,native,full_contextual,full_contextual,full,206,at-cursor,,,,true,New note via paste; at-cursor strategy.
+Preview,pdf,full_contextual,full_contextual,empty,0,,full,103,focused AXValue,true,Text PDF works; plain .txt in Preview has no AX text.
+Google Chrome,chromium,variable_contextual,variable_contextual,selection_only,12,focused AXValue,full,102,focused-climb,true,Fails when focus in find bar; works with in-page selection.
+VS Code,electron,variable_contextual,variable_contextual,selection_only,12,focused AXValue,full,102,focused-climb,true,Same Chromium pattern as Chrome.
+Cursor,electron,variable_contextual,variable_contextual,no_match,40,at-cursor,full,102,focused AXValue,true,Editor works when focused; UI chrome pollutes AX.
+Antigravity,electron,variable_contextual,variable_contextual,no_match,3762,at-cursor,,,,true,AX accessible; content depends on focused editor buffer.
+Mail,native,variable_contextual,word_only,selection_only,12,focused AXValue,unreliable,12,focused AXValue,true,Rich compose fields often expose only selected word.
+Telegram,native,word_only,word_only,selection_only,12,focused AXValue,empty,0,,true,Compose field does not expose paragraph text via AX.
+Discord,electron,word_only,word_only,empty,0,,empty,0,,true,Custom Electron UI; AX tree empty after settle retry.
+WhatsApp,electron,word_only,word_only,error,0,,,,,true,AX tree times out (>5s); clipboard selection still works.
+Pages,iwork,word_only,word_only,empty,0,,,,,true,iWork canvas does not expose paragraph text via AX.
+Terminal,terminal,broken_or_wrong,broken_or_wrong,no_match,8000,at-cursor,,,,true,AX returns scrollback buffer not cursor line — wrong context.
+Lexio Glance,self,full_contextual,full_contextual,,,,full,,dom,true,DOM capture when frontmost; not AX.

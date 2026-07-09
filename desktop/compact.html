@@ -828,7 +828,20 @@ function lexioImageReady(imageBase64, imageMime) {
     showError("Couldn't capture the screen — check that Screen Recording permission is granted to Lexio Glance.");
     return;
   }
-  fetchDefFromImage(imageBase64, imageMime || 'image/png');
+  // Show the capture immediately while the definition is generated — the
+  // wait feels shorter when you can already see Lexio looked at the right
+  // spot (and a mis-aim is obvious before the answer even lands).
+  const mime = imageMime || 'image/png';
+  const loading = document.getElementById('loading');
+  if (!loading.classList.contains('hidden')) {
+    loading.innerHTML = `
+      <div style="font-family: var(--font-display); font-size: 1.05rem; color: var(--text-mid); margin-bottom: 10px;">Asking Lexio…</div>
+      <img src="data:${mime};base64,${imageBase64}" alt=""
+           style="width:100%;max-height:110px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" />
+      <div class="skeleton-line" style="margin-top:12px;"></div>
+      <div class="skeleton-line"></div>`;
+  }
+  fetchDefFromImage(imageBase64, mime);
 }
 
 // Called by pill.html when the panel opens on an EMPTY capture (nothing was

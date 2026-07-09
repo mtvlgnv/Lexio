@@ -17,4 +17,6 @@ contextBridge.exposeInMainWorld('lexioOnboarding', {
   // a real (non-empty) selection is captured during the practice step.
   onAuthComplete:    (cb) => ipcRenderer.on('onboarding:auth-complete',    (_e, payload) => cb(payload || {})),
   onPracticeCapture: (cb) => ipcRenderer.on('onboarding:practice-capture', (_e, payload) => cb(payload || {})),
+  onPracticeFailed:  (cb) => ipcRenderer.on('onboarding:practice-failed',  () => cb()),
+  relaunchApp:       () => ipcRenderer.send('app:relaunch'),
 });

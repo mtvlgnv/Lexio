@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "product": "Lexio Glance",
+    "version": "1.1.5",
+    "test_date": "2026-07-04",
+    "platform": "macOS 26.5 (Apple Silicon)",
+    "method": "ax-reader.py (Accessibility API) + sentence expansion via context.js",
+    "target_word": "adventitious",
+    "test_paragraph": "The adventitious growth rings visible in the cross-section revealed centuries of environmental stress.",
+    "min_full_context_chars": 55,
+    "accessibility_granted": true,
+    "notes": [
+      "Automated runs use Cmd+F find to select the target word; this can leave focus in the find bar and under-report Chromium/Electron editors.",
+      "Manual follow-up tests dismiss the find bar (Escape) before measuring AX output.",
+      "Word lookup via clipboard (Cmd+C) works anywhere text can be selected; this report scores contextual sentence capture only.",
+      "Lexio Glance own windows use DOM capture (not AX) when frontmost — not included in automated sweep."
+    ]
+  },
+  "tiers": {
+    "full_contextual": "AX returns paragraph-level text; Glance can produce sentence-level contextual definitions.",
+    "variable_contextual": "Works when selection is in the content area; unreliable when focus is in UI chrome (find bar, sidebars).",
+    "word_only": "Selection copies fine but AX does not expose surrounding text.",
+    "broken_or_wrong": "AX returns nothing or unrelated content (wrong context)."
+  },
+  "results": [
+    {
+      "app": "TextEdit",
+      "category": "native",
+      "tier": "full_contextual",
+      "automated": { "status": "full", "chars": 126, "strategy": "at-cursor" },
+      "manual_followup": null,
+      "effective_rating": "full_contextual",
+      "word_lookup": true,
+      "notes": "Plain text editor; at-cursor strategy."
+    },
+    {
+      "app": "Safari",
+      "category": "browser",
+      "tier": "full_contextual",
+      "automated": { "status": "full", "chars": 102, "strategy": "at-cursor" },
+      "manual_followup": { "status": "full", "chars": 3455, "strategy": "focused-climb", "scenario": "live Wikipedia (Photosynthesis)" },
+      "effective_rating": "full_contextual",
+      "word_lookup": true,
+      "notes": "Strongest browser target. Works on file:// and live web."
+    },
+    {
+      "app": "Notes",
+      "category": "native",
+      "tier": "full_contextual",
+      "automated": { "status": "full", "chars": 206, "strategy": "at-cursor" },
+      "manual_followup": null,
+      "effective_rating": "full_contextual",
+      "word_lookup": true,
+      "notes": "New note via paste; at-cursor strategy."
+    },
+    {
+      "app": "Preview",
+      "category": "pdf",
+      "tier": "full_contextual",
+      "automated": { "status": "empty", "chars": 0, "strategy": null, "scenario": "plain .txt file" },
+      "manual_followup": { "status": "full", "chars": 103, "strategy": "focused AXValue", "scenario": "text PDF" },
+      "effective_rating": "full_contextual",
+      "word_lookup": true,
+      "notes": "Text PDF works; plain .txt opened in Preview does not expose AX text."
+    },
+    {
+      "app": "Google Chrome",
+      "category": "chromium",
+      "tier": "variable_contextual",
+      "automated": { "status": "selection_only", "chars": 12, "strategy": "focused AXValue" },
+      "manual_followup": { "status": "full", "chars": 102, "strategy": "focused-climb", "scenario": "find bar dismissed, in-page selection" },
+      "effective_rating": "variable_contextual",
+      "word_lookup": true,
+      "notes": "Chromium AX tree flip works. Fails when focus is in find bar; works with in-page selection."
+    },
+    {
+      "app": "VS Code",
+      "category": "electron",
+      "tier": "variable_contextual",
+      "automated": { "status": "selection_only", "chars": 12, "strategy": "focused AXValue" },
+      "manual_followup": { "status": "full", "chars": 102, "strategy": "focused-climb", "scenario": "editor buffer, find bar dismissed" },
+      "effective_rating": "variable_contextual",
+      "word_lookup": true,
+      "notes": "Same Chromium pattern as Chrome."
+    },
+    {
+      "app": "Cursor",
+      "category": "electron",
+      "tier": "variable_contextual",
+      "automated": { "status": "no_match", "chars": 40, "strategy": "at-cursor", "sample": "update banner UI text" },
+      "manual_followup": { "status": "full", "chars": 102, "strategy": "focused AXValue", "scenario": "editor buffer, find bar dismissed" },
+      "effective_rating": "variable_contextual",
+      "word_lookup": true,
+      "notes": "Editor works when focused; UI chrome (update banners) pollutes AX when unfocused."
+    },
+    {
+      "app": "Antigravity",
+      "category": "electron",
+      "tier": "variable_contextual",
+      "automated": { "status": "no_match", "chars": 3762, "strategy": "at-cursor", "sample": "wrong open document" },
+      "manual_followup": null,
+      "effective_rating": "variable_contextual",
+      "word_lookup": true,
+      "notes": "AX tree accessible but content depends on which editor buffer is focused."
+    },
+    {
+      "app": "Mail",
+      "category": "native",
+      "tier": "variable_contextual",
+      "automated": { "status": "selection_only", "chars": 12, "strategy": "focused AXValue" },
+      "manual_followup": { "status": "unreliable", "chars": 12, "strategy": "focused AXValue", "scenario": "compose window" },
+      "effective_rating": "word_only",
+      "word_lookup": true,
+      "notes": "Rich compose fields often expose only the selected word via AX."
+    },
+    {
+      "app": "Telegram",
+      "category": "native",
+      "tier": "word_only",
+      "automated": { "status": "selection_only", "chars": 12, "strategy": "focused AXValue" },
+      "manual_followup": { "status": "empty", "chars": 0, "strategy": null, "scenario": "compose field with find dismissed" },
+      "effective_rating": "word_only",
+      "word_lookup": true,
+      "notes": "Compose field does not expose readable AX paragraph text."
+    },
+    {
+      "app": "Discord",
+      "category": "electron",
+      "tier": "word_only",
+      "automated": { "status": "empty", "chars": 0, "strategy": null },
+      "manual_followup": { "status": "empty", "chars": 0, "strategy": null, "scenario": "message compose field" },
+      "effective_rating": "word_only",
+      "word_lookup": true,
+      "notes": "Custom Electron UI; AX tree empty even after Chromium settle retry."
+    },
+    {
+      "app": "WhatsApp",
+      "category": "electron",
+      "tier": "word_only",
+      "automated": { "status": "error", "chars": 0, "strategy": null, "error": "ax-reader.py timed out after 5s" },
+      "manual_followup": null,
+      "effective_rating": "word_only",
+      "word_lookup": true,
+      "notes": "AX tree too heavy/slow; times out. Word lookup via clipboard still works."
+    },
+    {
+      "app": "Pages",
+      "category": "iwork",
+      "tier": "word_only",
+      "automated": { "status": "empty", "chars": 0, "strategy": null },
+      "manual_followup": null,
+      "effective_rating": "word_only",
+      "word_lookup": true,
+      "notes": "iWork canvas does not expose paragraph text via AX."
+    },
+    {
+      "app": "Terminal",
+      "category": "terminal",
+      "tier": "broken_or_wrong",
+      "automated": { "status": "no_match", "chars": 8000, "strategy": "at-cursor", "sample": "terminal scrollback history" },
+      "manual_followup": null,
+      "effective_rating": "broken_or_wrong",
+      "word_lookup": true,
+      "notes": "AX returns scrollback buffer, not the line at cursor — wrong context."
+    },
+    {
+      "app": "Lexio Glance",
+      "category": "self",
+      "tier": "full_contextual",
+      "automated": null,
+      "manual_followup": { "status": "full", "strategy": "dom", "scenario": "own Electron windows when frontmost" },
+      "effective_rating": "full_contextual",
+      "word_lookup": true,
+      "notes": "Uses DOM capture (dom-context.js), not AX. Onboarding, hub, compact panels."
+    }
+  ],
+  "summary": {
+    "tested_apps": 15,
+    "full_contextual": ["TextEdit", "Safari", "Notes", "Preview (PDF)", "Lexio Glance (DOM)"],
+    "variable_contextual": ["Google Chrome", "VS Code", "Cursor", "Antigravity"],
+    "word_only": ["Mail", "Telegram", "Discord", "WhatsApp", "Pages", "Preview (.txt)"],
+    "broken_or_wrong": ["Terminal"],
+    "automated_run": {
+      "full": 3,
+      "partial": 0,
+      "broken": 11,
+      "apps_full": ["TextEdit", "Safari", "Notes"],
+      "raw_json": "/var/folders/gf/f98gjprs7nq3jpvv8v_k8z2m0000gn/T/lexio-compat-dmsdv79j/results.json"
+    }
+  }
+}

@@ -34,7 +34,7 @@ definition + "What Lexio saw" thumbnail + language picker.
 
 ---
 
-## P0-1 · Fix the stale download link (trivial, do immediately)
+## P0-1 · Fix the stale download link — ✅ DONE 2026-07-09 (/download/mac live, nginx allowlisted, modal updated)
 
 `static/index.html` desktop modal links to
 `github.com/mtvlgnv/Lexio/releases/download/v1.1.5-glance/Lexio-Glance-1.1.5-arm64.dmg`
@@ -47,7 +47,7 @@ added to the regex and nginx reloaded.
 
 Verify: `curl -sIL https://lexio.site/download/mac | grep -E "HTTP|location"`.
 
-## P0-2 · Auto-update (electron-updater + GitHub Releases)
+## P0-2 · Auto-update — ⚙️ WIRED 2026-07-09 (updater + zip target + publish config in place; verify against the first published release, see step 4 gotcha)
 
 No update mechanism exists at all. Users are stranded on whatever DMG they
 installed. The repo already publishes GitHub releases, which is exactly
@@ -75,7 +75,7 @@ translocated/DMG-run app) — onboarding already tells users this.
 Verify: install current build, publish a `v1.3.1-glance` draft with a
 trivial bump, confirm in-app update prompt appears and relaunch lands on 1.3.1.
 
-## P0-3 · Privacy policy still describes the text-only pipeline
+## P0-3 · Privacy policy — ✅ DONE 2026-07-09 (privacy.html + FAQ + JSON-LD describe screen captures honestly)
 
 `static/privacy.html` and the FAQ in `static/index.html` say "only the word
 and a short surrounding context window are sent". The desktop app now sends
@@ -86,7 +86,7 @@ stored (true today — images are not persisted server-side; keep it true).
 Also update the FAQ JSON-LD blob near line ~181. Honest wording is a trust
 asset; discovery-by-user is a liability.
 
-## P1-1 · Save-to-Word-Bank from the desktop panel
+## P1-1 · Save-to-Word-Bank — ✅ DONE 2026-07-08 (panel Save button, local-first + sync, 10-save signed-out cap)
 
 The single most important missing feature. Backend is fully built:
 `POST /wordbank/sync` (payload: `{entries: [{word, pos, ipa, definition,
@@ -102,7 +102,7 @@ posts the current `currentResult.data` + `context`. Handle signed-out
 existing `LEXIO_LOOKUP::`-style console bridge if the Hub needs live update.
 Remember `sync-compact.sh` after editing.
 
-## P1-2 · Hub v2 — from settings popover to Wispr-Flow-style home
+## P1-2 · Hub v2 — ✅ SHIPPED 2026-07-08 (home.html: Word Bank/Recent/Settings/Account; Home/stats tab still open)
 
 Current Hub (`desktop/hub.html`): three cramped tabs — Recent (list +
 relookup), Settings (launch-at-login, trigger key, 3 permission rows),
@@ -129,7 +129,7 @@ Target: a real window with sidebar navigation, five sections:
 Phasing if not done in one pass: Account usage meter → Word Bank → Home.
 IPC pattern to copy: `preload-hub.js` + `hub:*` handlers in `main-overlay.js`.
 
-## P1-3 · Onboarding practice-step failure state
+## P1-3 · Onboarding practice failure state — ✅ DONE 2026-07-09 (failure event + relaunch button)
 
 `desktop/onboarding.html` step 3 waits forever on
 `onboarding:practice-capture`. If the capture fails (Screen Recording
@@ -142,8 +142,7 @@ quit and reopen Lexio Glance" with a relaunch button
 
 ## P2 · Perceived latency, streaks, referral
 
-- Show the "What Lexio saw" thumbnail **while the definition loads**
-  (image is in-hand before the fetch; currently shown only after).
+- ~~Show the thumbnail while the definition loads~~ ✅ DONE 2026-07-09.
 - Streaks/stats need Hub Home first.
 - Referral/share: defer until retention exists.
 

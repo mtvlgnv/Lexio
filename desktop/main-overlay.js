@@ -194,6 +194,12 @@ async function captureScreenshot() {
   const shot = await captureScreenPoint({ x: cursor.x, y: cursor.y, excludeWindowIds });
   if (!shot || !shot.image_base64) {
     console.log('[overlay] capture: screen capture failed (check Screen Recording permission)');
+    // During onboarding this is the #1 stuck point: Screen Recording was
+    // just granted but macOS won't honor it until the app relaunches. Tell
+    // the wizard so it can explain instead of waiting forever.
+    if (onboardingWin && !onboardingWin.isDestroyed()) {
+      onboardingWin.webContents.send('onboarding:practice-failed', {});
+    }
     return null;
   }
   console.log(`[overlay] capture: got ${shot.width}x${shot.height} ${shot.mime || 'image/png'} in ${shot.ms}ms`);
@@ -314,6 +320,35 @@ function presentApp() {
     return;
   }
   createHomeWindow();
+}
+
+/* ── Auto-update (electron-updater + GitHub Releases) ──────────────
+   Checks on launch and every 6h; downloads in the background and asks
+   to restart only once the update is fully ready. Without this, every
+   fix requires users to somehow learn a new DMG exists — they don't. */
+let checkForUpdatesNow = null;   // set when packaged; tray item uses it
+function setupAutoUpdate() {
+  if (!app.isPackaged) return;   // dev runs have nothing to update against
+  let autoUpdater;
+  try { ({ autoUpdater } = require('electron-updater')); } catch (err) {
+    console.warn('[overlay] electron-updater unavailable:', err.message);
+    return;
+  }
+  autoUpdater.on('update-downloaded', (info) => {
+    const { dialog } = require('electron');
+    dialog.showMessageBox({
+      type: 'info',
+      message: `Lexio Glance ${info.version} is ready`,
+      detail: 'The update downloaded in the background. Restart now to apply it?',
+      buttons: ['Restart Now', 'Later'],
+      defaultId: 0,
+      cancelId: 1,
+    }).then(({ response }) => { if (response === 0) autoUpdater.quitAndInstall(); });
+  });
+  autoUpdater.on('error', (err) => console.warn('[overlay] auto-update error:', err.message));
+  checkForUpdatesNow = () => autoUpdater.checkForUpdates().catch(() => {});
+  checkForUpdatesNow();
+  setInterval(checkForUpdatesNow, 6 * 60 * 60 * 1000);
 }
 
 /* ── Home window (Hub v2) ───────────────────────────────────────────
@@ -565,6 +600,10 @@ ipcMain.on('hub:sign-out', () => {
 // Fixed destination on purpose — don't accept arbitrary URLs from renderers.
 ipcMain.on('app:open-pricing', () => shell.openExternal('https://lexio.site/#lp-pro'));
 
+// Full relaunch — the onboarding wizard offers this after a failed practice
+// capture, since macOS applies a fresh Screen Recording grant only on restart.
+ipcMain.on('app:relaunch', () => { app.relaunch(); app.exit(0); });
+
 /* ── lexio:// URL scheme — auth handoff from the website ──────────
    Mirrors the same mechanism main.js already uses: the site redirects to
    lexio://auth?token=...&user=... after a successful login/signup when it
@@ -611,6 +650,7 @@ function createTray() {
     { label: 'Lexio Hub',         click: () => presentApp() },
     { label: 'Getting Started',   click: () => createOnboardingWindow() },
     { type: 'separator' },
+    { label: 'Check for Updates…', click: () => checkForUpdatesNow?.() },
     { label: 'Quit Lexio',        click: () => app.quit() },
   ]);
   tray.on('right-click', () => tray.popUpContextMenu(menu));
@@ -720,6 +760,7 @@ if (!app.requestSingleInstanceLock()) {
     createWindow();
     createTray();
     registerTriggers();
+    setupAutoUpdate();
     // Show the Hub on manual launch, Wispr-style — but stay silent when
     // macOS auto-started us at login (the pill alone is the right presence).
     const openedAtLogin = process.platform === 'darwin' &&

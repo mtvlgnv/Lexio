@@ -1,0 +1,142 @@
+[
+  {
+    "app": "TextEdit",
+    "category": "native",
+    "status": "full",
+    "chars": 126,
+    "strategy": "at-cursor",
+    "notes": "plain text editor",
+    "installed": true,
+    "sample": "The adventitious growth rings visible in the cross-section revealed centuries of environmental stress. adventitious \u2014 Un"
+  },
+  {
+    "app": "Safari",
+    "category": "browser",
+    "status": "full",
+    "chars": 102,
+    "strategy": "at-cursor",
+    "notes": "local HTML via file://",
+    "installed": true,
+    "sample": "The adventitious growth rings visible in the cross-section revealed centuries of environmental stress."
+  },
+  {
+    "app": "Google Chrome",
+    "category": "chromium",
+    "status": "selection_only",
+    "chars": 12,
+    "strategy": "focused AXValue",
+    "notes": "Chromium AX tree flip required",
+    "installed": true,
+    "sample": "adventitious"
+  },
+  {
+    "app": "Notes",
+    "category": "native",
+    "status": "full",
+    "chars": 206,
+    "strategy": "at-cursor",
+    "notes": "new note via paste",
+    "installed": true,
+    "sample": "July 4, 2026 at 20:02 The adventitious growth rings visible in the cross-section revealed centuries of environmental str"
+  },
+  {
+    "app": "VS Code",
+    "category": "electron",
+    "status": "selection_only",
+    "chars": 12,
+    "strategy": "focused AXValue",
+    "notes": "editor buffer",
+    "installed": true,
+    "sample": "adventitious"
+  },
+  {
+    "app": "Cursor",
+    "category": "electron",
+    "status": "no_match",
+    "chars": 40,
+    "strategy": "at-cursor",
+    "notes": "Electron IDE",
+    "installed": true,
+    "sample": "\ueaf9 New update available Later Install Now"
+  },
+  {
+    "app": "Antigravity",
+    "category": "electron",
+    "status": "no_match",
+    "chars": 3762,
+    "strategy": "at-cursor",
+    "notes": "Electron app",
+    "installed": true,
+    "sample": "1 #  Lexio \"Universal Tap-to-Define\": Native OCR & Screen Capture Proposal 2 3 ##  Overview 4 Currently, Lexio provides "
+  },
+  {
+    "app": "Discord",
+    "category": "electron",
+    "status": "empty",
+    "chars": 0,
+    "strategy": null,
+    "notes": "message compose field",
+    "installed": true,
+    "sample": ""
+  },
+  {
+    "app": "Mail",
+    "category": "native",
+    "status": "selection_only",
+    "chars": 12,
+    "strategy": "focused AXValue",
+    "notes": "compose window",
+    "installed": true,
+    "sample": "adventitious"
+  },
+  {
+    "app": "Pages",
+    "category": "iwork",
+    "status": "empty",
+    "chars": 0,
+    "strategy": null,
+    "notes": "document body",
+    "installed": true,
+    "sample": ""
+  },
+  {
+    "app": "Preview",
+    "category": "pdf/text",
+    "status": "empty",
+    "chars": 0,
+    "strategy": null,
+    "notes": "plain .txt in Preview",
+    "installed": true,
+    "sample": ""
+  },
+  {
+    "app": "Terminal",
+    "category": "terminal",
+    "status": "no_match",
+    "chars": 8000,
+    "strategy": "at-cursor",
+    "notes": "shell echo output",
+    "installed": true,
+    "sample": "Last login: Thu Jul  2 22:27:33 on ttys000\n[3] 29797\n(base) mtvlgnv@MacBook-Air-Matvey ~ % cd lexio\n(base) mtvlgnv@MacBo"
+  },
+  {
+    "app": "Telegram",
+    "category": "native",
+    "status": "selection_only",
+    "chars": 12,
+    "strategy": "focused AXValue",
+    "notes": "compose field",
+    "installed": true,
+    "sample": "adventitious"
+  },
+  {
+    "app": "WhatsApp",
+    "category": "?",
+    "status": "error",
+    "chars": 0,
+    "strategy": null,
+    "notes": "Command '['/Applications/Xcode.app/Contents/Developer/usr/bin/python3', '/Users/mtvlgnv/Lexio/product/desktop/lib/ax-rea",
+    "installed": true,
+    "sample": ""
+  }
+]

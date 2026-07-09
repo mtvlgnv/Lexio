@@ -193,6 +193,7 @@
         <span class="status-dot pending" id="practice-dot"></span>
         <span id="practice-text">Waiting for your double-tap…</span>
       </div>
+      <button class="secondary" id="practice-relaunch" style="display:none;">Relaunch Lexio Glance</button>
     </div>
 
     <!-- Step 4: Done -->
@@ -308,8 +309,21 @@
   });
 
   // ── Step 3: practice capture ─────────────────────────────────────
+  // Failure path first: a fresh Screen Recording grant doesn't take effect
+  // until the app relaunches — without this, the wizard waits forever at
+  // the exact moment a new user is most likely to give up.
+  window.lexioOnboarding?.onPracticeFailed?.(() => {
+    if (step !== 3) return;
+    document.getElementById('practice-text').textContent =
+      "Couldn't read the screen — macOS usually needs the app to relaunch after granting Screen Recording.";
+    document.getElementById('practice-relaunch').style.display = '';
+  });
+  document.getElementById('practice-relaunch').addEventListener('click', () => {
+    window.lexioOnboarding?.relaunchApp?.();
+  });
   window.lexioOnboarding?.onPracticeCapture((payload) => {
     if (step !== 3) return;
+    document.getElementById('practice-relaunch').style.display = 'none';
     document.getElementById('practice-dot').classList.replace('pending', 'granted');
     const text = (payload?.text || '').trim();
     const preview = text.length > 40 ? text.slice(0, 40) + '…' : text;

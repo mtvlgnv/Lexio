@@ -35,7 +35,7 @@ _DL_RELEASES_PAGE = "https://github.com/mtvlgnv/Lexio/releases"
 _DL_API = "https://api.github.com/repos/mtvlgnv/Lexio/releases/latest"
 _dl_cache: dict = {"url": None, "at": 0.0}
 
-@router.get("/download/mac", include_in_schema=False)
+@router.api_route("/download/mac", methods=["GET", "HEAD"], include_in_schema=False)
 async def download_mac():
     import time
     import httpx
