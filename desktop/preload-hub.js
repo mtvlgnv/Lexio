@@ -4,6 +4,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('lexioHub', {
   getRecent: () => ipcRenderer.invoke('hub:get-recent'),
+  getLookupDays: () => ipcRenderer.invoke('hub:get-lookup-days'),
   getAuth:   () => ipcRenderer.invoke('hub:get-auth'),
   signOut:   () => ipcRenderer.send('hub:sign-out'),
   relookup:  (word) => ipcRenderer.send('hub:relookup', word),

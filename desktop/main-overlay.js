@@ -582,6 +582,9 @@ ipcMain.on('overlay:report-lookup', (_e, word) => {
 });
 
 ipcMain.handle('hub:get-recent', () => store.get().recentLookups);
+// Daily lookup counts — the Home tab's stats/streak source for signed-out
+// users (signed-in gets the server's cross-device /api/streak instead).
+ipcMain.handle('hub:get-lookup-days', () => store.get().lookupDays || {});
 ipcMain.handle('hub:get-auth',   () => store.get().auth);
 // Clicking a Recent-tab item re-runs that exact lookup in the panel.
 ipcMain.on('hub:relookup', (_e, word) => {

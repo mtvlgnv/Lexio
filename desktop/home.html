@@ -181,7 +181,11 @@
 <div class="shell">
   <aside class="sidebar">
     <div class="side-mark">Lexio <em>Glance</em></div>
-    <button class="nav active" data-view="wordbank">
+    <button class="nav active" data-view="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="nav" data-view="wordbank">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
       Word Bank
     </button>
@@ -201,8 +205,29 @@
   </aside>
 
   <main>
+    <!-- ── Home ──────────────────────────────────────── -->
+    <section class="view active" id="view-home">
+      <div class="view-head"><h1 id="home-greeting">Welcome back</h1></div>
+      <div class="stat-grid">
+        <div class="stat"><div class="stat-num" id="home-week">–</div><div class="stat-cap">lookups this week</div></div>
+        <div class="stat"><div class="stat-num" id="home-streak">–</div><div class="stat-cap">day streak</div></div>
+        <div class="stat"><div class="stat-num" id="home-words">–</div><div class="stat-cap">words saved</div></div>
+      </div>
+      <div class="hint-card" id="home-perms" style="display:none;border-color:var(--danger);color:var(--danger);"></div>
+      <div class="acct-card" id="home-wotd" style="display:none;">
+        <div class="stat-cap" style="text-align:left;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">From your word bank</div>
+        <div class="acct-name"><span id="wotd-word"></span><span class="wb-pos" id="wotd-pos"></span></div>
+        <div class="wb-def" id="wotd-def" style="margin-top:6px;"></div>
+        <div class="wb-ctx" id="wotd-ctx" style="margin-top:6px;"></div>
+      </div>
+      <div class="hint-card">
+        Point your cursor at any word — in any app — and double-tap
+        <b><span class="ts">⌃</span></b>. Save the good ones; they show up here.
+      </div>
+    </section>
+
     <!-- ── Word Bank ─────────────────────────────────── -->
-    <section class="view active" id="view-wordbank">
+    <section class="view" id="view-wordbank">
       <div class="view-head">
         <h1>Word Bank</h1>
         <span class="count" id="wb-count"></span>
@@ -331,6 +356,7 @@ document.querySelectorAll('.nav').forEach((b) => {
       v.classList.toggle('active', v.id === 'view-' + b.dataset.view));
     if (b.dataset.view === 'account') renderAccount();
     if (b.dataset.view === 'wordbank') renderWordBank();
+    if (b.dataset.view === 'home') renderHome();
   });
 });
 
@@ -560,10 +586,80 @@ window.lexioHub?.onAuthUpdated?.((payload) => {
   syncWordBank();
 });
 
+/* ── Home ────────────────────────────────────────────── */
+async function renderHome() {
+  const wb = loadWB();
+  document.getElementById('home-words').textContent = wb.length;
+
+  const h = new Date().getHours();
+  const g = h < 5 ? 'Good night' : h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
+  const auth = await window.lexioHub?.getAuth?.();
+  const first = auth?.user?.name ? `, ${auth.user.name.split(' ')[0]}` : '';
+  document.getElementById('home-greeting').textContent = g + first;
+
+  // This week's lookups from the local per-day counts (works signed out).
+  const days = (await window.lexioHub?.getLookupDays?.()) || {};
+  let week = 0;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
+    week += days[d] || 0;
+  }
+  document.getElementById('home-week').textContent = week;
+
+  // Streak: server truth when signed in (cross-device); local days otherwise.
+  // A lookup-free today doesn't break the streak — you haven't missed it yet.
+  let streak = null;
+  const tok = token();
+  if (tok) {
+    try {
+      const r = await fetch(API_BASE + '/api/streak', { headers: { Authorization: 'Bearer ' + tok } });
+      if (r.ok) streak = (await r.json()).current_streak;
+    } catch {}
+  }
+  if (streak == null) {
+    streak = 0;
+    for (let i = 0; ; i++) {
+      const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
+      if (days[d]) streak++;
+      else if (i === 0) continue;
+      else break;
+    }
+  }
+  document.getElementById('home-streak').textContent = streak;
+
+  // Word of the day — deterministic daily pick from the user's own bank.
+  const wotd = document.getElementById('home-wotd');
+  if (wb.length) {
+    const e = wb[Math.floor(Date.now() / 86400000) % wb.length];
+    document.getElementById('wotd-word').textContent = e.word || '';
+    document.getElementById('wotd-pos').textContent = e.pos || '';
+    document.getElementById('wotd-def').textContent = e.contextual || '';
+    document.getElementById('wotd-ctx').textContent = e.context ? `“${e.context}”` : '';
+    wotd.style.display = '';
+  } else {
+    wotd.style.display = 'none';
+  }
+
+  // Permission health — visible only when something is actually broken.
+  const [acc, scr] = await Promise.all([
+    window.lexioHub?.getAccessibilityStatus?.(),
+    window.lexioHub?.getScreenRecordingStatus?.(),
+  ]);
+  const warn = document.getElementById('home-perms');
+  const missing = [!acc && 'Accessibility', !scr && 'Screen Recording'].filter(Boolean);
+  if (missing.length) {
+    warn.textContent = `${missing.join(' and ')} permission${missing.length > 1 ? 's are' : ' is'} missing — lookups won't work until it's granted in Settings.`;
+    warn.style.display = '';
+  } else {
+    warn.style.display = 'none';
+  }
+}
+
 /* ── Boot ────────────────────────────────────────────── */
+renderHome();
 renderWordBank();
 syncWordBank();
-window.addEventListener('focus', renderWordBank);   // pick up saves made from the panel
+window.addEventListener('focus', () => { renderWordBank(); renderHome(); });   // pick up saves/lookups made meanwhile
 </script>
 </body>
 </html>
