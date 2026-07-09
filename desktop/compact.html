@@ -315,7 +315,8 @@
       cursor: pointer;
       max-width: 110px;
     }
-    #copy-btn, #new-btn {
+    #save-btn.saved { color: var(--accent); border-color: var(--accent); }
+    #save-btn, #copy-btn, #new-btn {
       background: none;
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -443,6 +444,7 @@
     <img id="def-capture" alt="Captured area of your screen" onclick="this.classList.toggle('expanded')" />
   </div>
   <div class="def-actions">
+    <button id="save-btn" onclick="saveCurrent()">Save</button>
     <button id="copy-btn" onclick="copyDef()">Copy</button>
     <button id="new-btn" class="hidden" onclick="exitDirect()">New lookup</button>
     <select id="lang-select" title="Language for definitions">
@@ -551,6 +553,71 @@ function initLangSelect() {
   sel.addEventListener('change', () => saveLang(sel.value));
 }
 initLangSelect();
+
+// ── Word bank (local-first, syncs when signed in) ─────────────
+// Same entry shape and localStorage key as the web app, in this
+// partition's own copy; /wordbank/sync is what bridges devices. The Hub
+// window shares the persist:lexio partition, so saves show up there with
+// no IPC. Signed-out users get WB_FREE_CAP saves, then the button turns
+// into a sign-in prompt — saving is the moment of highest intent.
+const WB_KEY = 'lexio_wbv1';
+const WB_FREE_CAP = 10;
+function loadWB()   { try { return JSON.parse(localStorage.getItem(WB_KEY) || '[]'); } catch { return []; } }
+function storeWB(w) { try { localStorage.setItem(WB_KEY, JSON.stringify(w)); } catch {} }
+function isSaved(word) {
+  const k = (word || '').toLowerCase();
+  return loadWB().some(e => (e.word || '').toLowerCase() === k);
+}
+
+function updateSaveBtn(word) {
+  const btn = document.getElementById('save-btn');
+  if (!btn) return;
+  btn.onclick = null;   // clear a possible sign-in override from a capped save attempt
+  const saved = isSaved(word);
+  btn.textContent = saved ? 'Saved ✓' : 'Save';
+  btn.classList.toggle('saved', saved);
+  btn.disabled = saved;
+}
+
+async function syncWB() {
+  const tok = localStorage.getItem('lexio_token');
+  if (!tok) return;
+  try {
+    await fetch(API_BASE + '/wordbank/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tok },
+      body: JSON.stringify({ entries: loadWB() }),
+    });
+  } catch {}
+}
+
+function saveCurrent() {
+  if (!currentResult?.word) return;
+  const { word, data } = currentResult;
+  if (isSaved(word)) return;
+  const tok = localStorage.getItem('lexio_token');
+  const wb = loadWB();
+  if (!tok && wb.length >= WB_FREE_CAP) {
+    const btn = document.getElementById('save-btn');
+    btn.textContent = 'Sign in to save more';
+    btn.onclick = () => console.log('LEXIO_SIGNIN::');
+    return;
+  }
+  wb.unshift({
+    word,
+    pos: data.pos || '',
+    contextual: data.contextual || '',
+    why: data.why || '',
+    simpler: data.simpler || null,
+    etymology: data.etymology || null,
+    register: data.register || null,
+    context: (context || '').slice(0, 300),
+    savedAt: new Date().toISOString(),
+  });
+  storeWB(wb);
+  updateSaveBtn(word);
+  syncWB();
+}
 
 // ── Pro status — lock non-Haiku for free users ───────────────
 lockFreeModels(); // lock immediately; unlock below if Pro confirmed
@@ -1029,6 +1096,7 @@ function showResult(word, data) {
   // after this call (showCaptureThumb) — everything else (token clicks,
   // cache hits, relookups) must never display a stale screenshot.
   document.getElementById('def-capture-wrap')?.classList.add('hidden');
+  updateSaveBtn(word);
 
   const ipaEl = document.getElementById('def-ipa');
   if (data.ipa && data.ipa !== 'null') {

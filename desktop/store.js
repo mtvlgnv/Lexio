@@ -14,6 +14,7 @@ const DEFAULTS = {
   onboardingAppVersion: 0,              // bumped when onboarding content changes
   auth: null,                          // { token, user } once signed in
   recentLookups: [],                   // { word, at } — newest first (Hub, later)
+  lookupDays: {},                      // { 'YYYY-MM-DD': count } — local streak/stats material
   settings: { launchAtLogin: false, doubleTapKey: 'ctrl' },
 };
 

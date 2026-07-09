@@ -51,12 +51,14 @@ process.on('uncaughtException',  (err) => console.error('[overlay] uncaughtExcep
 process.on('unhandledRejection', (err) => console.error('[overlay] unhandledRejection:', err));
 
 app.setName('Lexio Glance');
-if (process.platform === 'darwin') app.dock.hide();   // live as an overlay, not a dock app
+// Dock icon is intentional (Hub v2): clicking it opens the Hub window,
+// Wispr-Flow style. The pill overlay + menu-bar tray still work as before.
 
 let win  = null;
 let tray = null;
 let onboardingWin = null;
-let hubWin = null;
+let hubWin = null;   // quick menu-bar popover (Recent / Settings / Account)
+let homeWin = null;  // the real Hub window (Word Bank / Account dashboards)
 let expanded = false;
 let pinned = false;   // when true, losing focus (blur) does not auto-collapse
 let activeFallbackShortcut = null;
@@ -311,7 +313,41 @@ function presentApp() {
     createOnboardingWindow();
     return;
   }
-  createHubWindow();
+  createHomeWindow();
+}
+
+/* ── Home window (Hub v2) ───────────────────────────────────────────
+   The app's real home, Wispr-Flow style: a normal resizable window with
+   sidebar navigation — Word Bank / Recent / Settings / Account. Opens on
+   launch (unless started at login), on dock-icon click, and from the tray
+   menu. The compact popover (createHubWindow) stays for quick access from
+   the menu bar.
+
+   partition 'persist:lexio' is load-bearing: it's the same partition as
+   the lookup panel's webview, so home.html shares its localStorage —
+   auth token, word bank (lexio_wbv1), and definition language — with the
+   panel, with no IPC or duplicate state. */
+function createHomeWindow() {
+  if (homeWin && !homeWin.isDestroyed()) { homeWin.show(); homeWin.focus(); return; }
+  homeWin = new BrowserWindow({
+    width: 920,
+    height: 600,
+    minWidth: 720,
+    minHeight: 460,
+    title: 'Lexio Glance',
+    titleBarStyle: 'hiddenInset',
+    backgroundColor: chromeBackgroundColor(),
+    webPreferences: {
+      preload: path.join(__dirname, 'preload-hub.js'),
+      partition: 'persist:lexio',
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+    show: false,
+  });
+  homeWin.loadFile(path.join(__dirname, 'home.html'));
+  homeWin.once('ready-to-show', () => homeWin.show());
+  homeWin.on('closed', () => { homeWin = null; });
 }
 
 /* ── Window ─────────────────────────────────────────────────────── */
@@ -499,8 +535,15 @@ ipcMain.on('overlay:report-lookup', (_e, word) => {
   const w = (word || '').toString().trim().slice(0, 80);
   if (!w) return;
   const recentLookups = [{ word: w, at: Date.now() }, ...store.get().recentLookups].slice(0, 50);
-  store.set({ recentLookups });
-  if (hubWin && !hubWin.isDestroyed()) hubWin.webContents.send('hub:recent-updated', recentLookups);
+  // Daily lookup counts — the local raw material for streak/stats on the
+  // Hub's future Home tab (server-side streak exists but needs sign-in).
+  const lookupDays = { ...(store.get().lookupDays || {}) };
+  const today = new Date().toISOString().slice(0, 10);
+  lookupDays[today] = (lookupDays[today] || 0) + 1;
+  store.set({ recentLookups, lookupDays });
+  for (const w2 of [hubWin, homeWin]) {
+    if (w2 && !w2.isDestroyed()) w2.webContents.send('hub:recent-updated', recentLookups);
+  }
 });
 
 ipcMain.handle('hub:get-recent', () => store.get().recentLookups);
@@ -513,9 +556,14 @@ ipcMain.on('hub:relookup', (_e, word) => {
 });
 ipcMain.on('hub:sign-out', () => {
   store.set({ auth: null });
-  if (hubWin && !hubWin.isDestroyed()) hubWin.webContents.send('hub:auth-updated', null);
+  for (const w of [hubWin, homeWin]) {
+    if (w && !w.isDestroyed()) w.webContents.send('hub:auth-updated', null);
+  }
   if (win && !win.isDestroyed()) win.webContents.send('overlay:auth', null);
 });
+
+// Fixed destination on purpose — don't accept arbitrary URLs from renderers.
+ipcMain.on('app:open-pricing', () => shell.openExternal('https://lexio.site/#lp-pro'));
 
 /* ── lexio:// URL scheme — auth handoff from the website ──────────
    Mirrors the same mechanism main.js already uses: the site redirects to
@@ -532,8 +580,8 @@ app.on('open-url', (event, url) => {
   if (onboardingWin && !onboardingWin.isDestroyed()) {
     onboardingWin.webContents.send('onboarding:auth-complete', { token, user });
   }
-  if (hubWin && !hubWin.isDestroyed()) {
-    hubWin.webContents.send('hub:auth-updated', { token, user });
+  for (const w of [hubWin, homeWin]) {
+    if (w && !w.isDestroyed()) w.webContents.send('hub:auth-updated', { token, user });
   }
   // The embedded compact.html webview keeps its own localStorage in the
   // persist:lexio partition — it never sees store.js. Forward the token
@@ -560,17 +608,19 @@ function createTray() {
     { label: 'Open Lexio',        click: () => expand() },
     { label: 'Hide',              click: () => collapse() },
     { type: 'separator' },
-    { label: 'Recent & Settings', click: () => presentApp() },
+    { label: 'Lexio Hub',         click: () => presentApp() },
     { label: 'Getting Started',   click: () => createOnboardingWindow() },
     { type: 'separator' },
     { label: 'Quit Lexio',        click: () => app.quit() },
   ]);
   tray.on('right-click', () => tray.popUpContextMenu(menu));
-  // Left-click opens the Hub (dashboard), matching the Wispr/Raycast
-  // pattern — the pill itself is already the quick-action trigger
-  // (hover/click/double-tap ⌘), so the tray icon's own job is the
-  // dashboard, not a second way to toggle the pill.
-  tray.on('click', () => presentApp());
+  // Left-click opens the QUICK popover (recent + settings at a glance);
+  // the full Hub window lives on the dock icon, launch, and the menu
+  // above — menu-bar clicks are for fast in-and-out, not a dashboard.
+  tray.on('click', () => {
+    if (needsOnboarding()) { createOnboardingWindow(); return; }
+    createHubWindow();
+  });
 }
 
 /* ── Trigger: double-tap a modifier key (native), with fallback shortcut ──
@@ -670,7 +720,11 @@ if (!app.requestSingleInstanceLock()) {
     createWindow();
     createTray();
     registerTriggers();
-    presentApp();
+    // Show the Hub on manual launch, Wispr-style — but stay silent when
+    // macOS auto-started us at login (the pill alone is the right presence).
+    const openedAtLogin = process.platform === 'darwin' &&
+      app.getLoginItemSettings().wasOpenedAtLogin;
+    if (!openedAtLogin) presentApp();
     app.on('activate', () => {
       presentApp();
       if (!win || win.isDestroyed()) createWindow();

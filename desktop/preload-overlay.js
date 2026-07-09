@@ -40,4 +40,8 @@ contextBridge.exposeInMainWorld('lexioOverlay', {
   // Renderer → main: pin/unpin — while pinned, clicking into another app
   // won't auto-collapse the panel.
   setPinned: (value) => ipcRenderer.send('overlay:set-pinned', value),
+
+  // Renderer → main: open the sign-in page in the system browser (used by
+  // the panel's Save button once the signed-out word-bank cap is hit).
+  openSignIn: () => ipcRenderer.send('app:open-signin'),
 });

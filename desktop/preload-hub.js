@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('lexioHub', {
   relookup:  (word) => ipcRenderer.send('hub:relookup', word),
 
   getAccessibilityStatus: () => ipcRenderer.invoke('app:accessibility-status'),
+  getScreenRecordingStatus: () => ipcRenderer.invoke('app:screen-recording-status'),
   requestAccessibility:   () => ipcRenderer.invoke('app:request-accessibility'),
   openSignIn:             () => ipcRenderer.send('app:open-signin'),
   getLaunchAtLogin:       () => ipcRenderer.invoke('app:get-launch-at-login'),
@@ -18,6 +19,7 @@ contextBridge.exposeInMainWorld('lexioHub', {
   openInputMonitoringSettings: () => ipcRenderer.send('app:open-input-monitoring-settings'),
   openScreenRecordingSettings: () => ipcRenderer.send('app:open-screen-recording-settings'),
   openLogFile: () => ipcRenderer.send('app:open-log-file'),
+  openPricing: () => ipcRenderer.send('app:open-pricing'),
 
   getTriggerKey:          () => ipcRenderer.invoke('app:get-trigger-key'),
   getTriggerOptions:      () => ipcRenderer.invoke('app:get-trigger-options'),

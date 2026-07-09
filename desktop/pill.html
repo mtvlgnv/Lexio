@@ -197,6 +197,8 @@
         } catch {}
       } else if (e.message === 'LEXIO_ESCAPE::') {
         window.lexioOverlay?.requestCollapse();
+      } else if (e.message === 'LEXIO_SIGNIN::') {
+        window.lexioOverlay?.openSignIn();
       }
     });
     panelBody.appendChild(frame);
