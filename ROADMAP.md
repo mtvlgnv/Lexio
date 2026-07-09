@@ -143,8 +143,80 @@ quit and reopen Lexio Glance" with a relaunch button
 ## P2 · Perceived latency, streaks, referral
 
 - ~~Show the thumbnail while the definition loads~~ ✅ DONE 2026-07-09.
-- Streaks/stats need Hub Home first.
+- ~~Streaks/stats~~ ✅ DONE 2026-07-09 (Hub Home tab: greeting, weekly count, streak, word of the day).
 - Referral/share: defer until retention exists.
+
+---
+
+## P1-4 · Thinking mode — deeper analysis on demand (founder idea, planned 2026-07-09)
+
+"Think deeper and smarter, but also slower." Escalation for the lookups
+where the fast answer underwhelms: dense literary passages, loaded idioms,
+archaic usage, domain jargon.
+
+**UX (the important part):** NOT a persistent mode toggle. A **"Think
+deeper" button on the result panel** — you escalate only after seeing the
+fast answer, re-using the capture already in hand (`lastImage` in
+compact.html is retained exactly for re-runs; the language switcher
+already uses it). Panel expands with richer sections when they arrive.
+
+**Implementation:**
+1. Backend: `_define_from_image()` currently hardcodes `actual_model =
+   "balanced"` + Gemini. Honor `req.model`: `deep` → a new
+   `ai._call_anthropic_vision(prompt, image_bytes, mime)` (Claude Sonnet
+   4.5 is multimodal; mirror `_call_google_vision`'s shape; base64 image
+   block + JSON-only instruction). Weight 3 credits, Pro-gated with the
+   existing 403 `pro_required` flow — identical economics to text-mode Deep.
+2. Deep prompt additions: request `nuance` (connotation/register vs. near
+   synonyms — why THIS word and not its neighbors), `examples` (2 short
+   sentences reusing the word in the same sense), keep all existing keys.
+3. Panel: "Think deeper ✦" button in def-actions (visible on image-mode
+   results when not already deep); click → loading state ("Thinking…" +
+   capture thumb) → `fetchDefFromImage(lastImage.b64, lastImage.mime,
+   {model:'deep'})`; render `nuance`/`examples` sections when present.
+   Free users get the existing upgrade prompt via the 403 handler.
+4. Client passes `model` through in image mode (currently sends the
+   panel's `getModel()` — verify deep maps correctly rather than being
+   coerced).
+
+Effort: ~1 day incl. live verification. Direct Pro upsell surfaced at the
+exact moment of dissatisfaction with the free answer.
+
+## P1-5 · Reader profile / user memory (founder idea, planned 2026-07-09)
+
+"The app should remember the user is a wood-worker, so the context is
+suitable." Durable facts about the reader that make every definition
+land in THEIR world: profession/interests (domain-sense disambiguation —
+"kerf", "consideration", "stock" mean different things to different
+people), native language, English level (calibrates explanation
+complexity), preferred tone.
+
+**Phase 1 — explicit profile (ship first, ~1 day):**
+1. DB: `User.profile_json` (nullable TEXT) — `{about, english_level,
+   native_lang}`. `about` is one free-text line ("furniture maker in
+   Eindhoven, reads woodworking + business content").
+2. API: `GET/PUT /api/profile` (auth required, ~30 lines next to
+   /api/pro-status).
+3. `/define` (BOTH text and image paths): for authed users, load profile
+   and append to the prompt: "Reader profile: {about}. English level:
+   {level}. If the word has a domain sense plausible in the on-screen
+   context AND relevant to the reader's world, prefer/mention it;
+   calibrate explanation complexity to their level. NEVER force the
+   reader's domain onto words where it doesn't fit the context."
+   (That last clause is the over-personalization guard — the #1 risk.)
+4. Hub Account tab: "About you" card (one text field + level select +
+   native language). Onboarding gets an optional one-liner step later.
+5. Cache note: web text-mode client cache keys must include a profile
+   hash or be cleared on profile change (image mode is uncached).
+
+**Phase 2 — learned memory (later, ~2-3 days):** weekly job summarizes
+UserSearchLog + word bank into SUGGESTED profile lines the user confirms
+in the Hub ("You read a lot about woodworking — tailor definitions?
+[Yes/No]"). Consent-first, always visible/editable/deletable in Account,
+privacy-policy paragraph. Never silently inferred-and-applied.
+
+Synergy: the profile feeds BOTH normal and Thinking-mode prompts; the
+two features compound (deep analysis calibrated to your level and world).
 
 ---
 
