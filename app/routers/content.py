@@ -25,6 +25,41 @@ async def pro_page():
     from fastapi.responses import RedirectResponse
     return RedirectResponse(url="/#lp-pro", status_code=301)
 
+
+# ── Evergreen desktop download ────────────────────────────────────────────────
+# /download/mac 302s to the newest Lexio Glance .dmg on GitHub Releases, so
+# the site's download button can never go stale again (it once pointed at
+# v1.1.5 while v1.3.0 was current). Latest-release lookup is cached briefly;
+# on any failure we fall back to the releases page rather than 500ing.
+_DL_RELEASES_PAGE = "https://github.com/mtvlgnv/Lexio/releases"
+_DL_API = "https://api.github.com/repos/mtvlgnv/Lexio/releases/latest"
+_dl_cache: dict = {"url": None, "at": 0.0}
+
+@router.get("/download/mac", include_in_schema=False)
+async def download_mac():
+    import time
+    import httpx
+
+    now = time.monotonic()
+    if _dl_cache["url"] and now - _dl_cache["at"] < 600:
+        return RedirectResponse(url=_dl_cache["url"], status_code=302)
+    try:
+        async with httpx.AsyncClient(timeout=4.0, follow_redirects=True) as client:
+            r = await client.get(_DL_API, headers={"Accept": "application/vnd.github+json"})
+            r.raise_for_status()
+            assets = r.json().get("assets", [])
+            dmg = next((a for a in assets if a.get("name", "").endswith(".dmg")), None)
+            if dmg:
+                _dl_cache["url"] = dmg["browser_download_url"]
+                _dl_cache["at"] = now
+                return RedirectResponse(url=_dl_cache["url"], status_code=302)
+    except Exception:
+        pass
+    # A stale cached URL beats dumping users on the bare releases page.
+    if _dl_cache["url"]:
+        return RedirectResponse(url=_dl_cache["url"], status_code=302)
+    return RedirectResponse(url=_DL_RELEASES_PAGE, status_code=302)
+
 @router.get("/recap", response_class=HTMLResponse, include_in_schema=False)
 async def recap_page():
     """Spotify-Wrapped-style annual reading recap. Server returns a static

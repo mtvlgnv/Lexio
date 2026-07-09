@@ -152,6 +152,8 @@
 
   <p><strong>Images you upload (OCR).</strong> If you use the "Scan image" feature, the image you upload is sent to our server and forwarded to Google's Gemini API for text extraction (with OpenAI's GPT-4o vision as a fallback). The image is not stored on our servers after the request completes.</p>
 
+  <p><strong>Screen captures (Lexio Glance point-at-word lookups).</strong> When you trigger a lookup in the Mac app, Lexio Glance captures a small image of your screen around your pointer (roughly 800×500 points, marked with a ring at the pointer position) and sends it over HTTPS to our server, which forwards it to Google’s Gemini API to identify and define the word you pointed at. The capture is processed in memory for the duration of the request and is <em>not stored</em> on our servers. Because it is a screenshot of the area near your pointer, it may incidentally include other nearby on-screen content — trigger lookups only on content you are comfortable sending. Captures happen only when you explicitly trigger a lookup (double-tap), never in the background.</p>
+
   <p><strong>Anonymous search logs.</strong> We record the searched word only (not the surrounding context) to generate trending word statistics shown on the homepage. These logs contain no user identifiers.</p>
 
   <p><strong>Anonymous usage counters.</strong> To enforce the free-tier usage limits we store your IP address alongside a monthly lookup and OCR scan count. This record contains only your IP, the current month, and two integers. It is used solely to apply usage limits and is not linked to any other data.</p>
@@ -188,11 +190,11 @@
   <p>Lexio routes your lookup requests to one of three AI providers depending on the reading mode you pick. The selected word and surrounding context are sent to the corresponding provider:</p>
   <ul>
     <li><strong>Groq</strong> (Llama 3.1 8B Instant — Fast mode) — <a href="https://groq.com/privacy-policy/" target="_blank" rel="noopener">Groq Privacy Policy</a></li>
-    <li><strong>Google</strong> (Gemini 2.5 Flash — Balanced mode and primary OCR) — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+    <li><strong>Google</strong> (Gemini 2.5 Flash — Balanced mode, Lexio Glance screen lookups, and primary OCR) — <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
     <li><strong>Anthropic</strong> (Claude Sonnet 4.5 — Deep mode) — <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Anthropic Privacy Policy</a></li>
     <li><strong>OpenAI</strong> (GPT-4o — used only as an OCR fallback when the Google API is unavailable; not used for word definitions) — <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">OpenAI Privacy Policy</a></li>
   </ul>
-  <p>Text you submit for lookup or images you upload for OCR are subject to the privacy policy of the provider whose model processes your request. You can switch models at any time in the app.</p>
+  <p>Text you submit for lookup, screen captures from Lexio Glance, and images you upload for OCR are subject to the privacy policy of the provider whose model processes your request. You can switch models at any time in the app.</p>
 
   <h2>5. Google Sign-In &amp; Apple Sign-In</h2>
   <p>If you use Google or Apple Sign-In, authentication is handled by the respective provider. We receive only your name, email address, and a unique identifier. We do not receive your password from these providers.</p>
