@@ -24,15 +24,22 @@ Lexio from "paste your own text" into "a beautiful library of books you read in-
 
 ## Backend
 - Python · FastAPI · SQLAlchemy · SQLite (`lexio.db`) · slowapi rate limiting.
-- Core endpoint: `POST /define` (word + context + lang + mode → contextual definition).
+- Core endpoint: `POST /define` — TWO input shapes:
+  - text: `word + context + lang + model` (web app, extension)
+  - image: `image_base64 + image_mime + lang` (desktop app — the model
+    identifies the ringed word AND defines it in one call)
 - Three modes routed to three AI providers (all SDKs already integrated):
-  - **Fast** — Llama 3.1 8B Instant via Groq (free, 1 credit)
-  - **Balanced** — Gemini 2.5 Flash (Pro, 2 credits)
+  - **Fast** — GPT-OSS 20B via Groq, strict JSON schema (free, 1 credit)
+  - **Balanced** — Gemini 2.5 Flash (2 credits; also ALL image lookups)
   - **Deep** — Claude Sonnet 4.5 (Pro, 3 credits)
 - Other: `/ocr`, `/fetch-text`, `/auth/{register,login,google,apple}`, `/api/{usage,pro-status}`,
   Stripe checkout/portal/webhook, `/stats/top-words`, and SEO pages (`/works`, `/glossary`).
 - Auth: JWT (email/password, Google, Apple). Payments: Stripe, Free vs Pro
-  ($2.99/mo, 3-day trial). Free = 20 lookups/mo + Fast only; Pro = all modes.
+  ($4.99/mo, $39.99/yr, $9.99 family ×4, 3-day trial). Free = 20 lookups/mo
+  (anon 5/mo by IP) + Fast only; Pro = all modes, unlimited lookups.
+- Positioning (July 2026 reframe): the ICP is **English learners / ESL
+  readers** — hero, features, and 11 locales all sell "the meaning that fits
+  the sentence, explained in your own language".
 
 ## Languages
 11 in and out: English, Spanish, French, German, Italian, Portuguese, Russian,
@@ -92,6 +99,54 @@ that modern "popular" books are all copyrighted). What exists now:
   1. Launch target: TestFlight beta vs full App Store release (affects ~30-day timeline).
   2. Chapter model: extend `ReadingItem` with chapters vs one-item-per-chapter vs
      whole-book-as-one-blob. (Deferred.)
+
+## Desktop app — VISION-FIRST since 2026-07-08 (the big one)
+Lexio Glance (`desktop/`) no longer reads text via Accessibility/OCR. Every
+lookup: double-tap ⌃ → Swift helper (`native/lexio-ocr`, ScreenCaptureKit)
+captures ~800×500 JPEG around the cursor with a **magenta ring at the exact
+cursor point**, overlay window excluded by CGWindowID → `POST /define` with
+`image_base64` → Gemini identifies + defines the ringed word. Panel shows the
+capture ("What Lexio saw"), Save-to-Word-Bank, and a definition-language
+picker. Hub v2 = real window (`home.html`: Home/Word Bank/Recent/Settings/
+Account) sharing the `persist:lexio` partition with the panel (one
+localStorage: token, `lexio_wbv1`, `lexio_lang`). Auto-update via
+electron-updater + GitHub Releases is wired (needs `GH_TOKEN` +
+`--publish always`, or manually attach dmg+zip+latest-mac.yml).
+
+**Hard-won platform truths — do NOT "fix" these back:**
+- `SCStreamConfiguration.sourceRect` is TOP-left-origin display coords;
+  feeding cocoa bottom-left rects mirrors the capture vertically.
+- The Swift helper MUST be Developer-ID signed + hardened runtime +
+  timestamp (`native/build-ocr.sh` does it) or notarization of the whole
+  app is rejected — this killed Glance 1.2.0 once already.
+- Exclude only the OVERLAY window from captures, never the whole app
+  (app-wide exclusion breaks the onboarding practice step).
+
+## Planning docs (read before picking work)
+- `ROADMAP.md` — prioritized product/engineering backlog with statuses.
+- `DESIGN_ROADMAP.md` — design debt, observed vs needs-audit.
+- `BACKLOG.md` — self-contained task specs sized for a single agent
+  session; pick one, follow its Verify section, mark it done.
+
+## Working agreements (from the founder)
+- **Interview when ambiguous**: for product/design decisions with several
+  plausible options, ask 2–4 sharp multiple-choice questions up front
+  (AskUserQuestion) — he explicitly enjoys this. Act autonomously on
+  purely technical choices.
+- **Verify pixels, not just DOM** for desktop UI: spawn
+  `desktop/bin/lexio-ocr` from bash (it sees real pixels; excludes nothing
+  without `--exclude-window`) to screenshot Electron windows. A real
+  rendering bug (`.hidden` undefined) once passed every DOM check.
+- After editing `desktop/compact.html` or `desktop/tokens.css`:
+  `bash desktop/scripts/sync-compact.sh` before committing.
+- Deploy after every push touching `app/` or `static/`:
+  `ssh root@188.245.144.73 "sudo /var/www/lexio/deploy.sh"`. New top-level
+  routes 404 until added to the nginx location allowlist
+  (`/etc/nginx/sites-enabled/lexio` line ~74) + `nginx -t` + reload —
+  and never leave backup files inside `sites-enabled/`.
+- Tests: `python3 -m pytest tests/ -q` must stay green (16 tests).
+- Desktop release: `cd desktop && APPLE_ID=… APPLE_APP_SPECIFIC_PASSWORD=…
+  npm run dist` (Developer ID team 8TJHY75AV5 in the login keychain).
 
 ## Conventions / notes
 - Frontend SPA is a single file, no build step (vanilla HTML/CSS/JS).
