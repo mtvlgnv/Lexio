@@ -203,6 +203,31 @@
     }
     .skeleton-line:last-child { width: 60%; }
     @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+    /* Unified loading title — .word variant is the bigger "here's the
+       answer coming" style (text-mode lookups, word already known); the
+       plain variant is for descriptive process text (image mode, before
+       the word itself is known). */
+    .loading-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      color: var(--text-mid);
+      margin-bottom: 12px;
+    }
+    .loading-title.word {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .loading-thumb {
+      width: 100%;
+      max-height: 110px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-bottom: 12px;
+      display: block;
+    }
 
     /* ── Error ──────────────────────────────────────────────── */
     #error-msg {
@@ -301,10 +326,14 @@
     }
     #def-capture.expanded { max-height: none; object-fit: contain; cursor: zoom-out; }
 
-    /* Copy / new-lookup buttons */
-    .def-actions { display: flex; gap: 6px; align-items: center; }
+    /* Copy / new-lookup buttons — two rows: primary actions (Save/Copy/New),
+       then secondary controls (language, and future additions like a
+       "Think deeper" button) right-aligned below. Keeps the row from
+       overflowing as more controls are added (was a single crowded row). */
+    .def-actions { display: flex; flex-direction: column; gap: 6px; }
+    .def-actions-row { display: flex; gap: 6px; align-items: center; }
+    .def-actions-row-secondary { justify-content: flex-end; }
     #lang-select {
-      margin-left: auto;
       background: none;
       border: 1px solid var(--border);
       border-radius: 6px;
@@ -313,7 +342,7 @@
       font-size: 0.72rem;
       color: var(--text-mid);
       cursor: pointer;
-      max-width: 110px;
+      max-width: 130px;
     }
     #save-btn.saved { color: var(--accent); border-color: var(--accent); }
     #save-btn, #copy-btn, #new-btn {
@@ -444,28 +473,32 @@
     <img id="def-capture" alt="Captured area of your screen" onclick="this.classList.toggle('expanded')" />
   </div>
   <div class="def-actions">
-    <button id="save-btn" onclick="saveCurrent()">Save</button>
-    <button id="copy-btn" onclick="copyDef()">Copy</button>
-    <button id="new-btn" class="hidden" onclick="exitDirect()">New lookup</button>
-    <select id="lang-select" title="Language for definitions">
-      <option value="auto">Auto</option>
-      <option value="en">English</option>
-      <option value="es">Español</option>
-      <option value="fr">Français</option>
-      <option value="de">Deutsch</option>
-      <option value="it">Italiano</option>
-      <option value="pt">Português</option>
-      <option value="ru">Русский</option>
-      <option value="zh">中文</option>
-      <option value="ja">日本語</option>
-      <option value="ko">한국어</option>
-      <option value="ar">العربية</option>
-      <option value="hi">हिन्दी</option>
-      <option value="nl">Nederlands</option>
-      <option value="pl">Polski</option>
-      <option value="tr">Türkçe</option>
-      <option value="sv">Svenska</option>
-    </select>
+    <div class="def-actions-row">
+      <button id="save-btn" onclick="saveCurrent()">Save</button>
+      <button id="copy-btn" onclick="copyDef()">Copy</button>
+      <button id="new-btn" class="hidden" onclick="exitDirect()">New lookup</button>
+    </div>
+    <div class="def-actions-row def-actions-row-secondary">
+      <select id="lang-select" title="Language for definitions">
+        <option value="auto">Auto</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="it">Italiano</option>
+        <option value="pt">Português</option>
+        <option value="ru">Русский</option>
+        <option value="zh">中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="ar">العربية</option>
+        <option value="hi">हिन्दी</option>
+        <option value="nl">Nederlands</option>
+        <option value="pl">Polski</option>
+        <option value="tr">Türkçe</option>
+        <option value="sv">Svenska</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -828,12 +861,7 @@ function lexioImageInput() {
   document.getElementById('new-btn').classList.remove('hidden');
   document.getElementById('error-msg').classList.add('hidden');
   document.getElementById('def-panel').classList.add('hidden');
-  document.getElementById('loading').innerHTML = `
-    <div style="font-family: var(--font-display); font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 12px;">Reading what's on screen…</div>
-    <div class="skeleton-line"></div>
-    <div class="skeleton-line"></div>
-  `;
-  document.getElementById('loading').classList.remove('hidden');
+  renderLoading("Reading what's on screen…");
 }
 
 function lexioImageReady(imageBase64, imageMime) {
@@ -845,14 +873,8 @@ function lexioImageReady(imageBase64, imageMime) {
   // wait feels shorter when you can already see Lexio looked at the right
   // spot (and a mis-aim is obvious before the answer even lands).
   const mime = imageMime || 'image/png';
-  const loading = document.getElementById('loading');
-  if (!loading.classList.contains('hidden')) {
-    loading.innerHTML = `
-      <div style="font-family: var(--font-display); font-size: 1.05rem; color: var(--text-mid); margin-bottom: 10px;">Asking Lexio…</div>
-      <img src="data:${mime};base64,${imageBase64}" alt=""
-           style="width:100%;max-height:110px;object-fit:cover;border-radius:8px;border:1px solid var(--border);" />
-      <div class="skeleton-line" style="margin-top:12px;"></div>
-      <div class="skeleton-line"></div>`;
+  if (!document.getElementById('loading').classList.contains('hidden')) {
+    renderLoading('Asking Lexio…', `data:${mime};base64,${imageBase64}`);
   }
   fetchDefFromImage(imageBase64, mime);
 }
@@ -1095,15 +1117,35 @@ function showCaptureThumb(dataUrl) {
 }
 
 /* ── States ────────────────────────────────────────────── */
-function showLoading(word) {
-  document.getElementById('loading').innerHTML = `
-    <div style="font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; color: var(--text); margin-bottom: 12px; letter-spacing: -0.02em;">${word}</div>
-    <div class="skeleton-line"></div>
-    <div class="skeleton-line"></div>
-    <div class="skeleton-line"></div>
-  `;
-  document.getElementById('loading').classList.remove('hidden');
+// Single loading component for both text- and image-mode lookups: a title
+// (the word itself, styled big, when already known — otherwise a
+// description of what Lexio is doing) plus an optional capture thumbnail
+// and skeleton lines. Escapes `title` since it can be word/token text.
+function renderLoading(title, thumbSrc, { isWord = false } = {}) {
+  const loading = document.getElementById('loading');
+  const titleEl = document.createElement('div');
+  titleEl.className = isWord ? 'loading-title word' : 'loading-title';
+  titleEl.textContent = title;
+  loading.replaceChildren(titleEl);
+  if (thumbSrc) {
+    const img = document.createElement('img');
+    img.className = 'loading-thumb';
+    img.alt = '';
+    img.src = thumbSrc;
+    loading.appendChild(img);
+  }
+  const lineCount = thumbSrc ? 2 : 3;
+  for (let i = 0; i < lineCount; i++) {
+    const line = document.createElement('div');
+    line.className = 'skeleton-line';
+    loading.appendChild(line);
+  }
+  loading.classList.remove('hidden');
   document.getElementById('def-panel').classList.add('hidden');
+}
+
+function showLoading(word) {
+  renderLoading(word, null, { isWord: true });
 }
 
 function showResult(word, data) {

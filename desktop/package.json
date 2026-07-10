@@ -5,13 +5,11 @@
   "main": "main-overlay.js",
   "scripts": {
     "start": "electron .",
-    "start-app": "electron main-app.js",
     "start-overlay": "electron main-overlay.js",
     "create-icon": "node_modules/.bin/electron create-icon.js",
     "build-icons": "bash scripts/build-icons.sh",
     "build-ocr": "bash native/build-ocr.sh",
-    "dist": "npm run create-icon && npm run build-icons && npm run build-ocr && electron-builder --mac --arm64",
-    "dist-app": "npm run create-icon && npm run build-icons && electron-builder --mac --arm64 --config electron-builder-app.json"
+    "dist": "npm run create-icon && npm run build-icons && npm run build-ocr && electron-builder --mac --arm64"
   },
   "devDependencies": {
     "electron": "^43.0.0",

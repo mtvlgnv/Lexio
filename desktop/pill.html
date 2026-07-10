@@ -120,7 +120,7 @@
 </head>
 <body>
   <div class="shell">
-    <div class="morph-container" id="pill" title="Click or double-tap ⌃ to open Lexio Glance">
+    <div class="morph-container" id="pill" title="Click: open panel · Double-tap ⌃: define the word at your pointer">
       <div class="pill-blobs"></div>
       <div class="panel-content" id="panel">
         <div class="panel-head">
@@ -401,7 +401,7 @@
   window.lexioOverlay?.getTriggerSymbol().then((sym) => {
     if (sym) {
       triggerSymbol = sym;
-      pill.title = `Click or double-tap ${sym} to open Lexio Glance`;
+      pill.title = `Click: open panel · Double-tap ${sym}: define the word at your pointer`;
     }
   });
 </script>

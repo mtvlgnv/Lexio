@@ -38,21 +38,20 @@ UI in that register), Fraunces for display type, DM Sans for UI.
    for its `dark-theme`/`light-theme` root classes (check whether it relies
    purely on the media query — the `:root:not(.light-theme)` rule should
    cover it, but verify visually).
-2. **def-actions row overflow** (observed risk, compact.html:~408). The row
-   now holds Save + Copy + New lookup + the language select — at 460px
-   panel width with a long language name it's tight, and P1-4's "Think
-   deeper" button will not fit. Design a two-row layout or an overflow
-   menu BEFORE adding the next button.
-3. **Two different loading layouts** (observed). Text lookups show a bare
-   skeleton with the word as title; screen lookups show "Asking Lexio…" +
-   capture thumb + skeleton. Unify into one loading component (the image
-   variant is the better one — adopt its structure everywhere).
+2. ~~def-actions row overflow~~ ✅ DONE 2026-07-10 — split into two rows
+   (Save/Copy/New lookup, then language select right-aligned below).
+   Room for P1-4's "Think deeper" button in row 1.
+3. ~~Two different loading layouts~~ ✅ DONE 2026-07-10 — unified into one
+   `renderLoading()` component (title + optional thumb + skeleton lines)
+   used by both text- and image-mode lookups. Also fixed a real bug found
+   along the way: `lexioImageInput()`'s loading text used `--text-secondary`,
+   a CSS variable that doesn't exist in tokens.css — it was silently
+   falling back to the default color.
 
 ## P1 — makes it feel unfinished
 
-4. **Word Bank rows: no hover state, low delete affordance** (observed,
-   home.html `.wb-entry`). Add row hover background; make the × appear on
-   hover (macOS-native pattern) instead of always-visible.
+4. ~~Word Bank rows: no hover state, low delete affordance~~ ✅ DONE
+   2026-07-10 — row hover background, delete × fades in on hover/focus.
 5. **Stat cards are typographically flat** (observed). The three Home/
    Account cards are identical boxes; the primary stat (streak) deserves
    visual priority — consider the accent color or a small flame/dot only
@@ -78,10 +77,8 @@ UI in that register), Fraunces for display type, DM Sans for UI.
 10. **Focus states / keyboard affordances** (audit): tab order in the
     panel (Save → Copy → New lookup → lang), visible focus rings using
     the accent at 40% — currently browser defaults.
-11. **Pill tooltip copy**: still "Click or double-tap ⌃ to open Lexio
-    Glance" — click and double-tap now do DIFFERENT things; tooltip
-    should say so ("Click: open panel · double-tap ⌃: define word at
-    pointer").
+11. ~~Pill tooltip copy~~ ✅ DONE 2026-07-10 — now says "Click: open
+    panel · Double-tap ⌃: define the word at your pointer".
 12. **Marketing site: hero rotator + trust badges are English-only** on
     localized UIs (static/index.html hardcodes them; the i18n pass
     covered `data-i18n` keys only). Either i18n-ify the rotator items or
@@ -90,15 +87,13 @@ UI in that register), Fraunces for display type, DM Sans for UI.
     intentional, confirm build/icon.icns reads well at 32px (it was
     designed for a menu-bar-only app).
 
-14. **Dead legacy Electron entry points still shipped.** `desktop/main.js`
-    ("Lexio Mini" tray app) and `desktop/main-app.js` ("Lexio" full dock
-    app, still wired as `npm run start-app`) predate Lexio Glance
-    (`main-overlay.js`, the only one actually shipped/notarized) and load
-    `lexio.site/compact.html` directly rather than the vision pipeline.
-    Confirm nothing references them (check `package.json` build `files`
-    allowlist — they may already be excluded from the packaged app) and
-    delete both, or keep only if there's a reason to preserve a
-    web-view-only fallback.
+14. ~~Dead legacy Electron entry points still shipped~~ ✅ DONE
+    2026-07-10 — confirmed `main-app.js` was unsigned (`identity: null`,
+    never notarized) and untouched since April; the live site's download
+    modal offers only Lexio Glance now (the "two download options" era
+    ended). Deleted `main.js`, `main-app.js`, `electron-builder-app.json`,
+    `scripts/after-sign.js`, and the now-orphaned `start-app`/`dist-app`
+    npm scripts.
 
 ## Working notes
 
