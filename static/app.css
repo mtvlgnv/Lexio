@@ -101,7 +101,7 @@
       display: inline-flex; align-items: baseline; gap: 6px;
       flex-shrink: 0;
     }
-    .brand { font-family:'Fraunces',serif; font-size:1.4rem; font-weight:400; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
+    .brand { font-family:'Fraunces',serif; font-size:1.8rem; font-weight:400; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
     .brand em { font-style:italic; color:var(--accent); }
     .tagline { font-size:0.75rem; color:var(--muted); padding-left:6px; white-space:nowrap; }
     .header-spacer { flex:1; }
@@ -1445,6 +1445,24 @@
        the hero CTAs navigate there. The ?try=1 instant demo is exempt so it can
        still mount the tool inline on "/". On "/app" the marketing is hidden. */
     body.landing-page:not(.demo-mode) main { display: none !important; }
+    
+    /* ── Landing Page Header (Clay-style pill) ─────────────── */
+    body.landing-page header {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      width: auto;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-radius: 9999px;
+      background: rgba(250, 248, 245, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      z-index: 100;
+      box-shadow: 0 4px 24px -8px rgba(0,0,0,0.05);
+    }
     body.tool-page #scroll-nudge { display: none !important; }
     /* Lead the marketing landing with the hero, not the tool's sample carousel. */
     body.landing-page:not(.demo-mode) #try-passage,
@@ -1562,7 +1580,7 @@
 
     /* Hero + How it works combined row */
     .lp-hero {
-      padding: 64px 64px 56px;
+      padding: 110px 64px 56px;
       display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
       align-items: center; gap: 56px;
       background: transparent; border-top: none;
