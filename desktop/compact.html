@@ -576,7 +576,14 @@ function isSaved(word) {
 function updateSaveBtn(word) {
   const btn = document.getElementById('save-btn');
   if (!btn) return;
-  btn.onclick = null;   // clear a possible sign-in override from a capped save attempt
+  // Reset the signed-out-cap state for this new lookup. NOTE: never assign
+  // btn.onclick here — doing so (even to null) permanently detaches the
+  // button from its inline onclick="saveCurrent()" HTML handler, since
+  // setting the .onclick IDL property via JS supersedes the attribute for
+  // the rest of the element's life. That was the actual "Save does nothing"
+  // bug: the very first render nulled the handler and nothing ever put it
+  // back. saveCapped is checked inside saveCurrent() instead.
+  saveCapped = false;
   const saved = isSaved(word);
   btn.textContent = saved ? 'Saved ✓' : 'Save';
   btn.classList.toggle('saved', saved);
@@ -595,7 +602,9 @@ async function syncWB() {
   } catch {}
 }
 
+let saveCapped = false;   // true once the signed-out cap is hit for the CURRENT lookup
 function saveCurrent() {
+  if (saveCapped) { console.log('LEXIO_SIGNIN::'); return; }
   if (!currentResult?.word) return;
   const { word, data } = currentResult;
   if (isSaved(word)) return;
@@ -604,7 +613,7 @@ function saveCurrent() {
   if (!tok && wb.length >= WB_FREE_CAP) {
     const btn = document.getElementById('save-btn');
     btn.textContent = 'Sign in to save more';
-    btn.onclick = () => console.log('LEXIO_SIGNIN::');
+    saveCapped = true;
     return;
   }
   wb.unshift({
