@@ -315,7 +315,7 @@
       </button>
       <div class="lp-nav-drop hidden" id="lp-resources-drop" role="menu" aria-label="Resources">
         <a class="lp-nav-drop-item" href="/glossary" role="menuitem">Glossary</a>
-        <a class="lp-nav-drop-item" href="#lp-educators" data-section="lp-educators" role="menuitem">For educators</a>
+        <a class="lp-nav-drop-item" href="/for-educators.html" role="menuitem">For educators</a>
         <a class="lp-nav-drop-item" href="/for-readers.html" role="menuitem">For readers</a>
         <a class="lp-nav-drop-item" href="/credits.html" role="menuitem">Credits</a>
       </div>
@@ -324,11 +324,7 @@
 
   <div class="header-spacer"></div>
 
-  <!-- Direct-install CTA (goes straight to the Chrome Web Store) -->
-  <a class="install-hdr-btn" href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener" title="Install the Lexio Chrome extension">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="14.31" y1="8" x2="20.05" y2="17.94"/><line x1="9.69" y1="8" x2="21.17" y2="8"/><line x1="7.38" y1="12" x2="13.12" y2="2.06"/><line x1="9.69" y1="16" x2="3.95" y2="6.06"/><line x1="14.31" y1="16" x2="2.83" y2="16"/><line x1="16.62" y1="12" x2="10.88" y2="21.94"/></svg>
-    <span>Add to Chrome</span>
-  </a>
+
 
   <!-- Saved word bank -->
   <button class="wb-header-btn" onclick="openWordBank()">
@@ -378,7 +374,7 @@
           <a href="#lp-features" onclick="closeMenu()">Features</a>
           <a href="#lp-models" onclick="closeMenu()">Reading modes</a>
           <a href="#lp-pro" onclick="closeMenu()">Pricing</a>
-          <a href="#lp-educators" onclick="closeMenu()">For educators</a>
+          <a href="/for-educators.html">For educators</a>
           <a href="#lp-faq" onclick="closeMenu()">FAQ</a>
           <a href="/glossary">Glossary</a>
           <a href="/for-readers.html">For readers</a>
@@ -955,26 +951,8 @@
         <p class="lp-pro-note" id="lp-pro-note">Card required · cancel any time before day 3</p>
       </div>
     </div>
+    <!-- Classroom / University tier moved to for-educators.html -->
 
-    <!-- Classroom / University tier — enterprise band, no fixed price -->
-    <div class="lp-pro-edu" id="lp-pro-edu">
-      <div class="lp-pro-edu-main">
-        <div class="lp-pro-edu-label">Classroom / University</div>
-        <h3 class="lp-pro-edu-title">Lexio for your whole class</h3>
-        <p class="lp-pro-edu-desc">Department-wide seats, one invoice, and onboarding for your students — built for language and linguistics courses that assign reading in the original.</p>
-        <ul class="lp-pro-edu-perks">
-          <li>Volume seats for students &amp; faculty</li>
-          <li>Centralized billing — one invoice</li>
-          <li>All Pro features: Deep mode, Word Bank, Anki export</li>
-          <li>Onboarding &amp; support from the Lexio team</li>
-        </ul>
-      </div>
-      <div class="lp-pro-edu-cta-wrap">
-        <span class="lp-pro-edu-price">Custom pricing</span>
-        <a class="lp-pro-edu-cta" href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request&amp;body=Hi%20Matvei%2C%0A%0AI%20teach%20at%20______%20and%20I'd%20like%20to%20learn%20about%20Lexio%20for%20my%20students.%0A%0ANumber%20of%20students%3A%0ACourse%2Flanguage%3A%0A" onclick="trackEducatorCTA('homepage_pricing')">Contact sales</a>
-        <span class="lp-pro-edu-note">Usually replies within a day</span>
-      </div>
-    </div>
 
     <p class="lp-pro-refund">
       Cancel any time and you'll keep Pro until the end of your billing period.
@@ -1105,35 +1083,9 @@
     </div>
   </div><!-- end .lp-twin-right -->
   </div><!-- end .lp-twin -->
+  <!-- For Educators section moved to for-educators.html -->
 
-  <!-- For Educators — B2B / academic positioning -->
-  <section class="lp-edu" id="lp-educators">
-    <span class="lp-edu-eyebrow">For educators</span>
-    <h2 class="lp-section-title">Turn reading assignments into <em>active immersion</em>.</h2>
-    <p class="lp-edu-sub">Lexio keeps students inside the native text. Instead of pasting a paragraph into a bulk translator, they read it as written — and tap only the words that block comprehension. Every lookup is a deliberate act of learning, not a shortcut around it.</p>
 
-    <div class="lp-edu-grid">
-      <div class="lp-edu-card">
-        <div class="lp-edu-card-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <h3>From daily reading to exam-ready review</h3>
-        <p>Every word a student saves lands in their <strong>Word Bank</strong>, kept with the exact sentence it came from. One click exports the whole set to <strong>Anki</strong> — so a week of reading assignments becomes a spaced-repetition deck, built automatically and ready before the exam.</p>
-      </div>
-      <div class="lp-edu-card">
-        <div class="lp-edu-card-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        </div>
-        <h3>Nuance, idioms, and origins — without hallucination</h3>
-        <p>Balanced mode runs on <strong>Gemini 2.5 Flash</strong> and Deep mode on <strong>Claude Sonnet 4.5</strong>. They read the whole sentence before defining a single word, so students get the meaning the author intended — including idioms and register. The <strong>Etymology</strong> view traces each word to its real roots, grounding every definition in linguistic history rather than inventing one.</p>
-      </div>
-    </div>
-
-    <div class="lp-edu-actions">
-      <a class="lp-edu-cta" href="/for-educators.html" onclick="trackEducatorCTA('homepage_section_guide')">Read the full educator guide</a>
-      <a class="lp-edu-secondary" href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request" onclick="trackEducatorCTA('homepage_section_demo')">Request a demo &rarr;</a>
-    </div>
-  </section>
 
   <!-- FAQ -->
   <div class="lp-faq" id="lp-faq">
@@ -1209,7 +1161,7 @@
           Can I use Lexio with my class or department?
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. Lexio offers volume seats for classrooms and university departments — students and faculty get full Pro access (Deep mode, Word Bank, Anki export) under a single invoice, with onboarding support. There's no fixed list price; <a href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request" onclick="trackEducatorCTA('homepage_faq')">contact us for a demo and a quote</a>. See the <a href="#lp-educators" onclick="document.getElementById('lp-educators').scrollIntoView({behavior:'smooth'});return false;">For educators</a> section for how Lexio fits a reading curriculum.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. Lexio offers volume seats for classrooms and university departments — students and faculty get full Pro access (Deep mode, Word Bank, Anki export) under a single invoice, with onboarding support. There's no fixed list price; <a href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request" onclick="trackEducatorCTA('homepage_faq')">contact us for a demo and a quote</a>. See the <a href="/for-educators.html">For educators</a> section for how Lexio fits a reading curriculum.</p></div></div>
       </div>
 
     </div>
