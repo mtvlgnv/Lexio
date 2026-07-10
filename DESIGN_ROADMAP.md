@@ -90,6 +90,16 @@ UI in that register), Fraunces for display type, DM Sans for UI.
     intentional, confirm build/icon.icns reads well at 32px (it was
     designed for a menu-bar-only app).
 
+14. **Dead legacy Electron entry points still shipped.** `desktop/main.js`
+    ("Lexio Mini" tray app) and `desktop/main-app.js` ("Lexio" full dock
+    app, still wired as `npm run start-app`) predate Lexio Glance
+    (`main-overlay.js`, the only one actually shipped/notarized) and load
+    `lexio.site/compact.html` directly rather than the vision pipeline.
+    Confirm nothing references them (check `package.json` build `files`
+    allowlist — they may already be excluded from the packaged app) and
+    delete both, or keep only if there's a reason to preserve a
+    web-view-only fallback.
+
 ## Working notes
 
 - Verify visually, not just via DOM: the `.hidden` bug shipped past DOM
