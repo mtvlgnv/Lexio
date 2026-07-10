@@ -1848,27 +1848,35 @@ function closeMenu() {
 let langPickerOpen = false;
 const LANG_LABELS = { en:'EN', es:'ES', fr:'FR', de:'DE', it:'IT', pt:'PT', nl:'NL', ru:'RU', zh:'中文', ja:'日本語', ko:'한국어' };
 
-// ── "Explore" section dropdown ────────────────────────────────
-let exploreOpen = false;
-function toggleExplore() {
-  exploreOpen = !exploreOpen;
-  const drop = document.getElementById('lp-explore-drop');
-  const btn  = document.getElementById('lp-explore-btn');
-  if (drop) drop.classList.toggle('hidden', !exploreOpen);
-  if (btn)  btn.setAttribute('aria-expanded', exploreOpen);
-  if (exploreOpen && langPickerOpen) closeLangPicker();
+// ── Landing Page Nav Dropdowns ────────────────────────────────
+let openNavDropdown = null;
+
+function toggleNavDropdown(id) {
+  if (openNavDropdown === id) {
+    closeAllNavDropdowns();
+    return;
+  }
+  closeAllNavDropdowns();
+  openNavDropdown = id;
+  const drop = document.getElementById(`lp-${id}-drop`);
+  const btn  = document.getElementById(`lp-${id}-btn`);
+  if (drop) drop.classList.remove('hidden');
+  if (btn)  btn.setAttribute('aria-expanded', 'true');
+  if (langPickerOpen) closeLangPicker();
 }
-function closeExplore() {
-  exploreOpen = false;
-  const drop = document.getElementById('lp-explore-drop');
-  const btn  = document.getElementById('lp-explore-btn');
+
+function closeAllNavDropdowns() {
+  if (!openNavDropdown) return;
+  const drop = document.getElementById(`lp-${openNavDropdown}-drop`);
+  const btn  = document.getElementById(`lp-${openNavDropdown}-btn`);
   if (drop) drop.classList.add('hidden');
   if (btn)  btn.setAttribute('aria-expanded', 'false');
+  openNavDropdown = null;
 }
 
 function toggleLangPicker() {
   langPickerOpen = !langPickerOpen;
-  if (langPickerOpen) closeExplore();
+  if (langPickerOpen) closeAllNavDropdowns();
   document.getElementById('lang-hdr-drop').classList.toggle('hidden', !langPickerOpen);
   document.getElementById('lang-hdr-btn').classList.toggle('active', langPickerOpen);
   document.getElementById('lang-hdr-btn').setAttribute('aria-expanded', langPickerOpen);
@@ -1891,7 +1899,7 @@ function pickUILang(code) {
   document.getElementById('lang-hdr-label').textContent = LANG_LABELS[code] || code.toUpperCase();
 }
 document.addEventListener('click', e => {
-  if (exploreOpen && !e.target.closest('.lp-nav-drop-wrap')) closeExplore();
+  if (openNavDropdown && !e.target.closest('.lp-nav-drop-wrap')) closeAllNavDropdowns();
   if (langPickerOpen && !e.target.closest('.lang-hdr-wrap')) closeLangPicker();
 });
 function updateMenuTheme() {
@@ -2779,7 +2787,7 @@ inputText.addEventListener('keydown', e => { if((e.ctrlKey||e.metaKey)&&e.key===
 document.addEventListener('keydown', e => {
   const tag = document.activeElement?.tagName;
   if (tag==='TEXTAREA'||tag==='INPUT') return;
-  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); closeLangPicker(); closeExplore(); if(shortcutsOpen) toggleShortcuts(); }
+  if (e.key==='Escape') { closeFlashcards(); closeWordBank(); closeDesktopModal(); closeAuthModal(); closeVerifyEmailModal(); closeMenu(); closeLangPicker(); closeAllNavDropdowns(); if(shortcutsOpen) toggleShortcuts(); }
   if (e.key==='?')  toggleShortcuts();
   if (e.key==='b'||e.key==='B') openWordBank();
 });
@@ -3471,7 +3479,7 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
       e.preventDefault();
       const target = document.getElementById(l.dataset.section);
       if (target) target.scrollIntoView({ behavior: 'smooth' });
-      if (typeof closeExplore === 'function') closeExplore();
+      if (typeof closeAllNavDropdowns === 'function') closeAllNavDropdowns();
     });
   });
 })();

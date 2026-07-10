@@ -282,7 +282,7 @@
   <nav class="lp-header-nav">
     <div class="lp-nav-drop-wrap">
       <button class="lp-nav-link lp-nav-drop-btn" id="lp-explore-btn" type="button"
-              aria-haspopup="true" aria-expanded="false" onclick="toggleExplore()">
+              aria-haspopup="true" aria-expanded="false" onclick="toggleNavDropdown('explore')">
         Explore
         <svg width="9" height="9" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
       </button>
@@ -291,16 +291,35 @@
         <a class="lp-nav-drop-item" href="#lp-features" data-section="lp-features" role="menuitem">Features</a>
         <a class="lp-nav-drop-item" href="#lp-models"   data-section="lp-models"   role="menuitem">Reading modes</a>
         <a class="lp-nav-drop-item" href="#lp-pro"      data-section="lp-pro"      role="menuitem">Pricing</a>
-        <a class="lp-nav-drop-item" href="#lp-educators" data-section="lp-educators" role="menuitem">For educators</a>
         <a class="lp-nav-drop-item" href="#lp-faq"      data-section="lp-faq"      role="menuitem">FAQ</a>
       </div>
     </div>
-    <a class="lp-nav-link" href="/app">Open Lexio</a>
-    <a class="lp-nav-link" href="/chrome-extension.html">Chrome extension</a>
-    <a class="lp-nav-link" href="/glossary">Glossary</a>
-    <a class="lp-nav-link" href="#lp-educators" data-section="lp-educators">For educators</a>
-    <a class="lp-nav-link" href="/for-readers.html">For readers</a>
-    <a class="lp-nav-link" href="/credits.html">Credits</a>
+    
+    <div class="lp-nav-drop-wrap">
+      <button class="lp-nav-link lp-nav-drop-btn" id="lp-products-btn" type="button"
+              aria-haspopup="true" aria-expanded="false" onclick="toggleNavDropdown('products')">
+        Products
+        <svg width="9" height="9" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+      </button>
+      <div class="lp-nav-drop hidden" id="lp-products-drop" role="menu" aria-label="Products">
+        <a class="lp-nav-drop-item" href="/app" role="menuitem">Open Lexio</a>
+        <a class="lp-nav-drop-item" href="/chrome-extension.html" role="menuitem">Chrome extension</a>
+      </div>
+    </div>
+
+    <div class="lp-nav-drop-wrap">
+      <button class="lp-nav-link lp-nav-drop-btn" id="lp-resources-btn" type="button"
+              aria-haspopup="true" aria-expanded="false" onclick="toggleNavDropdown('resources')">
+        Resources
+        <svg width="9" height="9" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+      </button>
+      <div class="lp-nav-drop hidden" id="lp-resources-drop" role="menu" aria-label="Resources">
+        <a class="lp-nav-drop-item" href="/glossary" role="menuitem">Glossary</a>
+        <a class="lp-nav-drop-item" href="#lp-educators" data-section="lp-educators" role="menuitem">For educators</a>
+        <a class="lp-nav-drop-item" href="/for-readers.html" role="menuitem">For readers</a>
+        <a class="lp-nav-drop-item" href="/credits.html" role="menuitem">Credits</a>
+      </div>
+    </div>
   </nav>
 
   <div class="header-spacer"></div>
