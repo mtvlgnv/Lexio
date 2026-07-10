@@ -101,7 +101,7 @@
       display: inline-flex; align-items: baseline; gap: 6px;
       flex-shrink: 0;
     }
-    .brand { font-family:'Fraunces',serif; font-size:2.2rem; font-weight:400; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
+    .brand { font-family:'Fraunces',serif; font-size:1.8rem; font-weight:400; letter-spacing:-0.3px; color:var(--text); white-space:nowrap; }
     .brand em { font-style:italic; color:var(--accent); }
     .tagline { font-size:0.75rem; color:var(--muted); padding-left:6px; white-space:nowrap; }
     .header-spacer { flex:1; }
@@ -1448,7 +1448,6 @@
     
     /* ── Landing Page Header (Clay-style pill) ─────────────── */
     body.landing-page header {
-      height: 72px;
       position: absolute;
       top: 16px;
       left: 16px;
