@@ -1455,13 +1455,13 @@
       width: auto;
       max-width: 1200px;
       margin: 0 auto;
-      border-radius: 9999px;
-      background: rgba(250, 248, 245, 0.4);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
       z-index: 100;
-      box-shadow: 0 4px 24px -8px rgba(0,0,0,0.05);
+      box-shadow: 0 8px 32px -12px rgba(0,0,0,0.1);
     }
     body.tool-page #scroll-nudge { display: none !important; }
     /* Lead the marketing landing with the hero, not the tool's sample carousel. */
