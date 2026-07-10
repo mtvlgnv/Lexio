@@ -3613,14 +3613,17 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
     lines[1].textContent  = s.whyWord;
   }
 
-  // CSS animation is a 3.4s loop. Swap content at ~3.15s (popup invisible)
-  // so the next loop starts already showing the new word.
+  // Sync JS state swap with the CSS animation loop.
+  // The CSS animation loops every 3.4s. We want to swap content
+  // right when the popup is invisible (opacity 0).
+  // We can't rely on setTimeout matching CSS precisely.
   let i = 0;
-  setTimeout(function tick() {
+  popup.addEventListener('animationiteration', () => {
+    // animationiteration fires at the end of each iteration (100% / 0%).
+    // The popup is opacity: 0 at 0%, so it's safe to swap here!
     i = (i + 1) % states.length;
     applyState(states[i]);
-    setTimeout(tick, 3400);
-  }, 3150);
+  });
 })();
 
 // (Removed the "magnetic pull" effect that translated CTAs toward the cursor.)

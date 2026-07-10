@@ -2932,13 +2932,8 @@
 
     /* ── Landing nav (inside header) ────────────────────────── */
     .lp-header-nav {
-      position: absolute; left: 50%; transform: translateX(-50%);
       display: flex; align-items: center; gap: 2px;
-      /* transform creates a stacking context — without a z-index the whole
-         nav (and any open dropdown inside it) would paint under the <main>
-         panels that follow in the DOM. Lift it above page content but keep
-         it below full-screen modals (z-index 100+). */
-      z-index: 90;
+      /* removed absolute positioning to prevent overlap, flex layout handles centering now */
     }
     body.in-app .lp-header-nav { display: none; }
     .nav-slider {
