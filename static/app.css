@@ -2192,7 +2192,7 @@
     /* Features */
     /* twin row wrapper */
     .lp-twin {
-      display: flex; flex-direction: row; align-items: stretch;
+      display: flex; flex-direction: row; align-items: start;
       gap: 22px; padding: 32px 64px 64px 32px;
       border-top: 1px solid var(--border);
       position: relative; overflow: hidden;
@@ -2307,7 +2307,6 @@
       border-radius: 999px;
       padding: 4px;
       gap: 2px;
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       align-self: center;
     }
     .lp-mode-pill {
@@ -2338,7 +2337,6 @@
     .lp-mode-detail {
       width: 100%;
       background: rgba(255,255,255,0.55);
-      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
       border: 1px solid rgba(255,255,255,0.6);
       border-radius: var(--radius);
       padding: 22px 22px 20px;
