@@ -51,8 +51,16 @@ process.on('uncaughtException',  (err) => console.error('[overlay] uncaughtExcep
 process.on('unhandledRejection', (err) => console.error('[overlay] unhandledRejection:', err));
 
 app.setName('Lexio Glance');
-// Dock icon is intentional (Hub v2): clicking it opens the Hub window,
-// Wispr-Flow style. The pill overlay + menu-bar tray still work as before.
+// REGRESSION FIX (2026-07-10): a Dock icon was added for Hub v2 ("click it
+// like Wispr Flow") by removing this call. That broke the pill itself —
+// without dock.hide(), macOS treats the app as a regular Dock app, and
+// setVisibleOnAllWorkspaces/setAlwaysOnTop below become unreliable across
+// Spaces and full-screen apps. The pill got pinned to whichever Space it
+// launched on: double-tap still fired (captures succeeded — see the log),
+// but the panel was invisible everywhere except that one Space. The Hub
+// is still fully reachable via the tray icon; that's not worth trading
+// away "the pill works in every app," which is the actual product.
+if (process.platform === 'darwin') app.dock.hide();
 
 let win  = null;
 let tray = null;
