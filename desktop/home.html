@@ -319,6 +319,9 @@
       <div class="view-head"><h1>Account</h1></div>
 
       <div id="acct-signedout" class="hidden">
+        <div class="hint-card hidden" id="session-expired-hint" style="border-color:var(--danger);color:var(--danger);margin-bottom:14px;">
+          Your session expired on this device — sign in again to restore Pro status, sync, and lookups.
+        </div>
         <div class="empty" style="padding:30px 0 18px;">
           Sign in to sync your word bank across devices,<br>track your streak, and see your plan.
         </div>
@@ -552,6 +555,19 @@ async function renderAccount() {
       fetch(API_BASE + '/api/usage', { headers: hdrs }),
       fetch(API_BASE + '/api/streak', { headers: hdrs }),
     ]);
+    // A 401 here means the stored token is no longer valid server-side
+    // (revoked, or this device's session was pruned) — NOT that the
+    // account lost its plan. /define's optional_user() silently treats an
+    // invalid token as anonymous with no error surfaced, which used to
+    // show as a confusing "you're Free with 0 lookups" wall even for a
+    // real Pro account. Clear the dead token and fall back to a real,
+    // clearly-explained signed-out state instead of a lying one.
+    if (proR.status === 401) {
+      localStorage.removeItem('lexio_token');
+      window.lexioHub?.signOut?.();
+      document.getElementById('session-expired-hint').classList.remove('hidden');
+      return renderAccount();
+    }
     if (proR.ok) {
       const p = await proR.json();
       const chip = document.getElementById('plan-chip');

@@ -672,6 +672,16 @@ async function checkProStatus() {
     const token = localStorage.getItem('lexio_token');
     if (!token) { lockFreeModels(); return; }
     const r = await fetch(API_BASE + '/api/pro-status', { headers: { Authorization: 'Bearer ' + token } });
+    if (r.status === 401) {
+      // Stored token is dead server-side (revoked, or this device's session
+      // was pruned). /define silently treats it as anonymous with no error
+      // — that used to look like "you lost Pro" instead of "sign in again".
+      // Clear it here so Save's signed-out cap and every other localStorage
+      // check converge on the real state instead of a half-signed-in zombie.
+      localStorage.removeItem('lexio_token');
+      lockFreeModels();
+      return;
+    }
     if (!r.ok) { lockFreeModels(); return; }
     const d = await r.json();
     if (d.is_pro) {
