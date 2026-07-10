@@ -25,3 +25,4 @@ ios/DerivedData/
 **/xcuserdata/
 **/*.xcuserstate
 .swiftpm/
+static/*.dmg
