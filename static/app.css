@@ -2943,13 +2943,27 @@
       z-index: 90;
     }
     body.in-app .lp-header-nav { display: none; }
+    .nav-slider {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: calc(100% - 10px);
+    background: #f0ece7;
+    border-radius: 20px;
+    z-index: -1;
+    transition: left 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
+                width 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
+                opacity 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
     .lp-nav-link {
       font-size: 0.8rem; font-weight: 500; color: var(--muted);
       text-decoration: none; padding: 5px 12px; border-radius: 20px;
       transition: background 0.15s, color 0.15s; white-space: nowrap;
     }
-    .lp-nav-link:hover { background: var(--bg); color: var(--text); }
-    .lp-nav-link.lp-nav-active { color: var(--accent); background: var(--accent-lt); }
+    .lp-nav-link:hover {  color: var(--text); }
+    .lp-nav-link.lp-nav-active { color: var(--accent);  }
     /* ── "Explore" section dropdown (replaces Features/Pricing/FAQ links) ── */
     .lp-nav-drop-wrap { position: relative; display: inline-flex; }
     .lp-nav-drop-btn {
@@ -2957,7 +2971,7 @@
       font-family: inherit; background: transparent; border: none; cursor: pointer;
     }
     .lp-nav-drop-btn svg { transition: transform 0.18s; opacity: 0.75; }
-    .lp-nav-drop-btn[aria-expanded="true"] { color: var(--text); background: var(--bg); }
+    .lp-nav-drop-btn[aria-expanded="true"] { color: var(--text);  }
     .lp-nav-drop-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
     .lp-nav-drop {
       position: absolute; top: calc(100% + 8px); left: 0;

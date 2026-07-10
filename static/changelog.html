@@ -238,21 +238,35 @@
     position: absolute; left: 50%; transform: translateX(-50%);
     display: flex; align-items: center; gap: 2px;
   }
+  .nav-slider {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: calc(100% - 10px);
+    background: #f0ece7;
+    border-radius: 20px;
+    z-index: -1;
+    transition: left 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
+                width 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
+                opacity 0.2s ease;
+    opacity: 0;
+    pointer-events: none;
+  }
   .site-nav-link {
     font-size: 0.8rem; font-weight: 500; color: #7a7269;
     text-decoration: none; padding: 5px 12px; border-radius: 20px;
     transition: background 0.15s, color 0.15s; white-space: nowrap;
     font-family: inherit;
   }
-  .site-nav-link:hover { background: #f0ece7; color: #1a1612; }
-  .site-nav-link.active { color: oklch(58% 0.17 54); background: oklch(95% 0.04 75); }
+  .site-nav-link:hover {  color: #1a1612; }
+  .site-nav-link.active { color: oklch(58% 0.17 54);  }
   .site-nav-drop-wrap { position: relative; display: inline-flex; }
   .site-nav-drop-btn {
     display: inline-flex; align-items: center; gap: 5px;
     background: transparent; border: none; cursor: pointer;
   }
   .site-nav-drop-btn svg { transition: transform 0.18s; opacity: 0.75; }
-  .site-nav-drop-btn[aria-expanded="true"] { color: #1a1612; background: #f0ece7; }
+  .site-nav-drop-btn[aria-expanded="true"] { color: #1a1612;  }
   .site-nav-drop-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
   .site-nav-drop {
     position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
@@ -418,6 +432,46 @@
       btn.setAttribute('aria-expanded', 'false');
     }
   });
+  
+  // Slider Logic
+  function initNavSlider(navSelector, linkSelector) {
+    const nav = document.querySelector(navSelector);
+    if (!nav) return;
+    nav.style.position = 'relative';
+    const slider = document.createElement('div');
+    slider.className = 'nav-slider';
+    nav.insertBefore(slider, nav.firstChild);
+    
+    function updateSlider(target) {
+      if (!target) {
+        slider.style.opacity = '0';
+        return;
+      }
+      const navRect = nav.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      slider.style.width = targetRect.width + 'px';
+      slider.style.left = (targetRect.left - navRect.left) + 'px';
+      slider.style.opacity = '1';
+    }
+    function resetSlider() {
+      const active = nav.querySelector('.active, .lp-nav-active');
+      const expandedBtn = nav.querySelector('[aria-expanded="true"]');
+      updateSlider(expandedBtn || active);
+    }
+    const links = nav.querySelectorAll(linkSelector);
+    links.forEach(link => {
+      link.addEventListener('mouseenter', (e) => updateSlider(e.currentTarget));
+    });
+    nav.addEventListener('mouseleave', resetSlider);
+    window.addEventListener('resize', resetSlider);
+    const observer = new MutationObserver(() => {
+      if (!nav.matches(':hover')) resetSlider();
+    });
+    observer.observe(nav, { attributes: true, subtree: true, attributeFilter: ['class', 'aria-expanded'] });
+    setTimeout(resetSlider, 50);
+  }
+
+  initNavSlider('.site-nav-links', '.site-nav-link, .site-nav-drop-btn');
   // Highlight current page in nav
   const path = window.location.pathname;
   document.querySelectorAll('.site-nav-link, .site-nav-drop-item').forEach(function(a) {

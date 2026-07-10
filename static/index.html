@@ -1738,5 +1738,46 @@ if (!_gradReduced) {
     <p class="pro-modal-reset">Your free quota resets on the 1st of each month.</p>
   </div>
 </div>
+<script>
+  // Slider Logic
+  function initNavSlider(navSelector, linkSelector) {
+    const nav = document.querySelector(navSelector);
+    if (!nav) return;
+    nav.style.position = 'relative';
+    const slider = document.createElement('div');
+    slider.className = 'nav-slider';
+    nav.insertBefore(slider, nav.firstChild);
+    
+    function updateSlider(target) {
+      if (!target) {
+        slider.style.opacity = '0';
+        return;
+      }
+      const navRect = nav.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      slider.style.width = targetRect.width + 'px';
+      slider.style.left = (targetRect.left - navRect.left) + 'px';
+      slider.style.opacity = '1';
+    }
+    function resetSlider() {
+      const active = nav.querySelector('.active, .lp-nav-active');
+      const expandedBtn = nav.querySelector('[aria-expanded="true"]');
+      updateSlider(expandedBtn || active);
+    }
+    const links = nav.querySelectorAll(linkSelector);
+    links.forEach(link => {
+      link.addEventListener('mouseenter', (e) => updateSlider(e.currentTarget));
+    });
+    nav.addEventListener('mouseleave', resetSlider);
+    window.addEventListener('resize', resetSlider);
+    const observer = new MutationObserver(() => {
+      if (!nav.matches(':hover')) resetSlider();
+    });
+    observer.observe(nav, { attributes: true, subtree: true, attributeFilter: ['class', 'aria-expanded'] });
+    setTimeout(resetSlider, 50);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => initNavSlider('.lp-nav-links', '.lp-nav-link'));
+</script>
 </body>
 </html>

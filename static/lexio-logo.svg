@@ -1,0 +1,12 @@
+<svg viewBox="-140 -140 280 280" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#c25925" stroke="#c25925" stroke-width="10" stroke-linejoin="round">
+    <path id="p" d="M-15,-95 L15,-125 L15,-45 L-15,-15 Z" />
+    <use href="#p" transform="rotate(45)" />
+    <use href="#p" transform="rotate(90)" />
+    <use href="#p" transform="rotate(135)" />
+    <use href="#p" transform="rotate(180)" />
+    <use href="#p" transform="rotate(225)" />
+    <use href="#p" transform="rotate(270)" />
+    <use href="#p" transform="rotate(315)" />
+  </g>
+</svg>
