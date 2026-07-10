@@ -5,7 +5,7 @@
 - Fresh Ubuntu 24.04 VPS (Hetzner CX21 or larger)
 - A domain name pointing to the server's IP (A record)
 - SSH access as root (or a sudo user)
-- At least one AI API key (Anthropic, OpenAI, or Google). All three for the full Fast/Balanced/Deep matrix.
+- At least one AI API key (Groq, Anthropic, or Google). All three (plus optionally OpenAI, used only as an OCR fallback) for the full Fast/Balanced/Deep matrix — Groq powers Fast, Google powers Balanced and every Mac-app lookup, Anthropic powers Deep.
 - A Stripe account (for the Pro tier — optional in development, required in production)
 
 ---
@@ -82,7 +82,10 @@ You need at least one AI key for the app to start, but only the mode whose key i
 |---|---|
 | `STRIPE_SECRET_KEY` | `sk_live_…` (or `sk_test_…` while testing). |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_…` — Stripe gives you this when you create a webhook endpoint. |
-| `STRIPE_PRICE_ID` | The multi-currency price ID for the Pro subscription. |
+| `STRIPE_PRICE_ID` | The multi-currency **monthly** price ID for the Pro subscription. Required. |
+| `STRIPE_PRICE_ID_YEARLY` | Multi-currency **yearly** price ID. Optional — unset hides the yearly toggle on the landing page. |
+| `STRIPE_PRICE_ID_FAMILY` | Multi-currency **family** (4-seat) price ID. Optional — unset hides the family plan. |
+| `STRIPE_STATEMENT_DESCRIPTOR_SUFFIX` | ≤22-char suffix appended to the statement descriptor on Stripe invoices. Also set the account-level descriptor in Stripe Dashboard → Settings → Public details. |
 | `SITE_URL` | Your public site origin, e.g. `https://lexio.site`. Used in Stripe redirect URLs. |
 
 **Optional (OAuth sign-in):**
@@ -220,6 +223,41 @@ Open `https://yourdomain.com` — you should see the Lexio app.
 
 ## Updating the app
 
+Use the repo's own deploy script — it pulls, backs up the SQLite DB first,
+restarts the service, and runs a smoke test:
+
+```bash
+sudo /var/www/lexio/deploy.sh
+```
+
+**If the change adds/renames a top-level route** (anything nginx needs to
+proxy through to the app — a new `/download`-style path, for example), run
+it with `--nginx` instead: it prints a diff between the live
+`/etc/nginx/sites-enabled/lexio` and the repo's `nginx.conf` template so you
+can see exactly what to add to the `location ~ ^/(...)` allowlist before
+reloading. **A route that isn't in that allowlist 404s in production even
+though the FastAPI route exists and works locally** — this has bitten real
+deploys.
+
+```bash
+sudo /var/www/lexio/deploy.sh --nginx
+# review the diff, edit /etc/nginx/sites-enabled/lexio to add the new path,
+# then:
+nginx -t && systemctl reload nginx
+```
+
+⚠️ Never leave a backup/copy of the nginx config file *inside*
+`/etc/nginx/sites-enabled/` — nginx loads every file in that directory, and
+a stray backup with a duplicate `listen` directive will fail `nginx -t` and
+can take the site down on the next reload.
+
+The migration runner inside `main.py` runs automatically on startup —
+`deploy.sh` (and a plain `systemctl restart lexio`) trigger it. Each
+migration is idempotent and tracked in the `schema_version` table.
+
+<details>
+<summary>Manual steps (what deploy.sh does under the hood)</summary>
+
 ```bash
 cd /var/www/lexio
 git pull origin main
@@ -229,8 +267,7 @@ source venv/bin/activate && pip install -r requirements.txt && deactivate
 
 systemctl restart lexio
 ```
-
-The migration runner inside `main.py` will automatically apply any new schema migrations on startup. Each migration is idempotent and tracked in the `schema_version` table.
+</details>
 
 ---
 
