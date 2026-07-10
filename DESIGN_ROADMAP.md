@@ -19,6 +19,12 @@ UI in that register), Fraunces for display type, DM Sans for UI.
   now mirrors the configured trigger (compact.html, 2026-07-09).
 - ~~Pill click captured a screenshot of the pill itself~~ — click now opens
   the manual panel; lookups belong to the double-tap (2026-07-09).
+- ~~Save button did nothing after the first lookup ever rendered~~ —
+  updateSaveBtn() did `btn.onclick = null`, which permanently detaches an
+  element from its inline `onclick="..."` HTML attribute; every click
+  since app launch called nothing. Fixed with a plain state flag instead
+  of touching `.onclick` (2026-07-09). **Lesson: a real `.click()` +
+  state-diff test caught this; DOM-presence checks alone did not.**
 
 ## P0 — actively hurting
 
