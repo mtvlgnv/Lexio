@@ -16,8 +16,8 @@ const C = {
   ivory: '#fff5e8',
   muted: '#cbbdb1',
   dim: '#8f7f72',
-  orange: '#e7822b',
-  orange2: '#f29a3a',
+  orange: '#f27a18',
+  orange2: '#fb982b',
   cream: '#fbf5eb',
   ink: '#211915',
 };

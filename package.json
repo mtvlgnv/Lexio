@@ -1,0 +1,12 @@
+{
+  "name": "lexio-desktop",
+  "version": "1.1.5",
+  "description": "Lexio — floating contextual dictionary",
+  "main": "main-overlay.js",
+  "overrides": {
+    "node-abi": "latest"
+  },
+  "optionalDependencies": {
+    "uiohook-napi": "^1.5.4"
+  }
+}

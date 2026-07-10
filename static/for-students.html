@@ -84,7 +84,7 @@
       font-family: 'DM Sans', system-ui, sans-serif;
     }
     html, body { background: var(--bg); color: var(--text); min-height: 100%; }
-    body { line-height: 1.55; }
+    body { line-height: 1.55; padding-top: 84px; }
 
     /* ── Header ──────────────────────────────────────────────── */
     .page-header {
@@ -304,15 +304,223 @@
 </head>
 <body>
 
-<header class="page-header">
-  <a class="logo" href="/">Le<em>x</em>io</a>
-  <span class="tagline">Contextual definitions for serious readers</span>
-  <div class="header-spacer"></div>
-  <a class="back-link" href="/">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    Back to Lexio
+<!-- ── Shared Site Navigation ──────────────────────────────── -->
+<style>
+  .site-nav {
+    position: fixed; top: 16px; left: 16px; right: 16px;
+    max-width: 1200px; margin: 0 auto; z-index: 100;
+    display: flex; align-items: center; gap: 4px;
+    padding: 0 8px 0 16px; height: 52px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 32px -12px rgba(0,0,0,0.1);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    box-sizing: border-box;
+  }
+  .site-nav *, .site-nav *::before, .site-nav *::after { box-sizing: border-box; }
+  .site-nav-brand {
+    text-decoration: none; color: inherit;
+    display: inline-flex; align-items: center; gap: 8px;
+    flex-shrink: 0;
+  }
+  .site-nav-brand-text {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 1.25rem; font-weight: 600; color: #1a1612;
+  }
+  .site-nav-brand-text em { font-style: normal; color: oklch(58% 0.17 54); }
+  .site-nav-links {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 2px;
+  }
+  .site-nav-link {
+    font-size: 0.8rem; font-weight: 500; color: #7a7269;
+    text-decoration: none; padding: 5px 12px; border-radius: 20px;
+    transition: background 0.15s, color 0.15s; white-space: nowrap;
+    font-family: inherit;
+  }
+  .site-nav-link:hover { background: #f0ece7; color: #1a1612; }
+  .site-nav-link.active { color: oklch(58% 0.17 54); background: oklch(95% 0.04 75); }
+  .site-nav-drop-wrap { position: relative; display: inline-flex; }
+  .site-nav-drop-btn {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: transparent; border: none; cursor: pointer;
+  }
+  .site-nav-drop-btn svg { transition: transform 0.18s; opacity: 0.75; }
+  .site-nav-drop-btn[aria-expanded="true"] { color: #1a1612; background: #f0ece7; }
+  .site-nav-drop-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .site-nav-drop {
+    position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; gap: 2px; min-width: 280px;
+    background: #fff; border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px; padding: 6px; z-index: 60;
+    box-shadow: 0 8px 24px -8px rgba(0,0,0,0.12);
+  }
+  .site-nav-drop.hidden { display: none; }
+  .site-nav-drop-item {
+    font-size: 0.85rem; font-weight: 500; color: #5a534a;
+    text-decoration: none; padding: 8px 12px; border-radius: 8px;
+    white-space: nowrap; transition: background 0.15s, color 0.15s;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .site-nav-drop-item:hover { background: #f5f1ec; color: #1a1612; }
+  .site-nav-drop-item:hover svg { opacity: 1; color: oklch(58% 0.17 54); }
+  .site-nav-drop-item svg {
+    flex-shrink: 0; margin-top: 3px; opacity: 0.5;
+    transition: opacity 0.15s, color 0.15s;
+  }
+  .site-nav-drop-label { display: block; font-weight: 600; color: #1a1612; }
+  .site-nav-drop-desc {
+    display: block; font-size: 0.73rem; font-weight: 400;
+    color: #7a7269; margin-top: 1px; white-space: normal; line-height: 1.35;
+  }
+  .site-nav-spacer { flex: 1; }
+  .site-nav-cta {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 0.78rem; font-weight: 600; color: #fff;
+    background: oklch(58% 0.17 54); padding: 7px 18px; border-radius: 20px;
+    text-decoration: none; white-space: nowrap;
+    transition: background 0.15s, transform 0.1s;
+    flex-shrink: 0; font-family: inherit;
+  }
+  .site-nav-cta:hover { background: oklch(50% 0.17 54); transform: scale(1.03); }
+  .site-nav-hamburger {
+    display: none; background: transparent; border: none; cursor: pointer;
+    padding: 8px; color: #1a1612;
+  }
+  /* Mobile overlay */
+  .site-nav-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+    display: flex; flex-direction: column; padding: 24px;
+    font-family: 'DM Sans', system-ui, sans-serif;
+  }
+  .site-nav-overlay.hidden { display: none; }
+  .site-nav-overlay-close {
+    align-self: flex-end; background: transparent; border: none;
+    cursor: pointer; padding: 8px; color: #1a1612; margin-bottom: 24px;
+  }
+  .site-nav-overlay a {
+    font-size: 1.1rem; font-weight: 500; color: #1a1612;
+    text-decoration: none; padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    display: block; transition: color 0.15s;
+  }
+  .site-nav-overlay a:hover { color: oklch(58% 0.17 54); }
+  .site-nav-overlay-divider {
+    display: block; height: 1px; background: rgba(0,0,0,0.1);
+    margin: 8px 0;
+  }
+  .site-nav-overlay-cta {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px; margin-top: 24px;
+    font-size: 1rem; font-weight: 600; color: #fff !important;
+    background: oklch(58% 0.17 54); padding: 14px 28px; border-radius: 14px;
+    text-decoration: none !important; border-bottom: none !important;
+    transition: background 0.15s;
+  }
+  .site-nav-overlay-cta:hover { background: oklch(50% 0.17 54); color: #fff !important; }
+  @media (max-width: 900px) {
+    .site-nav-links { display: none; }
+    .site-nav-cta { display: none; }
+    .site-nav-hamburger { display: block; }
+  }
+</style>
+
+<header class="site-nav">
+  <a class="site-nav-brand" href="/" aria-label="Lexio home">
+    <img src="/favicon-32.png?v=2" width="28" height="28" alt="Lexio logo" style="border-radius:6px;">
+    <span class="site-nav-brand-text">Le<em>x</em>io</span>
   </a>
+  <nav class="site-nav-links">
+    <a class="site-nav-link" href="/#lp-features">Features</a>
+    <div class="site-nav-drop-wrap">
+      <button class="site-nav-link site-nav-drop-btn" type="button"
+              aria-haspopup="true" aria-expanded="false" onclick="toggleSiteNavDrop()">
+        Use Cases
+        <svg width="9" height="9" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+      </button>
+      <div class="site-nav-drop hidden" id="site-nav-drop" role="menu" aria-label="Use cases">
+        <a class="site-nav-drop-item" href="/for-students.html" role="menuitem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5"/></svg>
+          <span><span class="site-nav-drop-label">For students</span><span class="site-nav-drop-desc">Decode academic texts and build vocabulary</span></span>
+        </a>
+        <a class="site-nav-drop-item" href="/for-educators.html" role="menuitem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span><span class="site-nav-drop-label">For educators</span><span class="site-nav-drop-desc">Classroom tools for reading comprehension</span></span>
+        </a>
+        <a class="site-nav-drop-item" href="/for-professionals.html" role="menuitem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          <span><span class="site-nav-drop-label">For professionals</span><span class="site-nav-drop-desc">Understand reports, contracts and jargon</span></span>
+        </a>
+        <a class="site-nav-drop-item" href="/for-language-learners.html" role="menuitem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span><span class="site-nav-drop-label">For English learners</span><span class="site-nav-drop-desc">Definitions explained in your own language</span></span>
+        </a>
+        <a class="site-nav-drop-item" href="/for-readers.html" role="menuitem">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span><span class="site-nav-drop-label">For readers</span><span class="site-nav-drop-desc">Look up words without leaving the page</span></span>
+        </a>
+      </div>
+    </div>
+    <a class="site-nav-link" href="/#lp-pro">Pricing</a>
+    <a class="site-nav-link" href="/download.html">Download</a>
+  </nav>
+  <div class="site-nav-spacer"></div>
+  <a class="site-nav-cta" href="/app">Try free <span>→</span></a>
+  <button class="site-nav-hamburger" type="button" aria-label="Open menu" onclick="document.getElementById('site-nav-mobile').classList.remove('hidden')">
+    <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><line x1="0" y1="1" x2="16" y2="1"/><line x1="0" y1="6" x2="16" y2="6"/><line x1="0" y1="11" x2="16" y2="11"/></svg>
+  </button>
 </header>
+
+<div class="site-nav-overlay hidden" id="site-nav-mobile">
+  <button class="site-nav-overlay-close" type="button" aria-label="Close menu" onclick="document.getElementById('site-nav-mobile').classList.add('hidden')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+  </button>
+  <a href="/#lp-features">Features</a>
+  <a href="/#lp-pro">Pricing</a>
+  <a href="/download.html">Download</a>
+  <span class="site-nav-overlay-divider"></span>
+  <a href="/for-students.html">For students</a>
+  <a href="/for-educators.html">For educators</a>
+  <a href="/for-professionals.html">For professionals</a>
+  <a href="/for-language-learners.html">For English learners</a>
+  <a href="/for-readers.html">For readers</a>
+  <span class="site-nav-overlay-divider"></span>
+  <a href="/chrome-extension.html">Chrome extension</a>
+  <a href="/glossary">Glossary</a>
+  <a href="/credits.html">Credits</a>
+  <a class="site-nav-overlay-cta" href="/app">Try Lexio — free →</a>
+</div>
+
+<script>
+(function() {
+  let dropOpen = false;
+  window.toggleSiteNavDrop = function() {
+    const drop = document.getElementById('site-nav-drop');
+    const btn = drop.previousElementSibling;
+    dropOpen = !dropOpen;
+    drop.classList.toggle('hidden', !dropOpen);
+    btn.setAttribute('aria-expanded', dropOpen);
+  };
+  document.addEventListener('click', function(e) {
+    if (dropOpen && !e.target.closest('.site-nav-drop-wrap')) {
+      dropOpen = false;
+      const drop = document.getElementById('site-nav-drop');
+      const btn = drop.previousElementSibling;
+      drop.classList.add('hidden');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+  // Highlight current page in nav
+  const path = window.location.pathname;
+  document.querySelectorAll('.site-nav-link, .site-nav-drop-item').forEach(function(a) {
+    if (a.getAttribute('href') === path) a.classList.add('active');
+  });
+})();
+</script>
+<!-- ── End Shared Site Navigation ────────────────────────────── -->
 
 <div class="page-hero">
   <span class="eyebrow">For students</span>
