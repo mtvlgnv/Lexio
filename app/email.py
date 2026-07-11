@@ -20,6 +20,7 @@ SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER", "")
 SMTP_PASS = os.getenv("SMTP_PASS", "")
+SMTP_FROM = os.getenv("SMTP_FROM", SMTP_USER)
 SITE_URL  = os.getenv("SITE_URL", "https://lexio.site")
 
 def _send_reset_email(to_email: str, token: str):
@@ -41,13 +42,13 @@ If you didn't request this, you can safely ignore this email.
 """
     msg = MIMEText(body)
     msg["Subject"] = "Reset your Lexio password"
-    msg["From"]    = f"Lexio <{SMTP_USER}>"
+    msg["From"]    = f"Lexio <{SMTP_FROM}>"
     msg["To"]      = to_email
     try:
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as s:
             s.starttls()
             s.login(SMTP_USER, SMTP_PASS)
-            s.sendmail(SMTP_USER, [to_email], msg.as_string())
+            s.sendmail(SMTP_FROM, [to_email], msg.as_string())
     except Exception as exc:
         logger.error("Failed to send reset email to %s: %s", to_email, exc)
 
@@ -106,13 +107,13 @@ def _send_email(to_email: str, subject: str, body: str) -> bool:
         return False
     msg = MIMEText(body)
     msg["Subject"] = subject
-    msg["From"]    = f"Lexio <{SMTP_USER}>"
+    msg["From"]    = f"Lexio <{SMTP_FROM}>"
     msg["To"]      = to_email
     try:
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as s:
             s.starttls()
             s.login(SMTP_USER, SMTP_PASS)
-            s.sendmail(SMTP_USER, [to_email], msg.as_string())
+            s.sendmail(SMTP_FROM, [to_email], msg.as_string())
         return True
     except Exception as exc:
         logger.error("Failed to send email to %s: %s", to_email, exc)
@@ -138,13 +139,13 @@ can safely ignore this email.
 """
     msg = MIMEText(body)
     msg["Subject"] = f"Lexio verification code: {code}"
-    msg["From"]    = f"Lexio <{SMTP_USER}>"
+    msg["From"]    = f"Lexio <{SMTP_FROM}>"
     msg["To"]      = to_email
     try:
         with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=10) as s:
             s.starttls()
             s.login(SMTP_USER, SMTP_PASS)
-            s.sendmail(SMTP_USER, [to_email], msg.as_string())
+            s.sendmail(SMTP_FROM, [to_email], msg.as_string())
         return True
     except Exception as exc:
         logger.error("Failed to send verification email to %s: %s", to_email, exc)
