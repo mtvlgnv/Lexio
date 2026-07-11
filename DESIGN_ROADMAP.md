@@ -66,10 +66,11 @@ UI in that register), Fraunces for display type, DM Sans for UI.
    when the streak is ≥2 days.
 6. ~~Sidebar footer tip is cramped~~ ✅ DONE 2026-07-10 — added top
    padding and line-height.
-7. **Onboarding permission step density** (observed). Two status rows +
-   two buttons + stale-hint paragraph is a wall. Restructure to match the
-   Hub Settings pattern: one row per permission with a trailing button,
-   and reveal the troubleshooting hint only after a failed poll cycle.
+7. ~~Onboarding permission step density~~ ✅ DONE 2026-07-11 — restructured
+   to one row per permission (label+hint left, status dot + trailing
+   "Open Settings" button right), matching the Hub Settings row pattern.
+   The stale-hint-after-3-failed-polls logic already existed; only the
+   layout changed.
 8. **Panel gradient header vs. content hierarchy** (observed in captures).
    The traffic-light-style header bar with the wordmark eats vertical
    space in a 580px panel. Consider collapsing it to a slim drag handle
