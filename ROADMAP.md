@@ -182,7 +182,7 @@ already uses it). Panel expands with richer sections when they arrive.
 Effort: ~1 day incl. live verification. Direct Pro upsell surfaced at the
 exact moment of dissatisfaction with the free answer.
 
-## P1-5 · Reader profile / user memory (founder idea, planned 2026-07-09)
+## P1-5 · Reader profile / user memory — Phase 1 ✅ DONE 2026-07-11 (Phase 1.5/2 still open)
 
 "The app should remember the user is a wood-worker, so the context is
 suitable." Durable facts about the reader that make every definition

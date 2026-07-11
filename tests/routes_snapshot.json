@@ -13,6 +13,7 @@
   "GET /api/config",
   "GET /api/models",
   "GET /api/pro-status",
+  "GET /api/profile",
   "GET /api/streak",
   "GET /api/usage",
   "GET /api/user-model",
@@ -67,5 +68,6 @@
   "POST /stripe/create-checkout",
   "POST /stripe/customer-portal",
   "POST /stripe/webhook",
-  "POST /wordbank/sync"
+  "POST /wordbank/sync",
+  "PUT /api/profile"
 ]

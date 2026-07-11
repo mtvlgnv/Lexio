@@ -140,6 +140,13 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
             ("last_digest_at", "ALTER TABLE users ADD COLUMN last_digest_at TIMESTAMP"),
         ] if col not in _cols(conn, "users")
     ]),
+    # Reader profile (ROADMAP P1-5 Phase 1): one JSON blob
+    # {about, english_level, native_lang} — nullable, feeds /define prompts
+    # for signed-in users so definitions land in the reader's world.
+    (18, "add profile_json", lambda conn, _: (
+        conn.execute(_sa_text("ALTER TABLE users ADD COLUMN profile_json TEXT"))
+        if "profile_json" not in _cols(conn, "users") else None
+    )),
 ]
 
 def _run_migrations():

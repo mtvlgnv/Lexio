@@ -35,6 +35,16 @@ class DefineRequest(BaseModel):
     model:         str = Field(default="sonnet", max_length=40)  # haiku, gemini, gpt-4-mini, sonnet
 
 
+class ProfileRequest(BaseModel):
+    # ROADMAP P1-5 Phase 1 — one free-text line plus two calibration fields.
+    # All optional/nullable: a partial profile (or none) is the common case.
+    about:         Optional[str] = Field(default=None, max_length=300)
+    english_level: Optional[str] = Field(default=None, max_length=40)
+    native_lang:   Optional[str] = Field(default=None, max_length=40)
+
+    model_config = {"extra": "ignore"}
+
+
 class FetchRequest(BaseModel):
     url: AnyHttpUrl
 

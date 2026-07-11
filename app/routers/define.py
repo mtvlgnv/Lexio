@@ -67,6 +67,35 @@ LANG_NAMES = {
     'ar':'Arabic','hi':'Hindi','nl':'Dutch','pl':'Polish','tr':'Turkish','sv':'Swedish',
 }
 
+def _profile_note(user: Optional[User]) -> str:
+    """ROADMAP P1-5 Phase 1: fold the signed-in reader's profile into the
+    prompt — domain sense + explanation complexity, never forced onto
+    words where it doesn't fit (the over-personalization guard is the
+    whole point of this feature; it's the #1 risk of getting it wrong).
+    Anonymous users and users with no profile set get an empty string.
+    """
+    if not user or not getattr(user, "profile_json", None):
+        return ""
+    try:
+        profile = json.loads(user.profile_json)
+    except (TypeError, ValueError):
+        return ""
+    about = (profile.get("about") or "").strip()
+    level = (profile.get("english_level") or "").strip()
+    if not about and not level:
+        return ""
+    parts = []
+    if about:
+        parts.append(f"Reader profile: {about}.")
+    if level:
+        parts.append(f"English level: {level}.")
+    parts.append(
+        "If the word has a domain sense plausible in the on-screen context AND relevant to "
+        "the reader's world, prefer/mention it; calibrate explanation complexity to their level. "
+        "NEVER force the reader's domain onto words where it doesn't fit the context."
+    )
+    return " " + " ".join(parts)
+
 VISION_MAX_IMAGE_BYTES = 6 * 1024 * 1024  # base64 inflates ~33%; keep the decoded image well under Gemini's limits
 
 async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
@@ -170,7 +199,7 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
         "Respond in JSON only, with these keys: word (the exact word/phrase at the ring), pos, ipa, "
         "definition, contextual (what it means in this specific sentence), why (why the author chose this word "
         "here), simpler, etymology, register. Use null for ipa, simpler, or etymology when uncertain. "
-        f"Keep each field to 1-2 short sentences.{deep_note}"
+        f"Keep each field to 1-2 short sentences.{deep_note}{_profile_note(user)}"
     )
 
     def _call_and_parse():
@@ -329,17 +358,18 @@ async def define_word(request: Request, req: DefineRequest, bg: BackgroundTasks,
     word_lit = json.dumps(req.word.strip()[:60])
     ctx_lit  = json.dumps(req.context.strip()[:3000])
     concise  = "Keep each field to 1-2 short sentences. Respond in JSON only."
+    profile_note = _profile_note(user)
 
     if is_phrase:
         prompt = (
             f"The phrase or sentence {word_lit} appears in this text: {ctx_lit}\n"
-            f"{lang_note} {concise}"
+            f"{lang_note} {concise}{profile_note}"
         )
         required_keys = ("definition", "contextual")
     else:
         prompt = (
             f"The word {word_lit} appears in this text: {ctx_lit}\n"
-            f"{lang_note} {concise} Use null for ipa, simpler, or etymology when uncertain."
+            f"{lang_note} {concise} Use null for ipa, simpler, or etymology when uncertain.{profile_note}"
         )
         required_keys = ("pos", "contextual")
 

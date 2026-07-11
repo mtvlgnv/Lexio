@@ -57,6 +57,10 @@ class User(Base):
     # last_digest_at throttles to at most one send per DIGEST_INTERVAL_DAYS.
     digest_opt_out   = Column(Integer, default=0, nullable=False)
     last_digest_at   = Column(DateTime, nullable=True)
+    # Reader profile (ROADMAP P1-5 Phase 1) — JSON blob:
+    # {about, english_level, native_lang}. Nullable; feeds /define prompts
+    # for signed-in users so domain sense/complexity land in their world.
+    profile_json     = Column(Text, nullable=True)
     created_at       = Column(DateTime, default=datetime.datetime.utcnow)
 
 class WordBankEntry(Base):

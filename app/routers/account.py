@@ -25,6 +25,7 @@ from app.ratelimit import limiter
 from app.config import (
     FREE_LOOKUP_LIMIT, ANON_LOOKUP_LIMIT, FREE_OCR_LIMIT, PRO_OCR_MONTHLY_CAP,
 )
+from app.schemas import ProfileRequest
 
 logger = logging.getLogger("lexio")
 router = APIRouter()
@@ -292,6 +293,39 @@ async def pro_status(user: User = Depends(current_user), db: DBSession = Depends
         "family_owner_name": family_owner_name,
         "member_since": member_since,         # "May 2026"
     }
+
+
+# ── /api/profile ───────────────────────────────────────────────────────────
+# ROADMAP P1-5 Phase 1 — the reader profile that feeds /define's prompt
+# (see app/routers/define.py's _profile_note()) so definitions land in the
+# reader's own world without ever being forced onto words that don't fit.
+
+@router.get("/api/profile")
+async def get_profile(user: User = Depends(current_user), db: DBSession = Depends(get_db)):
+    u = db.query(User).filter(User.id == user.id).first()
+    try:
+        profile = json.loads(u.profile_json) if (u and u.profile_json) else {}
+    except (TypeError, ValueError):
+        profile = {}
+    return {
+        "about":         profile.get("about"),
+        "english_level": profile.get("english_level"),
+        "native_lang":   profile.get("native_lang"),
+    }
+
+
+@router.put("/api/profile")
+async def put_profile(req: ProfileRequest, user: User = Depends(current_user), db: DBSession = Depends(get_db)):
+    u = db.query(User).filter(User.id == user.id).first()
+    if not u:
+        raise HTTPException(status_code=404, detail="User not found.")
+    u.profile_json = json.dumps({
+        "about":         (req.about or "").strip() or None,
+        "english_level": (req.english_level or "").strip() or None,
+        "native_lang":   (req.native_lang or "").strip() or None,
+    })
+    db.commit()
+    return {"ok": True}
 
 
 @router.get("/api/streak")

@@ -377,6 +377,51 @@
           <button class="btn primary hidden" id="upgrade-btn">Upgrade to Pro</button>
           <button class="btn" id="signout-btn">Sign out</button>
         </div>
+
+        <!-- ROADMAP P1-5 Phase 1: optional reader profile — folded into
+             /define's prompt server-side for domain sense + explanation
+             complexity. Never forced onto words it doesn't fit. -->
+        <div class="acct-card" id="profile-card" style="margin-top:18px;">
+          <div class="acct-name" style="font-size:0.95rem;">About you</div>
+          <div class="row-hint" style="margin:2px 0 12px;">
+            Optional. Helps definitions land in your world — e.g. a woodworker
+            gets the right sense of "stock" — without ever forcing it onto
+            words where it doesn't fit.
+          </div>
+          <textarea id="profile-about" rows="2" maxlength="300"
+            placeholder="What do you do / what are you into? e.g. furniture maker in Eindhoven, reads woodworking + business content"
+            style="width:100%;resize:vertical;font-family:inherit;font-size:0.82rem;color:var(--text);
+                   background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;"></textarea>
+          <div class="row">
+            <div class="row-main"><div class="row-label">English level</div></div>
+            <select id="profile-level">
+              <option value="">Not sure</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+              <option value="fluent">Fluent</option>
+              <option value="native">Native</option>
+            </select>
+          </div>
+          <div class="row" style="border-bottom:none;">
+            <div class="row-main"><div class="row-label">Native language</div></div>
+            <select id="profile-native">
+              <option value="">Prefer not to say</option>
+              <option value="en">English</option><option value="es">Español</option>
+              <option value="fr">Français</option><option value="de">Deutsch</option>
+              <option value="it">Italiano</option><option value="pt">Português</option>
+              <option value="ru">Русский</option><option value="zh">中文</option>
+              <option value="ja">日本語</option><option value="ko">한국어</option>
+              <option value="ar">العربية</option><option value="hi">हिन्दी</option>
+              <option value="nl">Nederlands</option><option value="pl">Polski</option>
+              <option value="tr">Türkçe</option><option value="sv">Svenska</option>
+            </select>
+          </div>
+          <div style="text-align:right;margin-top:10px;">
+            <span class="row-hint hidden" id="profile-saved-hint" style="color:var(--accent);margin-right:8px;">Saved ✓</span>
+            <button class="btn primary" id="profile-save-btn">Save</button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -636,10 +681,11 @@ async function renderAccount() {
 
   const hdrs = { Authorization: 'Bearer ' + tok };
   try {
-    const [proR, usageR, streakR] = await Promise.all([
+    const [proR, usageR, streakR, profileR] = await Promise.all([
       fetch(API_BASE + '/api/pro-status', { headers: hdrs }),
       fetch(API_BASE + '/api/usage', { headers: hdrs }),
       fetch(API_BASE + '/api/streak', { headers: hdrs }),
+      fetch(API_BASE + '/api/profile', { headers: hdrs }),
     ]);
     // A 401 here means the stored token is no longer valid server-side
     // (revoked, or this device's session was pruned) — NOT that the
@@ -676,8 +722,38 @@ async function renderAccount() {
       document.getElementById('stat-longest').textContent = s.longest_streak ?? 0;
       document.getElementById('stat-words').textContent   = s.total_words ?? loadWB().length;
     }
+    if (profileR.ok) {
+      const p = await profileR.json();
+      document.getElementById('profile-about').value  = p.about || '';
+      document.getElementById('profile-level').value  = p.english_level || '';
+      document.getElementById('profile-native').value = p.native_lang || '';
+    }
   } catch {}
 }
+
+document.getElementById('profile-save-btn').addEventListener('click', async () => {
+  const tok = token();
+  if (!tok) return;
+  const btn = document.getElementById('profile-save-btn');
+  const hint = document.getElementById('profile-saved-hint');
+  btn.disabled = true;
+  try {
+    const r = await fetch(API_BASE + '/api/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
+      body: JSON.stringify({
+        about:         document.getElementById('profile-about').value.trim() || null,
+        english_level: document.getElementById('profile-level').value || null,
+        native_lang:   document.getElementById('profile-native').value || null,
+      }),
+    });
+    if (r.ok) {
+      hint.classList.remove('hidden');
+      setTimeout(() => hint.classList.add('hidden'), 2500);
+    }
+  } catch {}
+  btn.disabled = false;
+});
 
 document.getElementById('signin-btn').addEventListener('click', () => window.lexioHub?.openSignIn());
 document.getElementById('upgrade-btn').addEventListener('click', () => window.lexioHub?.openPricing?.());

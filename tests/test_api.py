@@ -279,6 +279,86 @@ def test_wordbank_requires_auth():
     assert r.status_code == 401
 
 
+# ── B3/P1-5: reader profile ─────────────────────────────────────────────────
+
+def test_profile_requires_auth():
+    assert client.get("/api/profile").status_code == 401
+    assert client.put("/api/profile", json={"about": "x"}).status_code == 401
+
+
+def test_profile_defaults_empty_for_new_user():
+    _, token = _register()
+    r = client.get("/api/profile", headers={"Authorization": f"Bearer {token}"})
+    assert r.status_code == 200
+    assert r.json() == {"about": None, "english_level": None, "native_lang": None}
+
+
+def test_profile_get_put_roundtrip():
+    _, token = _register()
+    headers = {"Authorization": f"Bearer {token}"}
+    r = client.put("/api/profile", json={
+        "about": "furniture maker in Eindhoven, reads woodworking + business content",
+        "english_level": "advanced",
+        "native_lang": "nl",
+    }, headers=headers)
+    assert r.status_code == 200, r.text
+    r = client.get("/api/profile", headers=headers)
+    assert r.json() == {
+        "about": "furniture maker in Eindhoven, reads woodworking + business content",
+        "english_level": "advanced",
+        "native_lang": "nl",
+    }
+    # Clearing a field round-trips to null, not an empty string.
+    r = client.put("/api/profile", json={"about": "", "english_level": None, "native_lang": "nl"},
+                    headers=headers)
+    assert r.json() == {"ok": True}
+    r = client.get("/api/profile", headers=headers)
+    assert r.json()["about"] is None
+    assert r.json()["english_level"] is None
+
+
+def test_profile_note_folds_into_define_prompt():
+    """The over-personalization guard sentence and the reader's profile
+    text must both reach the model — captured via the mocked _call_groq's
+    prompt argument, since that's the only place the string is visible."""
+    from app.routers import define as define_router
+
+    _, token = _register()
+    client.put("/api/profile", json={"about": "a professional woodworker", "english_level": "advanced"},
+               headers={"Authorization": f"Bearer {token}"})
+
+    seen_prompts = []
+    orig = define_router.ai._call_groq
+    define_router.ai._call_groq = lambda prompt, phrase=False: (seen_prompts.append(prompt), VALID_AI_JSON)[1]
+    try:
+        r = _define(word="stock", model="fast", token=token)
+        assert r.status_code == 200, r.text
+    finally:
+        define_router.ai._call_groq = orig
+
+    assert len(seen_prompts) == 1
+    assert "a professional woodworker" in seen_prompts[0]
+    assert "English level: advanced" in seen_prompts[0]
+    assert "NEVER force the reader's domain" in seen_prompts[0]
+
+
+def test_profile_note_empty_for_user_with_no_profile():
+    from app.routers import define as define_router
+
+    _, token = _register()   # never sets a profile
+    seen_prompts = []
+    orig = define_router.ai._call_groq
+    define_router.ai._call_groq = lambda prompt, phrase=False: (seen_prompts.append(prompt), VALID_AI_JSON)[1]
+    try:
+        r = _define(word="stock", model="fast", token=token)
+        assert r.status_code == 200, r.text
+    finally:
+        define_router.ai._call_groq = orig
+
+    assert len(seen_prompts) == 1
+    assert "Reader profile" not in seen_prompts[0]
+
+
 # ── Admin gate ───────────────────────────────────────────────────────────────
 
 def test_admin_endpoints_require_key():
