@@ -33,6 +33,10 @@ class DefineRequest(BaseModel):
     image_mime:    str = Field(default="image/png", max_length=40)
     lang:          str = Field(default="auto", max_length=40)
     model:         str = Field(default="sonnet", max_length=40)  # haiku, gemini, gpt-4-mini, sonnet
+    # B14: 'word' (default) identifies + defines the word at the pointer;
+    # 'sentence' explains the whole on-screen sentence instead. Image
+    # lookups only — text lookups already have the full sentence as context.
+    intent:        str = Field(default="word", pattern="^(word|sentence)$")
 
 
 class ProfileRequest(BaseModel):

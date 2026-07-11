@@ -176,31 +176,55 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
             "is written in. Keep structural/label fields (pos, ipa, simpler, register) in English."
         )
 
-    # Deep ("Think deeper") adds two extra keys on top of the same base
-    # ask — nuance (connotation/register vs. near synonyms — why THIS word)
-    # and examples (2 short sentences reusing the word in the same sense).
-    deep_note = (
-        " Also include nuance (why this exact word was chosen over close synonyms — "
-        "connotation, register, precision) and examples (a JSON array of exactly 2 short "
-        "original sentences reusing the word in this same sense)."
-        if actual_model == "deep" else ""
-    )
-    prompt = (
-        "This is a screenshot of whatever the user is currently reading on their screen. "
-        "A magenta ring (a small circle with a white halo) has been drawn on the image at the exact point "
-        "of the user's pointer. Identify the single word the ring is centered on — the word directly under "
-        "or immediately touching the ring. If that word is part of a fixed multi-word unit (a phrasal verb, "
-        "idiom, or proper name), you may return the whole unit. If text at the ring appears visibly "
-        "selected/highlighted, that selection is the target. "
-        "IMPORTANT: never pick a more prominent, interesting, or central-looking word from elsewhere in the "
-        "screenshot — only the word at the ring matters; everything else is unrelated background. "
-        "Then define that word as it is used in its surrounding sentence on screen. "
-        f"{lang_note} "
-        "Respond in JSON only, with these keys: word (the exact word/phrase at the ring), pos, ipa, "
-        "definition, contextual (what it means in this specific sentence), why (why the author chose this word "
-        "here), simpler, etymology, register. Use null for ipa, simpler, or etymology when uncertain. "
-        f"Keep each field to 1-2 short sentences.{deep_note}{_profile_note(user)}"
-    )
+    if req.intent == "sentence":
+        # B14: the blocker is sometimes the whole sentence, not one word —
+        # idiomatic, grammatically knotted. Reuses the SAME capture (no new
+        # screenshot) and the same billing weight as a normal image lookup;
+        # only the prompt/response shape changes. Kept in the SAME
+        # word/pos/contextual key shape the panel already renders, so no
+        # new UI branch is needed — "word" is a fixed label, "contextual"
+        # carries the actual plain-language explanation.
+        if lang_name:
+            sentence_lang_note = f"Write the explanation entirely in {lang_name}."
+        else:
+            sentence_lang_note = "Write the explanation in the same language the sentence itself is written in."
+        prompt = (
+            "This is a screenshot of whatever the user is currently reading on their screen. "
+            "A magenta ring (a small circle with a white halo) marks roughly where the user's pointer is — "
+            "identify the full sentence at or immediately around that point (not just one word). "
+            "Explain in plain language what that whole sentence means — untangle any idiom, grammatical "
+            "knot, or dense phrasing a fluent-but-not-native reader might trip on. "
+            f"{sentence_lang_note} "
+            "Respond in JSON only, with these keys: word (always the literal string \"This sentence\"), "
+            "pos (always null), contextual (the plain-language explanation, 2-4 sentences). "
+            f"{_profile_note(user)}"
+        )
+    else:
+        # Deep ("Think deeper") adds two extra keys on top of the same base
+        # ask — nuance (connotation/register vs. near synonyms — why THIS word)
+        # and examples (2 short sentences reusing the word in the same sense).
+        deep_note = (
+            " Also include nuance (why this exact word was chosen over close synonyms — "
+            "connotation, register, precision) and examples (a JSON array of exactly 2 short "
+            "original sentences reusing the word in this same sense)."
+            if actual_model == "deep" else ""
+        )
+        prompt = (
+            "This is a screenshot of whatever the user is currently reading on their screen. "
+            "A magenta ring (a small circle with a white halo) has been drawn on the image at the exact point "
+            "of the user's pointer. Identify the single word the ring is centered on — the word directly under "
+            "or immediately touching the ring. If that word is part of a fixed multi-word unit (a phrasal verb, "
+            "idiom, or proper name), you may return the whole unit. If text at the ring appears visibly "
+            "selected/highlighted, that selection is the target. "
+            "IMPORTANT: never pick a more prominent, interesting, or central-looking word from elsewhere in the "
+            "screenshot — only the word at the ring matters; everything else is unrelated background. "
+            "Then define that word as it is used in its surrounding sentence on screen. "
+            f"{lang_note} "
+            "Respond in JSON only, with these keys: word (the exact word/phrase at the ring), pos, ipa, "
+            "definition, contextual (what it means in this specific sentence), why (why the author chose this word "
+            "here), simpler, etymology, register. Use null for ipa, simpler, or etymology when uncertain. "
+            f"Keep each field to 1-2 short sentences.{deep_note}{_profile_note(user)}"
+        )
 
     def _call_and_parse():
         if actual_model == "deep":

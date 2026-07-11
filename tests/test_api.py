@@ -87,13 +87,13 @@ def _define(word="ephemeral", model="fast", ip=None, extra_headers=None, token=N
     )
 
 
-def _define_image(model="balanced", ip=None, token=None):
+def _define_image(model="balanced", ip=None, token=None, intent="word"):
     headers = {"X-Real-IP": ip or _ip()}
     if token:
         headers["Authorization"] = f"Bearer {token}"
     return client.post(
         "/define",
-        json={"image_base64": TINY_PNG_B64, "image_mime": "image/png", "model": model},
+        json={"image_base64": TINY_PNG_B64, "image_mime": "image/png", "model": model, "intent": intent},
         headers=headers,
     )
 
@@ -160,6 +160,38 @@ def test_pro_user_can_use_image_deep():
     body = r.json()
     assert body["nuance"] == "chosen over 'fleeting' for its literary register"
     assert body["examples"] == ["The fame was ephemeral.", "An ephemeral bloom."]
+
+
+# ── B14: sentence mode ───────────────────────────────────────────────────────
+
+def test_sentence_mode_ungated_same_as_word_mode():
+    # intent='sentence' doesn't change the Pro gate — balanced stays free,
+    # deep still requires Pro, exactly like word mode.
+    r = _define_image(model="balanced", intent="sentence")
+    assert r.status_code == 200, r.text
+    r = _define_image(model="deep", intent="sentence")
+    assert r.status_code == 403
+    assert r.json()["detail"]["code"] == "pro_required"
+
+
+def test_sentence_mode_sends_sentence_prompt():
+    from app.routers import define as define_router
+
+    seen_prompts = []
+    orig = define_router.ai._call_google_vision
+    define_router.ai._call_google_vision = lambda prompt, image_bytes, mime_type="image/png": (
+        seen_prompts.append(prompt), VALID_IMAGE_AI_JSON)[1]
+    try:
+        r = _define_image(model="balanced", intent="sentence")
+        assert r.status_code == 200, r.text
+    finally:
+        define_router.ai._call_google_vision = orig
+
+    assert len(seen_prompts) == 1
+    assert "whole sentence" in seen_prompts[0] or "full sentence" in seen_prompts[0]
+    assert "This sentence" in seen_prompts[0]
+    # The word-mode-only instructions must NOT leak into the sentence prompt.
+    assert "magenta ring (a small circle with a white halo) has been drawn on the image at the exact point" not in seen_prompts[0]
 
 
 def test_pro_user_can_use_deep():

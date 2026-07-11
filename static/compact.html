@@ -335,6 +335,17 @@
       font-weight: 300;
     }
 
+    /* B14: sentence mode — a quiet text link, not a full button, so it
+       reads as a secondary "go deeper" affordance under the definition
+       rather than competing with Save/Copy/Think-deeper below. */
+    #sentence-mode-btn {
+      display: block;
+      background: none; border: none; padding: 0; margin: 2px 0 0;
+      font-family: inherit; font-size: 0.76rem; color: var(--accent);
+      text-decoration: underline; text-underline-offset: 2px; cursor: pointer;
+    }
+    #sentence-mode-btn:hover { color: var(--accent-dk); }
+
     #def-why {
       font-size: 0.8rem;
       line-height: 1.6;
@@ -579,6 +590,7 @@
   <p id="context-note" class="hidden" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin:-4px 0 0;"></p>
   <p id="cached-note" class="hidden" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin:-4px 0 0;">From Recent — <button onclick="refreshCached()" style="all:unset;cursor:pointer;color:var(--accent);font-weight:600;">Refresh</button></p>
   <p id="def-contextual"></p>
+  <button id="sentence-mode-btn" class="hidden" onclick="explainSentence()">What does this sentence mean?</button>
   <p id="def-definition" class="hidden"></p>
   <p id="def-simpler" class="hidden"></p>
   <p id="def-why" class="hidden"></p>
@@ -666,6 +678,7 @@ let cache = new Map();
 let currentResult = null;
 let lastImage = null;   // {b64, mime} of the current screen-point capture — lets a language switch re-run it
 let lastImageModel = null;   // B2: which model tier produced the current image-mode result — gates the Think Deeper button
+let lastIntent = null;   // B14: 'word' (default) or 'sentence' — gates the "What does this sentence mean?" link
 let lastCachedWord = null;   // B11: word behind the current cached (Recent-tab) render, for the Refresh action
 
 // ── Model preference ────────────────────────────────────────
@@ -990,6 +1003,7 @@ function lexioDesktopInputCached(word, ctx, data) {
   context = ctx || w;
   lastImage = null;   // a Recent-tab word relookup, not an image-mode result — no capture to escalate
   lastImageModel = null;
+  lastIntent = null;
   lastCachedWord = w;
   document.body.classList.add('direct');
   document.getElementById('new-btn').classList.remove('hidden');
@@ -1058,6 +1072,7 @@ function lexioReset() {
   pendingContextWord = null;
   lastImage = null;
   lastImageModel = null;
+  lastIntent = null;
   exitDirectQuiet();
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('error-msg').classList.add('hidden');
@@ -1179,6 +1194,7 @@ async function fetchDef(word) {
   hideError();
   lastImage = null;   // a language switch should now re-run THIS word, not an old capture
   lastImageModel = null;
+  lastIntent = null;
   lastCachedWord = null;
   document.getElementById('cached-note').classList.add('hidden');
   const model = getModel();
@@ -1246,13 +1262,17 @@ async function fetchDef(word) {
 // Deeper button re-running the current capture at 'deep') — it does NOT
 // touch the panel's persistent model toggle. Omitted, falls back to
 // whatever the toggle is currently set to, same as before.
-async function fetchDefFromImage(imageBase64, imageMime = 'image/png', modelOverride) {
+// B14: `intent` ('word' default, or 'sentence') asks the backend to
+// explain the whole on-screen sentence instead of identifying one word —
+// same capture, same billing weight, different prompt/response shape.
+async function fetchDefFromImage(imageBase64, imageMime = 'image/png', modelOverride, intent) {
   hideError();
   lastImage = { b64: imageBase64, mime: imageMime };   // kept so a language switch can re-run this capture
   lastCachedWord = null;
   document.getElementById('cached-note').classList.add('hidden');
   const model = modelOverride || getModel();
   lastImageModel = model;
+  lastIntent = intent || 'word';
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);   // vision calls run slower than text-only
   try {
@@ -1262,7 +1282,7 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png', modelOver
     const resp = await fetch(API_BASE + '/define', {
       method: 'POST',
       headers: hdrs,
-      body: JSON.stringify({ image_base64: imageBase64, image_mime: imageMime, lang: getLang(), model }),
+      body: JSON.stringify({ image_base64: imageBase64, image_mime: imageMime, lang: getLang(), model, intent: lastIntent }),
       signal: controller.signal,
     });
     if (!resp.ok) {
@@ -1280,14 +1300,26 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png', modelOver
     context = data.contextual || word;   // no separate context text in this mode; keep it non-empty for the panel
     showResult(word || '—', data);
     showCaptureThumb(`data:${imageMime};base64,${imageBase64}`);
-    // B11: no image data in this payload on purpose — Recent only keeps
-    // the text fields, so a screen capture never bloats the local store.
-    console.log('LEXIO_LOOKUP::' + JSON.stringify({ word, data, context: (context || '').slice(0, 300) }));
+    // B14: a "This sentence" fake word entry has no business in Recent —
+    // only report real word-mode lookups.
+    if (lastIntent !== 'sentence') {
+      // B11: no image data in this payload on purpose — Recent only keeps
+      // the text fields, so a screen capture never bloats the local store.
+      console.log('LEXIO_LOOKUP::' + JSON.stringify({ word, data, context: (context || '').slice(0, 300) }));
+    }
   } catch (err) {
     showError(err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message);
   } finally {
     clearTimeout(timeoutId);
   }
+}
+
+// B14: re-runs the SAME retained capture asking for a plain-language
+// explanation of the whole sentence instead of a single word's definition.
+function explainSentence() {
+  if (!lastImage) return;
+  renderLoading('Explaining the sentence…', `data:${lastImage.mime};base64,${lastImage.b64}`);
+  fetchDefFromImage(lastImage.b64, lastImage.mime, lastImageModel, 'sentence');
 }
 
 // B2: "Think deeper ✦" — re-runs the SAME retained capture at the 'deep'
@@ -1414,10 +1446,16 @@ function showResult(word, data) {
     examplesEl.classList.remove('hidden');
   } else { examplesEl.classList.add('hidden'); }
 
-  // Visible only on image-mode results (a captured screen point, not a
-  // text-token or Recent-tab relookup) that aren't already the deep tier.
+  // Visible only on image-mode, word-intent results (a captured screen
+  // point, not a text-token/Recent-tab relookup or a B14 sentence
+  // explanation) that aren't already the deep tier.
   document.getElementById('think-deeper-btn').classList.toggle(
-    'hidden', !(lastImage && lastImageModel !== 'deep'));
+    'hidden', !(lastImage && lastImageModel !== 'deep' && lastIntent !== 'sentence'));
+
+  // B14: "What does this sentence mean?" — image-mode only, and only on a
+  // word-intent result (asking it again on a sentence explanation is moot).
+  document.getElementById('sentence-mode-btn').classList.toggle(
+    'hidden', !(lastImage && lastIntent !== 'sentence'));
 
   // B13: every new result gets a fresh feedback prompt — a "Thanks" left
   // over from a previous lookup must never carry onto this one.
