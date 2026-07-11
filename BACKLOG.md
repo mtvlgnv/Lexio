@@ -15,14 +15,14 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | B2 | Thinking mode ("Think deeper" button) | M | — | open |
 | B3 | Reader profile Phase 1 (explicit) | M | — | open |
 | B4 | Profile interview UI (Phase 1.5) | M | B3 | open |
-| B5 | Trending-words card on Hub Home | S | — | open |
+| B5 | Trending-words card on Hub Home | S | — | ✅ done 2026-07-11 |
 | B6 | Dark-mode audit + fixes (desktop surfaces) | M | — | ✅ done 2026-07-11 |
 | B7 | def-actions overflow redesign | S | — | ✅ done 2026-07-10 |
 | B8 | Unify the two loading layouts | S | — | ✅ done 2026-07-10 |
 | B9 | Word Bank row hover + delete affordance | XS | — | ✅ done 2026-07-10 |
 | B10 | Pill tooltip copy (click vs double-tap) | XS | — | ✅ done 2026-07-10 |
 | B11 | Recent tab: store full definitions, add per-row Save | M | — | open |
-| B12 | "Say it" button in the panel (pronunciation) | S | — | open |
+| B12 | "Say it" button in the panel (pronunciation) | S | — | ✅ done 2026-07-11 |
 | B13 | Definition feedback (👍/👎 → server log) | M | — | open |
 | B14 | Sentence mode ("explain this whole sentence") | M | — | open |
 | B15 | Desktop analytics (privacy-respecting PostHog) | M | — | open |
