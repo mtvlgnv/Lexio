@@ -1789,7 +1789,7 @@
     }
     .lp-trending-month {
       font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--accent);
+      text-transform: uppercase; color: #ffffff;
     }
     .lp-trending-list {
       display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 560px;
@@ -1879,18 +1879,27 @@
     }
     .lp-trending-compact .lp-trending-list,
     .lp-trending-compact .lp-trending-skeleton {
-      max-width: none; gap: 8px;
-      display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center;
+      max-width: none; gap: 12px;
+      display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start;
+      flex: 1;
       padding-top: 6px;
     }
     .lp-trending-compact .lp-trending-item {
       width: auto;
       padding: 8px 16px; gap: 6px;
-      background: rgba(255,255,255,0.4);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.5);
-      border-radius: 999px;
-      transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(12px) saturate(140%); -webkit-backdrop-filter: blur(12px) saturate(140%);
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.7);
+      border-radius: 18px; /* Changed to match feature cards when stretched */
+      transition: transform 0.2s, background 0.2s, box-shadow 0.2s, border-color 0.2s;
+      flex: 1; /* Stretch vertically */
+    }
+    .lp-trending-compact .lp-trending-item:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.75);
+      border-color: rgba(255,255,255,0.95);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9);
     }
     .lp-trending-compact .lp-trending-item:hover {
       transform: translateY(-2px);
@@ -2197,20 +2206,20 @@
     /* Features */
     /* twin row wrapper */
     .lp-twin {
-      display: flex; flex-direction: row; align-items: start;
+      display: flex; flex-direction: row; align-items: stretch;
       gap: 22px; padding: 32px 64px 64px 32px;
       border-top: 1px solid var(--border);
       position: relative; overflow: hidden;
       background: var(--bg);
     }
     .lp-twin .lp-features { border-top: none; flex: 1; align-items: stretch; }
-    .lp-twin .lp-models   { border-top: none; flex: 1; align-items: stretch; }
+    .lp-twin .lp-models   { border-top: none; align-items: stretch; }
     /* Right column holds two stacked glass boxes (modes + trending). */
-    .lp-twin-right { display: flex; flex-direction: column; gap: 22px; flex: 1; min-width: 0; justify-content: space-between; }
+    .lp-twin-right { display: grid; grid-template-rows: auto 1fr; gap: 22px; flex: 1; min-width: 0; }
     /* Frosted-glass panel — warm cream, opaque enough that text reads on a
        consistent surface rather than directly on the colourful gradient. */
     .lp-glass {
-      background: rgba(255,250,244,0.66);
+      background: transparent;
       -webkit-backdrop-filter: blur(24px) saturate(125%);
       backdrop-filter: blur(24px) saturate(125%);
       border: 1px solid rgba(255,255,255,0.65);
@@ -2218,31 +2227,15 @@
       box-shadow: 0 12px 44px rgba(70,35,10,0.16), inset 0 1px 0 rgba(255,255,255,0.7);
     }
     [data-theme="dark"] .lp-glass {
-      background: rgba(28,24,22,0.62);
+      background: transparent;
       border-color: rgba(255,255,255,0.12);
       box-shadow: 0 12px 44px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.10);
     }
-    /* Section titles read dark on the cream panel (was white on gradient). */
-    .lp-twin .lp-section-title,
-    .lp-twin .lp-section-title em { color: var(--text); }
-    [data-theme="dark"] .lp-twin .lp-section-title,
-    [data-theme="dark"] .lp-twin .lp-section-title em { color: var(--text); }
-    /* Inner feature cards: soft solid so they sit cleanly on the cream panel. */
-    .lp-glass .lp-feature {
-      background: rgba(255,255,255,0.55);
-      border-color: rgba(255,255,255,0.8);
-      backdrop-filter: none; -webkit-backdrop-filter: none;
-    }
-    [data-theme="dark"] .lp-glass .lp-feature {
-      background: rgba(255,255,255,0.06);
-      border-color: rgba(255,255,255,0.12);
-    }
+    /* Removed title color overrides and feature card background overrides */
     /* "…looking up in June" — the month in a fancy accent gradient. */
     .lp-month-accent {
       font-style: italic;
-      background: linear-gradient(90deg, var(--accent) 0%, #d8567a 100%);
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent; color: transparent;
+      color: #ffffff;
     }
     .lp-twin .lp-features-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
     .lp-twin .lp-section-title {
@@ -2259,7 +2252,7 @@
     }
     .lp-features-grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
-      grid-auto-rows: minmax(130px, auto); flex: 1;
+      grid-auto-rows: 1fr; flex: 1;
       gap: 14px; width: 100%; max-width: 900px;
     }
     .lp-feature {
@@ -2269,13 +2262,13 @@
       border: 1px solid rgba(255,255,255,0.8);
       box-shadow: 0 4px 20px rgba(0,0,0,0.03), inset 0 1px 0 rgba(255,255,255,0.7);
       border-radius: 18px; display: flex; flex-direction: column; gap: 10px;
-      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s, background 0.25s;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.25s, border-color 0.25s, box-shadow 0.25s;
     }
     .lp-feature:hover { 
       transform: translateY(-4px); 
-      box-shadow: 0 12px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
-      border-color: rgba(255,255,255,0.95);
       background: rgba(255,255,255,0.75);
+      border-color: rgba(255,255,255,0.95);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
     }
     
     /* Bento Box specific sizing */
@@ -2287,17 +2280,12 @@
     .lp-feature:nth-child(4) .lp-feature-text { flex: 1; }
 
     .lp-feature-icon {
-      width: 48px; height: 48px; border-radius: 999px;
-      background: rgba(255,255,255,0.4);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.6);
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+      width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s, background 0.2s;
+      transition: transform 0.2s;
     }
     .lp-feature:hover .lp-feature-icon { 
       transform: scale(1.05); 
-      background: rgba(255,255,255,0.6);
     }
     .lp-feature-icon svg { color: var(--text-mid); width: 24px; height: 24px; }
     .lp-feature h3 { font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 2px; }

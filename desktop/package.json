@@ -9,7 +9,7 @@
     "create-icon": "node_modules/.bin/electron create-icon.js",
     "build-icons": "bash scripts/build-icons.sh",
     "build-ocr": "bash native/build-ocr.sh",
-    "dist": "npm run create-icon && npm run build-icons && npm run build-ocr && electron-builder --mac --arm64"
+    "dist": "npm run build-icons && npm run build-ocr && electron-builder --mac --arm64"
   },
   "devDependencies": {
     "electron": "^43.0.0",

@@ -16,7 +16,7 @@ if (!TRAY_ICON.isEmpty()) TRAY_ICON.setTemplateImage(true);
 // shown when the tray image is empty — a 1×1 transparent PNG still counts as
 // an image, so setTitle('Lx') was silently ignored.
 function menuBarTrayIcon() {
-  return nativeImage.createEmpty();
+  return TRAY_ICON;
 }
 
 module.exports = { BLANK_ICON, TRAY_ICON, menuBarTrayIcon };

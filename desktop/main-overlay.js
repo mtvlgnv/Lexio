@@ -60,7 +60,10 @@ app.setName('Lexio Glance');
 // but the panel was invisible everywhere except that one Space. The Hub
 // is still fully reachable via the tray icon; that's not worth trading
 // away "the pill works in every app," which is the actual product.
-if (process.platform === 'darwin') app.dock.hide();
+if (process.platform === 'darwin') {
+  app.dock.setIcon(path.join(__dirname, 'build', 'icon.png'));
+  app.dock.hide();
+}
 
 let win  = null;
 let tray = null;
@@ -396,8 +399,14 @@ function createHomeWindow() {
     show: false,
   });
   homeWin.loadFile(path.join(__dirname, 'home.html'));
-  homeWin.once('ready-to-show', () => homeWin.show());
-  homeWin.on('closed', () => { homeWin = null; });
+  homeWin.once('ready-to-show', () => {
+    if (process.platform === 'darwin') app.dock.show();
+    homeWin.show();
+  });
+  homeWin.on('closed', () => {
+    homeWin = null;
+    if (process.platform === 'darwin') app.dock.hide();
+  });
 }
 
 /* ── Window ─────────────────────────────────────────────────────── */
@@ -659,7 +668,7 @@ function createTray() {
   tray = new Tray(menuBarTrayIcon());
   // A 1×1 transparent tray image is invisible on its own — the label is what
   // users actually see in the menu bar (same pattern as Lexio Mini).
-  if (process.platform === 'darwin') tray.setTitle('Lx');
+
   updateTrayToolTip();
   const menu = Menu.buildFromTemplate([
     { label: 'Open Lexio',        click: () => expand(undefined, { capture: false }) },
