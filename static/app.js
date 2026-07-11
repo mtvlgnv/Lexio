@@ -2956,6 +2956,21 @@ async function resendVerifyEmail(opts) {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + token },
     });
+
+    try {
+      const data = await r.clone().json();
+      if (data && (data.auto_verified || data.already_verified)) {
+        try {
+          const u = JSON.parse(localStorage.getItem('lexio_user') || 'null');
+          if (u) { u.email_verified = true; localStorage.setItem('lexio_user', JSON.stringify(u)); }
+        } catch { /* ignore */ }
+        const cb = _verifyAfterCallback;
+        closeVerifyEmailModal();
+        if (cb) setTimeout(cb, 60);
+        return;
+      }
+    } catch { /* ignore non-JSON */ }
+
     if (btn && !opts.silent) {
       if (r.ok) { btn.textContent = 'Code sent — check your inbox'; }
       else      { btn.textContent = "Couldn't send — try again in a minute"; }
