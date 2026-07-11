@@ -352,6 +352,28 @@
       font-family: var(--font-display);
     }
 
+    /* B2: Think Deeper's two extra sections — nuance mirrors def-why's
+       "why this word" framing, examples is a short reusable-in-sentence list. */
+    #def-nuance {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--text-mid);
+    }
+    #def-nuance::before {
+      content: 'Nuance: ';
+      color: var(--muted);
+      font-style: italic;
+      font-family: var(--font-display);
+    }
+    #def-examples {
+      font-size: 0.8rem;
+      line-height: 1.6;
+      color: var(--text-mid);
+      margin: 0;
+      padding-left: 18px;
+    }
+    #def-examples li { margin-bottom: 2px; }
+
     /* "What Lexio saw" capture thumbnail (screen-point lookups only) */
     #def-capture-wrap { margin-top: 2px; }
     .def-capture-label {
@@ -404,12 +426,26 @@
       transition: background 0.12s, color 0.12s;
     }
     #copy-btn:hover, #new-btn:hover { background: var(--bg); color: var(--text); }
+    /* B2: a Pro-flavored escalation, not a plain utility button — accent
+       border/text distinguishes it from Save/Copy/New at a glance. */
+    #think-deeper-btn {
+      background: none;
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-family: inherit;
+      font-size: 0.7rem;
+      color: var(--accent);
+      cursor: pointer;
+      transition: background 0.12s, color 0.12s;
+    }
+    #think-deeper-btn:hover { background: var(--accent-lt); }
     /* Visible keyboard focus — tab order through the panel follows DOM
        order (Save → Copy → New lookup → language → Say it), which already
        matches the natural priority; this just makes it visible. Browser
        default outlines were invisible against the panel's warm surfaces. */
     #save-btn:focus-visible, #copy-btn:focus-visible, #new-btn:focus-visible,
-    #lang-select:focus-visible, #say-btn:focus-visible {
+    #lang-select:focus-visible, #say-btn:focus-visible, #think-deeper-btn:focus-visible {
       outline: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
       outline-offset: 2px;
     }
@@ -530,6 +566,8 @@
   <p id="def-simpler" class="hidden"></p>
   <p id="def-why" class="hidden"></p>
   <p id="def-etymology" class="hidden"></p>
+  <p id="def-nuance" class="hidden"></p>
+  <ul id="def-examples" class="hidden"></ul>
   <div id="def-capture-wrap" class="hidden">
     <span class="def-capture-label">What Lexio saw</span>
     <img id="def-capture" alt="Captured area of your screen" onclick="this.classList.toggle('expanded')" />
@@ -541,6 +579,7 @@
       <button id="new-btn" class="hidden" onclick="exitDirect()">New lookup</button>
     </div>
     <div class="def-actions-row def-actions-row-secondary">
+      <button id="think-deeper-btn" class="hidden" onclick="thinkDeeper()" title="Re-run this lookup with a slower, more thoughtful model">Think deeper ✦</button>
       <select id="lang-select" title="Language for definitions">
         <option value="auto">Auto</option>
         <option value="en">English</option>
@@ -603,6 +642,7 @@ let activeToken = null;
 let cache = new Map();
 let currentResult = null;
 let lastImage = null;   // {b64, mime} of the current screen-point capture — lets a language switch re-run it
+let lastImageModel = null;   // B2: which model tier produced the current image-mode result — gates the Think Deeper button
 let lastCachedWord = null;   // B11: word behind the current cached (Recent-tab) render, for the Refresh action
 
 // ── Model preference ────────────────────────────────────────
@@ -925,6 +965,8 @@ function lexioDesktopInputCached(word, ctx, data) {
   pendingContextWord = null;
   clearTimeout(contextTimeoutId);
   context = ctx || w;
+  lastImage = null;   // a Recent-tab word relookup, not an image-mode result — no capture to escalate
+  lastImageModel = null;
   lastCachedWord = w;
   document.body.classList.add('direct');
   document.getElementById('new-btn').classList.remove('hidden');
@@ -992,6 +1034,7 @@ function lexioReset() {
   clearTimeout(contextTimeoutId);
   pendingContextWord = null;
   lastImage = null;
+  lastImageModel = null;
   exitDirectQuiet();
   document.getElementById('loading').classList.add('hidden');
   document.getElementById('error-msg').classList.add('hidden');
@@ -1112,6 +1155,7 @@ function handleClick(span, word) {
 async function fetchDef(word) {
   hideError();
   lastImage = null;   // a language switch should now re-run THIS word, not an old capture
+  lastImageModel = null;
   lastCachedWord = null;
   document.getElementById('cached-note').classList.add('hidden');
   const model = getModel();
@@ -1175,12 +1219,17 @@ async function fetchDef(word) {
 // fetchDef(), where the caller already knows it). Not cached: a screen
 // capture is unique to the moment it was taken, unlike a repeatable
 // word+context pair.
-async function fetchDefFromImage(imageBase64, imageMime = 'image/png') {
+// B2: `modelOverride`, when passed, is a one-off escalation (the Think
+// Deeper button re-running the current capture at 'deep') — it does NOT
+// touch the panel's persistent model toggle. Omitted, falls back to
+// whatever the toggle is currently set to, same as before.
+async function fetchDefFromImage(imageBase64, imageMime = 'image/png', modelOverride) {
   hideError();
   lastImage = { b64: imageBase64, mime: imageMime };   // kept so a language switch can re-run this capture
   lastCachedWord = null;
   document.getElementById('cached-note').classList.add('hidden');
-  const model = getModel();
+  const model = modelOverride || getModel();
+  lastImageModel = model;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);   // vision calls run slower than text-only
   try {
@@ -1196,6 +1245,9 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png') {
     if (!resp.ok) {
       if (resp.status === 402) {
         throw new Error('Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.');
+      }
+      if (resp.status === 403) {
+        throw new Error('This model requires a Pro plan. Upgrade at lexio.site.');
       }
       const e = await resp.json().catch(() => ({ detail: resp.statusText }));
       throw new Error(e.detail || `HTTP ${resp.status}`);
@@ -1213,6 +1265,16 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png') {
   } finally {
     clearTimeout(timeoutId);
   }
+}
+
+// B2: "Think deeper ✦" — re-runs the SAME retained capture at the 'deep'
+// tier instead of the panel's normal model toggle. Not a persistent mode
+// switch (per ROADMAP.md P1-4): the toggle itself is untouched, so the
+// NEXT lookup still uses whatever tier the user normally has selected.
+function thinkDeeper() {
+  if (!lastImage) return;
+  renderLoading('Thinking…', `data:${lastImage.mime};base64,${lastImage.b64}`);
+  fetchDefFromImage(lastImage.b64, lastImage.mime, 'deep');
 }
 
 /* ── "What Lexio saw" — the captured screenshot (marker ring included)
@@ -1313,6 +1375,27 @@ function showResult(word, data) {
     simpEl.textContent = data.simpler; simpEl.classList.remove('hidden');
   } else { simpEl.classList.add('hidden'); }
 
+  // B2 ("Think deeper") — only present on deep image-mode results.
+  const nuanceEl = document.getElementById('def-nuance');
+  if (data.nuance && data.nuance !== 'null') {
+    nuanceEl.textContent = data.nuance; nuanceEl.classList.remove('hidden');
+  } else { nuanceEl.classList.add('hidden'); }
+
+  const examplesEl = document.getElementById('def-examples');
+  if (Array.isArray(data.examples) && data.examples.length) {
+    examplesEl.replaceChildren(...data.examples.map((ex) => {
+      const li = document.createElement('li');
+      li.textContent = ex;
+      return li;
+    }));
+    examplesEl.classList.remove('hidden');
+  } else { examplesEl.classList.add('hidden'); }
+
+  // Visible only on image-mode results (a captured screen point, not a
+  // text-token or Recent-tab relookup) that aren't already the deep tier.
+  document.getElementById('think-deeper-btn').classList.toggle(
+    'hidden', !(lastImage && lastImageModel !== 'deep'));
+
   document.getElementById('def-panel').classList.remove('hidden');
 }
 
@@ -1361,6 +1444,9 @@ function copyDef() {
   if (data.simpler && data.simpler !== 'null') lines.push(`Simpler: ${data.simpler}`);
   if (data.why)                          lines.push('', data.why);
   if (data.etymology && data.etymology !== 'null') lines.push('', '↳ ' + data.etymology);
+  if (data.nuance && data.nuance !== 'null') lines.push('', `Nuance: ${data.nuance}`);
+  if (Array.isArray(data.examples) && data.examples.length)
+    lines.push('', ...data.examples.map((ex) => `• ${ex}`));
   navigator.clipboard.writeText(lines.join('\n')).then(() => {
     const btn = document.getElementById('copy-btn');
     btn.textContent = '✓ Copied';

@@ -30,6 +30,32 @@ VALID_AI_JSON = json.dumps({
 })
 
 
+VALID_IMAGE_AI_JSON = json.dumps({
+    "word": "ephemeral",
+    "pos": "noun",
+    "ipa": "/tɛst/",
+    "definition": "a general definition",
+    "contextual": "the contextual meaning",
+    "why": "because",
+    "simpler": "test",
+    "etymology": "from Latin",
+    "register": "neutral",
+})
+
+VALID_DEEP_IMAGE_AI_JSON = json.dumps({
+    **json.loads(VALID_IMAGE_AI_JSON),
+    "nuance": "chosen over 'fleeting' for its literary register",
+    "examples": ["The fame was ephemeral.", "An ephemeral bloom."],
+})
+
+# 1x1 transparent PNG — real bytes so base64 validation passes; content is
+# irrelevant since the vision call itself is mocked below.
+TINY_PNG_B64 = (
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY"
+    "42YAAAAASUVORK5CYII="
+)
+
+
 @pytest.fixture(autouse=True)
 def _mock_ai(monkeypatch):
     # /define lives in app.routers.define and calls ai._call_* by attribute,
@@ -37,6 +63,10 @@ def _mock_ai(monkeypatch):
     monkeypatch.setattr("app.ai._call_groq", lambda prompt, phrase=False: VALID_AI_JSON)
     monkeypatch.setattr("app.ai._call_google", lambda prompt: VALID_AI_JSON)
     monkeypatch.setattr("app.ai._call_anthropic", lambda prompt, model="": VALID_AI_JSON)
+    monkeypatch.setattr("app.ai._call_google_vision",
+                         lambda prompt, image_bytes, mime_type="image/png": VALID_IMAGE_AI_JSON)
+    monkeypatch.setattr("app.ai._call_anthropic_vision",
+                         lambda prompt, image_bytes, mime_type="image/png", model="": VALID_DEEP_IMAGE_AI_JSON)
 
 
 def _ip():
@@ -53,6 +83,17 @@ def _define(word="ephemeral", model="fast", ip=None, extra_headers=None, token=N
     return client.post(
         "/define",
         json={"word": word, "context": "An ephemeral moment passed.", "model": model},
+        headers=headers,
+    )
+
+
+def _define_image(model="balanced", ip=None, token=None):
+    headers = {"X-Real-IP": ip or _ip()}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return client.post(
+        "/define",
+        json={"image_base64": TINY_PNG_B64, "image_mime": "image/png", "model": model},
         headers=headers,
     )
 
@@ -82,6 +123,43 @@ def test_deep_requires_pro_for_free_signed_in_user():
     r = _define(model="deep", token=token)
     assert r.status_code == 403
     assert r.json()["detail"]["code"] == "pro_required"
+
+
+# ── B2: image-mode "Think deeper" gate ──────────────────────────────────────
+
+def test_image_balanced_ungated_for_anonymous():
+    # The baseline screen-point lookup has no free-tier text alternative to
+    # fall back to, so it stays ungated regardless of sign-in state.
+    r = _define_image(model="balanced")
+    assert r.status_code == 200, r.text
+    assert r.json()["contextual"] == "the contextual meaning"
+    assert "nuance" not in r.json()
+
+
+def test_image_deep_requires_pro_for_anonymous():
+    r = _define_image(model="deep")
+    assert r.status_code == 403, r.text
+    assert r.json()["detail"]["code"] == "pro_required"
+
+
+def test_image_deep_requires_pro_for_free_signed_in_user():
+    _, token = _register()
+    r = _define_image(model="deep", token=token)
+    assert r.status_code == 403
+    assert r.json()["detail"]["code"] == "pro_required"
+
+
+def test_pro_user_can_use_image_deep():
+    email, token = _register()
+    with main.SessionLocal() as db:
+        u = db.query(main.User).filter(main.User.email == email).first()
+        u.is_pro = 1
+        db.commit()
+    r = _define_image(model="deep", token=token)
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["nuance"] == "chosen over 'fleeting' for its literary register"
+    assert body["examples"] == ["The fame was ephemeral.", "An ephemeral bloom."]
 
 
 def test_pro_user_can_use_deep():

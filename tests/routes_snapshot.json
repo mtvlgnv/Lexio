@@ -22,6 +22,7 @@
   "GET /auth/sessions",
   "GET /docs",
   "GET /docs/oauth2-redirect",
+  "GET /download/mac",
   "GET /email/unsubscribe",
   "GET /family/accept",
   "GET /family/info",

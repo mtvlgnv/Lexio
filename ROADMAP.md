@@ -148,7 +148,7 @@ quit and reopen Lexio Glance" with a relaunch button
 
 ---
 
-## P1-4 · Thinking mode — deeper analysis on demand (founder idea, planned 2026-07-09)
+## P1-4 · Thinking mode — deeper analysis on demand ✅ DONE 2026-07-11
 
 "Think deeper and smarter, but also slower." Escalation for the lookups
 where the fast answer underwhelms: dense literary passages, loaded idioms,

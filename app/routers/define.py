@@ -73,10 +73,11 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
                               user: Optional[User], db: DBSession, ip: str):
     """Lexio Glance's screen-point mode: no word/context up front — the model
     identifies the word itself from a screenshot centered on the cursor.
-    Always routed through Gemini (only vision-capable provider wired here),
-    so it's billed at "balanced" hourly weight regardless of req.model,
-    without the Pro-only balanced/deep gate, since this mode has no
-    free-tier text alternative to fall back to.
+    Baseline is always routed through Gemini ("balanced" hourly weight),
+    ungated, since this mode has no free-tier text alternative to fall
+    back to. req.model == "deep" escalates to Claude Sonnet 4.5 ("Think
+    deeper", P1-4/B2) — weight 3, Pro-gated with the same 403 pro_required
+    flow text mode uses.
 
     Metered as a normal LOOKUP (kind="lookup": ANON_LOOKUP_LIMIT anon,
     FREE_LOOKUP_LIMIT free, unbounded Pro) — NOT the photo-scanner bucket
@@ -93,7 +94,21 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
     if mime not in ("image/png", "image/jpeg"):
         raise HTTPException(status_code=422, detail="image_mime must be image/png or image/jpeg.")
 
-    actual_model = "balanced"  # Gemini 2.5 Flash — the only vision-capable model wired here
+    # Baseline is always Gemini/"balanced" (the only vision-capable model,
+    # ungated — this mode has no free-tier text alternative to fall back
+    # to). req.model == "deep" escalates to Claude Sonnet 4.5 for "Think
+    # deeper" (P1-4/B2) — weight 3, Pro-gated like text mode's Deep.
+    actual_model = "deep" if (req.model or "").lower().strip() == "deep" else "balanced"
+
+    if actual_model == "deep" and not _has_pro_access(db, user):
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "code":    "pro_required",
+                "model":   actual_model,
+                "message": "Think deeper requires a Pro plan. Upgrade to unlock it, or stick with the fast answer.",
+            },
+        )
 
     hourly = _check_hourly_limit(db, user, actual_model)
     if not hourly["allowed"]:
@@ -132,6 +147,15 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
             "is written in. Keep structural/label fields (pos, ipa, simpler, register) in English."
         )
 
+    # Deep ("Think deeper") adds two extra keys on top of the same base
+    # ask — nuance (connotation/register vs. near synonyms — why THIS word)
+    # and examples (2 short sentences reusing the word in the same sense).
+    deep_note = (
+        " Also include nuance (why this exact word was chosen over close synonyms — "
+        "connotation, register, precision) and examples (a JSON array of exactly 2 short "
+        "original sentences reusing the word in this same sense)."
+        if actual_model == "deep" else ""
+    )
     prompt = (
         "This is a screenshot of whatever the user is currently reading on their screen. "
         "A magenta ring (a small circle with a white halo) has been drawn on the image at the exact point "
@@ -146,11 +170,14 @@ async def _define_from_image(req: DefineRequest, bg: BackgroundTasks,
         "Respond in JSON only, with these keys: word (the exact word/phrase at the ring), pos, ipa, "
         "definition, contextual (what it means in this specific sentence), why (why the author chose this word "
         "here), simpler, etymology, register. Use null for ipa, simpler, or etymology when uncertain. "
-        "Keep each field to 1-2 short sentences."
+        f"Keep each field to 1-2 short sentences.{deep_note}"
     )
 
     def _call_and_parse():
-        text = ai._call_google_vision(prompt, image_bytes, mime_type=mime)
+        if actual_model == "deep":
+            text = ai._call_anthropic_vision(prompt, image_bytes, mime_type=mime)
+        else:
+            text = ai._call_google_vision(prompt, image_bytes, mime_type=mime)
         if text.startswith("```"):
             lines = text.splitlines()
             text = "\n".join(l for l in lines if not l.startswith("```")).strip()

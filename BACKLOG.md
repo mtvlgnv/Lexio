@@ -12,7 +12,7 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | # | Task | Size | Depends on | Status |
 |---|------|------|-----------|--------|
 | B1 | Review mode (spaced repetition on Word Bank) | L | — | open |
-| B2 | Thinking mode ("Think deeper" button) | M | — | open |
+| B2 | Thinking mode ("Think deeper" button) | M | — | ✅ done 2026-07-11 |
 | B3 | Reader profile Phase 1 (explicit) | M | — | open |
 | B4 | Profile interview UI (Phase 1.5) | M | B3 | open |
 | B5 | Trending-words card on Hub Home | S | — | ✅ done 2026-07-11 |

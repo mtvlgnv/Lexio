@@ -9,6 +9,7 @@ The define endpoint resolves _call_groq/_call_google/_call_anthropic through
 main's namespace (main re-imports them), so the existing tests that monkeypatch
 `main._call_*` continue to work unchanged.
 """
+import base64
 import os
 import time
 
@@ -78,6 +79,35 @@ def _call_anthropic(prompt: str, model: str = "claude-haiku-4-5-20251001") -> st
         model=model,
         max_tokens=600,
         messages=[{"role": "user", "content": prompt}],
+    )
+    return message.content[0].text.strip()
+
+
+def _call_anthropic_vision(prompt: str, image_bytes: bytes, mime_type: str = "image/png",
+                            model: str = "claude-sonnet-4-5-20250929") -> str:
+    """Call Anthropic with an image + text prompt — Lexio Glance's "Think
+    deeper" escalation on a screen-point capture (P1-4). Claude Sonnet 4.5
+    is multimodal; same base64-image-block shape Anthropic's SDK expects
+    everywhere else, mirroring _call_google_vision's signature so the
+    caller in define.py can pick either provider by model name alone.
+    """
+    message = anthropic_client.messages.create(
+        model=model,
+        max_tokens=900,
+        messages=[{
+            "role": "user",
+            "content": [
+                {
+                    "type": "image",
+                    "source": {
+                        "type": "base64",
+                        "media_type": mime_type,
+                        "data": base64.b64encode(image_bytes).decode("ascii"),
+                    },
+                },
+                {"type": "text", "text": prompt},
+            ],
+        }],
     )
     return message.content[0].text.strip()
 
