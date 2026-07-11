@@ -275,6 +275,40 @@
       font-family: var(--font-display);
       font-style: italic;
     }
+    /* Register chip + the two web-parity fields (general definition,
+       simpler synonym) the panel used to silently drop — the web app has
+       always shown all three for the same /define response. */
+    #def-register {
+      font-size: 0.62rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2px 8px;
+      align-self: center;
+    }
+    #def-definition {
+      font-size: 0.8rem;
+      color: var(--text-mid);
+      line-height: 1.55;
+    }
+    #def-definition::before {
+      content: 'In general: ';
+      color: var(--muted);
+      font-style: italic;
+      font-family: var(--font-display);
+    }
+    #def-simpler {
+      font-size: 0.8rem;
+      color: var(--text-mid);
+    }
+    #def-simpler::before {
+      content: 'Simpler: ';
+      color: var(--muted);
+      font-style: italic;
+      font-family: var(--font-display);
+    }
 
     #def-ipa {
       font-size: 0.8rem;
@@ -435,8 +469,9 @@
   <div class="input-row">
     <span id="char-count"></span>
     <div class="model-toggle" id="model-toggle">
-      <button data-val="haiku" onclick="saveModel('haiku')">Fast</button>
-      <button data-val="sonnet" onclick="saveModel('sonnet')">Precise <span class="pro-chip">Pro</span></button>
+      <button data-val="fast" onclick="saveModel('fast')">Fast</button>
+      <button data-val="balanced" onclick="saveModel('balanced')">Balanced <span class="pro-chip">Pro</span></button>
+      <button data-val="deep" onclick="saveModel('deep')">Deep <span class="pro-chip">Pro</span></button>
     </div>
     <button id="edit-btn" class="btn-ghost hidden" onclick="resetToEdit()">← Edit</button>
     <button id="analyze-btn" class="btn-primary" onclick="analyze()">Analyze</button>
@@ -463,9 +498,12 @@
     <span id="def-word"></span>
     <span id="def-pos"></span>
     <span id="def-ipa" class="hidden"></span>
+    <span id="def-register" class="hidden"></span>
   </div>
   <p id="context-note" class="hidden" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin:-4px 0 0;"></p>
   <p id="def-contextual"></p>
+  <p id="def-definition" class="hidden"></p>
+  <p id="def-simpler" class="hidden"></p>
   <p id="def-why" class="hidden"></p>
   <p id="def-etymology" class="hidden"></p>
   <div id="def-capture-wrap" class="hidden">
@@ -544,15 +582,19 @@ let lastImage = null;   // {b64, mime} of the current screen-point capture — l
 
 // ── Model preference ────────────────────────────────────────
 const MODEL_KEY = 'lexio_compact_model';
-const VALID_MODELS = ['haiku', 'sonnet'];
+// Canonical mode names, matching the website's Fast / Balanced / Deep —
+// the old two-way "Fast / Precise" control used provider aliases
+// (haiku/sonnet) and hid Balanced entirely, so a user who read the site's
+// mode descriptions couldn't find any of them in the app.
+const VALID_MODELS = ['fast', 'balanced', 'deep'];
 const modelToggleBtns = document.querySelectorAll('#model-toggle button');
-let savedModel = localStorage.getItem(MODEL_KEY) || 'haiku';
+let savedModel = localStorage.getItem(MODEL_KEY) || 'fast';
 if (!VALID_MODELS.includes(savedModel)) {
-  // Migrate legacy values (e.g. 'gemini' from the old dropdown-style model
-  // picker, before it was rebuilt as this Fast/Precise segmented control) —
-  // otherwise this keeps getting sent to /define forever with no UI
-  // reflecting it (bug #15).
-  savedModel = 'haiku';
+  // Migrate legacy stored values from the two earlier picker generations
+  // (dropdown provider names, then the Fast/Precise segmented control) —
+  // otherwise a stale value keeps getting sent to /define forever with no
+  // UI reflecting it (bug #15).
+  savedModel = { haiku: 'fast', gemini: 'balanced', sonnet: 'deep' }[savedModel] || 'fast';
   localStorage.setItem(MODEL_KEY, savedModel);
 }
 
@@ -568,7 +610,7 @@ function saveModel(val) {
   updateModelUI(val);
   cache.clear();
 }
-function getModel() { return localStorage.getItem(MODEL_KEY) || 'haiku'; }
+function getModel() { return localStorage.getItem(MODEL_KEY) || 'fast'; }
 
 // ── Definition language ("explained in your own language") ────
 // Codes must match the backend's LANG_NAMES map in routers/define.py.
@@ -685,7 +727,7 @@ async function checkProStatus() {
     if (!r.ok) { lockFreeModels(); return; }
     const d = await r.json();
     if (d.is_pro) {
-      ['sonnet'].forEach(m => {
+      ['balanced', 'deep'].forEach(m => {
         const btn = document.querySelector(`#model-toggle button[data-val="${m}"]`);
         if (btn) btn.disabled = false;
       });
@@ -695,12 +737,12 @@ async function checkProStatus() {
 checkProStatus();
 
 function lockFreeModels() {
-  ['sonnet'].forEach(m => {
+  ['balanced', 'deep'].forEach(m => {
     const btn = document.querySelector(`#model-toggle button[data-val="${m}"]`);
     if (btn) btn.disabled = true;
   });
-  if (['sonnet'].includes(getModel())) {
-    saveModel('haiku');
+  if (['balanced', 'deep'].includes(getModel())) {
+    saveModel('fast');
   }
 }
 
@@ -1192,6 +1234,22 @@ function showResult(word, data) {
     etymEl.textContent = '↳ ' + data.etymology; etymEl.classList.remove('hidden');
   } else { etymEl.classList.add('hidden'); }
 
+  // Web-parity fields the panel used to drop from the same response.
+  const regEl = document.getElementById('def-register');
+  if (data.register && data.register !== 'null' && data.register.toLowerCase() !== 'neutral') {
+    regEl.textContent = data.register; regEl.classList.remove('hidden');
+  } else { regEl.classList.add('hidden'); }
+
+  const genEl = document.getElementById('def-definition');
+  if (data.definition && data.definition !== 'null' && data.definition !== data.contextual) {
+    genEl.textContent = data.definition; genEl.classList.remove('hidden');
+  } else { genEl.classList.add('hidden'); }
+
+  const simpEl = document.getElementById('def-simpler');
+  if (data.simpler && data.simpler !== 'null') {
+    simpEl.textContent = data.simpler; simpEl.classList.remove('hidden');
+  } else { simpEl.classList.add('hidden'); }
+
   document.getElementById('def-panel').classList.remove('hidden');
 }
 
@@ -1214,6 +1272,9 @@ function copyDef() {
   if (!currentResult) return;
   const { word, data } = currentResult;
   const lines = [`${word} (${data.pos})`, '', data.contextual];
+  if (data.definition && data.definition !== 'null' && data.definition !== data.contextual)
+    lines.push('', `In general: ${data.definition}`);
+  if (data.simpler && data.simpler !== 'null') lines.push(`Simpler: ${data.simpler}`);
   if (data.why)                          lines.push('', data.why);
   if (data.etymology && data.etymology !== 'null') lines.push('', '↳ ' + data.etymology);
   navigator.clipboard.writeText(lines.join('\n')).then(() => {
