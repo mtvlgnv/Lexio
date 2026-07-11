@@ -16,7 +16,7 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | B3 | Reader profile Phase 1 (explicit) | M | — | open |
 | B4 | Profile interview UI (Phase 1.5) | M | B3 | open |
 | B5 | Trending-words card on Hub Home | S | — | open |
-| B6 | Dark-mode audit + fixes (desktop surfaces) | M | — | open |
+| B6 | Dark-mode audit + fixes (desktop surfaces) | M | — | ✅ done 2026-07-11 |
 | B7 | def-actions overflow redesign | S | — | ✅ done 2026-07-10 |
 | B8 | Unify the two loading layouts | S | — | ✅ done 2026-07-10 |
 | B9 | Word Bank row hover + delete affordance | XS | — | ✅ done 2026-07-10 |

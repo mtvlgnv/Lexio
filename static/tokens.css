@@ -17,6 +17,7 @@
   --good:     oklch(62%   0.13  145);
   --danger:   oklch(55%   0.2   25);
   --danger-bg:oklch(97%   0.03  25);
+  --on-accent:#fff;
 
   /* Gradient Blobs (Pill Chrome) */
   --gradient-color-1: #dd8058;
@@ -39,9 +40,15 @@
     --accent2:  oklch(74%  0.10  40);
     --text:     oklch(92%  0.008 75);
     --text-mid: oklch(75%  0.008 75);
-    --muted:    oklch(55%  0.008 70);
+    --muted:    oklch(62%  0.008 70);
     --good:     oklch(65%  0.13  145);
     --danger-bg:oklch(20%  0.03  25);
+    /* accent/accent-dk/accent2 all sit in the 68-74% lightness band in
+       dark mode (accent-dk stays LIGHTER than accent here on purpose, so
+       it still reads as foreground text on dark surfaces — see streak
+       badge/chip usage). White button labels lose contrast against that
+       band, so gradient buttons switch to a dark ink here instead. */
+    --on-accent:oklch(16% 0.02 45);
   }
 }
 
@@ -55,9 +62,10 @@
   --accent2:  oklch(74%  0.10  40);
   --text:     oklch(92%  0.008 75);
   --text-mid: oklch(75%  0.008 75);
-  --muted:    oklch(55%  0.008 70);
+  --muted:    oklch(62%  0.008 70);
   --good:     oklch(65%  0.13  145);
   --danger-bg:oklch(20%  0.03  25);
+  --on-accent:oklch(16% 0.02 45);
 }
 
 html, body {
@@ -68,7 +76,7 @@ html, body {
 /* Shared Button Styles */
 .btn-primary {
   background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dk) 100%);
-  color: #fff;
+  color: var(--on-accent);
   border: 1px solid var(--accent-dk);
   border-radius: 8px;
   padding: 6px 18px;

@@ -28,16 +28,25 @@ UI in that register), Fraunces for display type, DM Sans for UI.
 
 ## P0 — actively hurting
 
-1. **Dark-mode audit of every new surface** (audit). tokens.css has a full
-   dark palette, but home.html, the def-capture thumbnail border, the
-   lang-select, and the onboarding permission rows were built and verified
-   in light mode only. Check `prefers-color-scheme: dark` +
-   `.dark-theme` for: contrast of `.plan-chip`, `.stat` cards, `#lang-select`
-   text, capture-thumb border, Home hint-cards. The panel's webview gets
-   theme from pill.html's `matchMedia` — home.html has no equivalent wiring
-   for its `dark-theme`/`light-theme` root classes (check whether it relies
-   purely on the media query — the `:root:not(.light-theme)` rule should
-   cover it, but verify visually).
+1. ~~Dark-mode audit of every new surface~~ ✅ DONE 2026-07-11 — flipped
+   macOS to dark mode, measured real WCAG contrast ratios (oklch→sRGB, not
+   guesswork) via CDP against the live home.html window. Found and fixed
+   two real bugs: (a) `--muted` in dark mode was only 55% lightness →
+   3.81:1 against `--surface`, below AA; bumped to 62% → 5.0+:1 everywhere
+   it's used (`.stat-cap`, `.side-foot`, Word Bank secondary text). (b) All
+   gradient buttons (`.btn-primary` in tokens.css, `.btn.primary` in
+   home.html, `button.primary` in onboarding.html/hub.html) used hardcoded
+   white text — fine in light mode, but in dark mode `--accent`/`--accent-dk`/
+   `--accent2` all sit at 68-74% lightness (intentionally light, since
+   `--accent-dk` doubles as foreground text color on dark surfaces for the
+   streak badge/trend-chip hover), so white-on-light-accent measured only
+   2.3-3.0:1. Added a new `--on-accent` token (white in light mode, a dark
+   ink `oklch(16% 0.02 45)` in dark mode) and pointed all four button rules
+   at it instead of touching `--accent-dk` itself. Verified both themes live
+   post-fix: dark-mode button now 6.45:1, light mode unchanged at white/3.81-5.55:1
+   (pre-existing, out of scope). compact.html/pill.html/onboarding.html
+   permission rows already used tokens correctly, no separate fix needed
+   there.
 2. ~~def-actions row overflow~~ ✅ DONE 2026-07-10 — split into two rows
    (Save/Copy/New lookup, then language select right-aligned below).
    Room for P1-4's "Think deeper" button in row 1.
