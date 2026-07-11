@@ -103,6 +103,14 @@
     display: flex; align-items: center; gap: 10px;
     font-size: 0.88rem; color: var(--text);
   }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    -webkit-app-region: no-drag;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+    padding: 5px 12px; font-family: inherit; font-size: 0.78rem; color: var(--text-mid);
+    cursor: pointer; transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
   .switch {
     -webkit-app-region: no-drag;
     position: relative; width: 36px; height: 20px; border-radius: 10px;
@@ -196,8 +204,29 @@
       <button class="secondary" id="practice-relaunch" style="display:none;">Relaunch Lexio Glance</button>
     </div>
 
-    <!-- Step 4: Done -->
+    <!-- Step 4: Optional profile interview (B4/P1-5 Phase 1.5) — only
+         shown when signed in (it saves to the server-side profile via
+         /api/profile, which needs auth); skipped straight to Done
+         otherwise. Purely optional, individually skippable, never gates
+         anything. -->
     <div class="step" data-step="4">
+      <h1>Want Lexio to know you a little?</h1>
+      <p class="sub">3 quick questions — skippable, editable later in the Hub.</p>
+      <div class="sample" style="text-align:left;">
+        <p style="font-weight:600;font-size:0.85rem;margin-bottom:6px;">What do you do / what are you into?</p>
+        <textarea id="interview-about" rows="2" maxlength="300"
+          placeholder="e.g. furniture maker in Eindhoven, reads woodworking + business content"
+          style="width:100%;font-family:inherit;font-size:0.85rem;padding:8px 10px;border-radius:8px;
+                 border:1px solid var(--border);background:var(--bg);color:var(--text);resize:vertical;"></textarea>
+        <p style="font-weight:600;font-size:0.85rem;margin:12px 0 6px;">Your English level</p>
+        <div class="chip-row" id="interview-level"></div>
+        <p style="font-weight:600;font-size:0.85rem;margin:12px 0 6px;">What do you mostly read in English?</p>
+        <div class="chip-row" id="interview-reads"></div>
+      </div>
+    </div>
+
+    <!-- Step 5: Done -->
+    <div class="step" data-step="5">
       <h1>You're all set</h1>
       <p class="sub">Double-tap <kbd class="trigger-symbol">⌘</kbd> anytime, anywhere. Find Lexio Glance again from the menu bar icon.</p>
       <div class="switch-row">
@@ -210,10 +239,11 @@
   </div>
 
 <script>
-  const STEPS = 5;
+  const STEPS = 6;
   let step = 0;
   let launchAtLogin = false;
   let accessPollTimer = null;
+  let authToken = null;   // B4: set once sign-in completes — the interview step needs it to save
 
   const dotsEl   = document.getElementById('dots');
   const footerEl = document.getElementById('footer');
@@ -234,6 +264,10 @@
 
   function goTo(n) { step = Math.max(0, Math.min(STEPS - 1, n)); render(); }
   function next() { goTo(step + 1); }
+  // B4: the interview step (4) saves to the server-side profile — pointless
+  // (and would silently fail) for someone who chose to skip sign-in. Skip
+  // straight to Done for them instead of showing a step they can't use.
+  function nextAfterPractice() { goTo(authToken ? 4 : 5); }
 
   function renderFooter() {
     footerEl.innerHTML = '';
@@ -248,8 +282,11 @@
     } else if (step === 2) {
       footerEl.appendChild(makeButton('primary', 'Continue', next));
     } else if (step === 3) {
-      footerEl.appendChild(makeButton('secondary', 'Skip this step', next));
+      footerEl.appendChild(makeButton('secondary', 'Skip this step', nextAfterPractice));
     } else if (step === 4) {
+      footerEl.appendChild(makeButton('primary', 'Save & continue', saveInterviewAndContinue));
+      footerEl.appendChild(makeButton('secondary', 'Skip', () => goTo(5)));
+    } else if (step === 5) {
       footerEl.appendChild(makeButton('primary', 'Done', () => window.lexioOnboarding?.finish()));
     }
   }
@@ -264,6 +301,7 @@
 
   // ── Step 1: sign-in ──────────────────────────────────────────────
   window.lexioOnboarding?.onAuthComplete((payload) => {
+    authToken = payload?.token || null;   // B4: interview step needs this to save
     document.getElementById('auth-status').style.display = 'flex';
     document.getElementById('auth-dot').classList.replace('pending', 'granted');
     document.getElementById('auth-text').textContent = payload?.user?.name
@@ -330,8 +368,55 @@
     document.getElementById('practice-text').textContent = preview
       ? `Nice — you looked up "${preview}" ✓`
       : 'Got it ✓';
-    setTimeout(next, 1200);
+    setTimeout(nextAfterPractice, 1200);
   });
+
+  // ── Step 4: optional profile interview (B4/P1-5 Phase 1.5) ──────
+  const INTERVIEW_LEVELS = ['Beginner', 'Intermediate', 'Advanced', 'Fluent', 'Native', 'Not sure'];
+  const INTERVIEW_READS  = ['News', 'Work', 'Fiction', 'Study'];
+  let interviewLevel = null;
+  const interviewReads = new Set();
+
+  function renderChips(container, options, { multi }) {
+    container.innerHTML = '';
+    options.forEach((opt) => {
+      const chip = document.createElement('button');
+      chip.className = 'chip';
+      chip.textContent = opt;
+      chip.type = 'button';
+      chip.addEventListener('click', () => {
+        if (multi) {
+          interviewReads.has(opt) ? interviewReads.delete(opt) : interviewReads.add(opt);
+          chip.classList.toggle('selected', interviewReads.has(opt));
+        } else {
+          interviewLevel = interviewLevel === opt ? null : opt;
+          [...container.children].forEach((c) => c.classList.toggle('selected', c.textContent === interviewLevel));
+        }
+      });
+      container.appendChild(chip);
+    });
+  }
+  renderChips(document.getElementById('interview-level'), INTERVIEW_LEVELS, { multi: false });
+  renderChips(document.getElementById('interview-reads'), INTERVIEW_READS, { multi: true });
+
+  async function saveInterviewAndContinue() {
+    if (!authToken) { goTo(5); return; }
+    const about = document.getElementById('interview-about').value.trim();
+    const reads = [...interviewReads];
+    const aboutPlusReads = [about, reads.length ? `Reads: ${reads.join(', ')} in English.` : '']
+      .filter(Boolean).join(' ');
+    const level = interviewLevel && interviewLevel !== 'Not sure' ? interviewLevel.toLowerCase() : null;
+    if (aboutPlusReads || level) {
+      try {
+        await fetch('https://lexio.site/api/profile', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + authToken },
+          body: JSON.stringify({ about: aboutPlusReads || null, english_level: level }),
+        });
+      } catch {} // best-effort — never block onboarding on a network hiccup
+    }
+    goTo(5);
+  }
 
   // ── Step 4: launch at login ──────────────────────────────────────
   document.getElementById('login-switch').addEventListener('click', (e) => {

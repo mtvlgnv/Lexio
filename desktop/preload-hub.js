@@ -29,6 +29,10 @@ contextBridge.exposeInMainWorld('lexioHub', {
   getTriggerOptions:      () => ipcRenderer.invoke('app:get-trigger-options'),
   setTriggerKey:          (id) => ipcRenderer.send('app:set-trigger-key', id),
 
+  // B4/P1-5 Phase 1.5: Home-tab profile-interview card state.
+  getProfileInterviewDismissed: () => ipcRenderer.invoke('app:get-profile-interview-dismissed'),
+  dismissProfileInterview:      () => ipcRenderer.send('app:dismiss-profile-interview'),
+
   onRecentUpdated: (cb) => ipcRenderer.on('hub:recent-updated', (_e, payload) => cb(payload || [])),
   onAuthUpdated:   (cb) => ipcRenderer.on('hub:auth-updated',   (_e, payload) => cb(payload || null)),
 });

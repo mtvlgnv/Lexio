@@ -587,6 +587,13 @@ ipcMain.on('app:set-trigger-key', (_e, key) => {
   store.set({ settings: { ...store.get().settings, doubleTapKey: activeTriggerKey } });
 });
 
+// B4/P1-5 Phase 1.5: the Home-tab profile-interview card's one-time
+// dismissal, persisted so it never comes back once the user answers or
+// skips it (getLookupDays/wordbank counts already flow through the Hub's
+// existing IPC — this is the only new state the card needs).
+ipcMain.handle('app:get-profile-interview-dismissed', () => !!store.get().profileInterviewDismissed);
+ipcMain.on('app:dismiss-profile-interview', () => store.set({ profileInterviewDismissed: true }));
+
 ipcMain.on('onboarding:finish', () => {
   store.set({ onboardingComplete: true, onboardingAppVersion: ONBOARDING_VERSION });
   if (onboardingWin && !onboardingWin.isDestroyed()) onboardingWin.close();

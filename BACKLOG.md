@@ -14,7 +14,7 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | B1 | Review mode (spaced repetition on Word Bank) | L | — | open |
 | B2 | Thinking mode ("Think deeper" button) | M | — | ✅ done 2026-07-11 |
 | B3 | Reader profile Phase 1 (explicit) | M | — | ✅ done 2026-07-11 |
-| B4 | Profile interview UI (Phase 1.5) | M | B3 | open |
+| B4 | Profile interview UI (Phase 1.5) | M | B3 | ✅ done 2026-07-11 |
 | B5 | Trending-words card on Hub Home | S | — | ✅ done 2026-07-11 |
 | B6 | Dark-mode audit + fixes (desktop surfaces) | M | — | ✅ done 2026-07-11 |
 | B7 | def-actions overflow redesign | S | — | ✅ done 2026-07-10 |

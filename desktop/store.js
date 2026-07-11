@@ -16,6 +16,10 @@ const DEFAULTS = {
   recentLookups: [],                   // { word, at } — newest first (Hub, later)
   lookupDays: {},                      // { 'YYYY-MM-DD': count } — local streak/stats material
   settings: { launchAtLogin: false, doubleTapKey: 'ctrl' },
+  // B4/P1-5 Phase 1.5: the Home-tab profile-interview card is shown once
+  // after real usage (5 saves or 15 lookups) — this flag makes "dismiss"
+  // mean "never shown again", whether the user answered or skipped it.
+  profileInterviewDismissed: false,
 };
 
 function storePath() {

@@ -185,6 +185,14 @@
     padding: 5px 14px; cursor: pointer; transition: border-color 0.12s, color 0.12s;
   }
   .trend-chip:hover { border-color: var(--accent); color: var(--accent-dk); }
+  /* B4: profile-interview card chips (level / reads-topics selectors) */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+    padding: 5px 12px; font-family: inherit; font-size: 0.78rem; color: var(--text-mid);
+    cursor: pointer; transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
   .meter-block { margin-top: 14px; }
   .meter-label { display: flex; justify-content: space-between; font-size: 0.75rem;
                  color: var(--text-mid); margin-bottom: 5px; }
@@ -256,6 +264,37 @@
         <div class="stat-cap" style="text-align:left;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Lexio readers are looking up · <span id="trending-month"></span></div>
         <div id="trending-chips" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
       </div>
+
+      <!-- B4/P1-5 Phase 1.5: one-time, purely optional interview — shown
+           after real usage (5 saves or 15 lookups), never again once
+           answered or dismissed. Writes the same profile_json as the
+           Account tab's "About you" form. -->
+      <div class="acct-card" id="home-interview" style="display:none;">
+        <div id="interview-prompt">
+          <div class="acct-name" style="font-size:0.95rem;" id="interview-headline">Want Lexio to know you a little?</div>
+          <div class="row-hint" style="margin:4px 0 12px;">3 quick questions — skippable, editable later right here.</div>
+          <div style="text-align:right;">
+            <button class="btn" id="interview-notnow">Not now</button>
+            <button class="btn primary" id="interview-start">Answer 3 questions</button>
+          </div>
+        </div>
+        <div id="interview-form" class="hidden">
+          <div class="row-label" style="font-weight:600;margin-bottom:6px;">What do you do / what are you into?</div>
+          <textarea id="interview-about" rows="2" maxlength="300"
+            placeholder="e.g. furniture maker in Eindhoven, reads woodworking + business content"
+            style="width:100%;resize:vertical;font-family:inherit;font-size:0.82rem;color:var(--text);
+                   background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px;"></textarea>
+          <div class="row-label" style="font-weight:600;margin:12px 0 6px;">Your English level</div>
+          <div class="chip-row" id="interview-level"></div>
+          <div class="row-label" style="font-weight:600;margin:12px 0 6px;">What do you mostly read in English?</div>
+          <div class="chip-row" id="interview-reads"></div>
+          <div style="text-align:right;margin-top:12px;">
+            <button class="btn" id="interview-skip">Skip</button>
+            <button class="btn primary" id="interview-save">Save</button>
+          </div>
+        </div>
+      </div>
+
       <div class="hint-card">
         Point your cursor at any word — in any app — and double-tap
         <b><span class="ts">⌃</span></b>. Save the good ones; they show up here.
@@ -858,7 +897,96 @@ async function renderHome() {
       }
     }
   } catch { trend.style.display = 'none'; }
+
+  // B4/P1-5 Phase 1.5: one-time profile-interview card. Signed-in only (it
+  // saves via /api/profile, which needs auth), after 5 saves or 15 total
+  // lookups, never shown again once dismissed OR if a profile already
+  // exists (someone who filled the Account form directly shouldn't be
+  // re-asked the same questions here).
+  const interviewCard = document.getElementById('home-interview');
+  if (tok) {
+    try {
+      const totalLookups = Object.values(days).reduce((a, b) => a + b, 0);
+      const dismissed = await window.lexioHub?.getProfileInterviewDismissed?.();
+      if (!dismissed && (wb.length >= 5 || totalLookups >= 15)) {
+        const pr = await fetch(API_BASE + '/api/profile', { headers: { Authorization: 'Bearer ' + tok } });
+        const profile = pr.ok ? await pr.json() : {};
+        if (!profile.about) {
+          document.getElementById('interview-headline').textContent =
+            wb.length >= 5 ? `You've saved ${wb.length} words! Want Lexio to know you a little?`
+                           : 'Want Lexio to know you a little?';
+          interviewCard.style.display = '';
+        } else {
+          interviewCard.style.display = 'none';
+        }
+      } else {
+        interviewCard.style.display = 'none';
+      }
+    } catch { interviewCard.style.display = 'none'; }
+  } else {
+    interviewCard.style.display = 'none';
+  }
 }
+
+/* ── Profile interview card (B4/P1-5 Phase 1.5) ───────── */
+const INTERVIEW_LEVELS = ['Beginner', 'Intermediate', 'Advanced', 'Fluent', 'Native', 'Not sure'];
+const INTERVIEW_READS  = ['News', 'Work', 'Fiction', 'Study'];
+let homeInterviewLevel = null;
+const homeInterviewReads = new Set();
+
+function renderInterviewChips(container, options, { multi }) {
+  container.innerHTML = '';
+  options.forEach((opt) => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.textContent = opt;
+    chip.type = 'button';
+    chip.addEventListener('click', () => {
+      if (multi) {
+        homeInterviewReads.has(opt) ? homeInterviewReads.delete(opt) : homeInterviewReads.add(opt);
+        chip.classList.toggle('selected', homeInterviewReads.has(opt));
+      } else {
+        homeInterviewLevel = homeInterviewLevel === opt ? null : opt;
+        [...container.children].forEach((c) => c.classList.toggle('selected', c.textContent === homeInterviewLevel));
+      }
+    });
+    container.appendChild(chip);
+  });
+}
+renderInterviewChips(document.getElementById('interview-level'), INTERVIEW_LEVELS, { multi: false });
+renderInterviewChips(document.getElementById('interview-reads'), INTERVIEW_READS, { multi: true });
+
+document.getElementById('interview-notnow').addEventListener('click', () => {
+  window.lexioHub?.dismissProfileInterview?.();
+  document.getElementById('home-interview').style.display = 'none';
+});
+document.getElementById('interview-start').addEventListener('click', () => {
+  document.getElementById('interview-prompt').classList.add('hidden');
+  document.getElementById('interview-form').classList.remove('hidden');
+});
+document.getElementById('interview-skip').addEventListener('click', () => {
+  window.lexioHub?.dismissProfileInterview?.();
+  document.getElementById('home-interview').style.display = 'none';
+});
+document.getElementById('interview-save').addEventListener('click', async () => {
+  const tok = token();
+  window.lexioHub?.dismissProfileInterview?.();
+  document.getElementById('home-interview').style.display = 'none';
+  if (!tok) return;
+  const about = document.getElementById('interview-about').value.trim();
+  const reads = [...homeInterviewReads];
+  const aboutPlusReads = [about, reads.length ? `Reads: ${reads.join(', ')} in English.` : '']
+    .filter(Boolean).join(' ');
+  const level = homeInterviewLevel && homeInterviewLevel !== 'Not sure' ? homeInterviewLevel.toLowerCase() : null;
+  if (!aboutPlusReads && !level) return;
+  try {
+    await fetch(API_BASE + '/api/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
+      body: JSON.stringify({ about: aboutPlusReads || null, english_level: level }),
+    });
+  } catch {}
+});
 
 /* ── Boot ────────────────────────────────────────────── */
 renderHome();
