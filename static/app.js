@@ -981,13 +981,18 @@ function renderTokens(text) {
   const allWords = Array.from(container.querySelectorAll('.word-token'));
   if (allWords.length > 0) {
     const attempts = parseInt(localStorage.getItem('lexio_click_hints') || '0');
-    if (attempts < 5) {
-      localStorage.setItem('lexio_click_hints', attempts + 1);
+    
+    // Find the specific word "adventitious", or fallback to a word that is >= 4 chars and ideally not a stopword
+    const targetWord = allWords.find(w => w.textContent.toLowerCase().replace(/[^a-z]/g, '') === 'adventitious') 
+      || allWords.find(w => w.textContent.length >= 4 && (typeof STOPWORDS === 'undefined' || !STOPWORDS.has(w.textContent.toLowerCase()))) 
+      || allWords[0];
       
-      // Find the specific word "adventitious", or fallback to a word that is >= 4 chars and ideally not a stopword
-      const targetWord = allWords.find(w => w.textContent.toLowerCase().replace(/[^a-z]/g, '') === 'adventitious') 
-        || allWords.find(w => w.textContent.length >= 4 && (typeof STOPWORDS === 'undefined' || !STOPWORDS.has(w.textContent.toLowerCase()))) 
-        || allWords[0];
+    const isSampleWord = targetWord.textContent.toLowerCase().includes('adventitious');
+    
+    if (attempts < 5 || isSampleWord) {
+      if (!isSampleWord) {
+        localStorage.setItem('lexio_click_hints', attempts + 1);
+      }
       
       targetWord.classList.add('demo-pulse');
       
