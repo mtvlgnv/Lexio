@@ -455,3 +455,39 @@ def test_sqlite_runs_in_wal_mode_with_busy_timeout():
     with main.engine.connect() as conn:
         assert conn.execute(sa_text("PRAGMA journal_mode")).scalar() == "wal"
         assert int(conn.execute(sa_text("PRAGMA busy_timeout")).scalar()) >= 5000
+
+
+# ── B17: weekly digest stats line ───────────────────────────────────────────
+
+def test_digest_includes_weekly_stats_line(monkeypatch):
+    import datetime as _dt
+    import json as _json
+    from app import email as email_module
+    from app.models import WordBankEntry, UserSearchLog
+
+    email_module.SMTP_USER = "test@example.com"
+    email_module.SMTP_PASS = "test-pass"
+    sent = {}
+    monkeypatch.setattr(email_module, "_send_email",
+        lambda to, subject, body: sent.update(to=to, subject=subject, body=body) or True)
+
+    email, token = _register()
+    with main.SessionLocal() as db:
+        u = db.query(main.User).filter(main.User.email == email).first()
+        now = _dt.datetime.utcnow()
+        # 3 lookups + 3 saved words this week — enough to pass send_weekly_digest's >=3 gate.
+        for i in range(3):
+            db.add(UserSearchLog(user_id=u.id, word=f"word{i}", searched_at=now - _dt.timedelta(hours=i)))
+            db.add(WordBankEntry(
+                user_id=u.id, word=f"word{i}",
+                data=_json.dumps({"word": f"word{i}", "contextual": f"meaning {i}"}),
+                saved_at=now - _dt.timedelta(hours=i),
+            ))
+        db.commit()
+
+        ok = email_module.send_weekly_digest(db, u)
+        assert ok is True
+
+    assert "3 lookups" in sent["body"]
+    assert "3 new words saved" in sent["body"]
+    assert "this week" in sent["body"]

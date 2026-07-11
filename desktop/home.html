@@ -254,6 +254,11 @@
         <div class="stat"><div class="stat-num" id="home-words">–</div><div class="stat-cap">words saved</div></div>
       </div>
       <div class="hint-card" id="home-perms" style="display:none;border-color:var(--danger);color:var(--danger);"></div>
+      <!-- B17: this week vs last week — lookups from lookupDays, saves from wb savedAt. -->
+      <div class="acct-card" id="home-recap" style="display:none;">
+        <div class="stat-cap" style="text-align:left;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">This week</div>
+        <div id="recap-line" style="font-size:0.92rem;color:var(--text);"></div>
+      </div>
       <div class="acct-card" id="home-wotd" style="display:none;">
         <div class="stat-cap" style="text-align:left;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">From your word bank</div>
         <div class="acct-name"><span id="wotd-word"></span><span class="wb-pos" id="wotd-pos"></span></div>
@@ -840,12 +845,39 @@ async function renderHome() {
 
   // This week's lookups from the local per-day counts (works signed out).
   const days = (await window.lexioHub?.getLookupDays?.()) || {};
-  let week = 0;
+  let week = 0, lastWeek = 0;
   for (let i = 0; i < 7; i++) {
     const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
     week += days[d] || 0;
   }
+  for (let i = 7; i < 14; i++) {
+    const d = new Date(Date.now() - i * 86400000).toISOString().slice(0, 10);
+    lastWeek += days[d] || 0;
+  }
   document.getElementById('home-week').textContent = week;
+
+  // B17: this-week-vs-last-week recap card. Saves counted from the word
+  // bank's own savedAt timestamps — same 7-day windows as the lookup count.
+  const recap = document.getElementById('home-recap');
+  const weekAgoMs = Date.now() - 7 * 86400000;
+  const savedThisWeek = wb.filter((e) => {
+    const t = Date.parse(e.savedAt || '');
+    return !isNaN(t) && t >= weekAgoMs;
+  }).length;
+  if (week > 0 || savedThisWeek > 0) {
+    const delta = week - lastWeek;
+    const deltaStr = lastWeek > 0 || week > 0
+      ? ` (${delta >= 0 ? '+' : ''}${delta} vs last week)`
+      : '';
+    const savedPart = savedThisWeek
+      ? ` · ${savedThisWeek} word${savedThisWeek === 1 ? '' : 's'} saved`
+      : '';
+    document.getElementById('recap-line').textContent =
+      `${week} lookup${week === 1 ? '' : 's'}${deltaStr}${savedPart}`;
+    recap.style.display = '';
+  } else {
+    recap.style.display = 'none';
+  }
 
   // Streak: server truth when signed in (cross-device); local days otherwise.
   // A lookup-free today doesn't break the streak — you haven't missed it yet.

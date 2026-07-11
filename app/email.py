@@ -11,7 +11,7 @@ import logging
 from email.mime.text import MIMEText
 from sqlalchemy.orm import Session as DBSession
 
-from app.models import User, WordBankEntry
+from app.models import User, WordBankEntry, UserSearchLog
 
 logger = logging.getLogger("lexio")
 
@@ -168,6 +168,44 @@ def digest_unsub_token(user_id: int) -> str:
 def digest_unsub_token_valid(user_id: int, token: str) -> bool:
     return hmac.compare_digest(digest_unsub_token(user_id), (token or ""))
 
+def _weekly_stats_line(db: DBSession, user: "User") -> str:
+    """B17: "N lookups and M new words this week" — the original backlog
+    spec's stats framing, folded into the existing word-revisit digest
+    rather than shipped as a second competing email. Same current-streak
+    algorithm as GET /api/streak in app/routers/account.py (duplicated
+    intentionally — that one is a FastAPI route with its own Depends-
+    injected session, this runs from a standalone cron script)."""
+    now = datetime.datetime.utcnow()
+    week_ago = now - datetime.timedelta(days=7)
+    lookups_this_week = (
+        db.query(UserSearchLog)
+        .filter(UserSearchLog.user_id == user.id, UserSearchLog.searched_at >= week_ago)
+        .count()
+    )
+    new_words_this_week = (
+        db.query(WordBankEntry)
+        .filter(WordBankEntry.user_id == user.id, WordBankEntry.saved_at >= week_ago)
+        .count()
+    )
+    rows = db.query(UserSearchLog.searched_at).filter(UserSearchLog.user_id == user.id).all()
+    dayset = {r[0].date() for r in rows if r[0]}
+    today = now.date()
+    one_day = datetime.timedelta(days=1)
+    streak = 0
+    cur = today if today in dayset else (today - one_day if (today - one_day) in dayset else None)
+    while cur and cur in dayset:
+        streak += 1
+        cur -= one_day
+
+    parts = [f"{lookups_this_week} lookup{'s' if lookups_this_week != 1 else ''}"]
+    if new_words_this_week:
+        parts.append(f"{new_words_this_week} new word{'s' if new_words_this_week != 1 else ''} saved")
+    line = " and ".join(parts) + " this week"
+    if streak >= 2:
+        line += f" · {streak}-day streak"
+    return line
+
+
 def _pick_digest_words(db: DBSession, user: "User") -> list[dict]:
     """Return up to _DIGEST_WORD_COUNT parsed word-bank entries, chosen at
     random for variety so repeat digests don't always feature the same words."""
@@ -201,9 +239,10 @@ def send_weekly_digest(db: DBSession, user: "User") -> bool:
             continue
         lines.append(f"  • {term} — {gloss}" if gloss else f"  • {term}")
     unsub_url = f"{SITE_URL}/email/unsubscribe?u={user.id}&t={digest_unsub_token(user.id)}"
+    stats_line = _weekly_stats_line(db, user)
     body = f"""Hi {name},
 
-A few words from your Lexio word bank, worth a second look:
+{stats_line}. A few words from your bank, worth a second look:
 
 {chr(10).join(lines)}
 

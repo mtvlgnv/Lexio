@@ -27,7 +27,7 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | B14 | Sentence mode ("explain this whole sentence") | M | — | ✅ done 2026-07-11 |
 | B15 | Desktop analytics (privacy-respecting PostHog) | M | — | ✅ done 2026-07-11 |
 | B16 | Onboarding permissions step restructure | S | — | ✅ done 2026-07-11 |
-| B17 | Weekly recap card + digest email | M | B1 nice-to-have | open |
+| B17 | Weekly recap card + digest email | M | B1 nice-to-have | ✅ done 2026-07-11 |
 | B18 | i18n the hero rotator + trust badges | S | — | ✅ done 2026-07-11 |
 | B19 | Windows port spike (capture helper PoC) | L | — | open |
 | B20 | Release protocol run + auto-update verification | M | human: GH_TOKEN | open |
