@@ -74,6 +74,7 @@ from app.routers.family import router as family_router
 from app.routers.admin import router as admin_router
 from app.routers.billing import router as billing_router
 from app.routers.content import router as content_router
+from app.routers.feedback import router as feedback_router
 
 app.include_router(define_router)
 app.include_router(tools_router)
@@ -84,6 +85,7 @@ app.include_router(family_router)
 app.include_router(admin_router)
 app.include_router(billing_router)
 app.include_router(content_router)
+app.include_router(feedback_router)
 
 # ── Static frontend (mounted last so routes take precedence) ─────────────────
 app.mount("/", StaticFiles(directory="static", html=True), name="static")

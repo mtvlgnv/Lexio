@@ -45,6 +45,16 @@ class ProfileRequest(BaseModel):
     model_config = {"extra": "ignore"}
 
 
+class FeedbackRequest(BaseModel):
+    # B13: 👍/👎 on a definition. No context text accepted on purpose —
+    # this is the prompt-quality dataset, not a support ticket.
+    word:    str = Field(..., min_length=1, max_length=100)
+    model:   str = Field(..., max_length=40)
+    verdict: str = Field(..., pattern="^(up|down)$")
+    lang:    str = Field(default="auto", max_length=40)
+    mode:    str = Field(..., pattern="^(text|image)$")
+
+
 class FetchRequest(BaseModel):
     url: AnyHttpUrl
 

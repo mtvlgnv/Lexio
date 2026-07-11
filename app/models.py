@@ -86,6 +86,19 @@ class UserSearchLog(Base):
     word        = Column(String, nullable=False)
     searched_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
 
+class DefinitionFeedback(Base):
+    """B13: 👍/👎 on a definition — the prompt-quality dataset. Anonymous by
+    design (no user ID, no IP, no context text), same privacy posture as
+    SearchLog above."""
+    __tablename__ = "definition_feedback"
+    id         = Column(Integer, primary_key=True)
+    word       = Column(String, nullable=False, index=True)
+    model      = Column(String, nullable=False)   # 'fast' | 'balanced' | 'deep'
+    verdict    = Column(String, nullable=False)   # 'up' | 'down'
+    lang       = Column(String, nullable=False)
+    mode       = Column(String, nullable=False)   # 'text' | 'image'
+    created_at = Column(DateTime, default=datetime.datetime.utcnow, index=True)
+
 class AnonUsage(Base):
     """IP-based usage tracking for anonymous users."""
     __tablename__ = "anon_usage"

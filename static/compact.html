@@ -395,6 +395,22 @@
     }
     #def-capture.expanded { max-height: none; object-fit: contain; cursor: zoom-out; }
 
+    /* B13: a quiet satisfaction signal, deliberately NOT part of
+       .def-actions — a separate row above it so growing/shrinking this
+       (prompt → thanks) never reflows the Save/Copy/Think-deeper layout. */
+    .def-feedback {
+      display: flex; align-items: center; justify-content: flex-end; gap: 6px;
+      font-size: 0.72rem; color: var(--muted); margin-top: 2px; min-height: 20px;
+    }
+    .def-feedback button {
+      background: none; border: none; cursor: pointer; font-size: 0.85rem;
+      padding: 2px 3px; border-radius: 5px; opacity: 0.55; transition: opacity 0.12s, background 0.12s;
+      line-height: 1;
+    }
+    .def-feedback button:hover { opacity: 1; background: var(--surface); }
+    .def-feedback button.chosen { opacity: 1; }
+    #feedback-thanks { color: var(--accent); font-weight: 600; }
+
     /* Copy / new-lookup buttons — two rows: primary actions (Save/Copy/New),
        then secondary controls (language, and future additions like a
        "Think deeper" button) right-aligned below. Keeps the row from
@@ -445,7 +461,8 @@
        matches the natural priority; this just makes it visible. Browser
        default outlines were invisible against the panel's warm surfaces. */
     #save-btn:focus-visible, #copy-btn:focus-visible, #new-btn:focus-visible,
-    #lang-select:focus-visible, #say-btn:focus-visible, #think-deeper-btn:focus-visible {
+    #lang-select:focus-visible, #say-btn:focus-visible, #think-deeper-btn:focus-visible,
+    #feedback-up:focus-visible, #feedback-down:focus-visible {
       outline: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
       outline-offset: 2px;
     }
@@ -571,6 +588,12 @@
   <div id="def-capture-wrap" class="hidden">
     <span class="def-capture-label">What Lexio saw</span>
     <img id="def-capture" alt="Captured area of your screen" onclick="this.classList.toggle('expanded')" />
+  </div>
+  <div id="def-feedback" class="def-feedback">
+    <span id="feedback-prompt">Helpful?</span>
+    <button id="feedback-up" onclick="sendFeedback('up')" title="Helpful" aria-label="Helpful">👍</button>
+    <button id="feedback-down" onclick="sendFeedback('down')" title="Not helpful" aria-label="Not helpful">👎</button>
+    <span id="feedback-thanks" class="hidden">Thanks ✓</span>
   </div>
   <div class="def-actions">
     <div class="def-actions-row">
@@ -1396,6 +1419,13 @@ function showResult(word, data) {
   document.getElementById('think-deeper-btn').classList.toggle(
     'hidden', !(lastImage && lastImageModel !== 'deep'));
 
+  // B13: every new result gets a fresh feedback prompt — a "Thanks" left
+  // over from a previous lookup must never carry onto this one.
+  document.getElementById('feedback-prompt').classList.remove('hidden');
+  document.getElementById('feedback-up').classList.remove('hidden', 'chosen');
+  document.getElementById('feedback-down').classList.remove('hidden', 'chosen');
+  document.getElementById('feedback-thanks').classList.add('hidden');
+
   document.getElementById('def-panel').classList.remove('hidden');
 }
 
@@ -1452,6 +1482,25 @@ function copyDef() {
     btn.textContent = '✓ Copied';
     setTimeout(() => btn.textContent = 'Copy', 2000);
   });
+}
+
+// B13: 👍/👎 on the definition currently showing. Anonymous by design —
+// no auth header sent, the backend never asks for one. mode/model are
+// inferred from the same state the panel itself uses to decide what to
+// render (lastImage for image-mode, getModel()/lastImageModel for tier).
+function sendFeedback(verdict) {
+  if (!currentResult?.word) return;
+  const mode = lastImage ? 'image' : 'text';
+  const model = lastImage ? (lastImageModel || 'balanced') : getModel();
+  document.getElementById('feedback-prompt').classList.add('hidden');
+  document.getElementById('feedback-up').classList.add('hidden');
+  document.getElementById('feedback-down').classList.add('hidden');
+  document.getElementById('feedback-thanks').classList.remove('hidden');
+  fetch(API_BASE + '/api/feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ word: currentResult.word, model, verdict, lang: getLang(), mode }),
+  }).catch(() => {});   // best-effort — a failed feedback ping shouldn't surface an error
 }
 </script>
 </body>

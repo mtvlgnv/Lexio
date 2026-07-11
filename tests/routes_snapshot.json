@@ -49,6 +49,7 @@
   "POST /admin/",
   "POST /admin/user/{user_id}/set-pro",
   "POST /api/admin/user/{user_id}/set-pro",
+  "POST /api/feedback",
   "POST /api/user-model",
   "POST /auth/apple",
   "POST /auth/change-password",

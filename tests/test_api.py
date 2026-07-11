@@ -279,6 +279,40 @@ def test_wordbank_requires_auth():
     assert r.status_code == 401
 
 
+# ── B13: definition feedback ────────────────────────────────────────────────
+
+def test_feedback_lands_in_db_anonymous():
+    from app.models import DefinitionFeedback
+
+    r = client.post("/api/feedback",
+        json={"word": "ephemeral", "model": "fast", "verdict": "up", "lang": "en", "mode": "text"},
+        headers={"X-Real-IP": _ip()})
+    assert r.status_code == 200, r.text
+    assert r.json() == {"ok": True}
+    with main.SessionLocal() as db:
+        row = db.query(DefinitionFeedback).filter(DefinitionFeedback.word == "ephemeral").first()
+        assert row is not None
+        assert row.verdict == "up"
+        assert row.model == "fast"
+        assert row.mode == "text"
+        # Privacy posture: no user_id/ip/context columns exist on the model at all.
+        assert not hasattr(row, "user_id")
+        assert not hasattr(row, "ip")
+        assert not hasattr(row, "context")
+
+
+def test_feedback_rejects_bad_verdict_and_mode():
+    ip = _ip()
+    r = client.post("/api/feedback",
+        json={"word": "x", "model": "fast", "verdict": "meh", "mode": "text"},
+        headers={"X-Real-IP": ip})
+    assert r.status_code == 422
+    r = client.post("/api/feedback",
+        json={"word": "x", "model": "fast", "verdict": "up", "mode": "audio"},
+        headers={"X-Real-IP": ip})
+    assert r.status_code == 422
+
+
 # ── B3/P1-5: reader profile ─────────────────────────────────────────────────
 
 def test_profile_requires_auth():

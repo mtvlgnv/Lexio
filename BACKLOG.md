@@ -23,7 +23,7 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | B10 | Pill tooltip copy (click vs double-tap) | XS | — | ✅ done 2026-07-10 |
 | B11 | Recent tab: store full definitions, add per-row Save | M | — | ✅ done 2026-07-11 |
 | B12 | "Say it" button in the panel (pronunciation) | S | — | ✅ done 2026-07-11 |
-| B13 | Definition feedback (👍/👎 → server log) | M | — | open |
+| B13 | Definition feedback (👍/👎 → server log) | M | — | ✅ done 2026-07-11 |
 | B14 | Sentence mode ("explain this whole sentence") | M | — | open |
 | B15 | Desktop analytics (privacy-respecting PostHog) | M | — | open |
 | B16 | Onboarding permissions step restructure | S | — | ✅ done 2026-07-11 |
