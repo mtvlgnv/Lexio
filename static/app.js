@@ -47,6 +47,9 @@ const STOPWORDS = new Set([
 
 const SAMPLES = [
   { label: 'Fiction', text: `He smiled with a warmth that, she would later realize, was entirely adventitious.` },
+  { label: 'News', text: `The central bank announced a hawkish pivot, indicating that further rate hikes are imminent.` },
+  { label: 'Science', text: `The experiment demonstrated a serendipitous outcome that contradicted the initial hypothesis.` },
+  { label: 'Law', text: `The contract contains a severability clause, ensuring that if one provision is found invalid, the rest remains enforceable.` }
 ];
 
 const PLACEHOLDERS = [
