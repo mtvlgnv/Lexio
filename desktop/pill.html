@@ -189,7 +189,8 @@
     // Recent tab render + save an entry without re-billing a lookup),
     // LEXIO_ESCAPE:: asks to collapse the panel (bug #12 — Esc previously
     // only worked when THIS document had focus, not once the user clicked
-    // into the lookup panel).
+    // into the lookup panel), LEXIO_SAVE:: / LEXIO_LOOKUP_ERROR:: are B15's
+    // outcome-only analytics signals (no word/definition/context in either).
     frame.addEventListener('console-message', (e) => {
       if (!e.message) return;
       if (e.message.startsWith('LEXIO_LOOKUP::')) {
@@ -201,6 +202,10 @@
         window.lexioOverlay?.requestCollapse();
       } else if (e.message === 'LEXIO_SIGNIN::') {
         window.lexioOverlay?.openSignIn();
+      } else if (e.message === 'LEXIO_SAVE::') {
+        window.lexioOverlay?.reportSave();
+      } else if (e.message === 'LEXIO_LOOKUP_ERROR::') {
+        window.lexioOverlay?.reportLookupError();
       }
     });
     panelBody.appendChild(frame);

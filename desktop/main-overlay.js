@@ -32,6 +32,7 @@ const { installFileLogging, logPath } = require('./lib/log');
 const { menuBarTrayIcon } = require('./lib/icons');
 const { parseAuthUrl } = require('./lib/auth');
 const { captureScreenPoint } = require('./lib/vision-capture');
+const analytics = require('./lib/analytics');
 
 // A packaged .app has no attached terminal — without this, "check the log"
 // is impossible for a field report like this week's real-hardware trigger
@@ -387,6 +388,7 @@ function setupAutoUpdate() {
    auth token, word bank (lexio_wbv1), and definition language — with the
    panel, with no IPC or duplicate state. */
 function createHomeWindow() {
+  analytics.capture('hub_open', { window: 'home' });
   if (homeWin && !homeWin.isDestroyed()) { homeWin.show(); homeWin.focus(); return; }
   homeWin = new BrowserWindow({
     width: 1120,
@@ -504,6 +506,7 @@ function createOnboardingWindow() {
    merged into the Hub rather than its own window). Closes on blur, like
    a normal menu-bar dropdown, unlike the onboarding wizard. */
 function createHubWindow() {
+  analytics.capture('hub_open', { window: 'popover' });
   if (hubWin && !hubWin.isDestroyed()) { hubWin.focus(); return; }
   // Same anchoring math as main.js's getPosition() for its tray dropdown.
   const trayBounds = tray ? tray.getBounds() : null;
@@ -578,6 +581,18 @@ ipcMain.on('app:set-launch-at-login', (_e, value) => {
 ipcMain.handle('app:get-hotkey', () => activeFallbackShortcut);
 ipcMain.on('app:show-onboarding', () => createOnboardingWindow());
 
+// B15: the honest opt-out toggle — default ON, one click fully disables
+// every future capture() call (checked inside analytics.js itself, so
+// nothing here needs to know which events exist).
+ipcMain.handle('app:get-share-analytics', () => analytics.isEnabled());
+ipcMain.on('app:set-share-analytics', (_e, value) => {
+  store.set({ settings: { ...store.get().settings, shareAnonymousStats: !!value } });
+});
+
+// B15: the panel reports a successful save the same way it reports a
+// lookup (LEXIO_SAVE:: console-log bridge) — no word, no definition.
+ipcMain.on('overlay:report-save', () => analytics.capture('word_saved'));
+
 ipcMain.handle('app:get-trigger-key', () => activeTriggerKey);
 ipcMain.handle('app:get-trigger-symbol', () => TRIGGER_KEYS[activeTriggerKey].symbol);
 ipcMain.handle('app:get-trigger-options', () =>
@@ -638,7 +653,15 @@ ipcMain.on('overlay:report-lookup', (_e, payload) => {
   for (const w2 of [hubWin, homeWin]) {
     if (w2 && !w2.isDestroyed()) w2.webContents.send('hub:recent-updated', recentLookups);
   }
+  // B15: outcome only — never the word/definition/context itself.
+  analytics.capture('lookup', { success: true });
 });
+
+// B15: the panel reports a failed lookup the same way it reports a
+// successful one (LEXIO_LOOKUP_ERROR:: console-log bridge) — outcome
+// only, no error message or content, so this never becomes a place
+// content could leak into analytics.
+ipcMain.on('overlay:report-lookup-error', () => analytics.capture('lookup', { success: false }));
 
 ipcMain.handle('hub:get-recent', () => store.get().recentLookups);
 // Daily lookup counts — the Home tab's stats/streak source for signed-out
@@ -666,7 +689,10 @@ ipcMain.on('hub:sign-out', () => {
 });
 
 // Fixed destination on purpose — don't accept arbitrary URLs from renderers.
-ipcMain.on('app:open-pricing', () => shell.openExternal('https://lexio.site/#lp-pro'));
+ipcMain.on('app:open-pricing', () => {
+  analytics.capture('upgrade_click');
+  shell.openExternal('https://lexio.site/#lp-pro');
+});
 
 // Full relaunch — the onboarding wizard offers this after a failed practice
 // capture, since macOS applies a fresh Screen Recording grant only on restart.
@@ -825,6 +851,7 @@ if (!app.requestSingleInstanceLock()) {
     // Accessibility (and on newer macOS, Input Monitoring) — log the status
     // at boot so "trigger does nothing" is diagnosable from the log alone.
     console.log(`[overlay] accessibility permission: ${checkAccessibility() ? 'granted' : 'NOT granted — the double-tap trigger and selection capture will not work'}`);
+    analytics.capture('app_launch');
     createWindow();
     createTray();
     registerTriggers();
@@ -844,6 +871,7 @@ if (!app.requestSingleInstanceLock()) {
 app.on('will-quit', () => {
   globalShortcut.unregisterAll();
   try { require('uiohook-napi').uIOhook.stop(); } catch {}
+  analytics.shutdown();
 });
 
 // Keep running with no visible windows (it's a background overlay).

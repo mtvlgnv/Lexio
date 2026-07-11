@@ -806,6 +806,7 @@ function saveCurrent() {
   storeWB(wb);
   updateSaveBtn(word);
   syncWB();
+  console.log('LEXIO_SAVE::');   // B15: outcome-only analytics signal — no word, no content
 }
 
 // ── Pro status — lock non-Haiku for free users ───────────────
@@ -1246,6 +1247,7 @@ async function fetchDef(word) {
     console.log('LEXIO_LOOKUP::' + JSON.stringify({ word, data, context: (context || '').slice(0, 300) }));
   } catch (err) {
     clearHighlights(); activeToken = null;
+    console.log('LEXIO_LOOKUP_ERROR::');   // B15: outcome-only — no error message, no content
     showError(err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message);
   } finally {
     clearTimeout(timeoutId);
@@ -1308,6 +1310,7 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png', modelOver
       console.log('LEXIO_LOOKUP::' + JSON.stringify({ word, data, context: (context || '').slice(0, 300) }));
     }
   } catch (err) {
+    console.log('LEXIO_LOOKUP_ERROR::');   // B15: outcome-only — no error message, no content
     showError(err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message);
   } finally {
     clearTimeout(timeoutId);

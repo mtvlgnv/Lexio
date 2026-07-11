@@ -33,6 +33,11 @@ contextBridge.exposeInMainWorld('lexioHub', {
   getProfileInterviewDismissed: () => ipcRenderer.invoke('app:get-profile-interview-dismissed'),
   dismissProfileInterview:      () => ipcRenderer.send('app:dismiss-profile-interview'),
 
+  // B15: privacy-respecting analytics — outcome-only, no content ever.
+  getShareAnalytics: () => ipcRenderer.invoke('app:get-share-analytics'),
+  setShareAnalytics: (v) => ipcRenderer.send('app:set-share-analytics', v),
+  reportSave:        () => ipcRenderer.send('overlay:report-save'),
+
   onRecentUpdated: (cb) => ipcRenderer.on('hub:recent-updated', (_e, payload) => cb(payload || [])),
   onAuthUpdated:   (cb) => ipcRenderer.on('hub:auth-updated',   (_e, payload) => cb(payload || null)),
 });

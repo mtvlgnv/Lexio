@@ -15,11 +15,14 @@ const DEFAULTS = {
   auth: null,                          // { token, user } once signed in
   recentLookups: [],                   // { word, at } — newest first (Hub, later)
   lookupDays: {},                      // { 'YYYY-MM-DD': count } — local streak/stats material
-  settings: { launchAtLogin: false, doubleTapKey: 'ctrl' },
+  settings: { launchAtLogin: false, doubleTapKey: 'ctrl', shareAnonymousStats: true },
   // B4/P1-5 Phase 1.5: the Home-tab profile-interview card is shown once
   // after real usage (5 saves or 15 lookups) — this flag makes "dismiss"
   // mean "never shown again", whether the user answered or skipped it.
   profileInterviewDismissed: false,
+  // B15: random anonymous id for the desktop analytics (lib/analytics.js)
+  // — generated once on first capture, never a machine identifier.
+  analyticsId: null,
 };
 
 function storePath() {

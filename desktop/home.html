@@ -339,6 +339,14 @@
       </div>
       <div class="row">
         <div class="row-main">
+          <div class="row-label">Share anonymous usage stats</div>
+          <div class="row-hint">Helps us see what's working — app launches, lookup success/failure,
+            saves. Never the words you look up or anything you've read.</div>
+        </div>
+        <button class="switch" id="analytics-switch"></button>
+      </div>
+      <div class="row">
+        <div class="row-main">
           <div class="row-label">Double-tap trigger</div>
           <div class="row-hint">The key you press twice to look up the word at your pointer.</div>
         </div>
@@ -642,6 +650,7 @@ function saveRecentEntry(item) {
   });
   storeWB(wb);
   renderRecent(lastRecentItems);
+  window.lexioHub?.reportSave?.();   // B15: outcome-only analytics signal
   const tok = token();
   if (tok) {
     fetch(API_BASE + '/wordbank/sync', {
@@ -665,6 +674,15 @@ window.lexioHub?.onRecentUpdated((r) => renderRecent(r || []));
     const on = !loginSwitch.classList.contains('on');
     loginSwitch.classList.toggle('on', on);
     hub.setLaunchAtLogin?.(on);
+  });
+
+  // B15: default ON — an honest opt-out, not opt-in via a dark pattern.
+  const analyticsSwitch = document.getElementById('analytics-switch');
+  analyticsSwitch.classList.toggle('on', (await hub.getShareAnalytics?.()) !== false);
+  analyticsSwitch.addEventListener('click', () => {
+    const on = !analyticsSwitch.classList.contains('on');
+    analyticsSwitch.classList.toggle('on', on);
+    hub.setShareAnalytics?.(on);
   });
 
   const trigSel = document.getElementById('trigger-select');

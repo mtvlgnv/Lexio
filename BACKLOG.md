@@ -25,7 +25,7 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | B12 | "Say it" button in the panel (pronunciation) | S | — | ✅ done 2026-07-11 |
 | B13 | Definition feedback (👍/👎 → server log) | M | — | ✅ done 2026-07-11 |
 | B14 | Sentence mode ("explain this whole sentence") | M | — | ✅ done 2026-07-11 |
-| B15 | Desktop analytics (privacy-respecting PostHog) | M | — | open |
+| B15 | Desktop analytics (privacy-respecting PostHog) | M | — | ✅ done 2026-07-11 |
 | B16 | Onboarding permissions step restructure | S | — | ✅ done 2026-07-11 |
 | B17 | Weekly recap card + digest email | M | B1 nice-to-have | open |
 | B18 | i18n the hero rotator + trust badges | S | — | ✅ done 2026-07-11 |

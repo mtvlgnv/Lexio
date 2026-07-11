@@ -38,6 +38,11 @@ contextBridge.exposeInMainWorld('lexioOverlay', {
   // too (B11) so the Hub's Recent tab can render + save without re-billing.
   reportLookup: (word, data, context) => ipcRenderer.send('overlay:report-lookup', { word, data, context }),
 
+  // B15: outcome-only analytics signals — no word/definition/context ever
+  // travels with these, unlike reportLookup above.
+  reportSave:        () => ipcRenderer.send('overlay:report-save'),
+  reportLookupError: () => ipcRenderer.send('overlay:report-lookup-error'),
+
   // Renderer → main: pin/unpin — while pinned, clicking into another app
   // won't auto-collapse the panel.
   setPinned: (value) => ipcRenderer.send('overlay:set-pinned', value),
