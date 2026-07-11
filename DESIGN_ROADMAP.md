@@ -87,10 +87,10 @@ UI in that register), Fraunces for display type, DM Sans for UI.
     the panel's warm surfaces).
 11. ~~Pill tooltip copy~~ ✅ DONE 2026-07-10 — now says "Click: open
     panel · Double-tap ⌃: define the word at your pointer".
-12. **Marketing site: hero rotator + trust badges are English-only** on
-    localized UIs (static/index.html hardcodes them; the i18n pass
-    covered `data-i18n` keys only). Either i18n-ify the rotator items or
-    accept EN as deliberate.
+12. ~~Marketing site: hero rotator + trust badges are English-only~~ ✅
+    DONE 2026-07-11 — added `data-i18n` keys (heroRotatorLead,
+    heroRotatorWord1-8, heroTrust1-3) and translated all 12 strings across
+    all 11 UI_T locales in static/app.js; bumped app.js?v=49.
 13. ~~App icon in the Dock~~ N/A 2026-07-10 — the Dock icon was removed
     entirely (see the P0 regression fix in ROADMAP.md: having one broke
     setVisibleOnAllWorkspaces across Spaces/full-screen apps). No Dock
