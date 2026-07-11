@@ -52,14 +52,11 @@ UI in that register), Fraunces for display type, DM Sans for UI.
 
 4. ~~Word Bank rows: no hover state, low delete affordance~~ ✅ DONE
    2026-07-10 — row hover background, delete × fades in on hover/focus.
-5. **Stat cards are typographically flat** (observed). The three Home/
-   Account cards are identical boxes; the primary stat (streak) deserves
-   visual priority — consider the accent color or a small flame/dot only
-   on the streak card when it's alive (≥2 days).
-6. **Sidebar footer tip is cramped** (observed, home.html `.side-foot`).
-   The "Point at a word · double-tap ⌃" line wraps awkwardly at min window
-   width. Give it line-height and margin, or fold it into an empty-state-
-   only hint.
+5. ~~Stat cards are typographically flat~~ ✅ DONE 2026-07-10 — streak
+   card (both Home and Account) gets accent border/background + a 🔥
+   when the streak is ≥2 days.
+6. ~~Sidebar footer tip is cramped~~ ✅ DONE 2026-07-10 — added top
+   padding and line-height.
 7. **Onboarding permission step density** (observed). Two status rows +
    two buttons + stale-hint paragraph is a wall. Restructure to match the
    Hub Settings pattern: one row per permission with a trailing button,
@@ -71,21 +68,23 @@ UI in that register), Fraunces for display type, DM Sans for UI.
 
 ## P2 — polish
 
-9. **Capture thumbnail corners/borders** vs. panel radius consistency
-   (8px img inside 12px+ panel sections — pick one radius scale:
-   4/8/12).
-10. **Focus states / keyboard affordances** (audit): tab order in the
-    panel (Save → Copy → New lookup → lang), visible focus rings using
-    the accent at 40% — currently browser defaults.
+9. ~~Capture thumbnail corners/borders~~ AUDITED 2026-07-10, already
+   consistent — nested elements (thumbnails, buttons) use 6-8px,
+   containers use 12px, a coherent scale. No change needed.
+10. ~~Focus states / keyboard affordances~~ ✅ DONE 2026-07-10 — DOM
+    tab order already matched the intended priority; added visible
+    accent-at-40% focus rings (browser defaults were invisible against
+    the panel's warm surfaces).
 11. ~~Pill tooltip copy~~ ✅ DONE 2026-07-10 — now says "Click: open
     panel · Double-tap ⌃: define the word at your pointer".
 12. **Marketing site: hero rotator + trust badges are English-only** on
     localized UIs (static/index.html hardcodes them; the i18n pass
     covered `data-i18n` keys only). Either i18n-ify the rotator items or
     accept EN as deliberate.
-13. **App icon in the Dock** (audit): now that the Dock icon is
-    intentional, confirm build/icon.icns reads well at 32px (it was
-    designed for a menu-bar-only app).
+13. ~~App icon in the Dock~~ N/A 2026-07-10 — the Dock icon was removed
+    entirely (see the P0 regression fix in ROADMAP.md: having one broke
+    setVisibleOnAllWorkspaces across Spaces/full-screen apps). No Dock
+    icon means nothing to audit here anymore.
 
 14. ~~Dead legacy Electron entry points still shipped~~ ✅ DONE
     2026-07-10 — confirmed `main-app.js` was unsigned (`identity: null`,

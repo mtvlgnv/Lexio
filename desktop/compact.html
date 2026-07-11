@@ -404,6 +404,15 @@
       transition: background 0.12s, color 0.12s;
     }
     #copy-btn:hover, #new-btn:hover { background: var(--bg); color: var(--text); }
+    /* Visible keyboard focus — tab order through the panel follows DOM
+       order (Save → Copy → New lookup → language → Say it), which already
+       matches the natural priority; this just makes it visible. Browser
+       default outlines were invisible against the panel's warm surfaces. */
+    #save-btn:focus-visible, #copy-btn:focus-visible, #new-btn:focus-visible,
+    #lang-select:focus-visible, #say-btn:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+      outline-offset: 2px;
+    }
 
     /* ── Direct mode ────────────────────────────────────────────
        Highlight a word anywhere → double-tap ⌘ → the definition IS the

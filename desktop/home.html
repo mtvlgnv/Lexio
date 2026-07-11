@@ -57,7 +57,7 @@
   .nav:hover { background: var(--surface); }
   .nav.active { background: var(--surface); color: var(--text); font-weight: 600; }
   .nav svg { width: 15px; height: 15px; flex-shrink: 0; }
-  .side-foot { margin-top: auto; padding: 0 10px; font-size: 0.7rem; color: var(--muted); }
+  .side-foot { margin-top: auto; padding: 10px 10px 4px; font-size: 0.7rem; line-height: 1.5; color: var(--muted); }
 
   /* ── Content ─────────────────────────────────────────── */
   main { flex: 1; overflow-y: auto; padding: 8px 36px 36px; }
@@ -184,6 +184,13 @@
   }
   .stat-num { font-family: 'Fraunces', serif; font-weight: 600; font-size: 1.5rem; }
   .stat-cap { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+  /* Streak card gets visual priority when it's actually alive (≥2 days) —
+     three identical boxes made the primary habit signal easy to miss.
+     Shared by both Home and Account's copies of this card. */
+  .streak-card.alive { border-color: var(--accent); background: var(--accent-lt); }
+  .streak-card.alive .stat-num { color: var(--accent-dk); }
+  .streak-card .flame { display: none; font-size: 1rem; vertical-align: -1px; }
+  .streak-card.alive .flame { display: inline; }
   .acct-actions { display: flex; gap: 8px; margin-top: 6px; }
 </style>
 </head>
@@ -221,7 +228,7 @@
       <div class="view-head"><h1 id="home-greeting">Welcome back</h1></div>
       <div class="stat-grid">
         <div class="stat"><div class="stat-num" id="home-week">–</div><div class="stat-cap">lookups this week</div></div>
-        <div class="stat"><div class="stat-num" id="home-streak">–</div><div class="stat-cap">day streak</div></div>
+        <div class="stat streak-card" id="stat-streak-card"><div class="stat-num"><span class="flame">🔥</span> <span id="home-streak">–</span></div><div class="stat-cap">day streak</div></div>
         <div class="stat"><div class="stat-num" id="home-words">–</div><div class="stat-cap">words saved</div></div>
       </div>
       <div class="hint-card" id="home-perms" style="display:none;border-color:var(--danger);color:var(--danger);"></div>
@@ -340,7 +347,7 @@
 
       <div id="acct-signedin" class="hidden">
         <div class="stat-grid">
-          <div class="stat"><div class="stat-num" id="stat-streak">–</div><div class="stat-cap">day streak</div></div>
+          <div class="stat streak-card" id="acct-streak-card"><div class="stat-num"><span class="flame">🔥</span> <span id="stat-streak">–</span></div><div class="stat-cap">day streak</div></div>
           <div class="stat"><div class="stat-num" id="stat-longest">–</div><div class="stat-cap">longest streak</div></div>
           <div class="stat"><div class="stat-num" id="stat-words">–</div><div class="stat-cap">words saved</div></div>
         </div>
@@ -596,6 +603,7 @@ async function renderAccount() {
     if (streakR.ok) {
       const s = await streakR.json();
       document.getElementById('stat-streak').textContent  = s.current_streak ?? 0;
+      document.getElementById('acct-streak-card').classList.toggle('alive', (s.current_streak ?? 0) >= 2);
       document.getElementById('stat-longest').textContent = s.longest_streak ?? 0;
       document.getElementById('stat-words').textContent   = s.total_words ?? loadWB().length;
     }
@@ -657,6 +665,7 @@ async function renderHome() {
     }
   }
   document.getElementById('home-streak').textContent = streak;
+  document.getElementById('stat-streak-card').classList.toggle('alive', streak >= 2);
 
   // Word of the day — deterministic daily pick from the user's own bank.
   const wotd = document.getElementById('home-wotd');

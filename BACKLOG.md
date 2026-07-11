@@ -17,10 +17,10 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | B4 | Profile interview UI (Phase 1.5) | M | B3 | open |
 | B5 | Trending-words card on Hub Home | S | — | open |
 | B6 | Dark-mode audit + fixes (desktop surfaces) | M | — | open |
-| B7 | def-actions overflow redesign | S | — | open (blocks B2 UI) |
-| B8 | Unify the two loading layouts | S | — | open |
-| B9 | Word Bank row hover + delete affordance | XS | — | open |
-| B10 | Pill tooltip copy (click vs double-tap) | XS | — | open |
+| B7 | def-actions overflow redesign | S | — | ✅ done 2026-07-10 |
+| B8 | Unify the two loading layouts | S | — | ✅ done 2026-07-10 |
+| B9 | Word Bank row hover + delete affordance | XS | — | ✅ done 2026-07-10 |
+| B10 | Pill tooltip copy (click vs double-tap) | XS | — | ✅ done 2026-07-10 |
 | B11 | Recent tab: store full definitions, add per-row Save | M | — | open |
 | B12 | "Say it" button in the panel (pronunciation) | S | — | open |
 | B13 | Definition feedback (👍/👎 → server log) | M | — | open |
