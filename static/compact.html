@@ -275,6 +275,19 @@
       font-family: var(--font-display);
       font-style: italic;
     }
+    #say-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 6px;
+      opacity: 0.75;
+      transition: opacity 0.12s, background 0.12s;
+    }
+    #say-btn:hover { opacity: 1; background: var(--bg); }
+    #say-btn.speaking { opacity: 1; animation: pulse 0.9s infinite; }
     /* Register chip + the two web-parity fields (general definition,
        simpler synonym) the panel used to silently drop — the web app has
        always shown all three for the same /define response. */
@@ -498,6 +511,7 @@
     <span id="def-word"></span>
     <span id="def-pos"></span>
     <span id="def-ipa" class="hidden"></span>
+    <button id="say-btn" class="hidden" onclick="sayWord()" title="Hear it pronounced" aria-label="Hear it pronounced">🔊</button>
     <span id="def-register" class="hidden"></span>
   </div>
   <p id="context-note" class="hidden" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin:-4px 0 0;"></p>
@@ -1218,6 +1232,8 @@ function showResult(word, data) {
   document.getElementById('def-capture-wrap')?.classList.add('hidden');
   updateSaveBtn(word);
 
+  document.getElementById('say-btn').classList.toggle('hidden', !SPEECH_AVAILABLE);
+
   const ipaEl = document.getElementById('def-ipa');
   if (data.ipa && data.ipa !== 'null') {
     ipaEl.textContent = data.ipa; ipaEl.classList.remove('hidden');
@@ -1268,6 +1284,27 @@ function showError(msg) {
 function hideError() { document.getElementById('error-msg').classList.add('hidden'); }
 
 /* ── Copy ──────────────────────────────────────────────── */
+/* ── Say it (pronunciation) ───────────────────────────────
+   ESL readers need to HEAR the word, not just read IPA — the web app
+   already has this; the panel didn't. speechSynthesis availability is
+   checked once at load (Electron webviews generally have it, but the
+   button stays hidden rather than risk a dead click if a given build
+   doesn't) and again defensively inside sayWord(). */
+const SPEECH_AVAILABLE = typeof window.speechSynthesis !== 'undefined'
+  && typeof window.SpeechSynthesisUtterance !== 'undefined';
+
+function sayWord() {
+  if (!currentResult?.word || !SPEECH_AVAILABLE) return;
+  const btn = document.getElementById('say-btn');
+  const utt = new SpeechSynthesisUtterance(currentResult.word);
+  utt.lang = 'en-US';
+  utt.rate = 0.9;
+  utt.onstart = () => btn?.classList.add('speaking');
+  utt.onend = utt.onerror = () => btn?.classList.remove('speaking');
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utt);
+}
+
 function copyDef() {
   if (!currentResult) return;
   const { word, data } = currentResult;
