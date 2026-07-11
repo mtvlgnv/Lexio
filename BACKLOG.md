@@ -21,7 +21,7 @@ Sizes: XS ≤ 30 min · S ≤ 2 h · M ≤ half day · L = full session.
 | B8 | Unify the two loading layouts | S | — | ✅ done 2026-07-10 |
 | B9 | Word Bank row hover + delete affordance | XS | — | ✅ done 2026-07-10 |
 | B10 | Pill tooltip copy (click vs double-tap) | XS | — | ✅ done 2026-07-10 |
-| B11 | Recent tab: store full definitions, add per-row Save | M | — | open |
+| B11 | Recent tab: store full definitions, add per-row Save | M | — | ✅ done 2026-07-11 |
 | B12 | "Say it" button in the panel (pronunciation) | S | — | ✅ done 2026-07-11 |
 | B13 | Definition feedback (👍/👎 → server log) | M | — | open |
 | B14 | Sentence mode ("explain this whole sentence") | M | — | open |

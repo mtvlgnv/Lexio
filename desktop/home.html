@@ -120,13 +120,27 @@
 
   /* Recent */
   .recent-row {
-    display: flex; align-items: center; gap: 10px; width: 100%;
-    background: none; border: none; border-bottom: 1px solid var(--border);
-    padding: 11px 2px; font-family: inherit; text-align: left; cursor: pointer;
+    display: flex; align-items: center; gap: 6px; width: 100%;
+    border-bottom: 1px solid var(--border); padding: 11px 2px;
+  }
+  .recent-row-btn {
+    display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;
+    background: none; border: none; font-family: inherit; text-align: left; cursor: pointer; padding: 0;
   }
   .recent-row:hover .recent-word { color: var(--accent); }
-  .recent-word { font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--text); flex: 1; }
-  .recent-at { font-size: 0.72rem; color: var(--muted); }
+  .recent-word {
+    font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--text); flex: 1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .recent-at { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; }
+  .recent-save {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 0.95rem; padding: 3px 8px; border-radius: 6px; flex-shrink: 0;
+    opacity: 0; transition: opacity 0.1s;
+  }
+  .recent-row:hover .recent-save, .recent-save:focus-visible { opacity: 1; }
+  .recent-save:hover { color: var(--accent); background: var(--accent-lt); }
+  .recent-save.saved { opacity: 1; color: var(--accent); cursor: default; }
 
   /* Settings */
   .row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); }
@@ -486,17 +500,72 @@ function timeAgo(ts) {
   if (h < 24) return `${h}h ago`;
   return `${Math.floor(h / 24)}d ago`;
 }
+// B11: Recent entries carry their definition (`data`/`context`) since the
+// desktop-panel bridge started forwarding it — older entries (saved before
+// that shipped) only have {word, at}, so the Save button is omitted for
+// those rather than saving an empty definition.
+let lastRecentItems = [];
+function isSavedWord(word) {
+  const k = (word || '').toLowerCase();
+  return loadWB().some((e) => (e.word || '').toLowerCase() === k);
+}
 function renderRecent(items) {
+  lastRecentItems = items;
   const list = document.getElementById('recent-list');
   document.getElementById('recent-empty').classList.toggle('hidden', items.length > 0);
-  list.innerHTML = items.map((r) => `
-    <button class="recent-row" data-word="${esc(r.word)}">
-      <span class="recent-word">${esc(r.word)}</span>
-      <span class="recent-at">${timeAgo(r.at)}</span>
-    </button>`).join('');
-  list.querySelectorAll('.recent-row').forEach((row) => {
-    row.addEventListener('click', () => window.lexioHub?.relookup(row.dataset.word));
+  list.innerHTML = items.map((r) => {
+    const saved = isSavedWord(r.word);
+    const canSave = !!(r.data && r.data.contextual);
+    return `
+    <div class="recent-row">
+      <button class="recent-row-btn" data-word="${esc(r.word)}">
+        <span class="recent-word">${esc(r.word)}</span>
+        <span class="recent-at">${timeAgo(r.at)}</span>
+      </button>
+      ${canSave ? `<button class="recent-save${saved ? ' saved' : ''}" data-word="${esc(r.word)}"
+          title="${saved ? 'Saved' : 'Save to Word Bank'}" ${saved ? 'disabled' : ''}>${saved ? '✓' : '+'}</button>` : ''}
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.recent-row-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = lastRecentItems.find((r) => r.word === btn.dataset.word);
+      const cached = item?.data ? { context: item.context, data: item.data } : undefined;
+      window.lexioHub?.relookup(btn.dataset.word, cached);
+    });
   });
+  list.querySelectorAll('.recent-save').forEach((btn) => {
+    btn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const item = lastRecentItems.find((r) => r.word === btn.dataset.word);
+      if (item) saveRecentEntry(item);
+    });
+  });
+}
+function saveRecentEntry(item) {
+  const word = item.word;
+  if (!word || isSavedWord(word)) return;
+  const wb = loadWB();
+  wb.unshift({
+    word,
+    pos: item.data?.pos || '',
+    contextual: item.data?.contextual || '',
+    why: item.data?.why || '',
+    simpler: item.data?.simpler || null,
+    etymology: item.data?.etymology || null,
+    register: item.data?.register || null,
+    context: (item.context || '').slice(0, 300),
+    savedAt: new Date().toISOString(),
+  });
+  storeWB(wb);
+  renderRecent(lastRecentItems);
+  const tok = token();
+  if (tok) {
+    fetch(API_BASE + '/wordbank/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + tok },
+      body: JSON.stringify({ entries: loadWB() }),
+    }).catch(() => {});
+  }
 }
 window.lexioHub?.getRecent().then((r) => renderRecent(r || []));
 window.lexioHub?.onRecentUpdated((r) => renderRecent(r || []));

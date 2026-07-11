@@ -524,6 +524,7 @@
     <span id="def-register" class="hidden"></span>
   </div>
   <p id="context-note" class="hidden" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin:-4px 0 0;"></p>
+  <p id="cached-note" class="hidden" style="font-size:0.75rem;color:var(--muted);font-style:italic;margin:-4px 0 0;">From Recent — <button onclick="refreshCached()" style="all:unset;cursor:pointer;color:var(--accent);font-weight:600;">Refresh</button></p>
   <p id="def-contextual"></p>
   <p id="def-definition" class="hidden"></p>
   <p id="def-simpler" class="hidden"></p>
@@ -602,6 +603,7 @@ let activeToken = null;
 let cache = new Map();
 let currentResult = null;
 let lastImage = null;   // {b64, mime} of the current screen-point capture — lets a language switch re-run it
+let lastCachedWord = null;   // B11: word behind the current cached (Recent-tab) render, for the Refresh action
 
 // ── Model preference ────────────────────────────────────────
 const MODEL_KEY = 'lexio_compact_model';
@@ -894,6 +896,8 @@ function lexioContextReady(word, ctx) {
 
 function directDefine(word, ctx) {
   context = ctx;
+  lastCachedWord = null;
+  document.getElementById('cached-note').classList.add('hidden');
   // Bug #2: never silently pretend a word-only fallback is a real
   // contextual definition — show it plainly instead (Gemini can restyle
   // this note; the point for now is that it exists and isn't hidden).
@@ -909,6 +913,31 @@ function directDefine(word, ctx) {
   document.getElementById('error-msg').classList.add('hidden');
   document.getElementById('def-panel').classList.add('hidden');
   fetchDef(word);
+}
+
+// B11: renders a Recent-tab entry from its cached definition — no network
+// call, so relooking up something you already saw never re-bills a lookup.
+// Falls back to a real lookup if the entry predates this feature (older
+// Recent rows only have {word, at}, no `data`).
+function lexioDesktopInputCached(word, ctx, data) {
+  const w = (word || '').trim();
+  if (!w || !data) { lexioDesktopInput(word, ctx); return; }
+  pendingContextWord = null;
+  clearTimeout(contextTimeoutId);
+  context = ctx || w;
+  lastCachedWord = w;
+  document.body.classList.add('direct');
+  document.getElementById('new-btn').classList.remove('hidden');
+  document.getElementById('error-msg').classList.add('hidden');
+  document.getElementById('context-note').classList.add('hidden');
+  document.getElementById('cached-note').classList.remove('hidden');
+  showResult(w, data);
+}
+
+function refreshCached() {
+  const w = lastCachedWord;
+  document.getElementById('cached-note').classList.add('hidden');
+  if (w) fetchDef(w);
 }
 
 function exitDirectQuiet() {
@@ -1083,6 +1112,8 @@ function handleClick(span, word) {
 async function fetchDef(word) {
   hideError();
   lastImage = null;   // a language switch should now re-run THIS word, not an old capture
+  lastCachedWord = null;
+  document.getElementById('cached-note').classList.add('hidden');
   const model = getModel();
   const lang = getLang();
   const key = word.toLowerCase() + '::' + context.slice(0, 120) + '::' + model + '::' + lang;
@@ -1126,7 +1157,10 @@ async function fetchDef(word) {
     // hits and the Enter-to-reopen shortcut — neither is a new lookup, so
     // the Hub's Recent tab was filling up with duplicate entries of the
     // same word. Report it here instead, exactly once per real fetch.
-    console.log('LEXIO_LOOKUP::' + JSON.stringify({ word }));
+    // B11: the definition itself rides along too (text fields only, no
+    // images) so the Hub's Recent tab can render + save an entry without
+    // re-billing a lookup.
+    console.log('LEXIO_LOOKUP::' + JSON.stringify({ word, data, context: (context || '').slice(0, 300) }));
   } catch (err) {
     clearHighlights(); activeToken = null;
     showError(err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message);
@@ -1144,6 +1178,8 @@ async function fetchDef(word) {
 async function fetchDefFromImage(imageBase64, imageMime = 'image/png') {
   hideError();
   lastImage = { b64: imageBase64, mime: imageMime };   // kept so a language switch can re-run this capture
+  lastCachedWord = null;
+  document.getElementById('cached-note').classList.add('hidden');
   const model = getModel();
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 20000);   // vision calls run slower than text-only
@@ -1169,7 +1205,9 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png') {
     context = data.contextual || word;   // no separate context text in this mode; keep it non-empty for the panel
     showResult(word || '—', data);
     showCaptureThumb(`data:${imageMime};base64,${imageBase64}`);
-    console.log('LEXIO_LOOKUP::' + JSON.stringify({ word }));
+    // B11: no image data in this payload on purpose — Recent only keeps
+    // the text fields, so a screen capture never bloats the local store.
+    console.log('LEXIO_LOOKUP::' + JSON.stringify({ word, data, context: (context || '').slice(0, 300) }));
   } catch (err) {
     showError(err.name === 'AbortError' ? 'Request timed out. Please try again.' : err.message);
   } finally {

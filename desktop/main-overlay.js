@@ -236,12 +236,18 @@ async function captureScreenshot() {
 // `forcedText`, when passed (e.g. re-running a Recent-tab item), skips the
 // real selection capture entirely and feeds that text straight into the
 // panel instead — a relookup shouldn't touch the clipboard or require
-// anything to be selected in the frontmost app.
+// anything to be selected in the frontmost app. It's either a plain word
+// string (a relookup with no cached definition — e.g. a trending-word
+// chip, always a fresh billed lookup) or a {word, context, data} object
+// (B11 — a Recent-tab entry with its definition already cached, rendered
+// instantly with no new lookup).
 async function expand(forcedText, { capture = true } = {}) {
   // A relookup (forcedText, from the Hub's Recent tab) only has the word
   // itself, not the sentence it originally came from — reuse it as its own
-  // context, same as the old pre-auto-context behavior.
-  const forced = forcedText !== undefined ? { word: forcedText, context: forcedText } : undefined;
+  // context, same as the old pre-auto-context behavior. An object payload
+  // is passed through as-is (already has its own context/data).
+  const forced = forcedText === undefined ? undefined
+    : (typeof forcedText === 'string' ? { word: forcedText, context: forcedText } : forcedText);
 
   if (expanded) {
     // Already open — most likely pinned. A relookup should swap the
@@ -590,10 +596,32 @@ ipcMain.on('onboarding:finish', () => {
 // pill.html's console-message listener — see pill.html/compact.html for
 // why that's the mechanism) — this is what belongs in Recent, not the raw
 // captured selection, which is often a whole sentence.
-ipcMain.on('overlay:report-lookup', (_e, word) => {
-  const w = (word || '').toString().trim().slice(0, 80);
+//
+// B11: `data` (the /define response) and `context` ride along too, so a
+// Recent-tab row can render its definition and be saved to the Word Bank
+// without re-running (and re-billing) the lookup. Only the known text
+// fields are kept — this also guarantees no image_base64 ever lands in
+// the local store, even if a future caller passes one through by mistake.
+const RECENT_DATA_FIELDS = [
+  'pos', 'ipa', 'contextual', 'why', 'etymology', 'register', 'definition', 'simpler',
+];
+function sanitizeRecentData(data) {
+  if (!data || typeof data !== 'object') return undefined;
+  const out = {};
+  for (const k of RECENT_DATA_FIELDS) {
+    if (typeof data[k] === 'string' && data[k]) out[k] = data[k].slice(0, 2000);
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+ipcMain.on('overlay:report-lookup', (_e, payload) => {
+  const raw = (payload && typeof payload === 'object') ? payload : { word: payload };
+  const w = (raw.word || '').toString().trim().slice(0, 80);
   if (!w) return;
-  const recentLookups = [{ word: w, at: Date.now() }, ...store.get().recentLookups].slice(0, 50);
+  const entry = { word: w, at: Date.now() };
+  const data = sanitizeRecentData(raw.data);
+  if (data) entry.data = data;
+  if (typeof raw.context === 'string' && raw.context) entry.context = raw.context.slice(0, 300);
+  const recentLookups = [entry, ...store.get().recentLookups].slice(0, 50);
   // Daily lookup counts — the local raw material for streak/stats on the
   // Hub's future Home tab (server-side streak exists but needs sign-in).
   const lookupDays = { ...(store.get().lookupDays || {}) };
@@ -610,11 +638,17 @@ ipcMain.handle('hub:get-recent', () => store.get().recentLookups);
 // users (signed-in gets the server's cross-device /api/streak instead).
 ipcMain.handle('hub:get-lookup-days', () => store.get().lookupDays || {});
 ipcMain.handle('hub:get-auth',   () => store.get().auth);
-// Clicking a Recent-tab item re-runs that exact lookup in the panel.
-ipcMain.on('hub:relookup', (_e, word) => {
+// Clicking a Recent-tab item re-runs that exact lookup in the panel. A
+// plain string is a word-only relookup (always fresh/billed — e.g. a
+// trending-word chip); {word, cached: {context, data}} carries a Recent
+// entry's own cached definition through, so it renders for free (B11).
+ipcMain.on('hub:relookup', (_e, payload) => {
+  const isCached = payload && typeof payload === 'object';
+  const word = isCached ? payload.word : payload;
   if (!word) return;
   if (hubWin && !hubWin.isDestroyed()) hubWin.close();
-  expand(word);
+  const cached = isCached ? payload.cached : null;
+  expand(cached?.data ? { word, context: cached.context || word, data: cached.data } : word);
 });
 ipcMain.on('hub:sign-out', () => {
   store.set({ auth: null });

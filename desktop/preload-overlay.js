@@ -34,8 +34,9 @@ contextBridge.exposeInMainWorld('lexioOverlay', {
 
   // Renderer → main: the webview (via its console-message bridge) told us
   // which word was actually defined — main records it as the real recent
-  // lookup instead of the raw captured selection.
-  reportLookup: (word) => ipcRenderer.send('overlay:report-lookup', word),
+  // lookup instead of the raw captured selection. data/context ride along
+  // too (B11) so the Hub's Recent tab can render + save without re-billing.
+  reportLookup: (word, data, context) => ipcRenderer.send('overlay:report-lookup', { word, data, context }),
 
   // Renderer → main: pin/unpin — while pinned, clicking into another app
   // won't auto-collapse the panel.

@@ -7,7 +7,10 @@ contextBridge.exposeInMainWorld('lexioHub', {
   getLookupDays: () => ipcRenderer.invoke('hub:get-lookup-days'),
   getAuth:   () => ipcRenderer.invoke('hub:get-auth'),
   signOut:   () => ipcRenderer.send('hub:sign-out'),
-  relookup:  (word) => ipcRenderer.send('hub:relookup', word),
+  // `cached` ({context, data}) is optional — pass it for a Recent-tab
+  // entry that already has its definition, so the relookup renders for
+  // free instead of billing a fresh /define call (B11).
+  relookup:  (word, cached) => ipcRenderer.send('hub:relookup', cached ? { word, cached } : word),
 
   getAccessibilityStatus: () => ipcRenderer.invoke('app:accessibility-status'),
   getScreenRecordingStatus: () => ipcRenderer.invoke('app:screen-recording-status'),

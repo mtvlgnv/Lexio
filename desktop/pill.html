@@ -185,15 +185,17 @@
     // Bridge: compact.html has no preload/nodeIntegration, so it can't reach
     // ipcRenderer directly. Tagged console.log messages are how it asks the
     // host to do things on its behalf — LEXIO_LOOKUP:: reports the actually-
-    // defined word (for the Hub's Recent tab), LEXIO_ESCAPE:: asks to
-    // collapse the panel (bug #12 — Esc previously only worked when THIS
-    // document had focus, not once the user clicked into the lookup panel).
+    // defined word plus its definition/context (B11 — lets the Hub's
+    // Recent tab render + save an entry without re-billing a lookup),
+    // LEXIO_ESCAPE:: asks to collapse the panel (bug #12 — Esc previously
+    // only worked when THIS document had focus, not once the user clicked
+    // into the lookup panel).
     frame.addEventListener('console-message', (e) => {
       if (!e.message) return;
       if (e.message.startsWith('LEXIO_LOOKUP::')) {
         try {
-          const { word } = JSON.parse(e.message.slice('LEXIO_LOOKUP::'.length));
-          if (word) window.lexioOverlay?.reportLookup(word);
+          const { word, data, context } = JSON.parse(e.message.slice('LEXIO_LOOKUP::'.length));
+          if (word) window.lexioOverlay?.reportLookup(word, data, context);
         } catch {}
       } else if (e.message === 'LEXIO_ESCAPE::') {
         window.lexioOverlay?.requestCollapse();
@@ -238,14 +240,24 @@
 
   function injectAndAnalyze(payload) {
     initialInjected = true;
-    // Two shapes arrive here: a fresh screen-point capture ({imagePending})
-    // and a relookup from the Hub's Recent tab ({word, context} — re-running
-    // a past lookup by word alone, no new screenshot involved).
+    // Three shapes arrive here: a fresh screen-point capture
+    // ({imagePending}), a relookup from the Hub's Recent tab with a cached
+    // definition attached ({word, context, data} — B11, renders instantly,
+    // no new lookup billed), and a plain relookup with no cache ({word,
+    // context} — e.g. a trending-word chip, which is a genuinely new word).
     const script = payload.imagePending ? `
       (function() {
         if (typeof lexioImageInput === 'function') { lexioImageInput(); return; }
         const ta = document.getElementById('paste-area');
         if (ta) ta.value = '';
+      })();
+    ` : payload.data ? `
+      (function() {
+        const w = ${JSON.stringify(payload.word)};
+        const c = ${JSON.stringify(payload.context)};
+        const d = ${JSON.stringify(payload.data)};
+        if (typeof lexioDesktopInputCached === 'function') { lexioDesktopInputCached(w, c, d); return; }
+        if (typeof lexioDesktopInput === 'function') { lexioDesktopInput(w, c); }
       })();
     ` : `
       (function() {
