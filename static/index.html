@@ -455,14 +455,7 @@
       <button class="ocr-cancel" onclick="cancelOCR()">Cancel</button>
     </div>
 
-    <div class="tooltip-box" id="tooltip-0">
-      ✦ Paste your text here, then click <strong>Analyze text</strong>
-      <button class="tooltip-dismiss" onclick="dismissTooltips()">Got it</button>
-    </div>
-    <div class="tooltip-box hidden" id="tooltip-1">
-      ✦ Now click any word to see its meaning in context
-      <button class="tooltip-dismiss" onclick="dismissTooltips()">Got it</button>
-    </div>
+
 
     <div id="error-banner" class="hidden"></div>
 
@@ -997,48 +990,60 @@
         <div class="lp-feature-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         </div>
-        <h3 data-i18n="feat1Title">Contextual definitions</h3>
-        <p data-i18n="feat1Desc">Not what the word means in general — what it means right here, in this sentence, the way this author used it.</p>
+        <div class="lp-feature-text">
+          <h3 data-i18n="feat1Title">Contextual definitions</h3>
+          <p data-i18n="feat1Desc">Not what the word means in general — what it means right here, in this sentence, the way this author used it.</p>
+        </div>
       </div>
 
       <div class="lp-feature">
         <div class="lp-feature-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         </div>
-        <h3 data-i18n="feat2Title">11 languages</h3>
-        <p data-i18n="feat2Desc">Paste text in Spanish, French, German, Russian, Japanese, and more. Get definitions in whatever language you prefer.</p>
+        <div class="lp-feature-text">
+          <h3 data-i18n="feat2Title">11 languages</h3>
+          <p data-i18n="feat2Desc">Paste text in Spanish, French, German, Russian, Japanese, and more. Get definitions in whatever language you prefer.</p>
+        </div>
       </div>
 
       <div class="lp-feature">
         <div class="lp-feature-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         </div>
-        <h3 data-i18n="feat3Title">IPA pronunciation</h3>
-        <p data-i18n="feat3Desc">See the phonetic transcription of every word and hear it spoken aloud with a single tap.</p>
+        <div class="lp-feature-text">
+          <h3 data-i18n="feat3Title">IPA pronunciation</h3>
+          <p data-i18n="feat3Desc">See the phonetic transcription of every word and hear it spoken aloud with a single tap.</p>
+        </div>
       </div>
 
       <div class="lp-feature">
         <div class="lp-feature-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         </div>
-        <h3 data-i18n="feat4Title">Etymology</h3>
-        <p data-i18n="feat4Desc">Understand where words come from. Knowing a word's roots makes it stick — and makes the next related word easier.</p>
+        <div class="lp-feature-text">
+          <h3 data-i18n="feat4Title">Etymology</h3>
+          <p data-i18n="feat4Desc">Understand where words come from. Knowing a word's roots makes it stick — and makes the next related word easier.</p>
+        </div>
       </div>
 
       <div class="lp-feature">
         <div class="lp-feature-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
         </div>
-        <h3 data-i18n="feat5Title">Word bank</h3>
-        <p data-i18n="feat5Desc">Save words you want to remember. Your personal vocabulary list, always one click away.</p>
+        <div class="lp-feature-text">
+          <h3 data-i18n="feat5Title">Word bank</h3>
+          <p data-i18n="feat5Desc">Save words you want to remember. Your personal vocabulary list, always one click away.</p>
+        </div>
       </div>
 
       <div class="lp-feature">
         <div class="lp-feature-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         </div>
-        <h3 data-i18n="feat6Title">Read off paper</h3>
-        <p data-i18n="feat6Desc">Snap a photo of a printed page — a book, a menu, a sign — and Lexio turns it into text you can tap, word by word.</p>
+        <div class="lp-feature-text">
+          <h3 data-i18n="feat6Title">Read off paper</h3>
+          <p data-i18n="feat6Desc">Snap a photo of a printed page — a book, a menu, a sign — and Lexio turns it into text you can tap, word by word.</p>
+        </div>
       </div>
 
     </div>

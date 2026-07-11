@@ -877,7 +877,7 @@ function analyze() {
   const statsEl = document.getElementById('reading-stats');
   statsEl.textContent = stats; statsEl.classList.remove('hidden');
   showSmartPlaceholder(raw);
-  advanceTooltip(1);
+
   if (typeof updateAppCompact === 'function') updateAppCompact();
   maybeShowSpaceFiller();
 }
@@ -1074,7 +1074,7 @@ function handleWordClick(span, word) {
   activeToken = span;
   span.classList.add('active', 'pulsing');
   fetchDefinition(word, currentContext);
-  advanceTooltip(2);
+
 }
 
 function clearHighlights() {
@@ -1802,24 +1802,6 @@ function checkPermalink() {
   });
 }
 
-/* ── Tooltips ───────────────────────────────────────────────── */
-function initTooltips() {
-  if (localStorage.getItem(VISITED_KEY)) return;
-  tooltipStep=0; document.getElementById('tooltip-0').classList.add('visible');
-}
-function advanceTooltip(step) {
-  if (localStorage.getItem(VISITED_KEY)) return;
-  if (step===1 && tooltipStep===0) {
-    tooltipStep=1;
-    document.getElementById('tooltip-0').classList.remove('visible');
-    document.getElementById('tooltip-1').classList.remove('hidden');
-    requestAnimationFrame(()=>document.getElementById('tooltip-1').classList.add('visible'));
-  } else if (step===2) { dismissTooltips(); }
-}
-function dismissTooltips() {
-  document.querySelectorAll('.tooltip-box').forEach(t=>t.classList.remove('visible'));
-  try { localStorage.setItem(VISITED_KEY,'1'); } catch {}
-}
 
 /* ── Keyboard shortcuts ─────────────────────────────────────── */
 function toggleShortcuts() {
@@ -2226,9 +2208,9 @@ async function submitAuth() {
     updateAcctBtn();
     closeAuthModal();
     syncWordBank();
+    const isDesktop = new URLSearchParams(location.search).has('desktop_auth');
     _maybeRedirectDesktop(authToken, authUser);
-    // If the user had text ready, continue to analyze automatically
-    if (inputText && inputText.value.trim()) analyze();
+    if (!isDesktop) window.location.reload();
   } catch (err) {
     errEl.textContent = err.message;
     errEl.classList.remove('hidden');
@@ -2410,9 +2392,9 @@ async function _oauthSignIn(endpoint, body) {
     updateAcctBtn();
     closeAuthModal();
     syncWordBank();
+    const isDesktop = new URLSearchParams(location.search).has('desktop_auth');
     _maybeRedirectDesktop(authToken, authUser);
-    // If the user had text ready, continue to analyze automatically
-    if (inputText && inputText.value.trim()) analyze();
+    if (!isDesktop) window.location.reload();
   } catch(e) {
     if (errEl) { errEl.textContent = e.message; errEl.classList.remove('hidden'); }
   }
@@ -2554,7 +2536,7 @@ function prefillWord(word) {
 
 /* ── Init ───────────────────────────────────────────────────── */
 loadWordBank(); loadTweaks(); applyTweaks(); updateWBBadge();
-startPlaceholderRotation(); setupDragAndDrop(); checkPermalink(); initTooltips();
+startPlaceholderRotation(); setupDragAndDrop(); checkPermalink();
 
 // Scroll cue: the down-chevrons sit at the bottom of the empty landing
 // state to signal "there's more below". They're visible at rest and
