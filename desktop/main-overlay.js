@@ -255,14 +255,32 @@ async function expand(forcedText, { capture = true } = {}) {
     : (typeof forcedText === 'string' ? { word: forcedText, context: forcedText } : forcedText);
 
   if (expanded) {
-    // Already open — most likely pinned. A relookup should swap the
-    // content into the existing panel rather than silently no-op, since
-    // pin exists specifically so the panel can stay open across other
-    // actions like picking a Recent-tab item from the Hub.
-    if (forced && win && !win.isDestroyed()) {
+    // Already open — most likely pinned. A relookup (forced, e.g. from the
+    // Hub's Recent tab) or a fresh double-tap capture should both refresh
+    // the content in place rather than silently no-op — pin exists
+    // specifically so the panel stays open across other actions, and
+    // "stays open" has to include looking up the NEXT word, not just
+    // surviving click-away. (Bug: double-tapping a second word while
+    // pinned used to hit toggle()'s collapse() branch instead of ever
+    // reaching here, since `expanded` was already true — see toggle().)
+    if (!win || win.isDestroyed()) return;
+    if (forced) {
       win.webContents.send('overlay:expand', forced);
       win.show();
       win.focus();
+    } else if (capture) {
+      const myGeneration = ++captureGeneration;
+      win.webContents.send('overlay:expand', { imagePending: true });
+      win.show();
+      win.focus();
+      captureScreenshot().then((captured) => {
+        // A newer trigger may have superseded us while the capture was
+        // in flight — bail rather than clobber whatever it established.
+        if (myGeneration !== captureGeneration || !win || win.isDestroyed()) return;
+        win.webContents.send('overlay:image-ready', captured
+          ? { imageBase64: captured.imageBase64, imageMime: captured.imageMime }
+          : { imageBase64: null });
+      });
     }
     return;
   }
@@ -337,7 +355,12 @@ function collapse() {
   }, COLLAPSE_MS);
 }
 
-function toggle() { expanded ? collapse() : expand(); }
+// While pinned, a double-tap on a new word should refresh the panel with
+// that new lookup, not collapse it — collapsing was the actual bug users
+// hit: pin, look up a second word, and the whole panel just closed
+// instead of updating. Unpinned behavior (double-tap-while-open collapses)
+// is unchanged.
+function toggle() { (expanded && !pinned) ? collapse() : expand(); }
 
 // Lexio Glance is a menu-bar background app (no Dock icon). Clicking it in
 // Applications while already running used to silently toggle a 44px pill or
