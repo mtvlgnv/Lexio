@@ -1225,7 +1225,12 @@ async function fetchDef(word) {
     });
     if (!resp.ok) {
       if (resp.status === 402) {
-        throw new Error('Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.');
+        // Signed-out users hit the small anonymous per-IP allowance — the
+        // honest next step for them is signing in (free tier is bigger),
+        // not upgrading a plan they don't have yet.
+        throw new Error(tok
+          ? 'Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.'
+          : 'Free anonymous lookups used up. Sign in (free) for more monthly lookups.');
       }
       if (resp.status === 403) {
         throw new Error('This model requires a Pro plan. Upgrade at lexio.site.');
@@ -1289,7 +1294,12 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png', modelOver
     });
     if (!resp.ok) {
       if (resp.status === 402) {
-        throw new Error('Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.');
+        // Signed-out users hit the small anonymous per-IP allowance — the
+        // honest next step for them is signing in (free tier is bigger),
+        // not upgrading a plan they don't have yet.
+        throw new Error(tok
+          ? 'Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.'
+          : 'Free anonymous lookups used up. Sign in (free) for more monthly lookups.');
       }
       if (resp.status === 403) {
         throw new Error('This model requires a Pro plan. Upgrade at lexio.site.');

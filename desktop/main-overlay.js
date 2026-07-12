@@ -616,6 +616,10 @@ ipcMain.on('app:dismiss-profile-interview', () => store.set({ profileInterviewDi
 ipcMain.on('onboarding:finish', () => {
   store.set({ onboardingComplete: true, onboardingAppVersion: ONBOARDING_VERSION });
   if (onboardingWin && !onboardingWin.isDestroyed()) onboardingWin.close();
+  // Land the user in the Hub instead of dumping them to an empty desktop —
+  // "Done" closing everything read as the app having quit (the pill alone
+  // is easy to miss on a first run).
+  createHomeWindow();
 });
 
 // The webview reports the word it actually defined (bridged through
