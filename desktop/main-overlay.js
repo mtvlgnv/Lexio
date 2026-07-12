@@ -61,8 +61,12 @@ app.setName('Lexio Glance');
 // but the panel was invisible everywhere except that one Space. The Hub
 // is still fully reachable via the tray icon; that's not worth trading
 // away "the pill works in every app," which is the actual product.
+// NOTE: no app.dock.setIcon() here — the Dock is hidden on the next line,
+// so an icon is pointless, and loading build/icon.png CRASHED the packaged
+// app at launch (build/ is correctly excluded from the asar by the files
+// allowlist; the file only exists in dev). The .icns in the app bundle is
+// what macOS shows everywhere an icon is actually needed.
 if (process.platform === 'darwin') {
-  app.dock.setIcon(path.join(__dirname, 'build', 'icon.png'));
   app.dock.hide();
 }
 
