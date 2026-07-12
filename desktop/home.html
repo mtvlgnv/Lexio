@@ -254,6 +254,21 @@
         <div class="stat"><div class="stat-num" id="home-words">–</div><div class="stat-cap">words saved</div></div>
       </div>
       <div class="hint-card" id="home-perms" style="display:none;border-color:var(--danger);color:var(--danger);"></div>
+      <!-- One-time Pro welcome — shown when this app first sees the account
+           go free → Pro (checkout happens in the browser, so this is the
+           only thank-you moment the desktop app can own). -->
+      <div class="acct-card" id="home-pro-welcome" style="display:none;border-color:var(--accent);">
+        <div class="acct-name" style="font-size:1.05rem;">🎉 You're Pro now — thank you!</div>
+        <div class="row-hint" style="margin:6px 0 10px;line-height:1.6;">
+          Everything is unlocked on this Mac: <b>unlimited lookups</b>, the
+          <b>Balanced and Deep models</b>, <b>Think&nbsp;deeper ✦</b> on any capture,
+          and your <b>word bank now syncs</b> across devices. Tip: set up your
+          reader profile in Account so definitions fit your world.
+        </div>
+        <div style="text-align:right;">
+          <button class="btn primary" id="pro-welcome-dismiss">Got it</button>
+        </div>
+      </div>
       <!-- B17: this week vs last week — lookups from lookupDays, saves from wb savedAt. -->
       <div class="acct-card" id="home-recap" style="display:none;">
         <div class="stat-cap" style="text-align:left;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">This week</div>
@@ -901,6 +916,29 @@ async function renderHome() {
   document.getElementById('home-streak').textContent = streak;
   document.getElementById('stat-streak-card').classList.toggle('alive', streak >= 2);
 
+  // One-time Pro welcome. Checkout happens in the system browser, so the
+  // only signal the app ever gets is /api/pro-status flipping — track the
+  // last seen state and celebrate exactly once on a false→true transition.
+  // Accounts that were ALREADY Pro the first time this code runs get the
+  // state recorded silently (no retroactive confetti months after paying).
+  const proCard = document.getElementById('home-pro-welcome');
+  if (tok) {
+    try {
+      const pr = await fetch(API_BASE + '/api/pro-status', { headers: { Authorization: 'Bearer ' + tok } });
+      if (pr.ok) {
+        const isPro = !!(await pr.json()).is_pro;
+        const prev = localStorage.getItem('lexio_prev_pro');
+        if (isPro && prev === '0' && localStorage.getItem('lexio_pro_celebrate') !== '2') {
+          localStorage.setItem('lexio_pro_celebrate', '1');
+        }
+        localStorage.setItem('lexio_prev_pro', isPro ? '1' : '0');
+        proCard.style.display = localStorage.getItem('lexio_pro_celebrate') === '1' ? '' : 'none';
+      }
+    } catch {}
+  } else {
+    proCard.style.display = 'none';
+  }
+
   // Word of the day — deterministic daily pick from the user's own bank.
   const wotd = document.getElementById('home-wotd');
   if (wb.length) {
@@ -977,6 +1015,11 @@ async function renderHome() {
     interviewCard.style.display = 'none';
   }
 }
+
+document.getElementById('pro-welcome-dismiss').addEventListener('click', () => {
+  localStorage.setItem('lexio_pro_celebrate', '2');   // done — never show again
+  document.getElementById('home-pro-welcome').style.display = 'none';
+});
 
 /* ── Profile interview card (B4/P1-5 Phase 1.5) ───────── */
 const INTERVIEW_LEVELS = ['Beginner', 'Intermediate', 'Advanced', 'Fluent', 'Native', 'Not sure'];

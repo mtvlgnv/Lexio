@@ -244,7 +244,10 @@ async def stripe_create_checkout(
         mode="subscription",
         line_items=[{"price": price_id, "quantity": 1}],
         currency=currency.lower(),
-        success_url=f"{_SITE_URL}/?stripe=success&plan={plan}",
+        # Lands on a real thank-you page (perks + next steps) instead of the
+        # bare homepage — /?stripe=success only flipped a header badge, which
+        # made a successful payment look like nothing happened.
+        success_url=f"{_SITE_URL}/thank-you.html?plan={plan}",
         cancel_url=f"{_SITE_URL}/?stripe=cancelled",
         metadata={
             "user_id": str(user.id),

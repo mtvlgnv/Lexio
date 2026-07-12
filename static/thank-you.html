@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Lexio Pro</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent: #c35500;
+      --text:   #1a1612;
+      --muted:  #7a7269;
+      --border: #e4ddd4;
+      --bg:     #faf8f5;
+      --surface:#fff;
+      --good:   #2e7d46;
+    }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; padding: 24px;
+    }
+    .wrap { max-width: 620px; margin: 0 auto; padding: 72px 0 96px; }
+    .logo {
+      font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600;
+      color: var(--accent); display: block; margin-bottom: 40px;
+      text-decoration: none;
+    }
+    .logo em { font-style: italic; }
+    .celebrate { font-size: 2.6rem; line-height: 1; margin-bottom: 18px; }
+    h1 {
+      font-family: 'Lora', serif; font-size: 2.1rem; font-weight: 600;
+      margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .sub { font-size: 1rem; color: var(--muted); margin-bottom: 10px; }
+    .status {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.85rem; color: var(--muted); margin-bottom: 40px;
+    }
+    .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+    .status.ok { color: var(--good); }
+    .status.ok .dot { background: var(--good); }
+    h2 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+         letter-spacing: 0.07em; color: var(--muted); margin: 36px 0 14px; }
+    .perk {
+      display: flex; gap: 14px; padding: 14px 16px; margin-bottom: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    }
+    .perk-icon { font-size: 1.2rem; line-height: 1.5; flex-shrink: 0; }
+    .perk b { display: block; font-size: 0.93rem; }
+    .perk p { font-size: 0.86rem; color: var(--muted); line-height: 1.55; }
+    .perk.family-only, .perk.yearly-only { display: none; }
+    body.plan-family .perk.family-only { display: flex; }
+    body.plan-yearly .perk.yearly-only { display: flex; }
+    .next {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px;
+    }
+    .btn {
+      display: inline-block; text-decoration: none; font-weight: 600;
+      font-size: 0.92rem; border-radius: 10px; padding: 12px 22px;
+      transition: opacity 0.15s;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    .receipt { font-size: 0.8rem; color: var(--muted); margin-top: 36px;
+               padding-top: 24px; border-top: 1px solid var(--border); }
+    .receipt a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="logo" href="/">Le<em>x</em>io</a>
+    <div class="celebrate">🎉</div>
+    <h1>Thank you — you're Pro now.</h1>
+    <p class="sub" id="plan-line">Your Lexio Pro subscription is active.</p>
+    <div class="status" id="status"><span class="dot"></span><span id="status-text">Confirming your subscription…</span></div>
+
+    <h2>What you just unlocked</h2>
+    <div class="perk"><span class="perk-icon">♾️</span><div>
+      <b>Unlimited lookups</b>
+      <p>No more monthly cap — look up every word you meet, on the web, in the Mac app, and in the Chrome extension.</p>
+    </div></div>
+    <div class="perk"><span class="perk-icon">🧠</span><div>
+      <b>All three reading modes</b>
+      <p>Fast, Balanced, and Deep — including "Think deeper" on Mac-app lookups for nuance, register, and example sentences.</p>
+    </div></div>
+    <div class="perk"><span class="perk-icon">🔄</span><div>
+      <b>Word bank sync</b>
+      <p>Words you save follow you across devices, with Anki export and a weekly revisit email you can switch off anytime.</p>
+    </div></div>
+    <div class="perk"><span class="perk-icon">👤</span><div>
+      <b>Reader profile</b>
+      <p>Tell Lexio what you do and definitions start landing in your world — a woodworker gets the right sense of "stock".</p>
+    </div></div>
+    <div class="perk family-only"><span class="perk-icon">👨‍👩‍👧</span><div>
+      <b>Family seats</b>
+      <p>Invite family members from your Account page — everyone gets full Pro on their own account.</p>
+    </div></div>
+    <div class="perk yearly-only"><span class="perk-icon">📖</span><div>
+      <b>Annual reading recap</b>
+      <p>A yearly look back at everything you read and learned — an annual-plan exclusive.</p>
+    </div></div>
+
+    <h2>Get the most out of it</h2>
+    <div class="next">
+      <a class="btn btn-primary" href="/app">Open Lexio</a>
+      <a class="btn btn-ghost" href="/download/mac">Download the Mac app</a>
+      <a class="btn btn-ghost" href="/chrome-extension.html">Add to Chrome</a>
+    </div>
+
+    <p class="receipt">Your receipt is on its way from Stripe. Manage or cancel your
+      subscription anytime from your account — no hoops. Questions? Just reply to
+      any Lexio email.</p>
+  </div>
+
+  <script>
+    // Plan-specific perks (?plan=monthly|yearly|family from the Stripe success_url).
+    const plan = new URLSearchParams(location.search).get('plan') || '';
+    if (plan === 'family') document.body.classList.add('plan-family');
+    if (plan === 'yearly') document.body.classList.add('plan-yearly');
+    const planNames = { monthly: 'Pro Monthly', yearly: 'Pro Annual', family: 'Pro Family' };
+    if (planNames[plan]) {
+      document.getElementById('plan-line').textContent =
+        `Your ${planNames[plan]} subscription is active.`;
+    }
+
+    // Live confirmation — the Stripe webhook usually lands within seconds; poll
+    // a few times so the page can show a real "active on your account" check
+    // instead of asserting it blindly. Quietly gives up if signed out here.
+    (async function confirm() {
+      const tok = localStorage.getItem('lexio_token');
+      const el = document.getElementById('status');
+      const txt = document.getElementById('status-text');
+      if (!tok) { el.style.display = 'none'; return; }
+      for (let i = 0; i < 6; i++) {
+        try {
+          const r = await fetch('/api/pro-status', { headers: { Authorization: 'Bearer ' + tok } });
+          if (r.ok && (await r.json()).is_pro) {
+            el.classList.add('ok');
+            txt.textContent = 'Pro is active on your account ✓';
+            return;
+          }
+        } catch {}
+        await new Promise((res) => setTimeout(res, 2000));
+      }
+      txt.textContent = 'Activation is taking a moment — it will appear on your account shortly.';
+    })();
+  </script>
+</body>
+</html>
