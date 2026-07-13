@@ -722,7 +722,7 @@ ipcMain.on('hub:sign-out', () => {
 // Fixed destination on purpose — don't accept arbitrary URLs from renderers.
 ipcMain.on('app:open-pricing', () => {
   analytics.capture('upgrade_click');
-  shell.openExternal('https://lexio.site/#lp-pro');
+  shell.openExternal('https://lexio.site/upgrade.html');
 });
 
 // Full relaunch — the onboarding wizard offers this after a failed practice

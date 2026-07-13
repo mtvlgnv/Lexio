@@ -3623,9 +3623,24 @@
       .lp-trending-compact .lp-trending-word { font-size: 0.82rem; }
       .lp-trending-compact .lp-trending-count { font-size: 0.6rem; padding: 1px 7px; }
 
-      /* Features grid — 1 column, tighter cards */
-      .lp-twin .lp-features-grid { grid-template-columns: 1fr !important; gap: 8px; }
-      .lp-feature { padding: 14px 14px; }
+      /* Features grid — 1 column, tighter cards. NOTE: nth-child(1)/(4)'s
+         desktop "bento" treatment (grid-column: span 2) MUST be reset here
+         too — leaving span:2 active on a 1-column explicit grid forces the
+         engine to auto-generate an implicit second (content-sized, unequal
+         width) column to satisfy the span, which silently drags every other
+         card back into a 2-up layout despite grid-template-columns:1fr. */
+      .lp-twin .lp-features-grid { grid-template-columns: 1fr !important; grid-auto-rows: auto !important; gap: 8px; }
+      .lp-feature { padding: 14px 14px; height: auto; }
+      .lp-feature:nth-child(1),
+      .lp-feature:nth-child(4) {
+        grid-column: span 1 !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .lp-feature:nth-child(1) .lp-feature-icon,
+      .lp-feature:nth-child(4) .lp-feature-icon {
+        margin-right: 0; width: 32px; height: 32px;
+      }
       .lp-feature h3 { font-size: 0.92rem; }
       .lp-feature p { font-size: 0.8rem; }
 

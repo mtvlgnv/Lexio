@@ -105,6 +105,54 @@ emulation rather than this harness.
    rotation cycles (`static/app.css:1714+`, `:nth-child` animation
    delays).
 
+3. ~~Features grid still shows the desktop "bento" layout on real
+   phones despite an existing `!important` 1-column rule~~ ✅ DONE
+   2026-07-13 — real iPhone screenshots (Features/mode-picker/trending/FAQ)
+   showed card 1 ("Contextual definitions") as a wide row-layout card with
+   dead space beneath it, followed by cards 2/3 ("11 languages"/"IPA
+   pronunciation") squeezed into a narrow 2-up row with badly wrapped text
+   — this despite `static/app.css` already having
+   `.lp-twin .lp-features-grid { grid-template-columns: 1fr !important; }`
+   inside `@media (max-width: 760px)`. **Root cause, confirmed via live
+   `getComputedStyle()`/`getBoundingClientRect()` measurement (not just
+   screenshot):** `.lp-feature:nth-child(1)` and `:nth-child(4)` still had
+   `grid-column: span 2` at this breakpoint (the desktop "Bento Box
+   specific sizing" rule, `static/app.css:2275-2280`, was never reset for
+   mobile). Spanning 2 columns inside a grid whose *explicit* template is
+   1 column forces the grid engine to auto-generate an **implicit** second
+   column (content-sized, unequal width — measured `101.742px 129.672px`)
+   to satisfy the span, and every other auto-placed card then falls into
+   that 2-column implicit grid too — reproducing the exact 2-up bento
+   layout even though `grid-template-columns` computed to the right value
+   in isolation. `grid-auto-rows: 1fr` compounded it: with the grid
+   flex-stretched to fill `.lp-features`, equal-height rows divide the
+   available height evenly regardless of content, stretching short cards
+   and cramping long ones instead of sizing to content.
+   **Fix (`static/app.css`, inside the existing `@media (max-width: 760px)`
+   block, ~line 3626):** added
+   `.lp-feature:nth-child(1), .lp-feature:nth-child(4) { grid-column: span 1 !important; flex-direction: column !important; align-items: stretch !important; }`
+   (plus resetting their 56px icon back to the standard 32px), and changed
+   `grid-auto-rows: 1fr` → `grid-auto-rows: auto !important` in the same
+   `.lp-twin .lp-features-grid` rule. Bumped `app.css?v=54` → `v=55` in
+   `static/index.html`.
+   **Verified live** at 375×812: all 6 cards now render as a true single
+   column (`grid-template-columns` computed to one `229px` track, not two),
+   each `flex-direction: column`, each sized to its own content height
+   (170px / 151px depending on copy length, not a forced-equal 342px like
+   before). Screenshot confirms uniform icon-over-text cards, no dead
+   space, no wrapped-text cramping. **Regression-checked at 1280px:**
+   desktop bento layout unchanged — `grid-template-columns` still
+   `267px 267px`, cards 1/4 still `flex-direction: row` spanning both
+   columns.
+   **Lesson for future agents:** an `!important` rule "winning" per
+   `rule.style.getPropertyPriority()` does NOT guarantee the computed
+   layout matches what you'd expect — a sibling property on a *different*
+   selector (`grid-column: span 2` on a child) can still force the grid to
+   grow implicit tracks underneath an explicit `grid-template-columns`
+   value. When a single-column override doesn't visually take effect
+   despite being present and `!important`, check for `grid-column: span N`
+   on any child before assuming a cascade/specificity bug.
+
 ## Not filed (checked, came back clean)
 
 - Mobile hamburger menu (`#menu-dropdown` full-screen nav) — content,

@@ -2878,6 +2878,46 @@ if (new URLSearchParams(location.search).get('stripe') === 'success') {
   setTimeout(() => clearInterval(poll), 5 * 60 * 1000);
 })();
 
+// Generic sign-in-and-return: /?signin=1&return=/upgrade.html?plan=yearly
+// pops the auth modal and bounces back to `return` once a token appears.
+// Same-origin paths only — never redirect to an absolute/protocol URL.
+(function _resumeReturnTo() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('signin') !== '1') return;
+  // The family-invite flow above owns ?signin=1 when an invite is pending.
+  if (sessionStorage.getItem('lexio_pending_family_invite')) return;
+  const ret = params.get('return') || '';
+  if (!ret.startsWith('/') || ret.startsWith('//')) return;
+  const bounce = () => { window.location.href = ret; };
+  if (localStorage.getItem('lexio_token')) { bounce(); return; }
+  setTimeout(() => { if (typeof openAuthModal === 'function') openAuthModal(false); }, 200);
+  const poll = setInterval(() => {
+    if (localStorage.getItem('lexio_token')) { clearInterval(poll); bounce(); }
+  }, 500);
+  setTimeout(() => clearInterval(poll), 5 * 60 * 1000);
+})();
+
+// Desktop-app handoff gap: a signed-out user arriving from Lexio Glance
+// (?desktop_auth=1) used to land on the plain homepage with no cue that
+// they should sign in — the lexio:// redirect only fires after auth. Pop
+// the auth modal on the sign-up tab (most Glance first-runs have no
+// account yet) with a hint that they'll be sent back to the app.
+// The signed-in case is handled by _maybeRedirectDesktop on DOMContentLoaded.
+(function _promptDesktopAuth() {
+  if (!new URLSearchParams(location.search).has('desktop_auth')) return;
+  if (localStorage.getItem('lexio_token')) return;
+  setTimeout(() => {
+    if (typeof openAuthModal !== 'function') return;
+    openAuthModal(false);
+    if (typeof switchAuthTab === 'function') switchAuthTab('register');
+    const prompt = document.getElementById('auth-prompt');
+    if (prompt) {
+      prompt.textContent = 'Create an account (or sign in) to connect the Lexio Mac app — you’ll be sent right back to it.';
+      prompt.style.display = '';
+    }
+  }, 300);
+})();
+
 /* ── Pro section CTA ────────────────────────────────────── */
 let _userIsPro = false;
 

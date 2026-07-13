@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upgrade to Lexio Pro</title>
+  <meta name="description" content="Unlimited lookups, all three reading modes, word bank sync, and a reader profile that adapts to you. One coffee a month." />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent: #c35500;
+      --text:   #1a1612;
+      --muted:  #7a7269;
+      --border: #e4ddd4;
+      --bg:     #faf8f5;
+      --surface:#fff;
+      --good:   #2e7d46;
+    }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.7; padding: 24px;
+    }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 56px 0 96px; }
+    .logo {
+      font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600;
+      color: var(--accent); display: block; margin-bottom: 40px;
+      text-decoration: none;
+    }
+    .logo em { font-style: italic; }
+    h1 {
+      font-family: 'Lora', serif; font-size: 2.2rem; font-weight: 600;
+      margin-bottom: 10px; letter-spacing: -0.01em; line-height: 1.2;
+    }
+    .sub { font-size: 1.02rem; color: var(--muted); margin-bottom: 36px; max-width: 540px; }
+    h2 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase;
+         letter-spacing: 0.07em; color: var(--muted); margin: 40px 0 14px; }
+
+    /* Already-Pro banner */
+    .already-pro {
+      display: none; align-items: center; gap: 12px; flex-wrap: wrap;
+      background: var(--surface); border: 1px solid var(--good);
+      border-radius: 12px; padding: 14px 16px; margin-bottom: 28px;
+      font-size: 0.92rem;
+    }
+    .already-pro .check { color: var(--good); font-weight: 700; }
+    .already-pro button {
+      margin-left: auto; border: 1px solid var(--border); background: var(--bg);
+      border-radius: 8px; padding: 7px 14px; font: inherit; font-size: 0.85rem;
+      cursor: pointer;
+    }
+    body.is-pro .already-pro { display: flex; }
+
+    /* Plan cards */
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .plans { grid-template-columns: 1fr; } }
+    .plan {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px 18px; cursor: pointer;
+      display: flex; flex-direction: column; gap: 4px; text-align: left;
+      transition: border-color 0.15s, box-shadow 0.15s; position: relative;
+      font: inherit;
+    }
+    .plan.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+    .plan[hidden] { display: none; }
+    .plan-name { font-weight: 600; font-size: 0.95rem; }
+    .plan-price { font-family: 'Lora', serif; font-size: 1.5rem; font-weight: 600; }
+    .plan-price .per { font-size: 0.8rem; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+    .plan-note { font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
+    .plan-badge {
+      position: absolute; top: -9px; right: 12px;
+      background: var(--accent); color: #fff; font-size: 0.66rem; font-weight: 700;
+      padding: 2px 9px; border-radius: 999px; letter-spacing: 0.04em;
+    }
+
+    .cta-row { margin-top: 22px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .btn-buy {
+      background: var(--accent); color: #fff; border: none; cursor: pointer;
+      font: inherit; font-weight: 600; font-size: 1rem;
+      border-radius: 10px; padding: 14px 30px; transition: opacity 0.15s;
+    }
+    .btn-buy:hover { opacity: 0.9; }
+    .btn-buy:disabled { opacity: 0.6; cursor: default; }
+    .cta-note { font-size: 0.8rem; color: var(--muted); }
+    .error {
+      display: none; margin-top: 14px; font-size: 0.88rem; color: #a33;
+      background: #fff5f3; border: 1px solid #ecc; border-radius: 10px; padding: 10px 14px;
+    }
+    .error.show { display: block; }
+
+    /* Email verification inline step */
+    .verify {
+      display: none; margin-top: 18px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 12px; padding: 16px;
+    }
+    .verify.show { display: block; }
+    .verify p { font-size: 0.88rem; margin-bottom: 10px; }
+    .verify-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .verify input {
+      font: inherit; font-size: 1rem; letter-spacing: 0.2em; width: 130px;
+      padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px;
+    }
+    .verify button {
+      font: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      border-radius: 8px; padding: 9px 16px; border: none;
+      background: var(--accent); color: #fff;
+    }
+    .verify .resend { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+
+    /* Perks */
+    .perk {
+      display: flex; gap: 14px; padding: 14px 16px; margin-bottom: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    }
+    .perk-icon { font-size: 1.2rem; line-height: 1.5; flex-shrink: 0; }
+    .perk b { display: block; font-size: 0.93rem; }
+    .perk p { font-size: 0.86rem; color: var(--muted); line-height: 1.55; }
+
+    .trust { font-size: 0.8rem; color: var(--muted); margin-top: 36px;
+             padding-top: 24px; border-top: 1px solid var(--border); }
+    .trust a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="logo" href="/">Le<em>x</em>io</a>
+
+    <h1>Read anything. Understand everything.</h1>
+    <p class="sub">Lexio Pro removes every limit across the web app, the Mac app, and the
+      Chrome extension — for less than the coffee you're reading over.</p>
+
+    <div class="already-pro">
+      <span class="check">✓</span> <span>You're already on Lexio Pro.</span>
+      <button id="manage-btn">Manage subscription</button>
+    </div>
+
+    <h2>Pick a plan</h2>
+    <div class="plans" id="plans">
+      <button class="plan selected" data-plan="monthly">
+        <span class="plan-name">Monthly</span>
+        <span class="plan-price" id="price-monthly">$4.99<span class="per">/mo</span></span>
+        <span class="plan-note">Flexible — cancel anytime.</span>
+      </button>
+      <button class="plan" data-plan="yearly" hidden>
+        <span class="plan-badge" id="yearly-badge">SAVE 33%</span>
+        <span class="plan-name">Yearly</span>
+        <span class="plan-price" id="price-yearly">$39.99<span class="per">/yr</span></span>
+        <span class="plan-note" id="yearly-note">One payment, a full year of Pro.</span>
+      </button>
+      <button class="plan" data-plan="family" hidden>
+        <span class="plan-name">Family</span>
+        <span class="plan-price" id="price-family">$9.99<span class="per">/mo</span></span>
+        <span class="plan-note" id="family-note">4 seats — everyone gets full Pro.</span>
+      </button>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn-buy" id="buy-btn">Upgrade to Pro →</button>
+      <span class="cta-note">Instant activation · secure checkout by Stripe · cancel anytime</span>
+    </div>
+    <div class="error" id="error"></div>
+
+    <div class="verify" id="verify">
+      <p><b>One quick step:</b> verify your email first. We just sent a 6-digit code to your inbox.</p>
+      <div class="verify-row">
+        <input id="verify-code" inputmode="numeric" maxlength="6" placeholder="000000" />
+        <button id="verify-btn">Verify &amp; continue</button>
+        <button class="resend" id="resend-btn">Resend code</button>
+      </div>
+    </div>
+
+    <h2>Everything you unlock</h2>
+    <div class="perk"><span class="perk-icon">♾️</span><div>
+      <b>Unlimited lookups</b>
+      <p>No more monthly cap — look up every word you meet, on the web, in the Mac app, and in the Chrome extension.</p>
+    </div></div>
+    <div class="perk"><span class="perk-icon">🧠</span><div>
+      <b>All three reading modes</b>
+      <p>Fast, Balanced, and Deep — including "Think deeper" on Mac-app lookups for nuance, register, and example sentences.</p>
+    </div></div>
+    <div class="perk"><span class="perk-icon">📷</span><div>
+      <b>Unlimited screen &amp; photo lookups</b>
+      <p>Point at any word on your screen with Lexio Glance, or read straight off paper — no OCR limits.</p>
+    </div></div>
+    <div class="perk"><span class="perk-icon">🔄</span><div>
+      <b>Word bank sync</b>
+      <p>Words you save follow you across devices, with Anki export and a weekly revisit email you can switch off anytime.</p>
+    </div></div>
+    <div class="perk"><span class="perk-icon">👤</span><div>
+      <b>Reader profile</b>
+      <p>Tell Lexio what you do and definitions start landing in your world — a woodworker gets the right sense of "stock".</p>
+    </div></div>
+    <div class="perk"><span class="perk-icon">💬</span><div>
+      <b>Priority support</b>
+      <p>Questions answered by the person who builds Lexio — usually within a day.</p>
+    </div></div>
+
+    <p class="trust">Payments are handled by Stripe — Lexio never sees your card. Manage or
+      cancel your subscription anytime from your account, no hoops. Questions first?
+      <a href="mailto:matveylgnv2021@gmail.com">Just ask</a>.</p>
+  </div>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const token = () => localStorage.getItem('lexio_token');
+    let plan = 'monthly';
+
+    // ?plan= preselection (deep links from emails, Glance, the Pro modal)
+    const wanted = new URLSearchParams(location.search).get('plan');
+    if (['monthly', 'yearly', 'family'].includes(wanted)) plan = wanted;
+
+    function selectPlan(p) {
+      plan = p;
+      document.querySelectorAll('.plan').forEach((el) =>
+        el.classList.toggle('selected', el.dataset.plan === p));
+    }
+    document.querySelectorAll('.plan').forEach((el) =>
+      el.addEventListener('click', () => selectPlan(el.dataset.plan)));
+
+    // Live localized prices; yearly/family cards stay hidden until the
+    // backend says those Stripe prices are configured.
+    (async function loadPrices() {
+      try {
+        const r = await fetch('/stripe/price-info');
+        if (!r.ok) return;
+        const p = await r.json();
+        const money = (amt) => (p.symbol || '$') + amt;
+        $('price-monthly').innerHTML = money(p.monthly_amount) + '<span class="per">/mo</span>';
+        if (p.yearly_available) {
+          const y = document.querySelector('[data-plan="yearly"]');
+          y.hidden = false;
+          $('price-yearly').innerHTML = money(p.yearly_amount) + '<span class="per">/yr</span>';
+          $('yearly-badge').textContent = 'SAVE ' + p.yearly_savings_pct + '%';
+          $('yearly-note').textContent = 'Works out to ' + money(p.yearly_monthly_equiv) + '/mo.';
+        }
+        if (p.family_available) {
+          const f = document.querySelector('[data-plan="family"]');
+          f.hidden = false;
+          $('price-family').innerHTML = money(p.family_amount) + '<span class="per">/mo</span>';
+          $('family-note').textContent = p.family_seats + ' seats — everyone gets full Pro.';
+        }
+      } catch {}
+      // A ?plan= deep link may point at a plan this server has no Stripe
+      // price for (its card is still hidden) — fall back to monthly rather
+      // than buying an invisible selection.
+      const chosen = document.querySelector('[data-plan="' + plan + '"]');
+      if (!chosen || chosen.hidden) plan = 'monthly';
+      selectPlan(plan); // re-apply after cards un-hide
+    })();
+
+    // Already Pro? Swap the pitch for a manage-subscription banner.
+    (async function checkPro() {
+      const tok = token();
+      if (!tok) return;
+      try {
+        const r = await fetch('/api/pro-status', { headers: { Authorization: 'Bearer ' + tok } });
+        if (r.ok && (await r.json()).is_pro) document.body.classList.add('is-pro');
+      } catch {}
+    })();
+
+    $('manage-btn').addEventListener('click', async () => {
+      try {
+        const r = await fetch('/stripe/customer-portal', {
+          method: 'POST', headers: { Authorization: 'Bearer ' + token() },
+        });
+        const d = await r.json();
+        if (r.ok && d.url) location.href = d.url;
+      } catch {}
+    });
+
+    function showError(msg) { const e = $('error'); e.textContent = msg; e.classList.add('show'); }
+    function clearError() { $('error').classList.remove('show'); }
+
+    async function startCheckout() {
+      clearError();
+      const tok = token();
+      if (!tok) {
+        // Bounce through the homepage auth modal, then come straight back.
+        const ret = '/upgrade.html?plan=' + plan;
+        location.href = '/?signin=1&return=' + encodeURIComponent(ret);
+        return;
+      }
+      const btn = $('buy-btn');
+      btn.disabled = true; btn.textContent = 'Redirecting…';
+      try {
+        const r = await fetch('/stripe/create-checkout?plan=' + encodeURIComponent(plan), {
+          method: 'POST', headers: { Authorization: 'Bearer ' + tok },
+        });
+        const d = await r.json().catch(() => ({}));
+        if (r.status === 403 && d.detail && d.detail.error === 'email_not_verified') {
+          // Inline verification: send a code, reveal the code box, retry after.
+          $('verify').classList.add('show');
+          fetch('/auth/send-verification', { method: 'POST', headers: { Authorization: 'Bearer ' + tok } }).catch(() => {});
+          return;
+        }
+        if (r.status === 401) {
+          localStorage.removeItem('lexio_token');
+          startCheckout(); // token expired — falls into the signed-out bounce
+          return;
+        }
+        if (!r.ok) throw new Error((d.detail && d.detail.message) || d.detail || 'Checkout is unavailable right now — please try again.');
+        location.href = d.url;
+      } catch (e) {
+        showError(e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Upgrade to Pro →';
+      }
+    }
+    $('buy-btn').addEventListener('click', startCheckout);
+
+    $('verify-btn').addEventListener('click', async () => {
+      clearError();
+      const code = $('verify-code').value.trim();
+      if (code.length < 4) return;
+      try {
+        const r = await fetch('/auth/verify-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token() },
+          body: JSON.stringify({ code }),
+        });
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(d.detail || 'That code didn\'t work.');
+        $('verify').classList.remove('show');
+        startCheckout();
+      } catch (e) { showError(e.message); }
+    });
+
+    $('resend-btn').addEventListener('click', () => {
+      fetch('/auth/send-verification', { method: 'POST', headers: { Authorization: 'Bearer ' + token() } }).catch(() => {});
+      $('resend-btn').textContent = 'Sent ✓';
+      setTimeout(() => { $('resend-btn').textContent = 'Resend code'; }, 3000);
+    });
+  </script>
+</body>
+</html>
