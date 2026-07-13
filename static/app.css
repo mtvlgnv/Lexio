@@ -3318,7 +3318,14 @@
     @media (max-width: 960px) {
       .lp-hero {
         grid-template-columns: 1fr;
-        padding: 48px 32px 40px; gap: 36px; min-height: 0;
+        /* The floating pill header (body.landing-page header) is
+           position:absolute (top:16px + 60px tall = bottom edge ~76px),
+           so it reserves NO document flow space — the hero must clear it
+           itself. Desktop uses 160px; the old 48px here (and 40px in the
+           760px block below) put the H1 a measured 44px UNDER the header
+           on phones. 104px = 76px header bottom + ~28px breathing room,
+           with headroom if the pill ever grows slightly taller. */
+        padding: 104px 32px 40px; gap: 36px; min-height: 0;
       }
       .lp-hero h1 { max-width: 100%; }
       .lp-hero-sub { max-width: 100%; }
@@ -3330,7 +3337,11 @@
       .lp-warm-area { display: flex; flex-direction: column; }
       .lp-warm-area > .lp-hero { order: -1; }
       .lp-warm-divider { display: none; }
-      .lp-hero { padding: 40px 20px 32px; }
+      .lp-hero { padding: 100px 20px 32px; }   /* top must clear the absolute header — see 960px note */
+      /* Stack the rotator: as a flex ROW the fixed-width rotating-word box
+         forced "Built for people reading" to wrap while the word floated
+         off to the right, disconnected from the sentence it completes. */
+      .lp-hero-rotator { flex-direction: column; align-items: flex-start; gap: 2px; }
       .lp-hero h1 { font-size: clamp(1.85rem, 7vw, 2.4rem); }
       .lp-hero-cta { gap: 16px; }
       .lp-hero-trust { gap: 6px 14px; }
@@ -3542,10 +3553,15 @@
       .lp-twin .lp-section-title,
       .lp-twin .lp-section-title em { color: var(--text); }
 
-      /* Hero — clean warm background, tighter padding */
+      /* Hero — clean warm background, tighter padding. NOTE: this is the
+         rule that actually wins on phones (a second 760px block, later in
+         source order than the one near line 3327). The floating pill
+         header is position:absolute (bottom edge ~76px) and reserves no
+         flow space — top padding below ~96px puts the H1 underneath it
+         (was 32px = a measured 44px overlap, the "tıne way tney're" bug). */
       .lp-hero {
         background: transparent;
-        padding: 32px 20px 24px;
+        padding: 100px 20px 24px;
         min-height: 0;
         gap: 22px;
       }

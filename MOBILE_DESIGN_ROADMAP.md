@@ -31,8 +31,18 @@ emulation rather than this harness.
 
 ## P0 — actively hurting
 
-1. **Landing-page header overlaps the H1 by 44px on mobile** (observed,
-   measured). `static/app.css:1451` — `body.landing-page header` is
+1. ~~Landing-page header overlaps the H1 by 44px on mobile~~ ✅ DONE
+   2026-07-12 — hero mobile padding-top raised to clear the absolute
+   header (100px in the phone block, 104px at the 960px breakpoint).
+   IMPORTANT finding for future work here: the file has TWO
+   `@media (max-width: 760px)` blocks that both set `.lp-hero` padding —
+   the one near line 3327 AND a second one near line 3557 that wins by
+   source order. Fixing only the first block changes nothing on real
+   phones (verified: gap stayed negative until the second block was
+   patched too). Verified post-fix at 375/390 (positive 24-44px gap),
+   860 (28px gap, rotator back to row), and 1280 (desktop 160px padding
+   untouched, 84px gap). Original finding kept below for context:
+   `static/app.css:1451` — `body.landing-page header` is
    `position: absolute; top: 16px; height: 60px` (the "Clay-style pill"
    floating header), so it's removed from document flow entirely. The
    hero's own top padding (`static/app.css:3333`,
@@ -60,8 +70,14 @@ emulation rather than this harness.
 
 ## P1 — makes it feel unfinished
 
-2. **Hero rotator ("Built for people reading…") breaks into a disconnected
-   layout on mobile** (observed, measured). `static/app.css:1675` —
+2. ~~Hero rotator breaks into a disconnected layout on mobile~~ ✅ DONE
+   2026-07-12 — added `.lp-hero-rotator { flex-direction: column;
+   align-items: flex-start; gap: 2px; }` to the first 760px block.
+   Verified at 375px: lead text renders on one line with the rotating
+   word directly beneath it (measured: words box top ≥ lead bottom),
+   and the `::before` baseline anchor needed no change. Reverts to the
+   row layout at ≥760px (verified row at 860 and 1280). Original
+   finding kept below for context: `static/app.css:1675` —
    `.lp-hero-rotator { display: flex; ... }` lays the static lead text
    ("Built for people reading") and `.lp-hero-rotator-words`
    (`static/app.css:1685`, fixed `width: 180px`) side by side as flex
