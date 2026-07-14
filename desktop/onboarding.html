@@ -201,7 +201,7 @@
       <h1>Grant two permissions</h1>
       <p class="sub">Install the app in <strong>Applications</strong> first — running from the DMG does not work reliably.</p>
       <div class="perm-list">
-        <div class="perm-row">
+        <div class="perm-row" id="access-row">
           <div class="perm-row-main">
             <div class="perm-row-label">Accessibility</div>
             <div class="perm-row-hint" id="access-text">Detects the double-tap shortcut — not granted yet</div>
@@ -462,6 +462,27 @@
     if (!sym) return;
     document.querySelectorAll('.trigger-symbol').forEach((el) => el.textContent = sym);
   });
+
+  // ── Mac App Store build: hotkey trigger, no Accessibility ─────────
+  // The sandboxed build can't run the double-tap event tap — the trigger
+  // is a registered hotkey instead, and Accessibility is neither needed
+  // nor grantable. Rewrite the trigger copy and drop that permission row.
+  (async function masInit() {
+    if (!(await window.lexioOnboarding?.isMas?.())) return;
+    const hotkey = (await window.lexioOnboarding?.getHotkey?.()) || 'CommandOrControl+Shift+L';
+    const pretty = hotkey.replace('CommandOrControl', '⌘').replace('Command', '⌘')
+      .replace('Control', '⌃').replace('Alt', '⌥').replace('Shift', '⇧').replaceAll('+', '');
+    document.getElementById('access-row').style.display = 'none';
+    document.querySelector('[data-step="2"] h1').textContent = 'Grant one permission';
+    const rewrite = (sel, html) => { const el = document.querySelector(sel); if (el) el.innerHTML = html; };
+    rewrite('[data-step="0"] .sub',
+      `Point your cursor at any word — in any app — and press <kbd>${pretty}</kbd> to look it up. No selecting, no switching apps, no pasting.`);
+    rewrite('[data-step="3"] .sub',
+      `Point your cursor at a word below — no need to select it — then press <kbd>${pretty}</kbd> to look it up.`);
+    rewrite('[data-step="5"] .sub',
+      `Press <kbd>${pretty}</kbd> anytime, anywhere. Find Lexio again from the menu bar icon.`);
+    document.getElementById('practice-text').textContent = `Waiting for your ${pretty}…`;
+  })();
 
   render();
 </script>

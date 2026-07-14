@@ -365,7 +365,7 @@
         </div>
         <button class="switch" id="analytics-switch"></button>
       </div>
-      <div class="row">
+      <div class="row" id="trigger-row">
         <div class="row-main">
           <div class="row-label">Double-tap trigger</div>
           <div class="row-hint">The key you press twice to look up the word at your pointer.</div>
@@ -389,7 +389,7 @@
           <option value="sv">Svenska</option>
         </select>
       </div>
-      <div class="row">
+      <div class="row" id="access-row">
         <div class="row-main">
           <div class="row-label">Accessibility permission</div>
           <div class="row-hint">Needed to detect the double-tap trigger.</div>
@@ -443,6 +443,25 @@
         <div class="acct-actions">
           <button class="btn primary hidden" id="upgrade-btn">Upgrade to Pro</button>
           <button class="btn" id="signout-btn">Sign out</button>
+        </div>
+
+        <!-- Mac App Store build only: native In-App Purchase plan chooser.
+             Replaces the website upgrade link (App Review 3.1.1 forbids
+             external purchase links). Hidden unless isMas && !pro. -->
+        <div class="acct-card hidden" id="iap-card" style="margin-top:18px;">
+          <div class="acct-name" style="font-size:0.95rem;">Lexio Pro</div>
+          <div class="row-hint" style="margin:2px 0 12px;">
+            Unlimited lookups, all three reading modes, word bank sync, and a
+            reader profile that adapts definitions to you.
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn primary" id="iap-monthly">Monthly — …</button>
+            <button class="btn primary" id="iap-yearly" style="display:none;">Yearly — …</button>
+          </div>
+          <div style="margin-top:10px;">
+            <button class="link-btn" id="iap-restore">Restore purchases</button>
+          </div>
+          <div class="row-hint hidden" id="iap-status" style="margin-top:8px;"></div>
         </div>
 
         <!-- ROADMAP P1-5 Phase 1: optional reader profile — folded into
@@ -833,7 +852,81 @@ document.getElementById('profile-save-btn').addEventListener('click', async () =
 });
 
 document.getElementById('signin-btn').addEventListener('click', () => window.lexioHub?.openSignIn());
-document.getElementById('upgrade-btn').addEventListener('click', () => window.lexioHub?.openPricing?.());
+document.getElementById('upgrade-btn').addEventListener('click', () => {
+  if (_isMas) {
+    // App Store build: never link out to web checkout (App Review 3.1.1) —
+    // reveal the native IAP plan chooser instead.
+    document.getElementById('iap-card').classList.remove('hidden');
+    document.getElementById('iap-card').scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  window.lexioHub?.openPricing?.();
+});
+
+/* ── Mac App Store mode ────────────────────────────────────────────
+   Sandboxed build: no double-tap event tap (a registered hotkey is the
+   trigger) and no Accessibility permission — hide both settings rows,
+   rewrite the "double-tap ⌃" copy to show the hotkey, and wire the
+   native In-App Purchase card. */
+let _isMas = false;
+(async function masInit() {
+  _isMas = !!(await window.lexioHub?.isMas?.());
+  if (!_isMas) return;
+  document.getElementById('trigger-row').style.display = 'none';
+  document.getElementById('access-row').style.display = 'none';
+  const hotkey = (await window.lexioHub?.getHotkey?.()) || 'CommandOrControl+Shift+L';
+  const pretty = hotkey.replace('CommandOrControl', '⌘').replace('Command', '⌘')
+    .replace('Control', '⌃').replace('Alt', '⌥').replace('Shift', '⇧').replaceAll('+', '');
+  // Every "double-tap ⌃" mention becomes "press <hotkey>". The .ts spans and
+  // #trigger-symbol carry the key symbol; their surrounding "double-tap"
+  // text nodes are rewritten wholesale where they exist.
+  document.querySelectorAll('.ts, #trigger-symbol').forEach((el) => { el.textContent = pretty; });
+  document.querySelectorAll('.side-foot').forEach((el) => {
+    el.innerHTML = `Point at a word · press <span>${pretty}</span>`;
+  });
+  document.body.querySelectorAll('b, p, div').forEach((el) => {
+    for (const node of el.childNodes) {
+      if (node.nodeType === 3 && /double-tap/i.test(node.textContent)) {
+        node.textContent = node.textContent.replace(/double-tap\s*/gi, 'press ');
+      }
+    }
+  });
+
+  // IAP wiring — localized prices come from StoreKit, not our backend.
+  try {
+    const { canPay, products } = await window.lexioHub.iapGetProducts();
+    const monthly = products.find((p) => p.productIdentifier.endsWith('monthly'));
+    const yearly  = products.find((p) => p.productIdentifier.endsWith('yearly'));
+    const mBtn = document.getElementById('iap-monthly');
+    const yBtn = document.getElementById('iap-yearly');
+    if (!canPay || !monthly) {
+      mBtn.disabled = true;
+      mBtn.textContent = 'Purchases unavailable';
+    } else {
+      mBtn.textContent = `Monthly — ${monthly.formattedPrice}`;
+      mBtn.addEventListener('click', () => { setIapStatus('Opening App Store purchase…'); window.lexioHub.iapPurchase(monthly.productIdentifier); });
+      if (yearly) {
+        yBtn.style.display = '';
+        yBtn.textContent = `Yearly — ${yearly.formattedPrice}`;
+        yBtn.addEventListener('click', () => { setIapStatus('Opening App Store purchase…'); window.lexioHub.iapPurchase(yearly.productIdentifier); });
+      }
+    }
+  } catch {}
+  document.getElementById('iap-restore').addEventListener('click', () => {
+    setIapStatus('Restoring purchases…');
+    window.lexioHub.iapRestore();
+  });
+  window.lexioHub.onIapProUpdated?.((p) => {
+    setIapStatus(p.is_pro ? 'Pro is active on your account ✓' : 'Purchase received — activating…');
+    renderAccount();
+  });
+  window.lexioHub.onIapFailed?.((p) => setIapStatus(p.message || 'Purchase failed'));
+  function setIapStatus(msg) {
+    const el = document.getElementById('iap-status');
+    el.textContent = msg;
+    el.classList.remove('hidden');
+  }
+})();
 document.getElementById('signout-btn').addEventListener('click', () => {
   localStorage.removeItem('lexio_token');   // shared partition — signs the panel out too
   window.lexioHub?.signOut();

@@ -33,6 +33,7 @@ const { menuBarTrayIcon } = require('./lib/icons');
 const { parseAuthUrl } = require('./lib/auth');
 const { captureScreenPoint } = require('./lib/vision-capture');
 const analytics = require('./lib/analytics');
+const { IS_MAS } = require('./lib/mas');
 
 // A packaged .app has no attached terminal — without this, "check the log"
 // is impossible for a field report like this week's real-hardware trigger
@@ -159,6 +160,11 @@ const ACCESSIBILITY_SETTINGS_URL =
 
 function checkAccessibility() {
   if (process.platform !== 'darwin') return true;
+  // Sandboxed (App Store) builds can't use the Accessibility API at all —
+  // nothing in the MAS build depends on it (the trigger is a registered
+  // hotkey, not an event tap), so report "fine" to keep every permission
+  // UI from nagging about something that can never be granted.
+  if (IS_MAS) return true;
   return systemPreferences.isTrustedAccessibilityClient(false);
 }
 
@@ -380,6 +386,7 @@ function presentApp() {
    fix requires users to somehow learn a new DMG exists — they don't. */
 let checkForUpdatesNow = null;   // set when packaged; tray item uses it
 function setupAutoUpdate() {
+  if (IS_MAS) return;            // the App Store owns updates for MAS installs
   if (!app.isPackaged) return;   // dev runs have nothing to update against
   let autoUpdater;
   try { ({ autoUpdater } = require('electron-updater')); } catch (err) {
@@ -720,10 +727,95 @@ ipcMain.on('hub:sign-out', () => {
 });
 
 // Fixed destination on purpose — don't accept arbitrary URLs from renderers.
+// MAS builds must not link to external purchase (App Review 3.1.1) — the
+// Hub renders the native IAP plan chooser instead; this event never fires
+// there, but guard anyway so a stale renderer can't cause a rejection.
 ipcMain.on('app:open-pricing', () => {
   analytics.capture('upgrade_click');
+  if (IS_MAS) { createHomeWindow(); return; }
   shell.openExternal('https://lexio.site/upgrade.html');
 });
+
+ipcMain.handle('app:is-mas', () => IS_MAS);
+
+/* ── In-App Purchase (Mac App Store builds only) ────────────────────
+   Product ids must match the auto-renewable subscriptions configured in
+   App Store Connect. Purchases resolve to an app receipt on disk; the
+   receipt goes to the backend (/apple/verify-receipt), which validates it
+   with Apple and flips is_pro on the signed-in account — the same account
+   system Stripe uses, so Pro state stays unified across platforms. */
+const IAP_PRODUCTS = ['site.lexio.pro.monthly', 'site.lexio.pro.yearly'];
+
+async function sendReceiptToBackend() {
+  const { inAppPurchase } = require('electron');
+  const auth = store.get().auth;
+  if (!auth?.token) return { ok: false, error: 'not_signed_in' };
+  try {
+    const receiptPath = inAppPurchase.getReceiptURL().replace('file://', '');
+    const receipt = require('fs').readFileSync(decodeURIComponent(receiptPath)).toString('base64');
+    const res = await fetch('https://lexio.site/apple/verify-receipt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${auth.token}` },
+      body: JSON.stringify({ receipt }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: data.detail || `HTTP ${res.status}` };
+    for (const w of [hubWin, homeWin]) {
+      if (w && !w.isDestroyed()) w.webContents.send('iap:pro-updated', data);
+    }
+    return { ok: true, ...data };
+  } catch (err) {
+    console.warn('[overlay] receipt validation failed:', err.message);
+    return { ok: false, error: err.message };
+  }
+}
+
+if (IS_MAS) {
+  const { inAppPurchase } = require('electron');
+  // Queue listener FIRST — transactions can arrive at any launch (renewals,
+  // purchases interrupted by a crash, Ask to Buy approvals).
+  inAppPurchase.on('transactions-updated', (_e, transactions) => {
+    if (!Array.isArray(transactions)) return;
+    for (const t of transactions) {
+      console.log(`[overlay] IAP transaction: ${t.payment?.productIdentifier} → ${t.transactionState}`);
+      if (t.transactionState === 'purchased' || t.transactionState === 'restored') {
+        sendReceiptToBackend();
+        inAppPurchase.finishTransactionByDate(t.transactionDate);
+        analytics.capture('iap_purchase', { state: t.transactionState });
+      } else if (t.transactionState === 'failed') {
+        inAppPurchase.finishTransactionByDate(t.transactionDate);
+        for (const w of [hubWin, homeWin]) {
+          if (w && !w.isDestroyed()) w.webContents.send('iap:failed', { message: t.errorMessage || 'Purchase failed' });
+        }
+      }
+    }
+  });
+
+  ipcMain.handle('iap:get-products', async () => {
+    if (!inAppPurchase.canMakePayments()) return { canPay: false, products: [] };
+    const products = await inAppPurchase.getProducts(IAP_PRODUCTS);
+    return {
+      canPay: true,
+      products: products.map((p) => ({
+        productIdentifier: p.productIdentifier,
+        localizedTitle: p.localizedTitle,
+        formattedPrice: p.formattedPrice,
+      })),
+    };
+  });
+  ipcMain.handle('iap:purchase', async (_e, productId) => {
+    if (!IAP_PRODUCTS.includes(productId)) return false;   // fixed list — never renderer-supplied ids
+    analytics.capture('upgrade_click', { channel: 'iap' });
+    return inAppPurchase.purchaseProduct(productId);
+  });
+  ipcMain.handle('iap:restore', async () => {
+    inAppPurchase.restoreCompletedTransactions();
+    return true;
+  });
+  // Re-validate on every launch so an expired/renewed subscription is
+  // reflected without the user doing anything.
+  app.whenReady().then(() => { setTimeout(sendReceiptToBackend, 5000); });
+}
 
 // Full relaunch — the onboarding wizard offers this after a failed practice
 // capture, since macOS applies a fresh Screen Recording grant only on restart.
@@ -758,8 +850,20 @@ app.on('open-url', (event, url) => {
 /* ── Tray (so the floating widget is always quittable) ──────────── */
 function updateTrayToolTip() {
   if (!tray) return;
+  if (IS_MAS) {
+    tray.setToolTip(`Lexio — click for recent lookups & settings, press ${prettyShortcut(activeFallbackShortcut)} to look something up`);
+    return;
+  }
   const symbol = TRIGGER_KEYS[activeTriggerKey].symbol;
   tray.setToolTip(`Lexio Glance — click for recent lookups & settings, double-tap ${symbol} to look something up`);
+}
+
+// 'CommandOrControl+Shift+L' → '⌘⇧L' for user-facing copy.
+function prettyShortcut(accel) {
+  if (!accel) return 'the Lexio hotkey';
+  return accel.replace('CommandOrControl', '⌘').replace('Command', '⌘')
+    .replace('Control', '⌃').replace('Alt', '⌥').replace('Shift', '⇧')
+    .replaceAll('+', '');
 }
 
 function createTray() {
@@ -829,6 +933,14 @@ function registerFallbackShortcut() {
 function registerTriggers() {
   registerFallbackShortcut();
   applyTriggerKey(store.get().settings.doubleTapKey || 'ctrl');
+
+  // Sandboxed builds can't run uiohook's global event tap (needs Input
+  // Monitoring, unavailable under App Sandbox) — the registered hotkey
+  // above (Carbon RegisterEventHotKey, sandbox-legal) IS the trigger.
+  if (IS_MAS) {
+    console.log('[overlay] MAS build — hotkey trigger only:', activeFallbackShortcut);
+    return;
+  }
 
   try {
     const { uIOhook } = require('uiohook-napi');

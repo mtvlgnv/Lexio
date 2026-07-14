@@ -51,6 +51,7 @@
   "POST /api/admin/user/{user_id}/set-pro",
   "POST /api/feedback",
   "POST /api/user-model",
+  "POST /apple/verify-receipt",
   "POST /auth/apple",
   "POST /auth/change-password",
   "POST /auth/forgot-password",

@@ -147,6 +147,19 @@ _MIGRATIONS: list[tuple[int, str, object]] = [
         conn.execute(_sa_text("ALTER TABLE users ADD COLUMN profile_json TEXT"))
         if "profile_json" not in _cols(conn, "users") else None
     )),
+    # Apple In-App Purchase (Mac App Store build): who bought via Apple and
+    # until when. Pro state itself stays in is_pro, same as Stripe — these
+    # let /apple/verify-receipt re-validate and expire Apple-sourced Pro
+    # without touching Stripe subscribers.
+    (19, "add Apple IAP columns", lambda conn, _: [
+        conn.execute(_sa_text(ddl))
+        for col, ddl in [
+            ("apple_original_transaction_id",
+             "ALTER TABLE users ADD COLUMN apple_original_transaction_id TEXT"),
+            ("apple_expires_at",
+             "ALTER TABLE users ADD COLUMN apple_expires_at TIMESTAMP"),
+        ] if col not in _cols(conn, "users")
+    ]),
 ]
 
 def _run_migrations():

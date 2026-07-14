@@ -214,7 +214,10 @@
     const localCompactUrl = window.location.href.replace('pill.html', 'compact.html');
     // Bug #17: the trigger symbol is passed through so compact.html's empty
     // state can name the actually-configured key instead of hardcoding one.
-    frame.src = `${localCompactUrl}#desktop=1&theme=${isDark ? 'dark' : 'light'}&trigger=${encodeURIComponent(triggerSymbol)}`;
+    // `mas=1` tells compact.html it's inside the sandboxed App Store build —
+    // its quota/Pro error copy must not point at lexio.site checkout there
+    // (App Review 3.1.1); it points at the Hub's native purchase instead.
+    frame.src = `${localCompactUrl}#desktop=1&theme=${isDark ? 'dark' : 'light'}&trigger=${encodeURIComponent(triggerSymbol)}${isMasBuild ? '&mas=1' : ''}`;
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       if (frameReady) {
@@ -418,8 +421,21 @@
   window.lexioOverlay?.getTriggerSymbol().then((sym) => {
     if (sym) {
       triggerSymbol = sym;
-      pill.title = `Click: open panel · Double-tap ${sym}: define the word at your pointer`;
+      if (!isMasBuild) pill.title = `Click: open panel · Double-tap ${sym}: define the word at your pointer`;
     }
+  });
+
+  // MAS (App Store) build: the trigger is a registered hotkey, not a
+  // double-tap — fetched before the frame exists (first expand is always
+  // later than these resolve in practice; worst case the tooltip lags).
+  let isMasBuild = false;
+  window.lexioOverlay?.isMas?.().then(async (v) => {
+    isMasBuild = !!v;
+    if (!isMasBuild) return;
+    const hotkey = (await window.lexioOverlay?.getHotkey?.()) || '';
+    const pretty = hotkey.replace('CommandOrControl', '⌘').replace('Command', '⌘')
+      .replace('Control', '⌃').replace('Alt', '⌥').replace('Shift', '⇧').replaceAll('+', '');
+    pill.title = `Click: open panel · ${pretty}: define the word at your pointer`;
   });
 </script>
 </body>

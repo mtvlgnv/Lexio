@@ -48,6 +48,12 @@ class User(Base):
     # family-plan check (only the plan owner sees the Family panel).
     subscription_interval = Column(String, nullable=True)   # 'month' | 'year' | 'family' | None
     subscription_status   = Column(String, nullable=True)   # 'active' | 'trialing' | 'canceled' | None
+    # Apple In-App Purchase (Mac App Store build) — set by
+    # /apple/verify-receipt. Pro state still lives in is_pro; these track
+    # the Apple subscription so it can be re-validated/expired without
+    # touching Stripe subscribers.
+    apple_original_transaction_id = Column(String, nullable=True, index=True)
+    apple_expires_at              = Column(DateTime, nullable=True)
     # Founder flag — manually set for early supporters. Drives a small
     # badge in the account modal and unlocks the founder-only export.
     is_founder            = Column(Integer, default=0, nullable=False)

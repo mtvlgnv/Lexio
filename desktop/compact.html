@@ -653,6 +653,10 @@
 const IS_DESKTOP = location.protocol === 'file:';
 const API_BASE = IS_DESKTOP ? 'https://lexio.site' : '';
 const urlParams = new URLSearchParams(location.hash.substring(1) || location.search);
+// Inside the sandboxed Mac App Store build (pill.html appends mas=1):
+// upgrade copy must point at the Hub's native purchase, never at
+// lexio.site checkout (App Review 3.1.1).
+const IS_MAS_EMBED = urlParams.get('mas') === '1';
 if (urlParams.get('desktop') === '1') {
   document.getElementById('titlebar').style.display = 'none';
 }
@@ -1229,11 +1233,13 @@ async function fetchDef(word) {
         // honest next step for them is signing in (free tier is bigger),
         // not upgrading a plan they don't have yet.
         throw new Error(tok
-          ? 'Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.'
+          ? (IS_MAS_EMBED ? 'Monthly lookup limit reached. Upgrade to Pro from the Lexio menu-bar Hub for unlimited lookups.'
+             : 'Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.')
           : 'Free anonymous lookups used up. Sign in (free) for more monthly lookups.');
       }
       if (resp.status === 403) {
-        throw new Error('This model requires a Pro plan. Upgrade at lexio.site.');
+        throw new Error(IS_MAS_EMBED ? 'This model requires a Pro plan. Upgrade from the Lexio menu-bar Hub.'
+          : 'This model requires a Pro plan. Upgrade at lexio.site.');
       }
       const e = await resp.json().catch(() => ({ detail: resp.statusText }));
       throw new Error(e.detail || `HTTP ${resp.status}`);
@@ -1298,11 +1304,13 @@ async function fetchDefFromImage(imageBase64, imageMime = 'image/png', modelOver
         // honest next step for them is signing in (free tier is bigger),
         // not upgrading a plan they don't have yet.
         throw new Error(tok
-          ? 'Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.'
+          ? (IS_MAS_EMBED ? 'Monthly lookup limit reached. Upgrade to Pro from the Lexio menu-bar Hub for unlimited lookups.'
+             : 'Monthly lookup limit reached. Upgrade to Pro at lexio.site for unlimited lookups.')
           : 'Free anonymous lookups used up. Sign in (free) for more monthly lookups.');
       }
       if (resp.status === 403) {
-        throw new Error('This model requires a Pro plan. Upgrade at lexio.site.');
+        throw new Error(IS_MAS_EMBED ? 'This model requires a Pro plan. Upgrade from the Lexio menu-bar Hub.'
+          : 'This model requires a Pro plan. Upgrade at lexio.site.');
       }
       const e = await resp.json().catch(() => ({ detail: resp.statusText }));
       throw new Error(e.detail || `HTTP ${resp.status}`);

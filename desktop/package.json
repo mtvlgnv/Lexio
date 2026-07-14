@@ -1,6 +1,6 @@
 {
   "name": "lexio-desktop",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Lexio — floating contextual dictionary",
   "main": "main-overlay.js",
   "scripts": {
@@ -9,7 +9,9 @@
     "create-icon": "node_modules/.bin/electron create-icon.js",
     "build-icons": "bash scripts/build-icons.sh",
     "build-ocr": "bash native/build-ocr.sh",
-    "dist": "npm run build-icons && npm run build-ocr && electron-builder --mac --arm64"
+    "dist": "npm run build-icons && npm run build-ocr && electron-builder --mac --arm64",
+    "dist:mas": "npm run build-icons && npm run build-ocr && electron-builder --mac mas --arm64 -c.appId=site.lexio.app -c.productName=Lexio",
+    "dist:mas-dev": "npm run build-icons && npm run build-ocr && electron-builder --mac mas-dev --arm64 -c.appId=site.lexio.app -c.productName=Lexio"
   },
   "devDependencies": {
     "electron": "^43.0.0",
@@ -85,6 +87,22 @@
           ]
         }
       ]
+    },
+    "mas": {
+      "entitlements": "build/entitlements.mas.plist",
+      "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+      "provisioningProfile": "build/embedded.provisionprofile",
+      "hardenedRuntime": false,
+      "extendInfo": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSScreenCaptureUsageDescription": "Lexio reads text near your cursor to provide contextual word definitions, including subtitles and text that can't be selected."
+      }
+    },
+    "masDev": {
+      "entitlements": "build/entitlements.mas.plist",
+      "entitlementsInherit": "build/entitlements.mas.inherit.plist",
+      "provisioningProfile": "build/dev.provisionprofile",
+      "hardenedRuntime": false
     },
     "dmg": {
       "title": "Lexio Glance",

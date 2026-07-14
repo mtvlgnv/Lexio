@@ -40,4 +40,12 @@ contextBridge.exposeInMainWorld('lexioHub', {
 
   onRecentUpdated: (cb) => ipcRenderer.on('hub:recent-updated', (_e, payload) => cb(payload || [])),
   onAuthUpdated:   (cb) => ipcRenderer.on('hub:auth-updated',   (_e, payload) => cb(payload || null)),
+
+  // Mac App Store build: native In-App Purchase instead of Stripe links.
+  isMas:          () => ipcRenderer.invoke('app:is-mas'),
+  iapGetProducts: () => ipcRenderer.invoke('iap:get-products'),
+  iapPurchase:    (id) => ipcRenderer.invoke('iap:purchase', id),
+  iapRestore:     () => ipcRenderer.invoke('iap:restore'),
+  onIapProUpdated: (cb) => ipcRenderer.on('iap:pro-updated', (_e, p) => cb(p || {})),
+  onIapFailed:     (cb) => ipcRenderer.on('iap:failed',      (_e, p) => cb(p || {})),
 });

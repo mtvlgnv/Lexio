@@ -31,6 +31,8 @@ contextBridge.exposeInMainWorld('lexioOverlay', {
   // Display-only — which key the double-tap trigger currently listens for,
   // so the pill's tooltip doesn't lie after it's changed in Hub Settings.
   getTriggerSymbol: () => ipcRenderer.invoke('app:get-trigger-symbol'),
+  isMas: () => ipcRenderer.invoke('app:is-mas'),
+  getHotkey: () => ipcRenderer.invoke('app:get-hotkey'),
 
   // Renderer → main: the webview (via its console-message bridge) told us
   // which word was actually defined — main records it as the real recent

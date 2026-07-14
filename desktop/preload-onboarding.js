@@ -11,6 +11,8 @@ contextBridge.exposeInMainWorld('lexioOnboarding', {
   openSignIn:             () => ipcRenderer.send('app:open-signin'),
   setLaunchAtLogin:       (v) => ipcRenderer.send('app:set-launch-at-login', v),
   getTriggerSymbol:       () => ipcRenderer.invoke('app:get-trigger-symbol'),
+  isMas:                  () => ipcRenderer.invoke('app:is-mas'),
+  getHotkey:              () => ipcRenderer.invoke('app:get-hotkey'),
   finish:                 () => ipcRenderer.send('onboarding:finish'),
 
   // Main → renderer: pushed once the lexio://auth deep link lands, or once
