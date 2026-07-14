@@ -1937,29 +1937,6 @@
     }
 
     /* ── Hero demo panel ───────────────────────────────────────────────── */
-    .lp-demo-frame-top {
-      display: flex; align-items: center; gap: 6px;
-      padding: 11px 14px; border-bottom: 1px solid var(--border);
-      background: color-mix(in oklch, var(--bg) 50%, var(--surface));
-    }
-    .lp-demo-frame-dot {
-      width: 9px; height: 9px; border-radius: 50%;
-      opacity: 0.55;
-    }
-    .lp-demo-frame-label {
-      margin-left: 8px;
-      font-size: 0.72rem; color: var(--muted); font-weight: 500;
-      letter-spacing: 0.01em;
-    }
-    .lp-demo-stage-eyebrow {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 12px;
-    }
-    .lp-demo-stage-eyebrow em {
-      font-style: italic; color: var(--text-mid); text-transform: none;
-      letter-spacing: 0;
-    }
     .lp-demo-footer {
       display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0; border-top: 1px solid var(--border);
@@ -1982,115 +1959,12 @@
       flex-shrink: 0;
     }
 
-    /* ── Hero animated demo ──────────────────────────────────────────────── */
-    .lp-hero-demo .lp-demo-stage {
-      position: relative;
-      background: var(--surface);
-      border: none; border-radius: 0;
-      padding: 22px 24px 26px;
-      min-height: 280px;
-    }
-    .lp-demo-text {
-      font-family: 'Fraunces', serif;
-      font-size: 1.02rem; line-height: 1.65;
-      color: var(--text);
-    }
-    .lp-demo-word {
-      position: relative;
-      padding: 1px 3px; border-radius: 3px;
-      background-image: linear-gradient(transparent 62%, transparent 62%);
-      animation: lpDemoWord 3.4s ease-in-out infinite;
-    }
-    @keyframes lpDemoWord {
-      0%, 13%   { background-image: linear-gradient(transparent 62%, transparent 62%); color: var(--text); }
-      20%, 82%  { background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 38%, transparent) 62%); color: var(--accent); }
-      92%, 100% { background-image: linear-gradient(transparent 62%, transparent 62%); color: var(--text); }
-    }
-    /* Tap ripple — a ring pops out of the word as it's "tapped" each cycle */
-    .lp-demo-word::after {
-      content: ''; position: absolute; left: 50%; top: 60%;
-      width: 10px; height: 10px; border-radius: 50%;
-      border: 2px solid color-mix(in oklch, var(--accent) 55%, transparent);
-      transform: translate(-50%, -50%) scale(0.3); opacity: 0;
-      pointer-events: none;
-      animation: lpDemoTap 3.4s ease-out infinite;
-    }
-    @keyframes lpDemoTap {
-      0%, 13%  { opacity: 0;    transform: translate(-50%, -50%) scale(0.3); }
-      19%      { opacity: 0.85; transform: translate(-50%, -50%) scale(0.9); }
-      38%      { opacity: 0;    transform: translate(-50%, -50%) scale(3.4); }
-      100%     { opacity: 0;    transform: translate(-50%, -50%) scale(3.4); }
-    }
-    .lp-demo-popup {
-      position: absolute;
-      /* Anchored to the bottom of the stage so it sits below the
-         text body — the highlighted word stays visible above it. */
-      bottom: 22px; left: 24px; right: auto; top: auto;
-      width: min(280px, calc(100% - 48px));
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px 14px;
-      box-shadow: 0 14px 36px rgba(20,15,10,0.22);
-      font-family: 'DM Sans', system-ui, sans-serif;
-      font-size: 0.82rem; line-height: 1.5;
-      color: var(--text);
-      opacity: 0; transform: translateY(10px) scale(0.96);
-      animation: lpDemoPopup 3.4s ease-out infinite;
-      pointer-events: none;
-      z-index: 4;
-    }
-    @keyframes lpDemoPopup {
-      0%, 18%    { opacity: 0; transform: translateY(8px) scale(0.96); }
-      26%, 82%   { opacity: 1; transform: translateY(0)   scale(1); }
-      90%, 100%  { opacity: 0; transform: translateY(8px) scale(0.96); }
-    }
-    .lp-demo-popup-top {
-      display: flex; align-items: baseline; gap: 8px;
-      padding-bottom: 8px; margin-bottom: 6px;
-      border-bottom: 1px solid var(--border);
-    }
-    .lp-demo-popup-word {
-      font-family: 'Fraunces', serif; font-size: 1rem;
-      font-weight: 400; color: var(--accent);
-    }
-    .lp-demo-popup-pos {
-      font-size: 0.72rem; color: var(--text-mid); font-style: italic;
-    }
-    .lp-demo-popup-label {
-      display: block;
-      font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--accent); font-weight: 700; margin-top: 6px;
-    }
-    .lp-demo-popup-line {
-      font-size: 0.8rem; color: var(--text-mid); margin-top: 2px;
-    }
-    .lp-demo-caption {
-      font-size: 0.85rem; color: var(--text-mid); line-height: 1.55;
-    }
-    .lp-demo-caption em {
-      color: var(--accent); font-style: italic;
-    }
-    /* Stop animation when user prefers reduced motion (show static end state) */
-    @media (prefers-reduced-motion: reduce) {
-      .lp-demo-word, .lp-demo-popup { animation: none; }
-      .lp-demo-word {
-        background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 35%, transparent) 62%);
-        color: var(--accent);
-      }
-      .lp-demo-popup { opacity: 1; transform: none; }
-    }
-    /* On mobile the popup stacks below the text for readability */
-    @media (max-width: 760px) {
-      .lp-demo-popup {
-        position: static; width: 100%; margin-top: 18px;
-        opacity: 1; transform: none; animation: none;
-        box-shadow: 0 6px 16px rgba(20,15,10,0.06);
-      }
-      .lp-demo-word { animation: none;
-        background-image: linear-gradient(transparent 62%, color-mix(in oklch, var(--accent) 35%, transparent) 62%);
-        color: var(--accent);
-      }
+    /* ── Hero demo screenshot ─────────────────────────────────────────────
+       A real screenshot of the Lexio Glance panel (a genuine /define
+       response), not a mockup. .lp-hero-right already supplies the
+       rounded-corner frame + shadow, so the image just fills it. */
+    .lp-demo-screenshot {
+      display: block; width: 100%; height: auto;
     }
 
     /* ── TikTok / social instant-demo (?try=1) ──────────────────── */
@@ -3572,13 +3446,6 @@
       .lp-hero-right {
         box-shadow: 0 4px 14px rgba(0,0,0,0.06);
       }
-      .lp-hero-demo .lp-demo-stage {
-        padding: 18px 18px 20px; min-height: 0;
-      }
-      .lp-demo-text { font-size: 0.95rem; line-height: 1.55; }
-      .lp-demo-stage-eyebrow { margin-bottom: 8px; font-size: 0.62rem; }
-      .lp-demo-frame-top { padding: 9px 12px; }
-      .lp-demo-frame-label { font-size: 0.68rem; }
       .lp-demo-footer { grid-template-columns: 1fr; }
       .lp-demo-footer-step {
         padding: 9px 14px; gap: 8px; font-size: 0.72rem;
@@ -3588,11 +3455,6 @@
         border-top: 1px solid var(--border); border-left: none;
       }
       .lp-demo-footer-step-num { width: 18px; height: 18px; font-size: 0.62rem; }
-      .lp-demo-popup {
-        padding: 10px 12px 12px; font-size: 0.78rem;
-        margin-top: 14px;
-        box-shadow: 0 4px 12px rgba(20,15,10,0.08);
-      }
 
       /* Drop every blur — kills jank on mobile */
       .lp-feature, .lp-model-card,

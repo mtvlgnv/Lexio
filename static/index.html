@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=55">
+  <link rel="stylesheet" href="/app.css?v=56">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -762,11 +762,11 @@
       <h1 data-i18n-html="heroH1">Understand languages<br>the way they're <em>really used.</em></h1>
       <p class="lp-hero-sub" data-i18n="heroSub">A dictionary gives you five meanings and leaves you guessing. Tap any word and Lexio reads the sentence to give you the one that fits — idioms and phrasal verbs included — explained in your own language.</p>
       <div class="lp-hero-cta">
-        <button class="lp-btn-primary lp-btn-primary-lg" onclick="tryHeroSample()">
+        <button class="lp-btn-ghost" onclick="tryHeroSample()">
           <span data-i18n="tryItNow">Try Lexio free</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
-        <a class="lp-hero-secondary" href="/download.html">
+        <a class="lp-btn-primary lp-btn-primary-lg" href="/download.html">
           <span data-i18n="download">Download</span>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         </a>
@@ -791,29 +791,12 @@
       </p>
     </div>
     <div class="lp-hero-right lp-hero-demo lp-hero-anim lp-hero-anim-fade">
-      <div class="lp-demo-frame-top">
-        <span class="lp-demo-frame-dot" style="background:#ff5f57"></span>
-        <span class="lp-demo-frame-dot" style="background:#febc2e"></span>
-        <span class="lp-demo-frame-dot" style="background:#28c840"></span>
-        <span class="lp-demo-frame-label">Lexio</span>
-      </div>
-      <div class="lp-demo-stage" aria-hidden="true">
-        <div class="lp-demo-stage-eyebrow">Reading: <em>a news article</em></div>
-        <div class="lp-demo-text">
-          She <span class="lp-demo-word">came across</span> as confident in the interview, even though she felt nervous inside.
-        </div>
-        <div class="lp-demo-popup">
-          <div class="lp-demo-popup-top">
-            <span class="lp-demo-popup-word">came across</span>
-            <span class="lp-demo-popup-pos">phrasal verb</span>
-          </div>
-          <span class="lp-demo-popup-label">In this context</span>
-          <div class="lp-demo-popup-line">Seemed or appeared — she gave the impression of being confident.</div>
-          <span class="lp-demo-popup-label">Why this phrase</span>
-          <div class="lp-demo-popup-line">An idiom, not literal — here "come across" means to make an impression, not to find something.</div>
-        </div>
-      </div>
-      <!-- demo step labels removed -->
+      <!-- Real screenshot of the actual Lexio Glance panel — a genuine
+           /define response for "came across" in the sentence below, not a
+           mockup. Regenerate via desktop/main-overlay.js if the panel UI
+           changes (see lp-hero-demo in DESIGN notes). -->
+      <img class="lp-demo-screenshot" src="/demo-lexio-glance.png" width="920" height="700"
+           alt="Lexio Glance panel showing the definition of &quot;came across&quot; in the sentence: She came across as confident in the interview, even though she felt nervous inside.">
     </div>
   </div>
   </div><!-- end .lp-warm-area -->
