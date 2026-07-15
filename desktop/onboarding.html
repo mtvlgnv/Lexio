@@ -475,8 +475,16 @@
     document.getElementById('access-row').style.display = 'none';
     document.querySelector('[data-step="2"] h1').textContent = 'Grant one permission';
     const rewrite = (sel, html) => { const el = document.querySelector(sel); if (el) el.innerHTML = html; };
+    document.title = 'Welcome to Lexio';
+    rewrite('[data-step="0"] h1', 'Welcome to Le<em>x</em>io');
     rewrite('[data-step="0"] .sub',
       `Point your cursor at any word — in any app — and press <kbd>${pretty}</kbd> to look it up. No selecting, no switching apps, no pasting.`);
+    rewrite('[data-step="1"] .sub',
+      'Your saved words and lookup history sync automatically. You can also skip this and use Lexio locally.');
+    rewrite('#access-stale-hint',
+      'Toggle already on but still blocked? Remove <strong>Lexio</strong> from the list with <strong>−</strong>, then re-enable it. macOS may also ask to relaunch the app after granting Screen Recording.');
+    const relaunchBtn = document.getElementById('practice-relaunch');
+    if (relaunchBtn) relaunchBtn.textContent = 'Relaunch Lexio';
     rewrite('[data-step="3"] .sub',
       `Point your cursor at a word below — no need to select it — then press <kbd>${pretty}</kbd> to look it up.`);
     rewrite('[data-step="5"] .sub',

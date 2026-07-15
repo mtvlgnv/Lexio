@@ -26,3 +26,7 @@ ios/DerivedData/
 **/*.xcuserstate
 .swiftpm/
 static/*.dmg
+
+# Apple signing material — never committed, obtained per-developer from
+# App Store Connect (see desktop/APP_STORE.md).
+desktop/build/*.provisionprofile

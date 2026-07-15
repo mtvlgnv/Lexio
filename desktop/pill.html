@@ -124,7 +124,7 @@
       <div class="pill-blobs"></div>
       <div class="panel-content" id="panel">
         <div class="panel-head">
-          <span class="panel-mark">Lexio <span class="panel-tag">Glance</span></span>
+          <span class="panel-mark" id="panel-mark">Lexio <span class="panel-tag">Glance</span></span>
           <span class="panel-spacer"></span>
           <button class="panel-pin" id="pin" title="Keep open (ignore click-away)">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"></line><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.68V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3v4.68a2 2 0 0 1-1.11 1.87l-1.78.9A2 2 0 0 0 5 15.24Z"></path></svg>
@@ -432,6 +432,9 @@
   window.lexioOverlay?.isMas?.().then(async (v) => {
     isMasBuild = !!v;
     if (!isMasBuild) return;
+    document.title = 'Lexio';
+    const mark = document.getElementById('panel-mark');
+    if (mark) mark.innerHTML = 'Le<em>x</em>io';
     const hotkey = (await window.lexioOverlay?.getHotkey?.()) || '';
     const pretty = hotkey.replace('CommandOrControl', '⌘').replace('Command', '⌘')
       .replace('Control', '⌃').replace('Alt', '⌥').replace('Shift', '⇧').replaceAll('+', '');

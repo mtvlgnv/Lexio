@@ -10,8 +10,8 @@
     "build-icons": "bash scripts/build-icons.sh",
     "build-ocr": "bash native/build-ocr.sh",
     "dist": "npm run build-icons && npm run build-ocr && electron-builder --mac --arm64",
-    "dist:mas": "npm run build-icons && npm run build-ocr && electron-builder --mac mas --arm64 -c.appId=site.lexio.app -c.productName=Lexio",
-    "dist:mas-dev": "npm run build-icons && npm run build-ocr && electron-builder --mac mas-dev --arm64 -c.appId=site.lexio.app -c.productName=Lexio"
+    "dist:mas": "npm run build-icons && npm run build-ocr && electron-builder --mac mas --arm64 -c.appId=site.lexio.app -c.productName=Lexio -c.extraMetadata.version=1.0.0",
+    "dist:mas-dev": "npm run build-icons && npm run build-ocr && electron-builder --mac mas-dev --arm64 -c.appId=site.lexio.app -c.productName=Lexio -c.extraMetadata.version=1.0.0"
   },
   "devDependencies": {
     "electron": "^43.0.0",

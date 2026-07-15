@@ -874,6 +874,12 @@ let _isMas = false;
   if (!_isMas) return;
   document.getElementById('trigger-row').style.display = 'none';
   document.getElementById('access-row').style.display = 'none';
+  // App Store build ships as "Lexio", not "Lexio Glance" — the sidebar mark
+  // and the launch-at-login row hardcode the DMG build's product name.
+  document.querySelectorAll('.side-mark').forEach((el) => { el.innerHTML = 'Le<em>x</em>io'; });
+  document.querySelectorAll('.row-label').forEach((el) => {
+    if (/Lexio Glance/.test(el.textContent)) el.textContent = el.textContent.replace('Lexio Glance', 'Lexio');
+  });
   const hotkey = (await window.lexioHub?.getHotkey?.()) || 'CommandOrControl+Shift+L';
   const pretty = hotkey.replace('CommandOrControl', '⌘').replace('Command', '⌘')
     .replace('Control', '⌃').replace('Alt', '⌥').replace('Shift', '⇧').replaceAll('+', '');

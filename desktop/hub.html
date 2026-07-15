@@ -133,29 +133,29 @@
     <div class="stack">
       <div class="row">
         <div>
-          <div class="row-label">Launch Lexio Glance at login</div>
+          <div class="row-label" id="login-label">Launch Lexio Glance at login</div>
         </div>
         <button class="switch" id="login-switch"></button>
       </div>
-      <div class="divider"></div>
-      <div class="row">
+      <div class="divider" id="trigger-divider"></div>
+      <div class="row" id="trigger-row">
         <div class="row-label">Double-tap trigger</div>
         <select class="trigger-select" id="trigger-select"></select>
       </div>
-      <div>
+      <div id="hotkey-block">
         <div class="row-hint">Or the fallback shortcut <span id="hotkey-text">—</span>.</div>
         <div class="row-hint" id="siri-hint">If double-tap ⌘ opens Siri instead, change Siri's keyboard shortcut away from "Press ⌘ twice" in System Settings → Apple Intelligence &amp; Siri.</div>
       </div>
-      <div class="divider"></div>
-      <div>
+      <div class="divider" id="access-divider"></div>
+      <div id="access-row">
         <div class="row-label">Accessibility permission</div>
         <div class="status-row" style="margin-top:6px;">
           <span class="status-dot" id="access-dot"></span>
           <span id="access-text">Checking…</span>
         </div>
       </div>
-      <div class="divider"></div>
-      <div>
+      <div class="divider" id="input-monitoring-divider"></div>
+      <div id="input-monitoring-row">
         <div class="row-label">Input Monitoring permission</div>
         <div class="row-hint">A second, separate permission the double-tap trigger also needs — macOS doesn't let apps check or request this one, so if double-tap does nothing at all (not even opening Siri), turn it on manually.</div>
         <button class="link" id="open-input-monitoring" style="margin-top:6px;">Open Input Monitoring settings</button>
@@ -198,6 +198,7 @@
     return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
   let triggerSymbol = '⌃';
+  let _isMasHub = false;
   let lastRecentList = null;
   function renderRecent(list) {
     lastRecentList = list;
@@ -206,7 +207,7 @@
       el.innerHTML = '';
       const empty = document.createElement('div');
       empty.className = 'empty-state';
-      empty.innerHTML = `<div>Nothing yet</div><div>Double-tap ${triggerSymbol} on any selected text to look something up.</div>`;
+      empty.innerHTML = `<div>Nothing yet</div><div>${_isMasHub ? `Point at a word and press ${triggerSymbol}` : `Double-tap ${triggerSymbol} on any selected text`} to look something up.</div>`;
       el.appendChild(empty);
       return;
     }
@@ -308,6 +309,27 @@
   }
   window.lexioHub?.getAuth().then(renderAccount);
   window.lexioHub?.onAuthUpdated(renderAccount);
+
+  // ── Mac App Store build ────────────────────────────────────────
+  // No double-tap event tap (Input Monitoring is unavailable under App
+  // Sandbox) and no Accessibility permission — hide those settings rows,
+  // and the brand is "Lexio", not "Lexio Glance".
+  (async function masInit() {
+    if (!(await window.lexioHub?.isMas?.())) return;
+    _isMasHub = true;
+    document.title = 'Lexio — Hub';
+    document.getElementById('login-label').textContent = 'Launch Lexio at login';
+    for (const id of ['trigger-row', 'trigger-divider', 'hotkey-block',
+                       'access-row', 'access-divider',
+                       'input-monitoring-row', 'input-monitoring-divider']) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    }
+    const hotkey = (await window.lexioHub?.getHotkey?.()) || 'CommandOrControl+Shift+L';
+    triggerSymbol = hotkey.replace('CommandOrControl', '⌘').replace('Command', '⌘')
+      .replace('Control', '⌃').replace('Alt', '⌥').replace('Shift', '⇧').replaceAll('+', '');
+    if (lastRecentList !== null) renderRecent(lastRecentList);
+  })();
 </script>
 </body>
 </html>

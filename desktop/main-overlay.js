@@ -52,7 +52,7 @@ const SIGNIN_URL = 'https://lexio.site?desktop_auth=1';
 process.on('uncaughtException',  (err) => console.error('[overlay] uncaughtException:', err));
 process.on('unhandledRejection', (err) => console.error('[overlay] unhandledRejection:', err));
 
-app.setName('Lexio Glance');
+app.setName(IS_MAS ? 'Lexio' : 'Lexio Glance');
 // REGRESSION FIX (2026-07-10): a Dock icon was added for Hub v2 ("click it
 // like Wispr Flow") by removing this call. That broke the pill itself —
 // without dock.hide(), macOS treats the app as a regular Dock app, and
@@ -429,7 +429,7 @@ function createHomeWindow() {
     height: 720,
     minWidth: 820,
     minHeight: 540,
-    title: 'Lexio Glance',
+    title: IS_MAS ? 'Lexio' : 'Lexio Glance',
     titleBarStyle: 'hiddenInset',
     backgroundColor: chromeBackgroundColor(),
     webPreferences: {
