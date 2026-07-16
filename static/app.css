@@ -2041,8 +2041,8 @@
       font-family: 'Fraunces', serif;
       font-size: 6rem;
       font-weight: 200;
-      color: var(--accent);
-      opacity: 0.12;
+      color: var(--pos-verb-text);
+      opacity: 0.15;
       line-height: 1;
       z-index: 1;
       pointer-events: none;
@@ -2081,6 +2081,7 @@
       display: block; font-size: 0.7rem; font-weight: 700;
       letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px;
     }
+    .lp-why-old { background: var(--pos-verb-bg); }
     .lp-why-old .lp-why-card-label { color: var(--muted); }
     .lp-why-new { border-color: var(--accent-mid); background: var(--accent-lt); }
     .lp-why-new .lp-why-card-label { color: var(--accent); }
@@ -2122,7 +2123,10 @@
     /* "…looking up in June" — the month in a fancy accent gradient. */
     .lp-month-accent {
       font-style: italic;
-      color: #ffffff;
+      background: var(--pos-verb-bg);
+      color: var(--pos-verb-text);
+      padding: 0 8px;
+      border-radius: 6px;
     }
     .lp-twin .lp-features-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
     .lp-twin .lp-section-title {
@@ -2136,6 +2140,7 @@
     .lp-features {
       padding: 32px 32px;
       display: flex; flex-direction: column; align-items: center; gap: 20px;
+      background-color: var(--pos-verb-bg);
     }
     .lp-features-grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
