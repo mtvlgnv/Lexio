@@ -2081,7 +2081,6 @@
       display: block; font-size: 0.7rem; font-weight: 700;
       letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px;
     }
-    .lp-why-old { background: var(--pos-verb-bg); }
     .lp-why-old .lp-why-card-label { color: var(--muted); }
     .lp-why-new { border-color: var(--accent-mid); background: var(--accent-lt); }
     .lp-why-new .lp-why-card-label { color: var(--accent); }
