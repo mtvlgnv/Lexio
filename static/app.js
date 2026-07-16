@@ -6,6 +6,31 @@
 const MAX_HISTORY = 5;
 const WB_KEY      = 'lexio_wbv1';
 
+/* ── Robust smooth scroll ──────────────────────────────────────
+   Safari has a long-standing quirk where scrollIntoView/scrollTo with
+   behavior:'smooth' can silently no-op (verified: nothing moves even
+   after a full second, while 'instant' works immediately every time).
+   A delayed instant-fallback also proved unreliable — it can race a
+   smooth animation that's actually crawling along, landing partway.
+   requestAnimationFrame is also not safe here — it never fires at all
+   in some contexts (backgrounded/inactive tabs). setTimeout has none
+   of these failure modes, so drive the animation with that instead. */
+function robustScrollTo(opts) {
+  const startY = window.scrollY;
+  const targetY = opts.el ? startY + opts.el.getBoundingClientRect().top : (opts.top || 0);
+  const distance = targetY - startY;
+  const duration = 400;
+  const startTime = Date.now();
+  function step() {
+    const t = Math.min(1, (Date.now() - startTime) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);   // ease-out cubic
+    window.scrollTo(0, startY + distance * eased);
+    if (t < 1) setTimeout(step, 16);
+  }
+  step();
+}
+window.robustScrollTo = robustScrollTo;
+
 /* ── Analytics: educator/classroom CTA clicks (Apollo campaign attribution) ── */
 function trackEducatorCTA(location) {
   try { window.plausible && plausible('Educator CTA', { props: { location } }); } catch (e) {}
@@ -787,7 +812,7 @@ function tryHeroSample() {
   const ta = document.getElementById('input-text');
   ta.value = SAMPLES[currentSample].text;
   updateCharCount();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  robustScrollTo({ top: 0 });
   // Wait for scroll to settle, then trigger analysis
   setTimeout(() => {
     if (typeof analyze === 'function') analyze();
@@ -2512,7 +2537,7 @@ function prefillWord(word) {
     return;
   }
   // Scroll to app, fill a sample sentence so the user can immediately click the word
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  robustScrollTo({ top: 0 });
   const ta = document.getElementById('input-text');
   if (!ta.value) {
     ta.value = `The word "${word}" is used in many interesting contexts.`;
@@ -2702,7 +2727,7 @@ function loadTryPassage(idx) {
   ta.value = p.text;
   updateAppCompact();
   // smooth-scroll back to the top so the input is centered
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  robustScrollTo({ top: 0 });
   // allow the smooth-scroll to finish before focusing (focus jumps the page)
   setTimeout(() => { ta.focus(); ta.dispatchEvent(new Event('input', { bubbles: true })); }, 350);
 }
@@ -3518,12 +3543,12 @@ document.querySelectorAll('.lp-faq-q').forEach(btn => {
     const el = document.getElementById(l.dataset.section);
     if (el) observer.observe(el);
   });
-  // Smooth scroll for nav links (and close the dropdown if the click came from it)
+  // Smooth scroll for nav links (and close the dropdown if the click came from it).
   navLinks.forEach(l => {
     l.addEventListener('click', e => {
       e.preventDefault();
       const target = document.getElementById(l.dataset.section);
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      if (target) robustScrollTo({ el: target });
       if (typeof closeAllNavDropdowns === 'function') closeAllNavDropdowns();
     });
   });
