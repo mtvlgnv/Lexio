@@ -2123,10 +2123,7 @@
     /* "…looking up in June" — the month in a fancy accent gradient. */
     .lp-month-accent {
       font-style: italic;
-      background: var(--pos-verb-bg);
-      color: var(--pos-verb-text);
-      padding: 0 8px;
-      border-radius: 6px;
+      color: #ffffff;
     }
     .lp-twin .lp-features-grid { grid-template-columns: repeat(2, 1fr); max-width: none; }
     .lp-twin .lp-section-title {
@@ -2140,7 +2137,6 @@
     .lp-features {
       padding: 32px 32px;
       display: flex; flex-direction: column; align-items: center; gap: 20px;
-      background-color: var(--pos-verb-bg);
     }
     .lp-features-grid {
       display: grid; grid-template-columns: repeat(2, 1fr);
