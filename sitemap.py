@@ -39,6 +39,11 @@ _STATIC_PAGES = [
     ("/credits.html",          "yearly",  "0.2"),
 ]
 
+# Prerendered homepage translations (see build_lang_pages.py) — same
+# priority as "/" itself, they're the same page in a different language.
+_LANG_PAGES = ["es", "fr", "de", "it", "pt", "nl", "ru", "zh", "ja", "ko"]
+_STATIC_PAGES += [(f"/{lang}/", "weekly", "1.0") for lang in _LANG_PAGES]
+
 
 def _url(loc: str, lastmod: str, changefreq: str, priority: str) -> str:
     return (

@@ -29,6 +29,14 @@ if [[ ! -f /etc/cron.d/lexio-backup ]]; then
 fi
 
 echo
+echo "── rebuilding prerendered language pages ──"
+if venv/bin/python3 build_lang_pages.py; then
+    echo "✓ static/{es,fr,de,it,pt,nl,ru,zh,ja,ko}/index.html up to date"
+else
+    echo "⚠ build_lang_pages.py failed — continuing deploy, but language pages may be stale"
+fi
+
+echo
 echo "── restarting lexio (uvicorn) ──"
 systemctl restart lexio
 # Poll for readiness rather than fixed sleep — uvicorn workers take ~5s to bind.
@@ -68,6 +76,8 @@ curl -s -o /dev/null -w "  / → HTTP %{http_code}\n" https://lexio.site/
 curl -s -o /dev/null -w "  /glossary → HTTP %{http_code}\n" https://lexio.site/glossary
 curl -s -o /dev/null -w "  /works → HTTP %{http_code}\n" https://lexio.site/works
 curl -s -o /dev/null -w "  /sitemap.xml → HTTP %{http_code}\n" https://lexio.site/sitemap.xml
+curl -s -o /dev/null -w "  /es/ → HTTP %{http_code}\n" https://lexio.site/es/
+curl -s -o /dev/null -w "  /ja/ → HTTP %{http_code}\n" https://lexio.site/ja/
 
 echo
 echo "✓ deploy complete"
