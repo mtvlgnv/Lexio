@@ -156,13 +156,14 @@
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "inLanguage": "en",
     "mainEntity": [
       {
         "@type": "Question",
         "name": "Is Lexio free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. The free plan gives you 20 word lookups and 3 image scans per month in Fast mode. Lexio Pro is $4.99/month and removes all limits, with a 3-day free trial."
+          "text": "Yes. The free plan gives you 20 word lookups and 3 image scans per month, in Fast mode. If you want to try Pro, you can start a 3-day free trial — a card is required up-front, you can cancel any time before day 3, and you won't be charged. After the trial, Pro is $4.99/month and removes all limits and unlocks Balanced and Deep modes."
         }
       },
       {
@@ -170,15 +171,15 @@
         "name": "Does the Chrome extension work on every website?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Install Lexio from the Chrome Web Store and it works on any page in Chrome — news sites, PDFs opened in Chrome, academic papers, and more. Select a word and choose Define with Lexio."
+          "text": "Yes — install Lexio from the Chrome Web Store and it works on any page in Chrome. Select a word or phrase, right-click and choose \"Define with Lexio\", or use the keyboard shortcut. It works on news sites, PDFs opened in Chrome, academic papers, and more."
         }
       },
       {
         "@type": "Question",
-        "name": "What happens to the text I paste into Lexio?",
+        "name": "What happens to the text I paste?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "For pasted text, only the word you look up and a short surrounding context window are sent to the AI provider. In the Mac app's point-at-word mode, a small capture of the screen area around your pointer is sent instead. Neither is stored on our servers after the request."
+          "text": "For pasted text, only the word you look up and a short surrounding context window are sent to the AI provider. In the Mac app's point-at-word mode, a small capture of the screen area around your pointer is sent instead — only when you trigger a lookup, never in the background. Neither is stored on our servers after the request. See our Privacy Policy for full details."
         }
       },
       {
@@ -186,23 +187,47 @@
         "name": "Which reading mode should I use?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Fast mode is free and great for everyday reading. Pro unlocks Balanced (Gemini 2.5 Flash) and Deep (Claude Sonnet 4.5). For literature, legal texts, or academic prose, Deep gives the richest analysis."
+          "text": "Fast mode is available on the free plan — quick and accurate for everyday reading. Pro unlocks Balanced (Gemini 2.5 Flash) and Deep (Claude Sonnet 4.5). For literature, legal texts, or academic prose, Deep gives the richest analysis."
         }
       },
       {
         "@type": "Question",
-        "name": "Which languages does Lexio support?",
+        "name": "Which languages are supported?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Lexio reads and defines text in English, Spanish, French, German, Dutch, Russian, Japanese, Chinese, Arabic, Portuguese, and Italian. Definitions can be returned in any of those languages."
+          "text": "You can paste text in any language — English, Spanish, French, German, Dutch, Russian, Japanese, Chinese, Arabic, Portuguese, and Italian. Definitions can be returned in any of those languages too."
         }
       },
       {
         "@type": "Question",
-        "name": "Can I cancel my Lexio Pro subscription?",
+        "name": "Are there hourly limits even on Pro?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes — cancel any time from your account settings. You keep Pro access until the end of the billing period, then automatically move to the free tier."
+          "text": "Yes — to keep the service fast and prevent abuse, every account has a per-hour credit budget. Each lookup costs 1 credit in Fast, 2 credits in Balanced, and 3 credits in Deep, reflecting the relative compute cost. Pro users get 120 credits per hour (≈ 40 Deep, 60 Balanced, or 120 Fast lookups), which comfortably covers even very heavy reading. Free users get 20 credits per hour. The budget resets every hour, automatically. Pro also has a generous monthly safety ceiling — 20,000 credits (≈ 6,600 Deep lookups) and 500 OCR scans per month. Real readers don't come close to these; they exist to prevent automated abuse. If you ever need more, write to me directly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I cancel my Pro subscription anytime?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, cancel any time from your account settings. You keep Pro access until the end of the billing period, then automatically move to the free tier."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Monthly or yearly — which should I pick?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "If you're trying Lexio for the first time, go monthly — same features, cancel any time. If reading is already a habit and Lexio fits how you read, yearly saves around a third versus paying monthly."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use Lexio with my class or department?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Lexio offers volume seats for classrooms and university departments — students and faculty get full Pro access (Deep mode, Word Bank, Anki export) under a single invoice, with onboarding support. There's no fixed list price; contact us for a demo and a quote. See the For educators section for how Lexio fits a reading curriculum."
         }
       }
     ]
@@ -767,7 +792,7 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
         <a class="lp-btn-primary lp-btn-primary-lg" href="/download.html">
-          <span data-i18n="download">Download</span>
+          <span data-i18n="navDownload">Download</span>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         </a>
       </div>
@@ -857,8 +882,8 @@
   <!-- Pro section -->
   <div class="lp-pro" id="lp-pro">
     <div class="lp-pro-badge" id="lp-pro-badge">Lexio Pro</div>
-    <h2 class="lp-section-title lp-pro-title" id="lp-pro-title">Read without limits</h2>
-    <p class="lp-pro-sub" id="lp-pro-sub">The free plan gets you started. Pro removes every cap and unlocks all three reading modes.</p>
+    <h2 class="lp-section-title lp-pro-title" id="lp-pro-title" data-i18n="proTitle">Read without limits</h2>
+    <p class="lp-pro-sub" id="lp-pro-sub" data-i18n="proSub">The free plan gets you started. Pro removes every cap and unlocks all three reading modes.</p>
 
     <!-- Subscription card — shown when the user is already Pro or on trial.
          Calm, settings-style. Populated by checkProStatus() from /api/pro-status. -->
@@ -888,16 +913,16 @@
     <div class="lp-pro-toggle" id="lp-pro-toggle" role="tablist" aria-label="Billing period">
       <button type="button" class="lp-pro-toggle-btn" role="tab"
               data-plan="monthly" aria-pressed="true" onclick="setProPlan('monthly')">
-        Monthly
+        <span data-i18n="proToggleMonthly">Monthly</span>
       </button>
       <button type="button" class="lp-pro-toggle-btn" role="tab"
               data-plan="yearly" aria-pressed="false" onclick="setProPlan('yearly')">
-        Yearly
+        <span data-i18n="proToggleYearly">Yearly</span>
         <span class="lp-pro-toggle-save" id="lp-pro-save-pct">save 33%</span>
       </button>
       <button type="button" class="lp-pro-toggle-btn lp-family-toggle" role="tab" id="lp-family-toggle-btn" hidden
               data-plan="family" aria-pressed="false" onclick="setProPlan('family')">
-        Family
+        <span data-i18n="proToggleFamily">Family</span>
         <span class="lp-pro-toggle-save" id="lp-family-seats-label">4 seats</span>
       </button>
     </div>
@@ -906,57 +931,57 @@
       <!-- Free -->
       <div class="lp-pro-col">
         <div>
-          <div class="lp-pro-col-label">Free</div>
-          <div class="lp-pro-headline">Basic access</div>
-          <div class="lp-pro-subhead">no card required</div>
+          <div class="lp-pro-col-label" data-i18n="proFreeLabel">Free</div>
+          <div class="lp-pro-headline" data-i18n="proFreeHeadline">Basic access</div>
+          <div class="lp-pro-subhead" data-i18n="proFreeSubhead">no card required</div>
           <div class="lp-pro-price">
             <span class="lp-pro-amount"><span class="lp-free-symbol">$</span>0</span>
-            <span class="lp-pro-period">/month</span>
+            <span class="lp-pro-period" data-i18n="proPerMonth">/month</span>
           </div>
         </div>
         <ul class="lp-pro-perks">
-          <li>20 word lookups / month</li>
-          <li>3 OCR scans / month</li>
-          <li>Fast mode</li>
-          <li>Re-request definition up to 5×</li>
-          <li class="muted-perk">Balanced &amp; Deep modes</li>
-          <li class="muted-perk">Word bank sync across devices</li>
+          <li data-i18n="proFreePerk1">20 word lookups / month</li>
+          <li data-i18n="proFreePerk2">3 OCR scans / month</li>
+          <li data-i18n="proFreePerk3">Fast mode</li>
+          <li data-i18n="proFreePerk4">Re-request definition up to 5×</li>
+          <li class="muted-perk" data-i18n-html="proFreePerk5">Balanced &amp; Deep modes</li>
+          <li class="muted-perk" data-i18n="proFreePerk6">Word bank sync across devices</li>
         </ul>
-        <a class="lp-pro-cta" href="#" style="background:var(--bg);color:var(--text);border:1.5px solid var(--border)" onclick="robustScrollTo({top:0});return false;">Use for free</a>
+        <a class="lp-pro-cta" href="#" style="background:var(--bg);color:var(--text);border:1.5px solid var(--border)" onclick="robustScrollTo({top:0});return false;" data-i18n="proFreeCta">Use for free</a>
       </div>
 
       <!-- Pro -->
       <div class="lp-pro-col">
         <div>
-          <div class="lp-pro-col-label">Pro</div>
+          <div class="lp-pro-col-label" data-i18n="proProLabel">Pro</div>
           <div class="lp-pro-price">
             <span class="lp-pro-amount lp-pro-amount-dynamic" id="lp-pro-amount">$4.99</span>
             <span class="lp-pro-period" id="lp-pro-period">/month</span>
           </div>
           <span class="lp-pro-period-eq" id="lp-pro-period-eq" hidden></span>
-          <p class="lp-pro-anchor" id="lp-pro-anchor">Less than one paperback a month — and you'll actually finish them.</p>
+          <p class="lp-pro-anchor" id="lp-pro-anchor" data-i18n="proAnchorMonthly">Less than one paperback a month — and you'll actually finish them.</p>
         </div>
         <ul class="lp-pro-perks">
-          <li>Unlimited word lookups</li>
-          <li>Unlimited OCR scans</li>
-          <li>Fast, Balanced &amp; Deep modes</li>
-          <li>Word bank sync across devices</li>
-          <li>Anki export — review what you save</li>
-          <li class="lp-annual-only" hidden>Annual reading recap</li>
-          <li class="lp-annual-only" hidden>Founder badge</li>
-          <li class="lp-family-only" hidden><strong>4 Pro seats</strong> — share with family</li>
-          <li class="lp-family-only" hidden>Everyone keeps their own word bank</li>
-          <li>Priority support from Matvei</li>
+          <li data-i18n="proProPerk1">Unlimited word lookups</li>
+          <li data-i18n="proProPerk2">Unlimited OCR scans</li>
+          <li data-i18n-html="proProPerk3">Fast, Balanced &amp; Deep modes</li>
+          <li data-i18n="proProPerk4">Word bank sync across devices</li>
+          <li data-i18n="proProPerk5">Anki export — review what you save</li>
+          <li class="lp-annual-only" hidden data-i18n="proProPerkAnnual1">Annual reading recap</li>
+          <li class="lp-annual-only" hidden data-i18n="proProPerkAnnual2">Founder badge</li>
+          <li class="lp-family-only" hidden data-i18n-html="proProPerkFamily1"><strong>4 Pro seats</strong> — share with family</li>
+          <li class="lp-family-only" hidden data-i18n="proProPerkFamily2">Everyone keeps their own word bank</li>
+          <li data-i18n="proProPerkSupport">Priority support from Matvei</li>
         </ul>
-        <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()">Start 3-day free trial</button>
+        <button class="lp-pro-cta" id="lp-pro-btn" onclick="handleProCta()" data-i18n="proCtaTrial">Start 3-day free trial</button>
         <button class="lp-pro-cta" id="lp-manage-btn" onclick="handleManageSub()" style="display:none;background:var(--bg);color:var(--text);border:1.5px solid var(--border)">Manage subscription →</button>
-        <p class="lp-pro-note" id="lp-pro-note">Card required · cancel any time before day 3</p>
+        <p class="lp-pro-note" id="lp-pro-note" data-i18n="proNote">Card required · cancel any time before day 3</p>
       </div>
     </div>
     <!-- Classroom / University tier moved to for-educators.html -->
 
 
-    <p class="lp-pro-refund">
+    <p class="lp-pro-refund" data-i18n="proRefund">
       Cancel any time and you'll keep Pro until the end of your billing period.
     </p>
   </div>
@@ -1099,79 +1124,79 @@
 
   <!-- FAQ -->
   <div class="lp-faq" id="lp-faq">
-    <h2 class="lp-section-title">Frequently asked questions</h2>
+    <h2 class="lp-section-title" data-i18n="faqHeading">Frequently asked questions</h2>
     <div class="lp-faq-list">
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Is Lexio free?
+          <span data-i18n="faq1Q">Is Lexio free?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. The free plan gives you 20 word lookups and 3 image scans per month, in Fast mode. If you want to try Pro, you can start a <strong>3-day free trial</strong> — a card is required up-front, you can cancel any time before day 3, and you won't be charged. After the trial, Pro is <span class="lp-pro-amount-dynamic">$4.99</span>/month and removes all limits and unlocks Balanced and Deep modes.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq1A">Yes. The free plan gives you 20 word lookups and 3 image scans per month, in Fast mode. If you want to try Pro, you can start a <strong>3-day free trial</strong> — a card is required up-front, you can cancel any time before day 3, and you won't be charged. After the trial, Pro is <span class="lp-pro-amount-dynamic">$4.99</span>/month and removes all limits and unlocks Balanced and Deep modes.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Does the Chrome extension work on every website?
+          <span data-i18n="faq2Q">Does the Chrome extension work on every website?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — <a href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">install Lexio from the Chrome Web Store</a> and it works on any page in Chrome. Select a word or phrase, right-click and choose "Define with Lexio", or use the keyboard shortcut. It works on news sites, PDFs opened in Chrome, academic papers, and more.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq2A">Yes — <a href="https://chromewebstore.google.com/detail/hpongbjknpiflmkokepafpogclldmjob" target="_blank" rel="noopener">install Lexio from the Chrome Web Store</a> and it works on any page in Chrome. Select a word or phrase, right-click and choose "Define with Lexio", or use the keyboard shortcut. It works on news sites, PDFs opened in Chrome, academic papers, and more.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          What happens to the text I paste?
+          <span data-i18n="faq3Q">What happens to the text I paste?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>For pasted text, only the word you look up and a short surrounding context window are sent to the AI provider. In the Mac app's point-at-word mode, a small capture of the screen area around your pointer is sent instead — only when you trigger a lookup, never in the background. Neither is stored on our servers after the request. See our <a href="/privacy.html">Privacy Policy</a> for full details.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq3A">For pasted text, only the word you look up and a short surrounding context window are sent to the AI provider. In the Mac app's point-at-word mode, a small capture of the screen area around your pointer is sent instead — only when you trigger a lookup, never in the background. Neither is stored on our servers after the request. See our <a href="/privacy.html">Privacy Policy</a> for full details.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Which reading mode should I use?
+          <span data-i18n="faq4Q">Which reading mode should I use?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Fast mode is available on the free plan — quick and accurate for everyday reading. Pro unlocks Balanced (Gemini 2.5 Flash) and Deep (Claude Sonnet 4.5). For literature, legal texts, or academic prose, Deep gives the richest analysis.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq4A">Fast mode is available on the free plan — quick and accurate for everyday reading. Pro unlocks Balanced (Gemini 2.5 Flash) and Deep (Claude Sonnet 4.5). For literature, legal texts, or academic prose, Deep gives the richest analysis.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Which languages are supported?
+          <span data-i18n="faq5Q">Which languages are supported?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>You can paste text in any language — English, Spanish, French, German, Dutch, Russian, Japanese, Chinese, Arabic, Portuguese, and Italian. Definitions can be returned in any of those languages too.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq5A">You can paste text in any language — English, Spanish, French, German, Dutch, Russian, Japanese, Chinese, Arabic, Portuguese, and Italian. Definitions can be returned in any of those languages too.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Are there hourly limits even on Pro?
+          <span data-i18n="faq6Q">Are there hourly limits even on Pro?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes — to keep the service fast and prevent abuse, every account has a per-hour credit budget. Each lookup costs <strong>1 credit</strong> in Fast, <strong>2 credits</strong> in Balanced, and <strong>3 credits</strong> in Deep, reflecting the relative compute cost. Pro users get <strong>120 credits per hour</strong> (≈ 40 Deep, 60 Balanced, or 120 Fast lookups), which comfortably covers even very heavy reading. Free users get 20 credits per hour. The budget resets every hour, automatically.</p><p>Pro also has a generous monthly safety ceiling — <strong>20,000 credits</strong> (≈ 6,600 Deep lookups) and <strong>500 OCR scans</strong> per month. Real readers don't come close to these; they exist to prevent automated abuse. If you ever need more, write to me directly.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq6A">Yes — to keep the service fast and prevent abuse, every account has a per-hour credit budget. Each lookup costs <strong>1 credit</strong> in Fast, <strong>2 credits</strong> in Balanced, and <strong>3 credits</strong> in Deep, reflecting the relative compute cost. Pro users get <strong>120 credits per hour</strong> (≈ 40 Deep, 60 Balanced, or 120 Fast lookups), which comfortably covers even very heavy reading. Free users get 20 credits per hour. The budget resets every hour, automatically.<br><br>Pro also has a generous monthly safety ceiling — <strong>20,000 credits</strong> (≈ 6,600 Deep lookups) and <strong>500 OCR scans</strong> per month. Real readers don't come close to these; they exist to prevent automated abuse. If you ever need more, write to me directly.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Can I cancel my Pro subscription anytime?
+          <span data-i18n="faq7Q">Can I cancel my Pro subscription anytime?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes, cancel any time from your account settings. You keep Pro access until the end of the billing period, then automatically move to the free tier.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq7A">Yes, cancel any time from your account settings. You keep Pro access until the end of the billing period, then automatically move to the free tier.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Monthly or yearly — which should I pick?
+          <span data-i18n="faq8Q">Monthly or yearly — which should I pick?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>If you're trying Lexio for the first time, go monthly — same features, cancel any time. If reading is already a habit and Lexio fits how you read, yearly saves around a third versus paying monthly.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq8A">If you're trying Lexio for the first time, go monthly — same features, cancel any time. If reading is already a habit and Lexio fits how you read, yearly saves around a third versus paying monthly.</p></div></div>
       </div>
 
       <div class="lp-faq-item">
         <button class="lp-faq-q">
-          Can I use Lexio with my class or department?
+          <span data-i18n="faq9Q">Can I use Lexio with my class or department?</span>
           <span class="lp-faq-icon"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
-        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p>Yes. Lexio offers volume seats for classrooms and university departments — students and faculty get full Pro access (Deep mode, Word Bank, Anki export) under a single invoice, with onboarding support. There's no fixed list price; <a href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request" onclick="trackEducatorCTA('homepage_faq')">contact us for a demo and a quote</a>. See the <a href="/for-educators.html">For educators</a> section for how Lexio fits a reading curriculum.</p></div></div>
+        <div class="lp-faq-a"><div class="lp-faq-a-inner"><p data-i18n-html="faq9A">Yes. Lexio offers volume seats for classrooms and university departments — students and faculty get full Pro access (Deep mode, Word Bank, Anki export) under a single invoice, with onboarding support. There's no fixed list price; <a href="mailto:matveylgnv2021@gmail.com?subject=Lexio%20for%20Classrooms%20%E2%80%94%20demo%20request" onclick="trackEducatorCTA('homepage_faq')">contact us for a demo and a quote</a>. See the <a href="/for-educators.html">For educators</a> section for how Lexio fits a reading curriculum.</p></div></div>
       </div>
 
     </div>
@@ -1698,7 +1723,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=54"></script>
+<script src="/app.js?v=56"></script>
 
 <script type="module">
 const _gradReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
