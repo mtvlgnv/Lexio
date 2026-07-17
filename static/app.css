@@ -3258,60 +3258,92 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 36px 32px 28px;
-      max-width: 420px; width: 100%;
+      padding: 40px 34px 30px;
+      max-width: 400px; width: 100%;
       position: relative;
       box-shadow: 0 24px 80px rgba(0,0,0,.18);
-      text-align: center;
     }
     .pro-modal-close {
-      position: absolute; top: 14px; right: 16px;
+      position: absolute; top: 16px; right: 18px;
       background: none; border: none; cursor: pointer;
       font-size: 1rem; color: var(--muted); line-height: 1;
     }
-    .pro-modal-icon { font-size: 2.2rem; margin-bottom: 10px; }
+    .pro-modal-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .68rem; font-weight: 700; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 14px;
+    }
     .pro-modal-title {
-      font-size: 1.25rem; font-weight: 700;
-      color: var(--text); margin-bottom: 6px;
+      font-family: 'Fraunces', serif; font-weight: 400; font-size: 1.55rem;
+      color: var(--text); margin-bottom: 8px; line-height: 1.25;
     }
     .pro-modal-sub {
-      font-size: .88rem; color: var(--muted); margin-bottom: 22px;
+      font-size: .88rem; color: var(--text-mid); line-height: 1.55; margin-bottom: 24px;
     }
+    .pro-modal-primary {
+      display: block; text-align: center;
+      background: var(--accent); color: #fff;
+      border: none; border-radius: 10px; padding: 13px 20px;
+      font-size: .9rem; font-weight: 600; text-decoration: none;
+      font-family: inherit; transition: background .15s, transform .1s;
+      margin-bottom: 20px;
+    }
+    .pro-modal-primary:hover { background: var(--accent-dk); transform: translateY(-1px); }
     .pro-plan-card {
-      background: var(--bg);
-      border: 2px solid var(--accent);
+      background: var(--accent-lt);
+      border: 1.5px solid var(--accent);
       border-radius: 14px;
-      padding: 22px 20px 18px;
+      padding: 20px 20px 18px;
       margin-bottom: 16px;
-      text-align: left;
+    }
+    /* When a signup CTA is showing above, Pro becomes the quieter alternative
+       — two full-weight offers competing for the same click reads as noise. */
+    .pro-plan-card--secondary {
+      background: var(--bg); border-color: var(--border); padding: 16px 18px;
+    }
+    .pro-plan-card--secondary .pro-plan-btn {
+      background: var(--bg); color: var(--text); border: 1.5px solid var(--border);
+    }
+    .pro-plan-card--secondary .pro-plan-btn:hover {
+      background: var(--border);
+    }
+    .pro-plan-card--secondary .pro-plan-name {
+      color: var(--muted);
     }
     .pro-plan-header {
       display: flex; align-items: baseline;
       justify-content: space-between; margin-bottom: 14px;
     }
     .pro-plan-name {
-      font-weight: 700; font-size: .95rem; color: var(--accent);
-      text-transform: uppercase; letter-spacing: .06em;
+      font-weight: 700; font-size: .72rem; letter-spacing: .08em;
+      color: var(--gold, oklch(72% 0.14 85)); text-transform: uppercase;
     }
     .pro-plan-price {
-      font-size: 1.6rem; font-weight: 800; color: var(--text);
+      font-family: 'Fraunces', serif; font-size: 1.5rem; font-weight: 400; color: var(--text);
     }
-    .pro-plan-per { font-size: .75rem; font-weight: 400; color: var(--muted); }
+    .pro-plan-per { font-size: .72rem; font-weight: 400; color: var(--muted); font-family: inherit; }
     .pro-plan-perks {
-      list-style: none; padding: 0; margin: 0 0 18px;
-      display: flex; flex-direction: column; gap: 6px;
+      list-style: none; padding: 0; margin: 0 0 16px;
+      display: flex; flex-direction: column; gap: 8px;
     }
-    .pro-plan-perks li { font-size: .86rem; color: var(--muted); }
-    .pro-plan-perks li::first-letter { color: var(--accent); }
+    .pro-plan-perks li {
+      font-size: .84rem; color: var(--text-mid);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .pro-plan-perks li::before {
+      content: '✓'; font-weight: 700; color: var(--accent);
+      flex-shrink: 0; font-size: .78rem; margin-top: 2px;
+    }
     .pro-plan-btn {
       display: block; width: 100%;
       background: var(--accent); color: #fff;
       border-radius: 9px; padding: 12px 0;
-      text-align: center; font-weight: 700; font-size: .95rem;
+      text-align: center; font-weight: 600; font-size: .88rem;
       text-decoration: none;
-      transition: opacity .15s;
+      transition: background .15s, transform .1s;
     }
-    .pro-plan-btn:hover { opacity: .88; }
+    .pro-plan-btn:hover { background: var(--accent-dk); transform: translateY(-1px); }
     .pro-plan-note {
       font-size: .72rem; color: var(--muted);
       text-align: center; margin-top: 10px;

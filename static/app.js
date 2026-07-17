@@ -412,6 +412,9 @@ function showProModal(kind, used, limit) {
   // create a free account (20 lookups/month) before being asked to pay for Pro.
   const isSignupNudge = !localStorage.getItem('lexio_token') && kind === 'lookup';
   if (signupBtn) signupBtn.style.display = isSignupNudge ? '' : 'none';
+  // When the signup CTA is showing, Pro becomes the quieter secondary offer —
+  // two equally bold asks compete for the same click.
+  if (planCard) planCard.classList.toggle('pro-plan-card--secondary', isSignupNudge);
 
   if (isProCap) {
     if (title) title.textContent = "You've hit your Pro monthly cap";

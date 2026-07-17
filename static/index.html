@@ -44,7 +44,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js" async defer></script>
-  <link rel="stylesheet" href="/app.css?v=56">
+  <link rel="stylesheet" href="/app.css?v=57">
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-uClUulm_iku5Ah2kWnseu.js"></script>
   <script>
@@ -1698,7 +1698,7 @@
   </div>
 </div>
 
-<script src="/app.js?v=52"></script>
+<script src="/app.js?v=53"></script>
 
 <script type="module">
 const _gradReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1712,12 +1712,12 @@ if (!_gradReduced) {
 <!-- ── Pro upgrade modal ──────────────────────────────── -->
 <div id="pro-modal" class="pro-modal-backdrop hidden" onclick="if(event.target===this)closeProModal()">
   <div class="pro-modal">
-    <button class="pro-modal-close" onclick="closeProModal()">✕</button>
-    <div class="pro-modal-icon">⚡</div>
+    <button class="pro-modal-close" onclick="closeProModal()" aria-label="Close">✕</button>
+    <div class="pro-modal-badge">Reading pace</div>
     <h2 class="pro-modal-title">You've hit your free limit</h2>
     <p class="pro-modal-sub" id="pro-modal-sub">You've used all 20 free lookups this month.</p>
-    <a class="pro-plan-btn" id="pro-modal-signup"
-       style="display:none; margin-bottom:16px; cursor:pointer;"
+    <a class="pro-modal-primary" id="pro-modal-signup"
+       style="display:none; cursor:pointer;"
        onclick="closeProModal(); openAuthModal(true); return false;">
       Create a free account →
     </a>
@@ -1727,16 +1727,16 @@ if (!_gradReduced) {
         <span class="pro-plan-price">$4.99<span class="pro-plan-per">/month</span></span>
       </div>
       <ul class="pro-plan-perks">
-        <li>✓ Unlimited word lookups</li>
-        <li>✓ Unlimited OCR scans</li>
-        <li>✓ Fast, Balanced &amp; Deep modes</li>
-        <li>✓ Word bank sync across devices</li>
-        <li>✓ Priority support</li>
+        <li>Unlimited word lookups</li>
+        <li>Unlimited OCR scans</li>
+        <li>Fast, Balanced &amp; Deep modes</li>
+        <li>Word bank sync across devices</li>
+        <li>Priority support</li>
       </ul>
       <a class="pro-plan-btn" href="/upgrade.html" onclick="closeProModal()">
         See Pro plans →
       </a>
-      <p class="pro-plan-note">Instant activation · cancel any time</p>
+      <p class="pro-plan-note">Cancel any time</p>
     </div>
     <p class="pro-modal-reset">Your free quota resets on the 1st of each month.</p>
   </div>
