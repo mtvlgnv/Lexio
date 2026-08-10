@@ -15,7 +15,18 @@ const DEFAULTS = {
   auth: null,                          // { token, user } once signed in
   recentLookups: [],                   // { word, at } — newest first (Hub, later)
   lookupDays: {},                      // { 'YYYY-MM-DD': count } — local streak/stats material
-  settings: { launchAtLogin: false, doubleTapKey: 'ctrl', shareAnonymousStats: true },
+  // showPill defaults false: the always-on-top pill sat over other apps'
+  // own bottom-center UI (chat inputs, video controls) on some setups —
+  // reported directly by a real user. The tray icon, double-tap trigger,
+  // and fallback hotkey all work identically whether or not the pill is
+  // shown, so hiding it by default costs nothing functionally; anyone who
+  // wants a visible on-screen indicator can turn it back on in Settings.
+  settings: { launchAtLogin: false, doubleTapKey: 'ctrl', shareAnonymousStats: true, showPill: false },
+  // Shown once, the first time the pill is (or already is, per the new
+  // default above) hidden — reminds the user Lexio still runs from the
+  // tray and what the trigger key is, since there's no on-screen pill to
+  // rediscover that from. Never shown again once true.
+  pillHiddenNoticeShown: false,
   // B4/P1-5 Phase 1.5: the Home-tab profile-interview card is shown once
   // after real usage (5 saves or 15 lookups) — this flag makes "dismiss"
   // mean "never shown again", whether the user answered or skipped it.

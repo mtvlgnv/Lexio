@@ -24,7 +24,7 @@
  * for users who haven't granted it yet.
  */
 const { app, BrowserWindow, globalShortcut, screen, Tray, Menu, ipcMain,
-        clipboard, systemPreferences, shell, nativeTheme } = require('electron');
+        clipboard, systemPreferences, shell, nativeTheme, Notification } = require('electron');
 const { execFile } = require('child_process');
 const path = require('path');
 const store = require('./store');
@@ -93,13 +93,15 @@ let activeFallbackShortcut = null;
 let captureGeneration = 0;
 
 // Bottom margin and the two window sizes the pill morphs between.
-// The collapsed pill is a 36px gradient disc (see pill.html). COLLAPSED is
-// kept close to that size on purpose — not because of the transparency bug
-// (that turned out to be Electron 34 predating this Mac's very new macOS
-// "Tahoe" release; upgrading to Electron 43 fixed it outright, no residual
-// artifact), just because a tight, disc-sized window is the cleaner design.
+// The collapsed pill is a thin gradient line (see pill.html), not a disc —
+// shrunk from the original 44x42 circle after feedback that it sat over
+// other apps' own bottom-center UI (chat inputs, video controls, etc.).
+// Since setIgnoreMouseEvents(false) makes the WHOLE window rect (not just
+// the visible pixels) swallow clicks, shrinking the window bounds — not
+// just the visual shape — is what actually reduces how much it blocks
+// underneath it, on top of just being less visually obtrusive.
 const MARGIN_BOTTOM = 10;
-const COLLAPSED = { width: 44, height: 42 };
+const COLLAPSED = { width: 56, height: 14 };
 const EXPANDED  = { width: 460, height: 580 };
 
 // Duration for CSS transition timings (handled in pill.html)
@@ -342,6 +344,13 @@ async function expand(forcedText, { capture = true } = {}) {
   }
 }
 
+// Whether the collapsed pill should actually be drawn on screen. The
+// window itself still exists and still works either way (expand() always
+// shows it) — this only controls what's visible when nothing is looked up.
+function pillVisible() {
+  return !!store.get().settings.showPill;
+}
+
 function collapse() {
   if (!expanded) return;
   expanded = false;
@@ -353,10 +362,14 @@ function collapse() {
   if (win && !win.isDestroyed()) win.webContents.send('overlay:collapse');
 
   // Wait for the CSS genie animation to visually squish down into the pill
-  // before we snap the OS window bounds back to the tiny 44x42 box.
+  // before we snap the OS window bounds back to the tiny collapsed box.
   setTimeout(() => {
     if (!expanded && win && !win.isDestroyed()) {
       win.setBounds(boundsFor(COLLAPSED));
+      // showPill off: hide the window outright rather than leaving a tiny
+      // always-on-top box sitting on screen — that box is exactly what
+      // this setting exists to get rid of.
+      if (pillVisible()) win.show(); else win.hide();
     }
   }, COLLAPSE_MS);
 }
@@ -480,7 +493,10 @@ function createWindow() {
   win.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
   win.loadFile(path.join(__dirname, 'pill.html'));
-  win.once('ready-to-show', () => win.show());
+  // Only actually shown on boot if the pill is enabled (see pillVisible()
+  // below) — otherwise it stays hidden until the next expand() call shows
+  // it at EXPANDED size, exactly like a freshly-created window would.
+  win.once('ready-to-show', () => { if (pillVisible()) win.show(); });
 
   // Replay any stored sign-in so the webview is authenticated from the first
   // open, not only after a fresh lexio://auth handoff in this session.
@@ -613,6 +629,17 @@ ipcMain.on('app:set-launch-at-login', (_e, value) => {
   store.set({ settings: { ...store.get().settings, launchAtLogin: !!value } });
 });
 ipcMain.handle('app:get-hotkey', () => activeFallbackShortcut);
+
+// Show/hide the collapsed pill — see store.js's showPill comment for why
+// it defaults off. Toggling takes effect immediately: the window is only
+// ever hidden while collapsed, so an open panel is never yanked away.
+ipcMain.handle('app:get-show-pill', () => pillVisible());
+ipcMain.on('app:set-show-pill', (_e, value) => {
+  store.set({ settings: { ...store.get().settings, showPill: !!value } });
+  if (win && !win.isDestroyed() && !expanded) {
+    if (pillVisible()) win.show(); else win.hide();
+  }
+});
 ipcMain.on('app:show-onboarding', () => createOnboardingWindow());
 
 // B15: the honest opt-out toggle — default ON, one click fully disables
@@ -847,6 +874,27 @@ app.on('open-url', (event, url) => {
   }
 });
 
+// One-time reminder that Lexio still runs from the menu bar even with no
+// pill on screen — otherwise there's nothing on screen at all to point at
+// once you've forgotten the trigger key. Fires once, ever, the first time
+// the pill is (or, per the new default, already is) hidden; never again
+// after that, including across future toggles on/off. Called after
+// registerTriggers() so the trigger key/symbol is already resolved.
+function maybeNotifyPillHidden() {
+  if (pillVisible()) return;
+  if (store.get().pillHiddenNoticeShown) return;
+  store.set({ pillHiddenNoticeShown: true });
+  if (!Notification.isSupported()) return;
+  const hint = IS_MAS
+    ? `press ${prettyShortcut(activeFallbackShortcut)}`
+    : `double-tap ${TRIGGER_KEYS[activeTriggerKey].symbol}`;
+  new Notification({
+    title: 'Lexio is running in the menu bar',
+    body: `The floating pill is hidden. ${hint} to look something up, or click the menu bar icon anytime. Turn the pill back on in Settings.`,
+    silent: true,
+  }).show();
+}
+
 /* ── Tray (so the floating widget is always quittable) ──────────── */
 function updateTrayToolTip() {
   if (!tray) return;
@@ -999,6 +1047,7 @@ if (!app.requestSingleInstanceLock()) {
     createTray();
     registerTriggers();
     setupAutoUpdate();
+    maybeNotifyPillHidden();
     // Show the Hub on manual launch, Wispr-style — but stay silent when
     // macOS auto-started us at login (the pill alone is the right presence).
     const openedAtLogin = process.platform === 'darwin' &&

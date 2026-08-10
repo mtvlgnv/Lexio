@@ -18,6 +18,8 @@ contextBridge.exposeInMainWorld('lexioHub', {
   openSignIn:             () => ipcRenderer.send('app:open-signin'),
   getLaunchAtLogin:       () => ipcRenderer.invoke('app:get-launch-at-login'),
   setLaunchAtLogin:       (v) => ipcRenderer.send('app:set-launch-at-login', v),
+  getShowPill:            () => ipcRenderer.invoke('app:get-show-pill'),
+  setShowPill:            (v) => ipcRenderer.send('app:set-show-pill', v),
   getHotkey:              () => ipcRenderer.invoke('app:get-hotkey'),
   showOnboarding:         () => ipcRenderer.send('app:show-onboarding'),
   openInputMonitoringSettings: () => ipcRenderer.send('app:open-input-monitoring-settings'),
