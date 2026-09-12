@@ -19,6 +19,8 @@ from groq import Groq, BadRequestError
 from google import genai as google_genai
 from google.genai import types as genai_types
 
+from app.config import GEMINI_MODEL
+
 # ── API Clients ──────────────────────────────────────────────────────────────
 # openai_client is kept for the /ocr vision fallback in routers/account.py;
 # OpenAI is no longer used for the /define fast tier (that's Groq below).
@@ -162,7 +164,7 @@ def _call_google(prompt: str) -> str:
     if not os.getenv("GOOGLE_API_KEY"):
         raise ValueError("GOOGLE_API_KEY not configured")
     response = google_client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=GEMINI_MODEL,
         contents=prompt,
         config=genai_types.GenerateContentConfig(
             response_mime_type="application/json",
@@ -180,7 +182,7 @@ def _call_google_vision(prompt: str, image_bytes: bytes, mime_type: str = "image
     if not os.getenv("GOOGLE_API_KEY"):
         raise ValueError("GOOGLE_API_KEY not configured")
     response = google_client.models.generate_content(
-        model="gemini-2.5-flash",
+        model=GEMINI_MODEL,
         contents=[
             genai_types.Part.from_bytes(data=image_bytes, mime_type=mime_type),
             prompt,

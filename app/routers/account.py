@@ -24,6 +24,7 @@ from app.ai import openai_client, google_client
 from app.ratelimit import limiter
 from app.config import (
     FREE_LOOKUP_LIMIT, ANON_LOOKUP_LIMIT, FREE_OCR_LIMIT, PRO_OCR_MONTHLY_CAP,
+    GEMINI_MODEL,
 )
 from app.schemas import ProfileRequest
 
@@ -147,7 +148,7 @@ async def ocr_image(request: Request, file: UploadFile = File(...),
     def _run_ocr() -> str:
         if os.getenv("GOOGLE_API_KEY"):
             response = google_client.models.generate_content(
-                model="gemini-2.5-flash",
+                model=GEMINI_MODEL,
                 contents=[
                     genai_types.Part.from_bytes(data=image_bytes, mime_type=file.content_type),
                     ocr_prompt,
